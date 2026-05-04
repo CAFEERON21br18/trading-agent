@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block title %}Paramètres — AlphaSignal{% endblock %}
+
+{% block content %}
+<!-- Health system -->
+<div class="card mb-3">
+    <h2 class="font-semibold mb-3">🩺 État du système</h2>
+    <div id="health-detail" class="space-y-2 text-sm text-slate-300">
+        <div class="skeleton h-16"></div>
+    </div>
+</div>
+
+<!-- Statut des cycles (v4.1) -->
+<div class="card mb-3">
+    <h2 class="font-semibold mb-3">🔄 Statut des cycles</h2>
+    <div id="cycles-detail" class="space-y-2 text-xs">
+        <div class="skeleton h-32"></div>
+    </div>
+    <div class="text-xs text-slate-500 mt-3">
+        Si un cycle affiche ❌ "il y a X heures" alors qu'il devrait tourner toutes les 5/30 min → il est en panne.
+    </div>
+</div>
+
+<!-- Lancer analyse manuelle -->
+<div class="card mb-3">
+    <h2 class="font-semibold mb-2">🚀 Analyse manuelle</h2>
+    <p class="text-xs text-slate-400 mb-3">Lance la routine quotidienne maintenant (peut prendre 1-2 min). Tu recevras le rapport par email.</p>
+    <button onclick="runAnalysis()" id="run-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 rounded-lg transition">
+        Lancer l'analyse
+    </button>
+    <div id="run-status" class="text-xs text-slate-400 mt-2"></div>
+</div>
+
+<!-- Watchlist -->
+<div class="card">
+    <h2 class="font-semibold mb-2">📡 Watchlist</h2>
+    <p class="text-xs text-slate-400 mb-3">Active/désactive les actifs surveillés (sauvegarde immédiate).</p>
+    <div id="watchlist-edit" class="space-y-1">
+        <div class="skeleton h-8"></div>
+        <div class="skeleton h-8"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let watchlistData = null;
+
+async function loadHealth() {
+    const h = await (await fetch("/api/health")).json();
+    const el = document.getElementById("health-detail");
+    const ok = h.ok;
+    el.innerHTML = `
+        <div class="flex justify-between">
+            <span>Statut</span>
+            <span class="${ok ? 'text-emerald-400' : 'text-red-400'} font-semibold">${h.status}</span>
+        </div>
+        <div class="flex justify-between">
+            <span>Dernier run réussi</span>
+            <span class="text-slate-100">${h.heartbeat?.last_successful_run || '—'}</span>
+        </div>
+        <div class="flex justify-between">
+            <span>Heures depuis dernier run</span>
+            <span class="text-slate-100">${h.heures_depuis_dernier_run !== null ? h.heures_depuis_dernier_run.toFixed(1) + 'h' : '—'}</span>
+        </div>
+        <div class="flex justify-between">
+            <span>Échecs consécutifs</span>
+            <span class="${h.consecutive_failures > 0 ? 'text-amber-300' : 'text-slate-100'}">${h.consecutive_failures || 0}</span>
+        </div>
+        ${!ok ? `<div class="text-xs text-red-300 mt-2">⚠️ ${h.raison}</div>` : ''}
+    `;
+
+    // Cycles (v4.1)
+    renderCycles(h.cycles || {});
+}
+
+const CYCLE_INFO = {
+    "critical":  {emoji: "🔴", label: "Critique",   freq: "5 min"},
+    "tactical":  {emoji: "🟡", label: "Tactique",   freq: "30 min"},
+    "strategic": {emoji: "🟢", label: "Stratégique",freq: "4h"},
+    "daily":     {emoji: "🔵", label: "Quotidien",  freq: "7h30"},
+    "weekly":    {emoji: "🟣", label: "Hebdo",      freq: "dim 20h"},
+    "cleanup":   {emoji: "🧹", label: "Nettoyage",  freq: "dim 3h"},
+};
+
+function renderCycles(cycles) {
+    const el = document.getElementById("cycles-detail");
+    let html = "";
+    for (const [name, info] of Object.entries(CYCLE_INFO)) {
+        const c = cycles[name] || {};
+        let icon = "⏳", couleur = "text-slate-400";
+        let detail = "(jamais exécuté)";
+        if (!c.jamais && c.last_run) {
+            if (c.is_dead) { icon = "❌"; couleur = "text-red-400"; }
+            else if (c.is_late) { icon = "⚠️"; couleur = "text-amber-300"; }
+            else { icon = "✅"; couleur = "text-emerald-400"; }
+            detail = `${c.time_ago} · ${c.runs_today} runs aujourd'hui · ${c.duration_sec}s`;
+        }
+        html += `
+            <div class="flex justify-between items-center py-1.5 border-b border-slate-700/50 last:border-0">
+                <div>
+                    <span class="text-base">${info.emoji}</span>
+                    <span class="font-semibold ml-1">${info.label}</span>
+                    <span class="text-xs text-slate-500 ml-1">(${info.freq})</span>
+                </div>
+                <div class="text-right">
+                    <span class="${couleur} font-semibold">${icon} ${detail}</span>
+                </div>
+            </div>`;
+    }
+    el.innerHTML = html;
+}
+
+async function loadWatchlist() {
+    watchlistData = await (await fetch("/api/watchlist")).json();
+    const el = document.getElementById("watchlist-edit");
+    let html = "";
+    for (const cat of ["crypto", "stocks", "etf", "cfd"]) {
+        if (!watchlistData[cat]) continue;
+        html += `<div class="text-xs text-slate-400 uppercase mt-3 mb-1">${cat}</div>`;
+        for (const [ticker, info] of Object.entries(watchlistData[cat])) {
+            html += `
+                <label class="flex justify-between items-center p-2 rounded hover:bg-slate-700/40 cursor-pointer">
+                    <span><span class="font-bold">${ticker}</span> <span class="text-xs text-slate-400 ml-1">${info.nom}</span></span>
+                    <input type="checkbox" ${info.actif ? "checked" : ""} onchange="toggleAsset('${cat}', '${ticker}', this.checked)" class="w-5 h-5 accent-emerald-500">
+                </label>`;
+        }
+    }
+    el.innerHTML = html;
+}
+
+async function toggleAsset(cat, ticker, actif) {
+    watchlistData[cat][ticker].actif = actif;
+    const r = await fetch("/api/settings/watchlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(watchlistData),
+    });
+    const j = await r.json();
+    if (!j.saved) alert("Erreur sauvegarde : " + (j.error || "inconnue"));
+}
+
+async function runAnalysis() {
+    const btn = document.getElementById("run-btn");
+    btn.disabled = true;
+    btn.textContent = "Lancement...";
+    const r = await fetch("/api/run-analysis", { method: "POST" });
+    const j = await r.json();
+    document.getElementById("run-status").textContent = j.message || "Démarré";
+    setTimeout(() => {
+        btn.disabled = false;
+        btn.textContent = "Lancer l'analyse";
+    }, 3000);
+}
+
+loadHealth();
+loadWatchlist();
+setInterval(loadHealth, 60000);
+</script>
+{% endblock %}

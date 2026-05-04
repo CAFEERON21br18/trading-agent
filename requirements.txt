@@ -1,0 +1,27 @@
+# ============================================================
+# AlphaSignal — Dépendances Python
+# Installer avec : pip install -r requirements.txt
+# ============================================================
+
+# Données de marché
+yfinance>=0.2.36          # Prix OHLCV actions, ETF, indices (gratuit, sans clé)
+requests>=2.31.0          # Appels HTTP vers CoinGecko, NewsAPI, Fear & Greed
+
+# Traitement des données
+pandas>=2.0.0             # DataFrames pour les séries temporelles
+numpy>=1.24.0             # Calculs numériques
+
+# Indicateurs techniques
+pandas-ta>=0.3.14b        # RSI, MACD, Bollinger, EMA, ATR, ADX, Stochastic RSI
+
+# Visualisation
+matplotlib>=3.7.0         # Graphiques statiques (equity curve, drawdown)
+plotly>=5.15.0            # Graphiques interactifs HTML (dashboard V2)
+
+# Infrastructure
+python-dotenv>=1.0.0      # Chargement des variables .env
+schedule>=1.2.0           # Scheduler pour les tâches automatiques
+pytz>=2023.3              # Gestion des fuseaux horaires (Lisbonne UTC+0/+1)
+
+# Dashboard web (Phase P4)
+flask>=3.0.0              # Serveur web local (PWA + API JSON)

@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}Watchlist — AlphaSignal{% endblock %}
+
+{% block content %}
+<div id="search-bar" class="mb-3">
+    <input id="search" type="text" placeholder="Filtrer (ex: BTC, AAPL)…"
+           class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm">
+</div>
+
+<div id="watchlist" class="space-y-3">
+    <div class="skeleton h-20"></div>
+    <div class="skeleton h-20"></div>
+</div>
+
+<!-- Modal détail actif -->
+<div id="modal" class="hidden fixed inset-0 bg-black/70 z-20 flex items-end sm:items-center justify-center p-4">
+    <div class="bg-slate-800 rounded-2xl max-w-md w-full max-h-[85vh] overflow-y-auto">
+        <div class="p-4 border-b border-slate-700 flex justify-between items-center sticky top-0 bg-slate-800">
+            <h3 id="modal-title" class="font-bold text-lg">—</h3>
+            <button onclick="closeModal()" class="text-slate-400 hover:text-slate-100 text-2xl">×</button>
+        </div>
+        <div id="modal-content" class="p-4">
+            <div class="skeleton h-40 mb-3"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let allTickers = [];
+const eur = (v) => (v >= 0 ? "+" : "") + v.toFixed(2) + "€";
+const pct = (v) => (v >= 0 ? "+" : "") + v.toFixed(2) + "%";
+const colorPnl = (v) => v >= 0 ? "text-emerald-400" : "text-red-400";
+
+async function loadWatchlist() {
+    const data = await (await fetch("/api/watchlist")).json();
+    allTickers = [];
+    for (const cat of ["crypto", "stocks", "etf", "cfd"]) {
+        if (!data[cat]) continue;
+        for (const [ticker, info] of Object.entries(data[cat])) {
+            if (!info.actif) continue;
+            allTickers.push({ ticker, nom: info.nom, type: cat, timeframes: info.timeframes });
+        }
+    }
+    renderList(allTickers);
+}
+
+function renderList(items) {
+    const el = document.getElementById("watchlist");
+    if (!items.length) {
+        el.innerHTML = `<div class="card text-center text-slate-400 py-6">Aucun actif</div>`;
+        return;
+    }
+    el.innerHTML = items.map(i => `
+        <div class="card cursor-pointer" onclick="openAsset('${i.ticker}')">
+            <div class="flex justify-between items-center">
+                <div>
+                    <div class="font-bold">${i.ticker}</div>
+                    <div class="text-xs text-slate-400">${i.nom} • ${i.type}</div>
+                </div>
+                <div class="text-slate-400">›</div>
+            </div>
+        </div>`).join("");
+}
+
+document.getElementById("search").addEventListener("input", (e) => {
+    const q = e.target.value.toLowerCase();
+    renderList(allTickers.filter(i => i.ticker.toLowerCase().includes(q) || i.nom.toLowerCase().includes(q)));
+});
+
+async function openAsset(ticker) {
+    document.getElementById("modal").classList.remove("hidden");
+    document.getElementById("modal-title").textContent = ticker;
+    const content = document.getElementById("modal-content");
+    content.innerHTML = `<div class="skeleton h-40 mb-3"></div>`;
+
+    const data = await (await fetch(`/api/asset/${encodeURIComponent(ticker)}`)).json();
+    const dernierPrix = data.prix.length ? data.prix[data.prix.length - 1].close : null;
+    const pos = data.position_ouverte;
+
+    content.innerHTML = `
+        <div class="text-3xl font-bold mb-2">${dernierPrix ? dernierPrix.toFixed(4) : '—'}</div>
+        <canvas id="modalChart" height="160" class="mb-4"></canvas>
+        ${pos ? `
+            <div class="card !p-3 border-emerald-700/40 bg-emerald-900/20">
+                <div class="flex justify-between mb-2">
+                    <span class="pill ${pos.direction === 'LONG' ? 'pill-buy' : 'pill-sell'}">${pos.direction}</span>
+                    <span class="pill pill-paper">POSITION OUVERTE</span>
+                </div>
+                <div class="text-xs text-slate-300">
+                    Entrée : ${pos.entry_price.toFixed(4)} | SL : ${pos.stop_loss.toFixed(4)} | TP1 : ${pos.target_1.toFixed(4)}
+                </div>
+            </div>` : `<div class="text-sm text-slate-400 text-center py-2">Pas de position ouverte sur cet actif</div>`}
+    `;
+
+    const ctx = document.getElementById("modalChart").getContext("2d");
+    new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: data.prix.map(p => p.date),
+            datasets: [{
+                data: data.prix.map(p => p.close),
+                borderColor: "#60a5fa", backgroundColor: "rgba(96, 165, 250, 0.1)",
+                fill: true, tension: 0.3, pointRadius: 0,
+            }],
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { ticks: { color: "#94a3b8", maxTicksLimit: 5 }, grid: { display: false } },
+                y: { ticks: { color: "#94a3b8" }, grid: { color: "#334155" } },
+            },
+        },
+    });
+}
+
+function closeModal() {
+    document.getElementById("modal").classList.add("hidden");
+}
+
+loadWatchlist();
+</script>
+{% endblock %}

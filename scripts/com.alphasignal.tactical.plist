@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.alphasignal.tactical</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/ruby-rosa/trading-agent/scripts/run_mac.sh</string>
+        <string>tactical</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/ruby-rosa/trading-agent</string>
+
+    <!-- Toutes les 30 minutes -->
+    <key>StartInterval</key>
+    <integer>1800</integer>
+
+    <key>StandardOutPath</key>
+    <string>/Users/ruby-rosa/trading-agent/logs/launchd_tactical.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/ruby-rosa/trading-agent/logs/launchd_tactical.log</string>
+
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>

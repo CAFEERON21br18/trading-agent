@@ -1,0 +1,29 @@
+{
+  "_comment": "Watchlist AlphaSignal — modifier ce fichier pour ajouter/retirer des actifs",
+  "_tickers_note": "Utiliser les symboles yfinance : BTC-USD, ETH-USD, GC=F (or), NQ=F (Nasdaq futures)",
+
+  "crypto": {
+    "BTC-USD": { "nom": "Bitcoin",  "timeframes": ["4h", "1d", "1wk"], "actif": true },
+    "ETH-USD": { "nom": "Ethereum", "timeframes": ["4h", "1d", "1wk"], "actif": true },
+    "SOL-USD": { "nom": "Solana",   "timeframes": ["4h", "1d", "1wk"], "actif": true }
+  },
+
+  "stocks": {
+    "AAPL": { "nom": "Apple",     "timeframes": ["1d", "1wk"], "actif": true },
+    "TSLA": { "nom": "Tesla",     "timeframes": ["1d", "1wk"], "actif": true },
+    "NVDA": { "nom": "Nvidia",    "timeframes": ["1d", "1wk"], "actif": true },
+    "MSFT": { "nom": "Microsoft", "timeframes": ["1d", "1wk"], "actif": true },
+    "AMZN": { "nom": "Amazon",    "timeframes": ["1d", "1wk"], "actif": true }
+  },
+
+  "etf": {
+    "SPY": { "nom": "S&P 500 ETF",       "timeframes": ["1d", "1wk"], "actif": true },
+    "QQQ": { "nom": "Nasdaq 100 ETF",    "timeframes": ["1d", "1wk"], "actif": true },
+    "VOO": { "nom": "Vanguard S&P 500",  "timeframes": ["1d", "1wk"], "actif": true }
+  },
+
+  "cfd": {
+    "GC=F":  { "nom": "Or (Gold)",         "timeframes": ["1d", "1wk"], "actif": true },
+    "NQ=F":  { "nom": "Nasdaq 100 Futures","timeframes": ["1d", "1wk"], "actif": true }
+  }
+}

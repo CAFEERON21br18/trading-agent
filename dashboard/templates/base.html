@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>{% block title %}AlphaSignal{% endblock %}</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="AlphaSignal">
+    <link rel="apple-touch-icon" href="/static/icons/icon-192.png">
+
+    <link rel="stylesheet" href="/static/css/app.css">
+    <script>
+      // Enregistrement du service worker (PWA)
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/sw.js").catch(() => {});
+      }
+    </script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen pb-20">
+    <!-- Header -->
+    <header class="sticky top-0 z-10 bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <span class="text-xl">📊</span>
+            <h1 class="font-bold text-lg">AlphaSignal</h1>
+        </div>
+        <div id="health-badge" class="text-xs px-2 py-1 rounded-full bg-emerald-700/40 text-emerald-300">
+            ●  loading...
+        </div>
+    </header>
+
+    <!-- Page content -->
+    <main class="px-4 py-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Bottom navigation (mobile-first) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-slate-800 border-t border-slate-700 z-10">
+        <div class="grid grid-cols-8 max-w-3xl mx-auto">
+            {% set nav_items = [
+              ('overview', '/', '🏠', 'Home'),
+              ('portfolio', '/portfolio', '💼', 'Pf'),
+              ('watchlist', '/watchlist', '📡', 'Wat'),
+              ('explorers', '/explorers', '🔍', 'Expl'),
+              ('journal', '/journal', '📔', 'Jrnl'),
+              ('budget', '/budget', '💰', 'Bud'),
+              ('memory', '/memory', '🧠', 'Mem'),
+              ('settings', '/settings', '⚙️', 'Set'),
+            ] %}
+            {% for slug, href, emoji, label in nav_items %}
+              <a href="{{ href }}"
+                 class="flex flex-col items-center py-2 text-xs
+                        {% if page == slug %}text-emerald-400{% else %}text-slate-400{% endif %}">
+                <span class="text-xl">{{ emoji }}</span>
+                <span class="mt-0.5">{{ label }}</span>
+              </a>
+            {% endfor %}
+        </div>
+    </nav>
+
+    <script>
+      // Health badge - polling toutes les 60s
+      async function refreshHealth() {
+        try {
+          const r = await fetch("/api/health");
+          const j = await r.json();
+          const badge = document.getElementById("health-badge");
+          if (j.ok) {
+            badge.className = "text-xs px-2 py-1 rounded-full bg-emerald-700/40 text-emerald-300";
+            badge.textContent = "● " + j.status;
+          } else {
+            badge.className = "text-xs px-2 py-1 rounded-full bg-red-700/40 text-red-300";
+            badge.textContent = "● " + j.status;
+          }
+        } catch (e) {
+          document.getElementById("health-badge").textContent = "● error";
+        }
+      }
+      refreshHealth();
+      setInterval(refreshHealth, 60000);
+    </script>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

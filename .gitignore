@@ -1,0 +1,52 @@
+# ============================================================
+# AlphaSignal — .gitignore
+# ============================================================
+
+# Fichier de secrets — NE JAMAIS committer
+.env
+
+# Base de données locale
+data/database.db
+data/market_data/
+data/indicators/
+
+# v4 : fichiers d'état tournants (regénérés à chaque cycle)
+data/cache/
+data/heartbeat.json
+data/explorer_queue.json
+data/lockin_assets.json
+
+# Emails fallback non envoyés
+reports/unsent/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+venv/
+.venv/
+env/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Claude Code (interne)
+.claude/
+
+# Logs
+logs/
+*.log
+
+# Rapports générés (optionnel — commenter si tu veux les versionner)
+# reports/
+
+# Résultats de backtest (volumieux)
+strategies/backtest_results/*.png
+strategies/backtest_results/*.html
