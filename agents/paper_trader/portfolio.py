@@ -51,12 +51,21 @@ def seuil_confiance_actuel() -> int:
     return 9 if est_en_mode_defensif() else config.ALERT_CONFIDENCE_THRESHOLD
 
 
-def _enrichir_avec_prix(positions: list[dict], prix_courants: dict[str, float] | None) -> list[dict]:
-    """Ajoute prix_actuel + unrealized_pnl à chaque position."""
+def _enrichir_avec_prix(positions: list[dict], prix_courants: dict[str, float] | None,
+                         with_live_prices: bool = True) -> list[dict]:
+    """
+    Ajoute prix_actuel + unrealized_pnl à chaque position.
+    Si with_live_prices=False, n'appelle pas yfinance (rapide, mais P&L latent indisponible).
+    """
     if prix_courants is None:
         prix_courants = {}
     for p in positions:
-        prix = prix_courants.get(p["ticker"]) or prix_actuel(p["ticker"])
+        prix = prix_courants.get(p["ticker"])
+        if prix is None and with_live_prices:
+            try:
+                prix = prix_actuel(p["ticker"])
+            except Exception:
+                prix = None
         p["prix_actuel"] = prix
         if prix is None:
             p["unrealized_pnl_euros"] = None
@@ -71,13 +80,16 @@ def _enrichir_avec_prix(positions: list[dict], prix_courants: dict[str, float] |
     return positions
 
 
-def etat_portefeuille(prix_courants: dict[str, float] | None = None) -> dict:
+def etat_portefeuille(prix_courants: dict[str, float] | None = None,
+                       with_live_prices: bool = True) -> dict:
     """
     Retourne une vue complète du portefeuille.
-    Args : prix_courants pour éviter les appels yfinance répétés (optionnel).
+    Args :
+        prix_courants : dict optionnel pour éviter les appels yfinance répétés
+        with_live_prices : False pour skipper le fetch yfinance (mode rapide pour API)
     """
     capital_total = config.CAPITAL
-    positions = _enrichir_avec_prix(lire_positions_ouvertes(), prix_courants)
+    positions = _enrichir_avec_prix(lire_positions_ouvertes(), prix_courants, with_live_prices)
 
     invested = sum(p["invested_amount"] for p in positions)
     unrealized = sum(p.get("unrealized_pnl_euros") or 0 for p in positions)
