@@ -14,9 +14,9 @@ from utils.database import get_connection
 
 
 def portfolio_resume() -> dict:
-    """Snapshot du portefeuille + dernier état."""
+    """Snapshot du portefeuille + dernier état (mode rapide — pas d'appel yfinance live)."""
     from agents.paper_trader.portfolio import etat_portefeuille
-    return etat_portefeuille(prix_courants={})  # pas d'appel yfinance ici, lecture rapide
+    return etat_portefeuille(with_live_prices=False)
 
 
 def equity_curve(limite: int = 90) -> list[dict]:
