@@ -185,3 +185,36 @@ def decider(ticker: str, analyses: dict) -> dict:
         "seuil_confiance_requis": seuil_conf,
         "intuition":        intuition,
     }
+
+
+def reevaluer_position(position: dict, analyses: dict) -> dict:
+    """
+    v4.1 — Réévalue une position ouverte avec une analyse fraîche.
+    Décide si on garde, ferme, ou ajuste. Appelé par cycle_tactical toutes les 15 min.
+
+    Retourne :
+      {"action": "GARDER" | "CLOSE", "raison": str}
+    """
+    direction_pos = position["direction"]  # "LONG" ou "SHORT"
+    technique = analyses.get("technique", {})
+    sig_tech = _direction_a_signe(technique.get("direction", "NEUTRE"))
+    conf_tech = float(technique.get("confiance", 0) or 0)
+
+    # 1. Signal technique inverse fort → fermer
+    if direction_pos == "LONG" and sig_tech < 0 and conf_tech >= 7:
+        return {"action": "CLOSE",
+                "raison": f"Signal technique inverse fort ({technique['direction']} {conf_tech:.0f}/10)"}
+    if direction_pos == "SHORT" and sig_tech > 0 and conf_tech >= 7:
+        return {"action": "CLOSE",
+                "raison": f"Signal technique inverse fort ({technique['direction']} {conf_tech:.0f}/10)"}
+
+    # 2. Override géopolitique critique → fermer
+    overrides = _verifier_overrides(position["ticker"], analyses)
+    if overrides:
+        return {"action": "CLOSE",
+                "raison": f"Override critique : {overrides[0]}"}
+
+    # 3. Position vieille de 30+ jours sans progrès — V1 simple : on ne calcule pas l'âge
+    # (à affiner en V2 — comparer entry_date vs maintenant)
+
+    return {"action": "GARDER", "raison": "Conditions stables"}

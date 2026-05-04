@@ -14,9 +14,9 @@
     <key>WorkingDirectory</key>
     <string>/Users/ruby-rosa/trading-agent</string>
 
-    <!-- Toutes les 30 minutes -->
+    <!-- Toutes les 15 minutes (v4.1 — était 30 min) -->
     <key>StartInterval</key>
-    <integer>1800</integer>
+    <integer>900</integer>
 
     <key>StandardOutPath</key>
     <string>/Users/ruby-rosa/trading-agent/logs/launchd_tactical.log</string>
