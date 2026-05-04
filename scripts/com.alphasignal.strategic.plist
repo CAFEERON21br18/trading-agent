@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.alphasignal.strategic</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/ruby-rosa/trading-agent/scripts/run_mac.sh</string>
+        <string>strategic</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/ruby-rosa/trading-agent</string>
+
+    <!-- Toutes les 4h : 00:00, 04:00, 08:00, 12:00, 16:00, 20:00 -->
+    <key>StartCalendarInterval</key>
+    <array>
+        <dict><key>Hour</key><integer>0</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Hour</key><integer>4</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Hour</key><integer>8</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Hour</key><integer>12</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Hour</key><integer>16</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Hour</key><integer>20</integer><key>Minute</key><integer>0</integer></dict>
+    </array>
+
+    <key>StandardOutPath</key>
+    <string>/Users/ruby-rosa/trading-agent/logs/launchd_strategic.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/ruby-rosa/trading-agent/logs/launchd_strategic.log</string>
+
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>

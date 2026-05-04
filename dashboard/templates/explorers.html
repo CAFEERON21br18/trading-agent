@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}Explorateurs — AlphaSignal{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+    <h2 class="font-semibold mb-2 text-sm">🔍 File de découvertes</h2>
+    <div class="text-xs text-slate-400">
+        Les 7 explorateurs scannent leur univers et signalent les opportunités (score ≥ 4/10 v4.1).
+        Score ≥ 7 = email immédiat. Le Decision Engine analyse → Budget Manager finance.
+    </div>
+</div>
+
+<!-- Stats par explorateur (v4.1) -->
+<div class="card mb-3">
+    <h2 class="font-semibold mb-3">📊 Stats par explorateur</h2>
+    <div id="explorers-stats" class="space-y-2 text-xs">
+        <div class="skeleton h-32"></div>
+    </div>
+</div>
+
+<div id="queue" class="space-y-3">
+    <div class="skeleton h-20"></div>
+    <div class="skeleton h-20"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const COULEURS_SCORE = {
+    10: "border-emerald-500", 9: "border-emerald-500",
+    8: "border-emerald-400", 7: "border-amber-400",
+    6: "border-amber-500", 5: "border-slate-500",
+};
+const EMOJI_EXPL = {
+    "crypto": "🟠", "stock": "🔵", "index": "🟢",
+    "etf": "🟡", "commodity": "🔴", "forex": "🟣", "cfd_index": "⚪",
+};
+
+async function loadStats() {
+    const h = await (await fetch("/api/health")).json();
+    const explorers = h.explorers || {};
+    const el = document.getElementById("explorers-stats");
+    const NOMS = {
+        "crypto": "🟠 Crypto", "stock": "🔵 Stock", "index": "🟢 Index",
+        "etf": "🟡 ETF", "commodity": "🔴 Commodity", "forex": "🟣 Forex",
+        "cfd_index": "⚪ CFD Index",
+    };
+    let html = "";
+    for (const [key, label] of Object.entries(NOMS)) {
+        const s = explorers[key];
+        if (!s || !s.last_scan) {
+            html += `<div class="flex justify-between py-1 border-b border-slate-700/50">
+                <span>${label}</span><span class="text-slate-500">jamais scanné</span></div>`;
+            continue;
+        }
+        const lastScan = new Date(s.last_scan);
+        const minAgo = (Date.now() - lastScan.getTime()) / 60000;
+        const ago = minAgo < 60 ? `${Math.floor(minAgo)} min` :
+                   `${Math.floor(minAgo/60)}h${Math.floor(minAgo%60).toString().padStart(2, '0')}`;
+        html += `
+            <div class="py-1.5 border-b border-slate-700/50 last:border-0">
+                <div class="flex justify-between">
+                    <span class="font-semibold">${label}</span>
+                    <span class="text-slate-400">il y a ${ago}</span>
+                </div>
+                <div class="text-slate-400 text-xs mt-0.5">
+                    ${s.assets_scanned || 0} scannés ·
+                    <span class="text-emerald-400">${s.decouvertes || 0} découvertes</span> ·
+                    <span class="text-amber-300">${s.observations || 0} obs.</span> ·
+                    ${s.duration_sec || 0}s
+                    ${s.erreurs ? ` · <span class="text-red-400">${s.erreurs} err.</span>` : ''}
+                </div>
+            </div>`;
+    }
+    el.innerHTML = html;
+}
+
+async function load() {
+    loadStats();
+    const data = await (await fetch("/api/explorers/queue")).json();
+    const el = document.getElementById("queue");
+    if (!data.length) {
+        el.innerHTML = `<div class="card text-center text-slate-400 py-6">
+            Aucune découverte récente. Les explorateurs sont prudents — il faut convergence
+            de plusieurs filtres techniques pour atteindre le score 6/10.
+        </div>`;
+        return;
+    }
+    el.innerHTML = data.map(q => {
+        const date = (q.discovery_date || '').slice(0, 16).replace('T', ' ');
+        const couleur = COULEURS_SCORE[q.score] || "border-slate-600";
+        return `
+        <div class="card border-l-4 ${couleur}">
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <span class="text-xl">${EMOJI_EXPL[q.explorer] || '🔍'}</span>
+                    <span class="font-bold ml-1 text-lg">${q.ticker}</span>
+                    <span class="text-xs text-slate-400 ml-2">${q.explorer}</span>
+                </div>
+                <div class="text-right">
+                    <div class="font-bold text-lg ${q.score >= 8 ? 'text-emerald-400' : 'text-amber-300'}">${q.score}/10</div>
+                    <div class="text-xs text-slate-500">${date}</div>
+                </div>
+            </div>
+            <div class="text-xs text-slate-300">
+                <div class="font-semibold mb-1">Filtres déclenchés (${q.filters_triggered.length}) :</div>
+                ${q.filters_triggered.map(f => `<div class="ml-2 mt-0.5">• ${f}</div>`).join('')}
+            </div>
+            ${Object.keys(q.details || {}).length ? `
+                <details class="mt-2 text-xs text-slate-400">
+                    <summary class="cursor-pointer">Détails techniques</summary>
+                    <pre class="mt-1 text-xs overflow-x-auto">${JSON.stringify(q.details, null, 2)}</pre>
+                </details>` : ''}
+        </div>`;
+    }).join('');
+}
+load();
+setInterval(load, 60000);
+</script>
+{% endblock %}

@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}Budget Manager — AlphaSignal{% endblock %}
+
+{% block content %}
+<!-- Mode actuel -->
+<div id="mode-banner" class="card mb-3 border-l-4 border-emerald-500">
+    <div class="flex justify-between items-center">
+        <div>
+            <div class="text-xs text-slate-400">Mode actuel</div>
+            <div id="mode-name" class="text-2xl font-bold mt-1">—</div>
+        </div>
+        <div id="mode-emoji" class="text-4xl">⚖️</div>
+    </div>
+    <div id="mode-desc" class="text-xs text-slate-400 mt-2"></div>
+</div>
+
+<!-- Capital -->
+<div class="card mb-3">
+    <h2 class="font-semibold mb-3">💰 Capital</h2>
+    <div class="space-y-2 text-sm">
+        <div class="flex justify-between"><span>Capital total</span><span id="cap-total" class="font-bold">—</span></div>
+        <div class="flex justify-between"><span>Capital investissable</span><span id="cap-inv" class="font-bold text-emerald-300">—</span></div>
+        <div class="flex justify-between"><span>Réserve intouchable</span><span id="reserve" class="font-bold text-slate-400">—</span></div>
+        <div class="border-t border-slate-700 pt-2"></div>
+        <div class="flex justify-between"><span>Investi actuellement</span><span id="investi" class="font-bold">—</span></div>
+        <div class="flex justify-between"><span>Cash disponible</span><span id="cash" class="font-bold text-emerald-300">—</span></div>
+    </div>
+    <!-- Barre de progression -->
+    <div class="mt-3">
+        <div class="bg-slate-700 rounded-full h-2 overflow-hidden">
+            <div id="bar-investi" class="bg-emerald-500 h-2 rounded-full" style="width: 0%"></div>
+        </div>
+        <div class="text-xs text-slate-400 mt-1 text-center" id="bar-label"></div>
+    </div>
+</div>
+
+<!-- Diagnostic -->
+<div class="card mb-3">
+    <h2 class="font-semibold mb-3">🩺 Diagnostic</h2>
+    <div class="grid grid-cols-2 gap-3 text-sm">
+        <div>
+            <div class="text-xs text-slate-400">Wins consécutifs</div>
+            <div id="wins" class="font-bold text-emerald-400 text-lg">—</div>
+        </div>
+        <div>
+            <div class="text-xs text-slate-400">Pertes consécutives</div>
+            <div id="pertes" class="font-bold text-red-400 text-lg">—</div>
+        </div>
+        <div>
+            <div class="text-xs text-slate-400">Drawdown récent</div>
+            <div id="dd" class="font-bold text-amber-300 text-lg">—</div>
+        </div>
+        <div>
+            <div class="text-xs text-slate-400">Trades clôturés</div>
+            <div id="nb-trades" class="font-bold text-lg">—</div>
+        </div>
+    </div>
+</div>
+
+<!-- Paramètres du mode -->
+<div class="card">
+    <h2 class="font-semibold mb-3">⚙️ Paramètres du mode actif</h2>
+    <table class="w-full text-sm">
+        <tbody id="params-body" class="divide-y divide-slate-700">
+            <tr><td colspan="2" class="text-slate-400 py-2">Chargement...</td></tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const MODE_INFO = {
+    "NORMAL":     {emoji: "⚖️", desc: "Allocation standard.", color: "border-emerald-500"},
+    "DEFENSIF":   {emoji: "🛡️", desc: "Activé après 3+ pertes ou drawdown > 8%. Risque réduit, conf min 8.", color: "border-amber-500"},
+    "AGRESSIF":   {emoji: "🔥", desc: "Activé après 5+ wins et gain > 10%. Tailles +30%, conf min 5.", color: "border-red-500"},
+    "CONVICTION": {emoji: "🎯", desc: "Manuel pour 1 trade exceptionnel. Conf min 9, max 40% sur un trade.", color: "border-purple-500"},
+};
+
+async function load() {
+    const d = await (await fetch("/api/budget")).json();
+
+    // Mode
+    const info = MODE_INFO[d.mode] || MODE_INFO["NORMAL"];
+    const banner = document.getElementById("mode-banner");
+    banner.className = "card mb-3 border-l-4 " + info.color;
+    document.getElementById("mode-name").textContent = d.mode;
+    document.getElementById("mode-emoji").textContent = info.emoji;
+    document.getElementById("mode-desc").textContent = info.desc;
+
+    // Capital
+    document.getElementById("cap-total").textContent = d.capital_total.toFixed(2) + "€";
+    document.getElementById("cap-inv").textContent = d.capital_investissable.toFixed(2) + "€";
+    document.getElementById("reserve").textContent = d.reserve.toFixed(2) + "€";
+    document.getElementById("investi").textContent = d.investi.toFixed(2) + "€";
+    document.getElementById("cash").textContent = d.cash_disponible.toFixed(2) + "€";
+
+    // Barre
+    const pct = d.capital_investissable > 0 ? (d.investi / d.capital_investissable * 100) : 0;
+    document.getElementById("bar-investi").style.width = Math.min(100, pct) + "%";
+    document.getElementById("bar-label").textContent =
+        `${pct.toFixed(0)}% du capital investissable utilisé`;
+
+    // Diagnostic
+    document.getElementById("wins").textContent = d.diagnostic.wins_consecutifs;
+    document.getElementById("pertes").textContent = d.diagnostic.pertes_consecutives;
+    document.getElementById("dd").textContent = d.diagnostic.drawdown_pct + "%";
+    document.getElementById("nb-trades").textContent = d.diagnostic.trades_fermes_20;
+
+    // Paramètres
+    const params = d.parametres;
+    document.getElementById("params-body").innerHTML = `
+        <tr class="py-1.5"><td>Capital investissable</td><td class="text-right font-mono">${params.capital_investissable_pct}%</td></tr>
+        <tr class="py-1.5"><td>Confiance min pour trader</td><td class="text-right font-mono">${params.confiance_min}/10</td></tr>
+        <tr class="py-1.5"><td>Facteur taille</td><td class="text-right font-mono">×${params.taille_factor}</td></tr>
+        <tr class="py-1.5"><td>Max par trade</td><td class="text-right font-mono">${params.max_conviction_par_trade}% du cash</td></tr>
+    `;
+}
+load();
+setInterval(load, 30000);
+</script>
+{% endblock %}

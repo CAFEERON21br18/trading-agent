@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Mémoire — AlphaSignal{% endblock %}
+
+{% block content %}
+<!-- Tabs -->
+<div class="flex gap-2 mb-3 overflow-x-auto">
+    <button onclick="showTab('perf')" id="tab-perf" class="tab-btn px-3 py-1.5 rounded-full bg-emerald-700/40 text-emerald-300 text-sm whitespace-nowrap">Performance</button>
+    <button onclick="showTab('lessons')" id="tab-lessons" class="tab-btn px-3 py-1.5 rounded-full bg-slate-700/60 text-slate-300 text-sm whitespace-nowrap">Leçons</button>
+    <button onclick="showTab('patterns')" id="tab-patterns" class="tab-btn px-3 py-1.5 rounded-full bg-slate-700/60 text-slate-300 text-sm whitespace-nowrap">Patterns</button>
+    <button onclick="showTab('journal')" id="tab-journal" class="tab-btn px-3 py-1.5 rounded-full bg-slate-700/60 text-slate-300 text-sm whitespace-nowrap">Journal MD</button>
+</div>
+
+<div id="content" class="card">
+    <pre id="markdown" class="text-xs whitespace-pre-wrap font-mono text-slate-200 leading-relaxed"></pre>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const sources = {
+    perf:     "/api/memory/performance",
+    lessons:  "/api/memory/lessons",
+    patterns: "/api/memory/patterns",
+    journal:  "/api/memory/journal",
+};
+
+async function showTab(name) {
+    document.querySelectorAll(".tab-btn").forEach(b => {
+        b.className = b.className
+            .replace("bg-emerald-700/40 text-emerald-300", "bg-slate-700/60 text-slate-300");
+    });
+    const btn = document.getElementById("tab-" + name);
+    btn.className = btn.className
+        .replace("bg-slate-700/60 text-slate-300", "bg-emerald-700/40 text-emerald-300");
+
+    const md = document.getElementById("markdown");
+    md.textContent = "Chargement...";
+    const data = await (await fetch(sources[name])).json();
+    md.textContent = data.contenu || "(fichier vide)";
+}
+
+showTab("perf");
+</script>
+{% endblock %}

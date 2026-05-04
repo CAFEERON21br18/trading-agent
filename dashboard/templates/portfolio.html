@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Portefeuille — AlphaSignal{% endblock %}
+
+{% block content %}
+<!-- Tabs filter -->
+<div class="flex gap-2 mb-3 overflow-x-auto">
+    <button onclick="filterPositions('OPEN')" class="filter-btn px-3 py-1.5 rounded-full bg-emerald-700/40 text-emerald-300 text-sm whitespace-nowrap">Ouvertes</button>
+    <button onclick="filterPositions('CLOSED')" class="filter-btn px-3 py-1.5 rounded-full bg-slate-700/60 text-slate-300 text-sm whitespace-nowrap">Fermées</button>
+    <button onclick="filterPositions(null)" class="filter-btn px-3 py-1.5 rounded-full bg-slate-700/60 text-slate-300 text-sm whitespace-nowrap">Toutes</button>
+</div>
+
+<!-- Stats -->
+<div class="grid grid-cols-3 gap-2 mb-4 text-center">
+    <div class="card !p-2">
+        <div class="text-xs text-slate-400">Trades</div>
+        <div id="stat-n" class="font-bold text-lg">—</div>
+    </div>
+    <div class="card !p-2">
+        <div class="text-xs text-slate-400">Win rate</div>
+        <div id="stat-wr" class="font-bold text-lg">—</div>
+    </div>
+    <div class="card !p-2">
+        <div class="text-xs text-slate-400">P&L total</div>
+        <div id="stat-pnl" class="font-bold text-lg">—</div>
+    </div>
+</div>
+
+<!-- Positions list -->
+<div id="positions" class="space-y-3">
+    <div class="skeleton h-20"></div>
+    <div class="skeleton h-20"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const eur = (v) => (v == null) ? "—" : (v >= 0 ? "+" : "") + v.toFixed(2) + "€";
+const pct = (v) => (v == null) ? "—" : (v >= 0 ? "+" : "") + v.toFixed(2) + "%";
+const colorPnl = (v) => v >= 0 ? "text-emerald-400" : "text-red-400";
+
+async function loadStats() {
+    const perf = await (await fetch("/api/performance")).json();
+    const p = perf.paper;
+    if (p && p.n) {
+        document.getElementById("stat-n").textContent = p.n;
+        document.getElementById("stat-wr").textContent = ((p.gagnants / p.n) * 100).toFixed(0) + "%";
+        const pnlEl = document.getElementById("stat-pnl");
+        pnlEl.textContent = eur(p.pnl_total);
+        pnlEl.className = "font-bold text-lg " + colorPnl(p.pnl_total || 0);
+    } else {
+        document.getElementById("stat-n").textContent = "0";
+        document.getElementById("stat-wr").textContent = "—";
+        document.getElementById("stat-pnl").textContent = "0.00€";
+    }
+}
+
+async function filterPositions(status) {
+    document.querySelectorAll(".filter-btn").forEach(b => {
+        b.className = b.className.replace("bg-emerald-700/40 text-emerald-300", "bg-slate-700/60 text-slate-300");
+    });
+    event && event.target && (event.target.className = event.target.className.replace("bg-slate-700/60 text-slate-300", "bg-emerald-700/40 text-emerald-300"));
+
+    let url = "/api/positions";
+    if (status === "OPEN") url += "?status=OPEN";
+    else if (status === "CLOSED") url += "?status=CLOSED_TP";  // simplification — affichera TP only
+
+    const data = await (await fetch(url)).json();
+    renderPositions(data, status);
+}
+
+function renderPositions(positions, status) {
+    const el = document.getElementById("positions");
+    if (!positions.length) {
+        el.innerHTML = `<div class="card text-center text-slate-400 py-6">Aucune position</div>`;
+        return;
+    }
+    el.innerHTML = positions.map(p => {
+        const isOpen = p.status === "OPEN";
+        const pnl = isOpen ? null : (p.pnl_percent || 0);
+        return `
+        <div class="card">
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <span class="pill ${p.direction === 'LONG' ? 'pill-buy' : 'pill-sell'}">${p.direction}</span>
+                    <span class="font-bold ml-2 text-lg">${p.ticker}</span>
+                    <span class="pill pill-paper ml-2">PAPER</span>
+                </div>
+                <div class="text-right">
+                    ${isOpen
+                        ? `<div class="text-xs text-emerald-400">● OPEN</div>`
+                        : `<div class="${colorPnl(p.pnl_euros)} font-bold">${eur(p.pnl_euros)}</div>
+                           <div class="text-xs ${colorPnl(p.pnl_euros)}">${pct(p.pnl_percent)}</div>`}
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-xs text-slate-300">
+                <div>Entrée : <span class="text-slate-100">${p.entry_price.toFixed(4)}</span></div>
+                <div>${isOpen ? 'Stop' : 'Sortie'} : <span class="text-slate-100">${(isOpen ? p.stop_loss : p.exit_price)?.toFixed(4) || '—'}</span></div>
+                <div>Quantité : <span class="text-slate-100">${p.quantity.toFixed(6)}</span></div>
+                <div>Investi : <span class="text-slate-100">${p.invested_amount.toFixed(2)}€</span></div>
+                <div>Confiance : <span class="text-slate-100">${p.confidence || '—'}/10</span></div>
+                <div>Statut : <span class="text-slate-100">${p.status}</span></div>
+            </div>
+            ${p.entry_reason ? `<div class="mt-2 text-xs text-slate-400 italic">${p.entry_reason}</div>` : ""}
+            ${p.exit_reason ? `<div class="mt-1 text-xs text-amber-300 italic">Sortie : ${p.exit_reason}</div>` : ""}
+        </div>`;
+    }).join("");
+}
+
+loadStats();
+filterPositions("OPEN");
+</script>
+{% endblock %}

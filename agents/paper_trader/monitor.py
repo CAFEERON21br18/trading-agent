@@ -1,0 +1,100 @@
+"""
+agents/paper_trader/monitor.py — Surveillance des positions ouvertes
+Vérifie pour chaque position si stop-loss ou take-profit a été touché et ferme.
+Tourne au début de chaque routine quotidienne.
+"""
+
+import sys
+import os
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from utils.logger import get_logger
+from utils.portfolio_db import lire_positions_ouvertes
+from agents.paper_trader.portfolio import prix_actuel
+from agents.paper_trader.executor import fermer_position
+from agents.paper_trader.lockin import lister_lockin, desactiver_lockin
+
+logger = get_logger(__name__)
+
+
+def _verifier_position(pos: dict) -> dict | None:
+    """
+    Vérifie SL et TP sur une position. Retourne le résultat de fermeture si touché.
+    Logique : sur 1 jour, on ne sait pas si SL ou TP a été touché en 1er.
+    Convention prudente : si LOW <= SL → SL touché en priorité (pessimiste).
+    Pour V1 simple : on compare au prix de clôture actuel.
+    """
+    prix = prix_actuel(pos["ticker"])
+    if prix is None:
+        logger.warning(f"Prix indispo pour {pos['ticker']} — surveillance skippée")
+        return None
+
+    direction = pos["direction"]
+    sl, tp1, tp2 = pos["stop_loss"], pos["target_1"], pos.get("target_2")
+
+    if direction == "LONG":
+        if prix <= sl:
+            return fermer_position(pos["id"], prix, f"Stop-loss touché ({prix:.4f} ≤ {sl:.4f})", "CLOSED_SL")
+        if tp2 is not None and prix >= tp2:
+            return fermer_position(pos["id"], prix, f"Target 2 atteint ({prix:.4f} ≥ {tp2:.4f})", "CLOSED_TP")
+        if prix >= tp1:
+            return fermer_position(pos["id"], prix, f"Target 1 atteint ({prix:.4f} ≥ {tp1:.4f})", "CLOSED_TP")
+    else:  # SHORT
+        if prix >= sl:
+            return fermer_position(pos["id"], prix, f"Stop-loss touché ({prix:.4f} ≥ {sl:.4f})", "CLOSED_SL")
+        if tp2 is not None and prix <= tp2:
+            return fermer_position(pos["id"], prix, f"Target 2 atteint ({prix:.4f} ≤ {tp2:.4f})", "CLOSED_TP")
+        if prix <= tp1:
+            return fermer_position(pos["id"], prix, f"Target 1 atteint ({prix:.4f} ≤ {tp1:.4f})", "CLOSED_TP")
+    return None
+
+
+def monitorer_positions() -> dict:
+    """
+    Vérifie toutes les positions ouvertes. Les positions en LOCK-IN sont vérifiées EN PREMIER.
+    Après fermeture, le LOCK-IN éventuel est désactivé.
+    """
+    positions = lire_positions_ouvertes()
+    if not positions:
+        logger.info("Monitor : aucune position ouverte à surveiller")
+        return {"verifiees": 0, "fermees_tp": 0, "fermees_sl": 0, "details": [], "lockin_actifs": 0}
+
+    # Tickers en LOCK-IN à prioriser
+    lockin_tickers = {it["asset"] for it in lister_lockin()}
+
+    # Trier : LOCK-IN d'abord, le reste ensuite
+    positions_triees = sorted(positions, key=lambda p: 0 if p["ticker"] in lockin_tickers else 1)
+
+    fermes_tp, fermes_sl, details = 0, 0, []
+    for p in positions_triees:
+        try:
+            res = _verifier_position(p)
+        except Exception as e:
+            logger.error(f"Monitor erreur sur position #{p['id']} ({p['ticker']}) : {e}")
+            continue
+        if res is None:
+            continue
+        details.append({
+            "ticker":    p["ticker"],
+            "pnl_euros": res["pnl_euros"],
+            "pnl_percent": res["pnl_percent"],
+            "lockin":    p["ticker"] in lockin_tickers,
+        })
+        if res["pnl_euros"] >= 0:
+            fermes_tp += 1
+        else:
+            fermes_sl += 1
+        # Désactiver le LOCK-IN si la position fermée en avait un
+        if p["ticker"] in lockin_tickers:
+            desactiver_lockin(p["ticker"])
+
+    logger.info(f"Monitor : {len(positions)} surveillée(s) ({len(lockin_tickers)} en LOCK-IN), "
+                f"{fermes_tp} TP, {fermes_sl} SL")
+    return {
+        "verifiees":     len(positions),
+        "fermees_tp":    fermes_tp,
+        "fermees_sl":    fermes_sl,
+        "details":       details,
+        "lockin_actifs": len(lockin_tickers),
+    }
