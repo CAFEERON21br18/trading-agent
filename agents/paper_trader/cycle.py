@@ -157,7 +157,14 @@ def formater_section_portefeuille(etat: dict, monitor_resume: dict, cycle_resume
     if cycle_resume["refusees"]:
         lignes.append(f"**Ouvertures refusées** ({len(cycle_resume['refusees'])}) :")
         for r in cycle_resume["refusees"]:
-            lignes.append(f"  - ⏸️ {r['ticker']} {r['decision']} ({r['confidence']}/10) — {r['raisons'][0]}")
+            # Format tolérant : 'decision' et 'confidence' optionnels, 'raisons' peut être vide
+            ticker = r.get("ticker", "?")
+            decision = r.get("decision", "")
+            confidence = r.get("confidence")
+            raisons = r.get("raisons") or []
+            raison_str = raisons[0] if raisons else "raison inconnue"
+            details = f"{decision} ({confidence}/10) — " if decision and confidence is not None else ""
+            lignes.append(f"  - ⏸️ {ticker} {details}{raison_str}")
     if not cycle_resume["ouvertes"] and not cycle_resume["refusees"]:
         lignes.append("**Pas de candidats BUY/SELL aujourd'hui.**")
 
