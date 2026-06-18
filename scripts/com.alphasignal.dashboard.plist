@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.alphasignal.dashboard</string>
+
+    <!-- Lance directement Python sur dashboard/app.py (pas via run_mac.sh
+         car run_mac.sh est conçu pour des scripts qui retournent rapidement) -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/ruby-rosa/miniconda3/bin/python3</string>
+        <string>/Users/ruby-rosa/trading-agent/dashboard/app.py</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/ruby-rosa/trading-agent</string>
+
+    <!-- Démarre à la connexion utilisateur -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- KeepAlive : relance automatique en cas de crash.
+         { "Crashed": true } = relance seulement si exit code non-zéro,
+         pas si on l'arrête proprement (utile pour le développement) -->
+    <key>KeepAlive</key>
+    <dict>
+        <key>Crashed</key>
+        <true/>
+        <key>SuccessfulExit</key>
+        <false/>
+    </dict>
+
+    <!-- Anti-boucle infinie : attendre 30s entre relances -->
+    <key>ThrottleInterval</key>
+    <integer>30</integer>
+
+    <key>StandardOutPath</key>
+    <string>/Users/ruby-rosa/trading-agent/logs/launchd_dashboard.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/ruby-rosa/trading-agent/logs/launchd_dashboard.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/Users/ruby-rosa/miniconda3/bin:/usr/local/bin:/usr/bin:/bin</string>
+        <!-- Port 8080 par défaut (AirPlay occupe 5000 sur macOS Monterey+) -->
+        <key>DASHBOARD_PORT</key>
+        <string>8080</string>
+    </dict>
+
+    <!-- Limites raisonnables pour un long-running -->
+    <key>ProcessType</key>
+    <string>Background</string>
+</dict>
+</plist>

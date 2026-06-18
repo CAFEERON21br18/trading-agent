@@ -9,7 +9,7 @@ set -eu
 
 LAUNCH_DIR="$HOME/Library/LaunchAgents"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && cd .. && pwd)"
-CYCLES=(critical tactical strategic daily weekly cleanup)
+CYCLES=(critical tactical strategic daily weekly cleanup dashboard)
 
 CMD="${1:-install}"
 
