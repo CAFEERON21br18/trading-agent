@@ -205,6 +205,111 @@ def post_refresh_advice():
     return jsonify({"conseils_crees": nb})
 
 
+# ── v5.1 : Budget réel ────────────────────────────────────────────────────
+
+@api.route("/real/budget")
+def get_real_budget():
+    """Résumé complet du budget réel + répartition par catégorie."""
+    from utils.real_portfolio_db import get_real_budget_summary, initialiser_real_db
+    initialiser_real_db()
+    return jsonify(get_real_budget_summary())
+
+
+@api.route("/real/budget", methods=["PUT"])
+def put_real_budget():
+    """Modifier le capital total réel."""
+    from utils.real_portfolio_db import set_budget_capital, initialiser_real_db
+    initialiser_real_db()
+    data = request.get_json() or {}
+    if "total_capital" not in data:
+        return jsonify({"error": "total_capital requis"}), 400
+    set_budget_capital(float(data["total_capital"]))
+    return jsonify({"saved": True})
+
+
+# ── v5.1 : Plans d'investissement ─────────────────────────────────────────
+
+@api.route("/plans")
+def get_plans():
+    from utils.real_portfolio_db import lire_plans, initialiser_real_db
+    initialiser_real_db()
+    return jsonify(lire_plans())
+
+
+@api.route("/plans/<int:plan_id>")
+def get_plan_detail(plan_id):
+    from utils.real_portfolio_db import lire_plan, positions_du_plan
+    p = lire_plan(plan_id)
+    if not p:
+        return jsonify({"error": "Plan introuvable"}), 404
+    p["positions"] = positions_du_plan(plan_id)
+    return jsonify(p)
+
+
+@api.route("/plans", methods=["POST"])
+def post_plan():
+    from utils.real_portfolio_db import creer_plan
+    data = request.get_json() or {}
+    if not data.get("name") or not data.get("plan_type"):
+        return jsonify({"error": "name et plan_type requis"}), 400
+    return jsonify({"id": creer_plan(data), "saved": True})
+
+
+@api.route("/plans/<int:plan_id>", methods=["PUT"])
+def put_plan(plan_id):
+    from utils.real_portfolio_db import modifier_plan
+    data = request.get_json() or {}
+    return jsonify({"updated": modifier_plan(plan_id, data)})
+
+
+@api.route("/plans/<int:plan_id>", methods=["DELETE"])
+def delete_plan(plan_id):
+    from utils.real_portfolio_db import supprimer_plan
+    return jsonify({"deleted": supprimer_plan(plan_id)})
+
+
+@api.route("/plans/<int:plan_id>/progress")
+def get_plan_progress(plan_id):
+    from utils.real_portfolio_db import progression_plan
+    return jsonify(progression_plan(plan_id))
+
+
+@api.route("/plans/alerts")
+def get_plan_alerts():
+    from utils.real_portfolio_db import lire_alertes_plans_actives
+    return jsonify(lire_alertes_plans_actives())
+
+
+@api.route("/plans/alerts/<int:alert_id>/respond", methods=["POST"])
+def post_plan_alert_respond(alert_id):
+    from utils.real_portfolio_db import enregistrer_reponse_alerte_plan
+    data = request.get_json() or {}
+    return jsonify({"recorded": enregistrer_reponse_alerte_plan(alert_id, data.get("decision", ""))})
+
+
+@api.route("/plans/check-deviations", methods=["POST"])
+def post_check_deviations():
+    """Force la vérif des déviations plan vs réel + génère alertes."""
+    from agents.plan_advisor import verifier_tous_les_plans
+    return jsonify({"alertes_creees": verifier_tous_les_plans()})
+
+
+@api.route("/real/investments/<int:inv_id>/attach-plan", methods=["POST"])
+def post_attach_plan(inv_id):
+    """Rattacher une position réelle à un plan."""
+    from utils.real_portfolio_db import rattacher_position_plan
+    data = request.get_json() or {}
+    return jsonify({"updated": rattacher_position_plan(inv_id, data.get("plan_id"))})
+
+
+@api.route("/chat/create-plan", methods=["POST"])
+def post_chat_create_plan():
+    """Mode chat conversationnel pour créer un plan."""
+    from agents.chat.plan_builder import etape_creation_plan
+    data = request.get_json() or {}
+    return jsonify(etape_creation_plan(data.get("session_id", "default"), data.get("message", "")))
+
+
 # ── v5.0 — Chat stratégique ───────────────────────────────────────────────
 
 @api.route("/chat/message", methods=["POST"])
