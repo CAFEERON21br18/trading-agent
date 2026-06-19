@@ -2,13 +2,33 @@
 {% block title %}Portefeuille Réel — AlphaSignal{% endblock %}
 
 {% block content %}
-<!-- Résumé -->
+<!-- Budget réel (v5.1) -->
 <div class="card mb-3">
-    <h2 class="font-semibold mb-3">💰 Mon portefeuille réel</h2>
-    <div id="real-resume" class="grid grid-cols-2 gap-3 text-sm">
+    <div class="flex justify-between items-center mb-3">
+        <h2 class="font-semibold">💰 Mon budget réel</h2>
+        <button onclick="editBudget()" class="text-xs text-emerald-300 hover:text-emerald-200">✎ Modifier total</button>
+    </div>
+    <div id="budget-detail" class="text-sm">
+        <div class="skeleton h-32"></div>
+    </div>
+</div>
+
+<!-- Résumé positions -->
+<div class="card mb-3">
+    <h2 class="font-semibold mb-3">📊 Résumé positions</h2>
+    <div id="real-resume" class="grid grid-cols-3 gap-3 text-sm">
         <div class="skeleton h-12"></div>
     </div>
 </div>
+
+<!-- Lien vers Plans -->
+<a href="/plans" class="block card mb-3 hover:bg-slate-700/40 transition">
+    <div class="flex justify-between items-center">
+        <span class="font-semibold">🎯 Mes plans d'investissement</span>
+        <span class="text-slate-400">›</span>
+    </div>
+    <div class="text-xs text-slate-400 mt-1">Crée et suis tes plans, l'agent compare au réel et t'alerte</div>
+</a>
 
 <!-- Bouton ajouter -->
 <div class="mb-3">
@@ -95,6 +115,69 @@ async function loadResume() {
         <div><div class="text-xs text-slate-400">Investi total</div><div class="font-bold text-lg">${r.total_invested.toFixed(2)}€</div></div>
         <div><div class="text-xs text-slate-400">P&L réalisé (clos)</div><div class="font-bold text-lg ${colorPnl(r.realized_pnl)}">${eur(r.realized_pnl)}</div></div>
     `;
+}
+
+const EMOJI_HOLD = {actif: "🔵", passif: "🟢", moyen: "🟡"};
+const EMOJI_INST = {normal: "📈", cfd: "⚡", crypto: "₿"};
+
+function barre(pct, color) {
+    const p = Math.max(0, Math.min(100, pct));
+    return `<div class="bg-slate-700 rounded-full h-1.5 overflow-hidden"><div class="${color} h-1.5" style="width:${p}%"></div></div>`;
+}
+
+async function loadBudget() {
+    const b = await (await fetch("/api/real/budget")).json();
+    const el = document.getElementById("budget-detail");
+    if (!b.total_capital) {
+        el.innerHTML = `<div class="text-slate-400 text-xs">Définis ton capital total réel pour activer le suivi.</div>`;
+        return;
+    }
+    const pctInv = b.invested_percent || 0;
+    const html = [];
+    html.push(`
+        <div class="flex justify-between mb-1"><span>Capital total</span><span class="font-bold">${b.total_capital.toFixed(2)}€</span></div>
+        <div class="flex justify-between mb-1"><span>Investi</span><span class="font-bold">${b.invested.toFixed(2)}€ (${pctInv}%)</span></div>
+        ${barre(pctInv, "bg-emerald-500")}
+        <div class="flex justify-between mt-2 mb-1"><span>Disponible</span><span class="font-bold text-emerald-300">${b.available.toFixed(2)}€</span></div>
+        <div class="border-t border-slate-700 my-3"></div>
+        <div class="flex justify-between"><span>Valeur actuelle</span><span class="font-bold">${b.current_value.toFixed(2)}€</span></div>
+        <div class="flex justify-between"><span>Plus-value latente</span><span class="font-bold ${colorPnl(b.unrealized_pnl)}">${eur(b.unrealized_pnl)} (${pct(b.unrealized_pnl_percent || 0)})</span></div>
+    `);
+
+    // Répartition par holding_type
+    if (b.invested > 0) {
+        html.push(`<div class="border-t border-slate-700 my-3"></div><div class="text-xs text-slate-400 mb-1">Détention</div>`);
+        for (const [k, v] of Object.entries(b.by_holding)) {
+            const p = v / b.invested * 100;
+            html.push(`
+                <div class="text-xs flex justify-between mb-0.5">
+                    <span>${EMOJI_HOLD[k] || ''} ${k}</span><span>${v.toFixed(0)}€ (${p.toFixed(0)}%)</span>
+                </div>
+                ${barre(p, "bg-blue-500")}
+            `);
+        }
+        html.push(`<div class="text-xs text-slate-400 mb-1 mt-2">Instrument</div>`);
+        for (const [k, v] of Object.entries(b.by_instrument)) {
+            const p = v / b.invested * 100;
+            html.push(`
+                <div class="text-xs flex justify-between mb-0.5">
+                    <span>${EMOJI_INST[k] || ''} ${k}</span><span>${v.toFixed(0)}€ (${p.toFixed(0)}%)</span>
+                </div>
+                ${barre(p, "bg-purple-500")}
+            `);
+        }
+    }
+    el.innerHTML = html.join("");
+}
+
+async function editBudget() {
+    const v = prompt("Capital total réel (€) :");
+    if (!v) return;
+    await fetch("/api/real/budget", {
+        method: "PUT", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({total_capital: parseFloat(v)}),
+    });
+    loadBudget();
 }
 
 async function loadPositions() {
@@ -219,9 +302,10 @@ async function refreshAdvice() {
     loadAdvice();
 }
 
+loadBudget();
 loadResume();
 loadPositions();
 loadAdvice();
-setInterval(loadResume, 60000);
+setInterval(() => { loadBudget(); loadResume(); }, 60000);
 </script>
 {% endblock %}

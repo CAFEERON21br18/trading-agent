@@ -29,6 +29,7 @@
         <button onclick="suggest('Devrais-je acheter NVDA ?')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 py-2 px-3 rounded text-left">Acheter NVDA ?</button>
         <button onclick="suggest('Explique le ratio risque/récompense')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 py-2 px-3 rounded text-left">R:R ?</button>
         <button onclick="suggest('Quelle est l\'asymétrie du trading ?')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 py-2 px-3 rounded text-left">Asymétrie ?</button>
+        <button onclick="startPlanMode()" class="col-span-2 bg-emerald-700/40 hover:bg-emerald-600/40 text-emerald-200 py-2 px-3 rounded text-left font-semibold">🎯 Créer un plan d'investissement</button>
     </div>
 </div>
 {% endblock %}
@@ -36,6 +37,10 @@
 {% block scripts %}
 <script>
 const msgEl = document.getElementById("messages");
+
+// v5.1 : mode création de plan (état conversationnel séparé du chat normal)
+let planMode = false;
+const PLAN_SESSION = "session_" + Math.random().toString(36).slice(2);
 
 function renderMsg(role, text) {
     const div = document.createElement("div");
@@ -67,13 +72,27 @@ async function send() {
     input.value = "";
     renderMsg("user", txt);
     document.getElementById("send-btn").disabled = true;
-    const r = await fetch("/api/chat/message", {
+    let url, body;
+    if (planMode) {
+        url = "/api/chat/create-plan";
+        body = {session_id: PLAN_SESSION, message: txt};
+    } else {
+        url = "/api/chat/message";
+        body = {message: txt};
+    }
+    const r = await fetch(url, {
         method: "POST", headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({message: txt}),
+        body: JSON.stringify(body),
     });
     const j = await r.json();
     if (j.error) renderMsg("assistant", "⚠️ " + j.error);
-    else renderMsg("assistant", j.reponse);
+    else {
+        renderMsg("assistant", j.reponse || "(pas de réponse)");
+        if (planMode && j.etat === "termine") {
+            planMode = false;
+            renderMsg("assistant", "✅ Mode création de plan terminé. Tu peux voir ton plan sur la page Plans.");
+        }
+    }
     document.getElementById("send-btn").disabled = false;
 }
 
@@ -82,12 +101,31 @@ function suggest(q) {
     send();
 }
 
+async function startPlanMode() {
+    planMode = true;
+    renderMsg("user", "Créer un nouveau plan");
+    const r = await fetch("/api/chat/create-plan", {
+        method: "POST", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({session_id: PLAN_SESSION, message: "nouveau"}),
+    });
+    const j = await r.json();
+    renderMsg("assistant", j.reponse || "(pas de réponse)");
+}
+
 async function clearChat() {
     if (!confirm("Effacer tout l'historique du chat ?")) return;
     await fetch("/api/chat/history", {method: "DELETE"});
     loadHistory();
 }
 
-loadHistory();
+// Si arrivée via /chat?intent=create_plan → démarrer le mode plan
+window.addEventListener("DOMContentLoaded", () => {
+    loadHistory().then(() => {
+        const params = new URLSearchParams(location.search);
+        if (params.get("intent") === "create_plan") {
+            setTimeout(startPlanMode, 300);
+        }
+    });
+});
 </script>
 {% endblock %}

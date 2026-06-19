@@ -73,6 +73,11 @@ def page_chat():
     return render_template("chat.html", page="chat")
 
 
+@app.route("/plans")
+def page_plans():
+    return render_template("plans.html", page="plans")
+
+
 @app.route("/manifest.json")
 def manifest():
     """Manifest PWA — pour 'Ajouter à l'écran d'accueil' sur iPhone."""

@@ -20,7 +20,8 @@ def _now_iso() -> str:
 
 
 def initialiser_real_db() -> None:
-    """Crée les 2 tables real_investments + real_advice_log si absentes."""
+    """Crée les tables real_investments, real_advice_log, real_budget,
+    investment_plans, plan_alerts (v5.1) si absentes."""
     try:
         conn = get_connection()
         c = conn.cursor()
@@ -45,10 +46,16 @@ def initialiser_real_db() -> None:
                 exit_date TEXT,
                 realized_pnl REAL,
                 notes TEXT,
+                plan_id INTEGER,
                 created_at TEXT DEFAULT CURRENT_TIMESTAMP,
                 updated_at TEXT DEFAULT CURRENT_TIMESTAMP
             )
         """)
+        # Ajouter colonne plan_id si la table existait déjà (migration douce)
+        try:
+            c.execute("ALTER TABLE real_investments ADD COLUMN plan_id INTEGER")
+        except Exception:
+            pass  # déjà présente
         c.execute("""
             CREATE TABLE IF NOT EXISTS real_advice_log (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -63,12 +70,121 @@ def initialiser_real_db() -> None:
                 FOREIGN KEY (investment_id) REFERENCES real_investments(id)
             )
         """)
+        # v5.1 : budget réel (une seule ligne, id=1)
+        c.execute("""
+            CREATE TABLE IF NOT EXISTS real_budget (
+                id INTEGER PRIMARY KEY CHECK (id = 1),
+                total_capital REAL NOT NULL,
+                last_updated TEXT DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        # v5.1 : plans d'investissement
+        c.execute("""
+            CREATE TABLE IF NOT EXISTS investment_plans (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                plan_type TEXT NOT NULL,
+                name TEXT NOT NULL,
+                parent_plan_id INTEGER,
+                objective TEXT,
+                target_return_percent REAL,
+                target_amount REAL,
+                time_horizon TEXT,
+                vision TEXT,
+                risk_tolerance TEXT,
+                allocated_budget REAL,
+                max_position_size REAL,
+                rules TEXT,
+                status TEXT DEFAULT 'active',
+                progress_notes TEXT,
+                created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (parent_plan_id) REFERENCES investment_plans(id)
+            )
+        """)
+        # v5.1 : alertes des plans
+        c.execute("""
+            CREATE TABLE IF NOT EXISTS plan_alerts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                plan_id INTEGER,
+                alert_date TEXT NOT NULL,
+                alert_type TEXT,
+                message TEXT,
+                severity TEXT,
+                user_response TEXT,
+                created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (plan_id) REFERENCES investment_plans(id)
+            )
+        """)
         conn.commit()
         conn.close()
-        logger.info("BDD portefeuille réel initialisée")
+        logger.info("BDD portefeuille réel v5.1 initialisée (investments + advice + budget + plans + alerts)")
     except Exception as e:
         logger.error(f"Erreur init real DB : {e}")
         raise
+
+
+# ── v5.1 : Budget réel ──────────────────────────────────────────────────────
+
+def get_budget_capital() -> float:
+    conn = get_connection()
+    row = conn.execute("SELECT total_capital FROM real_budget WHERE id=1").fetchone()
+    conn.close()
+    return float(row["total_capital"]) if row else 0.0
+
+
+def set_budget_capital(total: float) -> None:
+    conn = get_connection()
+    conn.execute("""
+        INSERT INTO real_budget (id, total_capital, last_updated)
+        VALUES (1, ?, ?)
+        ON CONFLICT(id) DO UPDATE SET total_capital=excluded.total_capital,
+                                       last_updated=excluded.last_updated
+    """, (total, _now_iso()))
+    conn.commit()
+    conn.close()
+
+
+def get_real_budget_summary(prix_courants: dict | None = None) -> dict:
+    """
+    Calcule l'état du budget réel à partir des positions ouvertes.
+    Retourne tout (total, invested, available, by_holding, by_instrument, P&L).
+    """
+    total_capital = get_budget_capital()
+    positions = lire_investissements(filtre_status="OPEN")
+    invested = sum(p["invested_amount"] for p in positions)
+    available = total_capital - invested
+
+    by_holding    = {"actif": 0.0, "passif": 0.0, "moyen": 0.0}
+    by_instrument = {"normal": 0.0, "cfd": 0.0, "crypto": 0.0}
+    for p in positions:
+        h = p.get("holding_type", "moyen")
+        i = p.get("instrument_type", "normal")
+        by_holding[h]    = by_holding.get(h, 0)    + p["invested_amount"]
+        by_instrument[i] = by_instrument.get(i, 0) + p["invested_amount"]
+
+    # Valeur actuelle (avec prix marché)
+    if prix_courants is None:
+        prix_courants = {}
+    current_value = 0.0
+    from utils.data_fetcher import prix_actuel
+    for p in positions:
+        prix = prix_courants.get(p["asset"]) or prix_actuel(p["asset"])
+        if prix:
+            current_value += p["quantity"] * prix
+    unrealized_pnl = current_value - invested if invested else 0.0
+
+    return {
+        "total_capital":           total_capital,
+        "invested":                invested,
+        "available":               available,
+        "invested_percent":        round(invested / total_capital * 100, 1) if total_capital else 0,
+        "current_value":           current_value,
+        "unrealized_pnl":          unrealized_pnl,
+        "unrealized_pnl_percent":  round(unrealized_pnl / invested * 100, 1) if invested else 0,
+        "by_holding":              by_holding,
+        "by_instrument":           by_instrument,
+        "positions_count":         len(positions),
+    }
 
 
 # ── CRUD investissements ────────────────────────────────────────────────────
@@ -204,3 +320,184 @@ def resume_portefeuille() -> dict:
         "total_invested": invested,
         "realized_pnl": realized,
     }
+
+
+# ── v5.1 : Plans d'investissement (CRUD) ────────────────────────────────────
+
+def creer_plan(p: dict) -> int:
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("""
+        INSERT INTO investment_plans
+        (plan_type, name, parent_plan_id, objective, target_return_percent,
+         target_amount, time_horizon, vision, risk_tolerance, allocated_budget,
+         max_position_size, rules, status, progress_notes)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        p.get("plan_type", "custom"), p["name"], p.get("parent_plan_id"),
+        p.get("objective"), p.get("target_return_percent"), p.get("target_amount"),
+        p.get("time_horizon"), p.get("vision"), p.get("risk_tolerance"),
+        p.get("allocated_budget"), p.get("max_position_size"),
+        p.get("rules"), p.get("status", "active"), p.get("progress_notes"),
+    ))
+    pid = c.lastrowid
+    conn.commit()
+    conn.close()
+    return pid
+
+
+def modifier_plan(plan_id: int, updates: dict) -> bool:
+    """Modifie un plan. Seuls les champs présents dans updates sont touchés."""
+    allowed = {"name", "objective", "target_return_percent", "target_amount",
+               "time_horizon", "vision", "risk_tolerance", "allocated_budget",
+               "max_position_size", "rules", "status", "progress_notes"}
+    sets, vals = [], []
+    for k, v in updates.items():
+        if k in allowed:
+            sets.append(f"{k}=?")
+            vals.append(v)
+    if not sets:
+        return False
+    sets.append("updated_at=?")
+    vals.append(_now_iso())
+    vals.append(plan_id)
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute(f"UPDATE investment_plans SET {', '.join(sets)} WHERE id=?", vals)
+    n = c.rowcount
+    conn.commit()
+    conn.close()
+    return n > 0
+
+
+def supprimer_plan(plan_id: int) -> bool:
+    conn = get_connection()
+    c = conn.cursor()
+    # Détache les positions liées (au lieu de les supprimer)
+    c.execute("UPDATE real_investments SET plan_id=NULL WHERE plan_id=?", (plan_id,))
+    c.execute("DELETE FROM plan_alerts WHERE plan_id=?", (plan_id,))
+    c.execute("DELETE FROM investment_plans WHERE id=?", (plan_id,))
+    n = c.rowcount
+    conn.commit()
+    conn.close()
+    return n > 0
+
+
+def lire_plans() -> list[dict]:
+    conn = get_connection()
+    rows = conn.execute(
+        "SELECT * FROM investment_plans ORDER BY parent_plan_id NULLS FIRST, created_at"
+    ).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def lire_plan(plan_id: int) -> dict | None:
+    conn = get_connection()
+    row = conn.execute("SELECT * FROM investment_plans WHERE id=?", (plan_id,)).fetchone()
+    conn.close()
+    return dict(row) if row else None
+
+
+def positions_du_plan(plan_id: int) -> list[dict]:
+    conn = get_connection()
+    rows = conn.execute(
+        "SELECT * FROM real_investments WHERE plan_id=? ORDER BY created_at DESC",
+        (plan_id,),
+    ).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def rattacher_position_plan(inv_id: int, plan_id: int | None) -> bool:
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("UPDATE real_investments SET plan_id=? WHERE id=?", (plan_id, inv_id))
+    n = c.rowcount
+    conn.commit()
+    conn.close()
+    return n > 0
+
+
+def progression_plan(plan_id: int) -> dict:
+    """Calcule la progression d'un plan vers son objectif."""
+    plan = lire_plan(plan_id)
+    if not plan:
+        return {"error": "plan introuvable"}
+    positions = positions_du_plan(plan_id)
+    invested = sum(p["invested_amount"] for p in positions if p["status"] == "OPEN")
+
+    # Valeur actuelle des positions ouvertes
+    from utils.data_fetcher import prix_actuel
+    valeur_actuelle = 0.0
+    for p in positions:
+        if p["status"] != "OPEN":
+            continue
+        prix = prix_actuel(p["asset"])
+        if prix:
+            valeur_actuelle += p["quantity"] * prix
+
+    # P&L réalisé (positions closes liées au plan)
+    pnl_realise = sum((p.get("realized_pnl") or 0) for p in positions if p["status"] == "CLOSED")
+    pnl_latent  = valeur_actuelle - invested if invested else 0
+    pnl_total   = pnl_realise + pnl_latent
+
+    target_pct = plan.get("target_return_percent") or 0
+    budget = plan.get("allocated_budget") or invested or 1
+    progression_pct = (pnl_total / budget * 100) if budget else 0
+
+    if target_pct > 0:
+        avancement_objectif = (progression_pct / target_pct * 100)
+    else:
+        avancement_objectif = None
+
+    return {
+        "plan_id":             plan_id,
+        "invested":            invested,
+        "current_value":       valeur_actuelle,
+        "pnl_realise":         pnl_realise,
+        "pnl_latent":          pnl_latent,
+        "pnl_total":           pnl_total,
+        "progression_pct":     round(progression_pct, 2),
+        "target_pct":          target_pct,
+        "avancement_objectif": round(avancement_objectif, 1) if avancement_objectif is not None else None,
+        "positions_count":     len([p for p in positions if p["status"] == "OPEN"]),
+    }
+
+
+# ── v5.1 : Alertes de plans ─────────────────────────────────────────────────
+
+def ajouter_alerte_plan(plan_id: int, alert_type: str, message: str,
+                        severity: str = "info") -> int:
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("""
+        INSERT INTO plan_alerts (plan_id, alert_date, alert_type, message, severity)
+        VALUES (?, ?, ?, ?, ?)
+    """, (plan_id, _now_iso(), alert_type, message, severity))
+    aid = c.lastrowid
+    conn.commit()
+    conn.close()
+    return aid
+
+
+def lire_alertes_plans_actives() -> list[dict]:
+    conn = get_connection()
+    rows = conn.execute("""
+        SELECT a.*, p.name AS plan_name
+        FROM plan_alerts a LEFT JOIN investment_plans p ON a.plan_id = p.id
+        WHERE a.user_response IS NULL
+        ORDER BY a.alert_date DESC
+    """).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def enregistrer_reponse_alerte_plan(alert_id: int, decision: str) -> bool:
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("UPDATE plan_alerts SET user_response=? WHERE id=?", (decision, alert_id))
+    n = c.rowcount
+    conn.commit()
+    conn.close()
+    return n > 0
