@@ -180,7 +180,35 @@ async function editBudget() {
     loadBudget();
 }
 
+let _plansCache = [];
+const PLAN_EMOJI = {global: "🌐", long_terme: "🟢", moyen_terme: "🟡", court_terme: "🔴",
+                     actions: "📈", crypto: "₿", cfd: "⚡", custom: "📌"};
+
+async function loadPlansForSelect() {
+    _plansCache = await (await fetch("/api/plans")).json();
+}
+
+function planOptions(currentPlanId) {
+    let opts = `<option value="">— Aucun —</option>`;
+    for (const p of _plansCache) {
+        // Le plan Global est juste un parent ; on permet de rattacher en priorité aux sous-plans
+        const sel = currentPlanId === p.id ? "selected" : "";
+        const emoji = PLAN_EMOJI[p.plan_type] || "📌";
+        opts += `<option value="${p.id}" ${sel}>${emoji} ${p.name}</option>`;
+    }
+    return opts;
+}
+
+function planLabel(planId) {
+    if (!planId) return "";
+    const p = _plansCache.find(x => x.id === planId);
+    if (!p) return "";
+    const emoji = PLAN_EMOJI[p.plan_type] || "📌";
+    return `<span class="pill pill-buy ml-1">${emoji} ${p.name}</span>`;
+}
+
 async function loadPositions() {
+    await loadPlansForSelect();
     const list = await (await fetch("/api/real/investments?status=OPEN")).json();
     const el = document.getElementById("real-list");
     if (!list.length) {
@@ -195,6 +223,7 @@ async function loadPositions() {
                     <span class="text-xs text-slate-400 ml-1">${i.asset_name || ''}</span>
                     <span class="ml-2 pill pill-paper">${i.holding_type}</span>
                     <span class="ml-1 pill pill-neutral">${i.instrument_type}</span>
+                    ${planLabel(i.plan_id)}
                 </div>
                 <div class="text-right">
                     <div class="${colorPnl(i.pnl_eur)} font-bold">${eur(i.pnl_eur)}</div>
@@ -210,12 +239,32 @@ async function loadPositions() {
                 ${i.stop_loss_mental ? `<div>Stop : <span class="text-red-300">${i.stop_loss_mental.toFixed(4)}</span></div>` : ''}
             </div>
             ${i.investment_thesis ? `<div class="mt-2 text-xs text-slate-400 italic">${i.investment_thesis}</div>` : ''}
+            <!-- Rattachement à un plan (v5.2) -->
+            <div class="mt-2 flex items-center gap-2">
+                <span class="text-xs text-slate-400 whitespace-nowrap">🎯 Plan :</span>
+                <select onchange="attachPlan(${i.id}, this.value)" class="flex-1 bg-slate-800 border border-slate-700 rounded px-2 py-1 text-xs">
+                    ${planOptions(i.plan_id)}
+                </select>
+            </div>
             <div class="mt-2 flex gap-2">
                 <button onclick="closePos(${i.id})" class="flex-1 text-xs bg-amber-700/40 text-amber-200 py-1 rounded">Fermer</button>
                 <button onclick="deletePos(${i.id})" class="text-xs bg-red-700/40 text-red-200 py-1 px-2 rounded">🗑️</button>
             </div>
         </div>
     `).join("");
+}
+
+async function attachPlan(invId, planId) {
+    const value = planId ? parseInt(planId) : null;
+    const r = await fetch(`/api/real/investments/${invId}/attach-plan`, {
+        method: "POST", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({plan_id: value}),
+    });
+    const j = await r.json();
+    if (j.updated) {
+        // Petit feedback visuel : recharger pour que le pill du plan s'affiche
+        loadPositions();
+    }
 }
 
 async function loadAdvice() {
