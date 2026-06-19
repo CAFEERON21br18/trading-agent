@@ -92,6 +92,7 @@ def initialiser_real_db() -> None:
                 vision TEXT,
                 risk_tolerance TEXT,
                 allocated_budget REAL,
+                allocated_budget_percent REAL,
                 max_position_size REAL,
                 rules TEXT,
                 status TEXT DEFAULT 'active',
@@ -101,6 +102,11 @@ def initialiser_real_db() -> None:
                 FOREIGN KEY (parent_plan_id) REFERENCES investment_plans(id)
             )
         """)
+        # Migration douce v5.2 : ajouter allocated_budget_percent si manquant
+        try:
+            c.execute("ALTER TABLE investment_plans ADD COLUMN allocated_budget_percent REAL")
+        except Exception:
+            pass
         # v5.1 : alertes des plans
         c.execute("""
             CREATE TABLE IF NOT EXISTS plan_alerts (
@@ -325,25 +331,54 @@ def resume_portefeuille() -> dict:
 # ── v5.1 : Plans d'investissement (CRUD) ────────────────────────────────────
 
 def creer_plan(p: dict) -> int:
+    """Crée un plan. Accepte allocated_budget (€) OU allocated_budget_percent (%).
+    Le rules peut être dict (sérialisé en JSON) ou string."""
+    import json as _json
+    rules = p.get("rules")
+    if isinstance(rules, (dict, list)):
+        rules = _json.dumps(rules, ensure_ascii=False)
     conn = get_connection()
     c = conn.cursor()
     c.execute("""
         INSERT INTO investment_plans
         (plan_type, name, parent_plan_id, objective, target_return_percent,
          target_amount, time_horizon, vision, risk_tolerance, allocated_budget,
-         max_position_size, rules, status, progress_notes)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         allocated_budget_percent, max_position_size, rules, status, progress_notes)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, (
         p.get("plan_type", "custom"), p["name"], p.get("parent_plan_id"),
         p.get("objective"), p.get("target_return_percent"), p.get("target_amount"),
         p.get("time_horizon"), p.get("vision"), p.get("risk_tolerance"),
-        p.get("allocated_budget"), p.get("max_position_size"),
-        p.get("rules"), p.get("status", "active"), p.get("progress_notes"),
+        p.get("allocated_budget"), p.get("allocated_budget_percent"),
+        p.get("max_position_size"), rules,
+        p.get("status", "active"), p.get("progress_notes"),
     ))
     pid = c.lastrowid
     conn.commit()
     conn.close()
     return pid
+
+
+def _resoudre_budget(plan: dict, capital_total: float) -> dict:
+    """
+    Calcule allocated_budget en € à partir du % et du capital.
+    Pour un plan ENFANT (avec parent_plan_id) : % du budget du parent.
+    Pour un plan RACINE : % du capital total.
+    Si allocated_budget est déjà en €, on le garde.
+    """
+    pct = plan.get("allocated_budget_percent")
+    if pct is None or pct <= 0:
+        return plan  # budget € direct, rien à recalculer
+    parent_id = plan.get("parent_plan_id")
+    if parent_id:
+        parent = lire_plan(parent_id)
+        if parent:
+            parent_budget = _resoudre_budget(parent, capital_total).get("allocated_budget") or 0
+            plan["allocated_budget"] = round(parent_budget * pct / 100, 2)
+            return plan
+    # Sinon : % du capital total
+    plan["allocated_budget"] = round(capital_total * pct / 100, 2)
+    return plan
 
 
 def modifier_plan(plan_id: int, updates: dict) -> bool:
@@ -389,14 +424,17 @@ def lire_plans() -> list[dict]:
         "SELECT * FROM investment_plans ORDER BY parent_plan_id NULLS FIRST, created_at"
     ).fetchall()
     conn.close()
-    return [dict(r) for r in rows]
+    capital = get_budget_capital()
+    return [_resoudre_budget(dict(r), capital) for r in rows]
 
 
 def lire_plan(plan_id: int) -> dict | None:
     conn = get_connection()
     row = conn.execute("SELECT * FROM investment_plans WHERE id=?", (plan_id,)).fetchone()
     conn.close()
-    return dict(row) if row else None
+    if not row:
+        return None
+    return _resoudre_budget(dict(row), get_budget_capital())
 
 
 def positions_du_plan(plan_id: int) -> list[dict]:
