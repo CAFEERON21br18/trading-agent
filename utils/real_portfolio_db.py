@@ -56,6 +56,25 @@ def initialiser_real_db() -> None:
             c.execute("ALTER TABLE real_investments ADD COLUMN plan_id INTEGER")
         except Exception:
             pass  # déjà présente
+        # v5.3 — Migration douce : price_method + revolut_adjusted
+        try:
+            c.execute("ALTER TABLE real_investments ADD COLUMN price_method TEXT")
+        except Exception:
+            pass
+        try:
+            c.execute("ALTER TABLE real_investments ADD COLUMN revolut_adjusted INTEGER DEFAULT 0")
+        except Exception:
+            pass
+        # v5.3 — Calibration prix actuel
+        c.execute("""
+            CREATE TABLE IF NOT EXISTS price_calibration (
+                ticker TEXT PRIMARY KEY,
+                adjustment_factor REAL NOT NULL,
+                agent_price REAL,
+                revolut_price REAL,
+                calibrated_at TEXT
+            )
+        """)
         c.execute("""
             CREATE TABLE IF NOT EXISTS real_advice_log (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -168,13 +187,13 @@ def get_real_budget_summary(prix_courants: dict | None = None) -> dict:
         by_holding[h]    = by_holding.get(h, 0)    + p["invested_amount"]
         by_instrument[i] = by_instrument.get(i, 0) + p["invested_amount"]
 
-    # Valeur actuelle (avec prix marché)
+    # Valeur actuelle (prix Revolut calibré quand dispo — v5.3)
     if prix_courants is None:
         prix_courants = {}
     current_value = 0.0
-    from utils.data_fetcher import prix_actuel
+    from utils.real_price import prix_actuel_calibre
     for p in positions:
-        prix = prix_courants.get(p["asset"]) or prix_actuel(p["asset"])
+        prix = prix_courants.get(p["asset"]) or prix_actuel_calibre(p["asset"])
         if prix:
             current_value += p["quantity"] * prix
     unrealized_pnl = current_value - invested if invested else 0.0
@@ -202,18 +221,65 @@ def ajouter_investissement(p: dict) -> int:
         INSERT INTO real_investments
         (asset, asset_name, holding_type, instrument_type, direction,
          entry_price, entry_date, quantity, invested_amount, leverage,
-         target_price, stop_loss_mental, investment_thesis)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         target_price, stop_loss_mental, investment_thesis, plan_id, price_method)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, (
         p["asset"], p.get("asset_name"), p["holding_type"], p["instrument_type"],
         p.get("direction", "LONG"), p["entry_price"], p.get("entry_date", _now_iso()),
         p["quantity"], p["invested_amount"], p.get("leverage", 1),
         p.get("target_price"), p.get("stop_loss_mental"), p.get("investment_thesis"),
+        p.get("plan_id"), p.get("price_method"),
     ))
     pos_id = c.lastrowid
     conn.commit()
     conn.close()
     return pos_id
+
+
+def creer_investissement_simple(ticker: str, date_str: str, time_str: str | None,
+                                 invested_amount: float, holding_type: str,
+                                 instrument_type: str,
+                                 plan_id: int | None = None,
+                                 asset_name: str | None = None,
+                                 thesis: str | None = None) -> dict:
+    """v5.3 — Création simplifiée : récupère le prix historique + calcule la quantité."""
+    from utils.real_price import get_historical_price
+
+    price_info = get_historical_price(ticker, date_str, time_str)
+    if not price_info.get("price"):
+        return {"success": False, "error": price_info.get("error", "Prix indisponible")}
+
+    entry_price     = price_info["price"]
+    quantity        = invested_amount / entry_price
+    entry_date_iso  = (datetime.strptime(date_str, "%Y-%m-%d").replace(
+        hour=int(time_str.split(":")[0]) if time_str else 0,
+        minute=int(time_str.split(":")[1]) if time_str else 0,
+    )).isoformat(timespec="seconds") if time_str else date_str + "T00:00:00"
+
+    pos_id = ajouter_investissement({
+        "asset":           ticker,
+        "asset_name":      asset_name,
+        "holding_type":    holding_type,
+        "instrument_type": instrument_type,
+        "direction":       "LONG",
+        "entry_price":     entry_price,
+        "entry_date":      entry_date_iso,
+        "quantity":        quantity,
+        "invested_amount": invested_amount,
+        "plan_id":         plan_id,
+        "price_method":    price_info["method"],
+        "investment_thesis": thesis,
+    })
+
+    return {
+        "success":      True,
+        "id":           pos_id,
+        "entry_price":  round(entry_price, 4),
+        "quantity":     round(quantity, 6),
+        "method":       price_info["method"],
+        "actual_time":  price_info.get("actual_time"),
+        "note":         price_info.get("note"),
+    }
 
 
 def fermer_investissement(inv_id: int, exit_price: float, notes: str = "") -> dict | None:
@@ -465,13 +531,13 @@ def progression_plan(plan_id: int) -> dict:
     positions = positions_du_plan(plan_id)
     invested = sum(p["invested_amount"] for p in positions if p["status"] == "OPEN")
 
-    # Valeur actuelle des positions ouvertes
-    from utils.data_fetcher import prix_actuel
+    # Valeur actuelle des positions ouvertes (prix calibré Revolut — v5.3)
+    from utils.real_price import prix_actuel_calibre
     valeur_actuelle = 0.0
     for p in positions:
         if p["status"] != "OPEN":
             continue
-        prix = prix_actuel(p["asset"])
+        prix = prix_actuel_calibre(p["asset"])
         if prix:
             valeur_actuelle += p["quantity"] * prix
 
