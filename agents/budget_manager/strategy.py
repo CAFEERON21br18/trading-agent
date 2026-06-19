@@ -26,7 +26,7 @@ PARAMETRES = {
         "capital_investissable_pct": 50.0,
         "confiance_min":              4,    # v4.1 : 4 (avant 7) — accepte les trades d'apprentissage
         "taille_factor":              1.0,
-        "max_conviction_par_trade":   25.0,
+        "max_conviction_par_trade":   10.0, # v5 : 10% max/trade (avant 25%) — supporte 20 positions
     },
     "DEFENSIF": {
         "capital_investissable_pct": 30.0,

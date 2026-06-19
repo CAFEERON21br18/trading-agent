@@ -46,14 +46,16 @@
 
     <!-- Bottom navigation (mobile-first) -->
     <nav class="fixed bottom-0 left-0 right-0 bg-slate-800 border-t border-slate-700 z-10">
-        <div class="grid grid-cols-8 max-w-3xl mx-auto">
+        <div class="grid grid-cols-10 max-w-4xl mx-auto">
             {% set nav_items = [
               ('overview', '/', '🏠', 'Home'),
               ('portfolio', '/portfolio', '💼', 'Pf'),
+              ('real', '/real', '💰', 'Réel'),
+              ('chat', '/chat', '💬', 'Chat'),
               ('watchlist', '/watchlist', '📡', 'Wat'),
               ('explorers', '/explorers', '🔍', 'Expl'),
               ('journal', '/journal', '📔', 'Jrnl'),
-              ('budget', '/budget', '💰', 'Bud'),
+              ('budget', '/budget', '💵', 'Bud'),
               ('memory', '/memory', '🧠', 'Mem'),
               ('settings', '/settings', '⚙️', 'Set'),
             ] %}

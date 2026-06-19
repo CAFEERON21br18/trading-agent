@@ -15,8 +15,8 @@ logger = get_logger(__name__)
 # Pondérations urgence (multiplicateur du score)
 URGENCE_FACTOR = {"haute": 1.3, "moyenne": 1.0, "basse": 0.7}
 
-# Seuils de viabilité (v4.1 : 10€ min pour permettre les micro-positions d'apprentissage)
-MONTANT_MIN_VIABLE = 10.0  # 10€ minimum (avant 30€)
+# Seuils de viabilité (v5.0 : 15€ min — supporte 20 positions sur 500€ investissables)
+MONTANT_MIN_VIABLE = 15.0  # v5: 15€ minimum (était 10€ en v4.1)
 
 
 def _calculer_score(demande: dict) -> float:
