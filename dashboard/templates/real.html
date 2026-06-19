@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+{% block title %}Portefeuille Réel — AlphaSignal{% endblock %}
+
+{% block content %}
+<!-- Résumé -->
+<div class="card mb-3">
+    <h2 class="font-semibold mb-3">💰 Mon portefeuille réel</h2>
+    <div id="real-resume" class="grid grid-cols-2 gap-3 text-sm">
+        <div class="skeleton h-12"></div>
+    </div>
+</div>
+
+<!-- Bouton ajouter -->
+<div class="mb-3">
+    <button onclick="toggleForm()" id="add-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 rounded-lg">
+        + Ajouter un investissement
+    </button>
+</div>
+
+<!-- Formulaire d'ajout (caché par défaut) -->
+<div id="form-add" class="card mb-3 hidden">
+    <h3 class="font-semibold mb-2">Nouvel investissement</h3>
+    <div class="space-y-2 text-sm">
+        <input id="f-asset" placeholder="Ticker (AAPL, BTC-USD…)" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+        <input id="f-name"  placeholder="Nom (Apple)" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+        <div class="grid grid-cols-2 gap-2">
+            <select id="f-holding" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+                <option value="actif">Actif (trade)</option>
+                <option value="moyen" selected>Moyen</option>
+                <option value="passif">Passif (long terme)</option>
+            </select>
+            <select id="f-instrument" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+                <option value="normal" selected>Normal</option>
+                <option value="cfd">CFD</option>
+                <option value="crypto">Crypto</option>
+            </select>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+            <select id="f-direction" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+                <option value="LONG" selected>LONG</option>
+                <option value="SHORT">SHORT (CFD)</option>
+            </select>
+            <input id="f-leverage" type="number" step="0.1" value="1" placeholder="Levier" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+            <input id="f-price" type="number" step="0.0001" placeholder="Prix entrée" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+            <input id="f-qty"   type="number" step="0.000001" placeholder="Quantité" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+            <input id="f-amount" type="number" step="0.01" placeholder="Montant €" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+        </div>
+        <input id="f-date" type="date" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+        <div class="grid grid-cols-2 gap-2">
+            <input id="f-target" type="number" step="0.0001" placeholder="Cible prix (opt.)" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+            <input id="f-stop" type="number" step="0.0001" placeholder="Stop mental (opt.)" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+        </div>
+        <textarea id="f-thesis" placeholder="Pourquoi j'investis (thèse, optionnel)" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1.5 h-16"></textarea>
+        <button onclick="submitInvestment()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 rounded-lg">
+            Enregistrer
+        </button>
+    </div>
+</div>
+
+<!-- Conseils actifs -->
+<div class="card mb-3">
+    <h3 class="font-semibold mb-2">🔔 Conseils en attente</h3>
+    <div id="advice-list" class="space-y-2 text-sm">
+        <div class="text-slate-400 text-xs">Chargement...</div>
+    </div>
+</div>
+
+<!-- Liste des positions -->
+<h3 class="font-semibold mb-2">📊 Positions ouvertes</h3>
+<div id="real-list" class="space-y-3">
+    <div class="skeleton h-20"></div>
+</div>
+
+<button onclick="refreshAdvice()" class="w-full mt-3 bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm py-2 rounded-lg">
+    🔄 Forcer la génération de conseils
+</button>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const eur = (v) => (v == null) ? "—" : (v >= 0 ? "+" : "") + v.toFixed(2) + "€";
+const pct = (v) => (v == null) ? "—" : (v >= 0 ? "+" : "") + v.toFixed(2) + "%";
+const colorPnl = (v) => v == null ? "text-slate-400" : v >= 0 ? "text-emerald-400" : "text-red-400";
+
+function toggleForm() {
+    document.getElementById("form-add").classList.toggle("hidden");
+}
+
+async function loadResume() {
+    const r = await (await fetch("/api/real/portfolio")).json();
+    document.getElementById("real-resume").innerHTML = `
+        <div><div class="text-xs text-slate-400">Positions ouvertes</div><div class="font-bold text-lg">${r.open_count}</div></div>
+        <div><div class="text-xs text-slate-400">Investi total</div><div class="font-bold text-lg">${r.total_invested.toFixed(2)}€</div></div>
+        <div><div class="text-xs text-slate-400">P&L réalisé (clos)</div><div class="font-bold text-lg ${colorPnl(r.realized_pnl)}">${eur(r.realized_pnl)}</div></div>
+    `;
+}
+
+async function loadPositions() {
+    const list = await (await fetch("/api/real/investments?status=OPEN")).json();
+    const el = document.getElementById("real-list");
+    if (!list.length) {
+        el.innerHTML = `<div class="card text-center text-slate-400 py-6">Aucune position. Ajoute ton 1er investissement ↑</div>`;
+        return;
+    }
+    el.innerHTML = list.map(i => `
+        <div class="card">
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <span class="font-bold">${i.asset}</span>
+                    <span class="text-xs text-slate-400 ml-1">${i.asset_name || ''}</span>
+                    <span class="ml-2 pill pill-paper">${i.holding_type}</span>
+                    <span class="ml-1 pill pill-neutral">${i.instrument_type}</span>
+                </div>
+                <div class="text-right">
+                    <div class="${colorPnl(i.pnl_eur)} font-bold">${eur(i.pnl_eur)}</div>
+                    <div class="text-xs ${colorPnl(i.pnl_pct)}">${pct(i.pnl_pct)}</div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-x-3 text-xs text-slate-300">
+                <div>Entrée : <span class="text-slate-100">${i.entry_price.toFixed(4)}</span></div>
+                <div>Actuel : <span class="text-slate-100">${i.prix_actuel ? i.prix_actuel.toFixed(4) : '—'}</span></div>
+                <div>Quantité : <span class="text-slate-100">${i.quantity.toFixed(6)}</span></div>
+                <div>Investi : <span class="text-slate-100">${i.invested_amount.toFixed(2)}€</span></div>
+                ${i.target_price ? `<div>Cible : <span class="text-amber-300">${i.target_price.toFixed(4)}</span></div>` : ''}
+                ${i.stop_loss_mental ? `<div>Stop : <span class="text-red-300">${i.stop_loss_mental.toFixed(4)}</span></div>` : ''}
+            </div>
+            ${i.investment_thesis ? `<div class="mt-2 text-xs text-slate-400 italic">${i.investment_thesis}</div>` : ''}
+            <div class="mt-2 flex gap-2">
+                <button onclick="closePos(${i.id})" class="flex-1 text-xs bg-amber-700/40 text-amber-200 py-1 rounded">Fermer</button>
+                <button onclick="deletePos(${i.id})" class="text-xs bg-red-700/40 text-red-200 py-1 px-2 rounded">🗑️</button>
+            </div>
+        </div>
+    `).join("");
+}
+
+async function loadAdvice() {
+    const list = await (await fetch("/api/real/advice")).json();
+    const el = document.getElementById("advice-list");
+    if (!list.length) {
+        el.innerHTML = `<div class="text-slate-400 text-xs">Aucun conseil en attente.</div>`;
+        return;
+    }
+    const COLOR = {haute: 'border-red-500', moyenne: 'border-amber-500', basse: 'border-slate-500'};
+    el.innerHTML = list.map(a => `
+        <div class="border-l-4 ${COLOR[a.urgency] || 'border-slate-500'} bg-slate-800/40 p-2 rounded">
+            <div class="text-xs"><span class="font-bold">${a.asset || '?'}</span> <span class="text-amber-300">${a.advice_type}</span> — ${a.recommendation}</div>
+            <div class="text-xs text-slate-400 mt-0.5">${a.reasoning}</div>
+            <div class="flex gap-1 mt-1.5">
+                <button onclick="respondAdvice(${a.id}, 'suivi')" class="text-xs bg-emerald-700/40 text-emerald-200 px-2 py-0.5 rounded">J'ai suivi</button>
+                <button onclick="respondAdvice(${a.id}, 'ignoré')" class="text-xs bg-slate-700 text-slate-300 px-2 py-0.5 rounded">J'ai ignoré</button>
+            </div>
+        </div>
+    `).join("");
+}
+
+async function submitInvestment() {
+    const get = id => document.getElementById(id).value;
+    const payload = {
+        asset: get("f-asset").toUpperCase(),
+        asset_name: get("f-name"),
+        holding_type: get("f-holding"),
+        instrument_type: get("f-instrument"),
+        direction: get("f-direction"),
+        leverage: parseFloat(get("f-leverage")) || 1,
+        entry_price: parseFloat(get("f-price")),
+        quantity: parseFloat(get("f-qty")),
+        invested_amount: parseFloat(get("f-amount")),
+        entry_date: get("f-date") || new Date().toISOString().slice(0, 10),
+        target_price: parseFloat(get("f-target")) || null,
+        stop_loss_mental: parseFloat(get("f-stop")) || null,
+        investment_thesis: get("f-thesis"),
+    };
+    if (!payload.asset || !payload.entry_price || !payload.quantity || !payload.invested_amount) {
+        alert("Champs requis : Ticker, Prix entrée, Quantité, Montant");
+        return;
+    }
+    const r = await fetch("/api/real/investments", {
+        method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(payload),
+    });
+    const j = await r.json();
+    if (j.saved) {
+        toggleForm();
+        loadResume(); loadPositions();
+    } else alert("Erreur : " + (j.error || "inconnue"));
+}
+
+async function closePos(id) {
+    const exitPrice = prompt("Prix de sortie ?");
+    if (!exitPrice) return;
+    const r = await fetch(`/api/real/investments/${id}`, {
+        method: "PUT", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({exit_price: parseFloat(exitPrice)}),
+    });
+    const j = await r.json();
+    alert(`Position fermée. P&L réalisé : ${j.realized_pnl?.toFixed(2)}€`);
+    loadResume(); loadPositions();
+}
+
+async function deletePos(id) {
+    if (!confirm("Supprimer cette position ?")) return;
+    await fetch(`/api/real/investments/${id}`, {method: "DELETE"});
+    loadResume(); loadPositions();
+}
+
+async function respondAdvice(id, decision) {
+    await fetch(`/api/real/advice/${id}/respond`, {
+        method: "POST", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({decision}),
+    });
+    loadAdvice();
+}
+
+async function refreshAdvice() {
+    const r = await fetch("/api/real/refresh-advice", {method: "POST"});
+    const j = await r.json();
+    alert(`${j.conseils_crees} nouveau(x) conseil(s) généré(s)`);
+    loadAdvice();
+}
+
+loadResume();
+loadPositions();
+loadAdvice();
+setInterval(loadResume, 60000);
+</script>
+{% endblock %}

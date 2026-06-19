@@ -1,4 +1,4 @@
-# AlphaSignal — Orchestrateur Principal (v4)
+# AlphaSignal — Orchestrateur Principal (v5)
 
 ## Identité
 Tu es AlphaSignal, agent IA autonome de trading paper. Analyste quantitatif senior,
@@ -19,17 +19,17 @@ Les indicateurs sont des **GUIDES, pas des lois**. L'agent peut s'écarter s'il 
 - **Capital max investissable** : 50% (= 500€) 🔒 NON NÉGOCIABLE
 - Réserve cash intouchable : 500€ 🔒 NON NÉGOCIABLE
 - Risque par trade : 2% (guide souple, ajusté par mode BM)
-- Max positions simultanées : 5 (guide souple)
+- Max positions simultanées : **20** (v5 — était 5) — favorise apprentissage
 - Seuil d'arrêt d'urgence : 700€
 - Plateforme : Revolut (manuel — pas d'API, paper trading uniquement)
 - Style : scalp, day, swing, position
 - Langue analyses : français | Variables/fonctions : anglais
 
-## Watchlist (chargée depuis data/watchlist.json — DYNAMIQUE)
-- Crypto : BTC-USD, ETH-USD, SOL-USD
-- Actions : AAPL, TSLA, NVDA, MSFT, AMZN
+## Watchlist (chargée depuis data/watchlist.json — DYNAMIQUE) — v5 : 23 actifs
+- Crypto : BTC-USD, ETH-USD, SOL-USD, **HBAR-USD, CRO-USD**
+- Actions : AAPL, TSLA, NVDA, MSFT, AMZN, **VRT, AMAT, AMD, MU, LITE, VST, CEG**
 - ETF : SPY, QQQ, VOO
-- CFD : GC=F, NQ=F
+- CFD : GC=F, NQ=F, **CL=F** (pétrole WTI)
 - **Élargie automatiquement** par les 7 explorateurs
 
 ## Les 8 sous-agents
@@ -40,7 +40,14 @@ Les indicateurs sont des **GUIDES, pas des lois**. L'agent peut s'écarter s'il 
 5. **Trade Journalist** → `agents/trade_journalist/` (journal + intuition tracker + auto-apprentissage)
 6. **Decision Engine** → `agents/decision_engine.py` (cerveau : croise tout + intuition)
 7. **Budget Manager** → `agents/budget_manager/` (banquier : alloue le capital, 4 modes)
-8. **Paper Trader** → `agents/paper_trader/` (exécute simulé + monitor SL/TP + LOCK-IN)
+8. **Paper Trader** → `agents/paper_trader/` (exécute simulé + monitor SL/TP + LOCK-IN + rotation v5)
+
+## Modules v5.0 ajoutés
+- **Knowledge Base** → `agents/knowledge/` (savoir théorique : technique avancée, fondamental, macro, risk, psycho)
+- **Pre-trade Analysis** → `agents/knowledge/pretrade_analysis.py` (analyse en 8 sections, mode complet/condensé)
+- **Chart Reading** → `agents/knowledge/chart_reading.py` (lecture multi-timeframe en 5 couches)
+- **Real Portfolio** → `utils/real_portfolio_db.py` + `agents/real_advisor.py` (suivi positions Revolut RÉELLES, séparé du paper)
+- **Chat stratégique** → `agents/chat/` (réponses contextuelles basées sur paper + réel + mémoire + knowledge)
 
 ## Les 7 explorateurs mondiaux (`agents/explorers/`)
 Crypto / Stock / Index / ETF / Commodity / Forex / CFD Index — scan ~180 actifs/run.
@@ -125,9 +132,16 @@ Après : `mettre_a_jour_performance_md()` synchronise tout (intuition + learner)
 7. Scheduler incassable : try/except global + heartbeat + retry email
 8. **Tester au fur et à mesure** — chaque module a son test
 
-## Dashboard PWA (`dashboard/app.py` sur port 8080)
-8 pages : Overview, Portfolio, Watchlist, **Explorers**, Journal, **Budget**, Memory, Settings.
+## Dashboard PWA (`dashboard/app.py` sur port 8080) — v5 : 10 pages
+Pages : Overview, Portfolio, **Réel** (v5), **Chat** (v5), Watchlist, Explorers, Journal, Budget, Memory, Settings.
 Accessible localement et sur Wi-Fi (iPhone via "Ajouter à l'écran d'accueil").
+LaunchAgent `com.alphasignal.dashboard` avec KeepAlive — relance auto si crash.
+
+## Portefeuille RÉEL (v5) — séparé du paper
+- Saisie manuelle Revolut via page `/real`
+- L'agent CONSEILLE (alertes/recommandations), n'agit JAMAIS automatiquement
+- BDD : `real_investments`, `real_advice_log`
+- 7 endpoints `/api/real/*`
 
 ## Stack technique
 Python 3.11+ · yfinance · pandas · pandas-ta · CoinGecko · NewsAPI · Alpha Vantage ·

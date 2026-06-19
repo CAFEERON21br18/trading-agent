@@ -63,6 +63,16 @@ def page_budget():
     return render_template("budget.html", page="budget")
 
 
+@app.route("/real")
+def page_real():
+    return render_template("real.html", page="real")
+
+
+@app.route("/chat")
+def page_chat():
+    return render_template("chat.html", page="chat")
+
+
 @app.route("/manifest.json")
 def manifest():
     """Manifest PWA — pour 'Ajouter à l'écran d'accueil' sur iPhone."""

@@ -1,19 +1,28 @@
 {
-  "_comment": "Watchlist AlphaSignal — modifier ce fichier pour ajouter/retirer des actifs",
+  "_comment": "Watchlist AlphaSignal v5.0 — modifier ce fichier pour ajouter/retirer des actifs",
   "_tickers_note": "Utiliser les symboles yfinance : BTC-USD, ETH-USD, GC=F (or), NQ=F (Nasdaq futures)",
 
   "crypto": {
-    "BTC-USD": { "nom": "Bitcoin",  "timeframes": ["4h", "1d", "1wk"], "actif": true },
-    "ETH-USD": { "nom": "Ethereum", "timeframes": ["4h", "1d", "1wk"], "actif": true },
-    "SOL-USD": { "nom": "Solana",   "timeframes": ["4h", "1d", "1wk"], "actif": true }
+    "BTC-USD":  { "nom": "Bitcoin",  "timeframes": ["4h", "1d", "1wk"], "actif": true },
+    "ETH-USD":  { "nom": "Ethereum", "timeframes": ["4h", "1d", "1wk"], "actif": true },
+    "SOL-USD":  { "nom": "Solana",   "timeframes": ["4h", "1d", "1wk"], "actif": true },
+    "HBAR-USD": { "nom": "Hedera",   "timeframes": ["4h", "1d", "1wk"], "actif": true },
+    "CRO-USD":  { "nom": "Cronos",   "timeframes": ["4h", "1d", "1wk"], "actif": true }
   },
 
   "stocks": {
-    "AAPL": { "nom": "Apple",     "timeframes": ["1d", "1wk"], "actif": true },
-    "TSLA": { "nom": "Tesla",     "timeframes": ["1d", "1wk"], "actif": true },
-    "NVDA": { "nom": "Nvidia",    "timeframes": ["1d", "1wk"], "actif": true },
-    "MSFT": { "nom": "Microsoft", "timeframes": ["1d", "1wk"], "actif": true },
-    "AMZN": { "nom": "Amazon",    "timeframes": ["1d", "1wk"], "actif": true }
+    "AAPL": { "nom": "Apple",              "timeframes": ["1d", "1wk"], "actif": true },
+    "TSLA": { "nom": "Tesla",              "timeframes": ["1d", "1wk"], "actif": true },
+    "NVDA": { "nom": "Nvidia",             "timeframes": ["1d", "1wk"], "actif": true },
+    "MSFT": { "nom": "Microsoft",          "timeframes": ["1d", "1wk"], "actif": true },
+    "AMZN": { "nom": "Amazon",             "timeframes": ["1d", "1wk"], "actif": true },
+    "VRT":  { "nom": "Vertiv Holdings",    "timeframes": ["1d", "1wk"], "actif": true },
+    "AMAT": { "nom": "Applied Materials",  "timeframes": ["1d", "1wk"], "actif": true },
+    "AMD":  { "nom": "AMD",                "timeframes": ["1d", "1wk"], "actif": true },
+    "MU":   { "nom": "Micron Technology",  "timeframes": ["1d", "1wk"], "actif": true },
+    "LITE": { "nom": "Lumentum Holdings",  "timeframes": ["1d", "1wk"], "actif": true },
+    "VST":  { "nom": "Vistra Energy",      "timeframes": ["1d", "1wk"], "actif": true },
+    "CEG":  { "nom": "Constellation Energy","timeframes": ["1d", "1wk"], "actif": true }
   },
 
   "etf": {
@@ -23,7 +32,8 @@
   },
 
   "cfd": {
-    "GC=F":  { "nom": "Or (Gold)",         "timeframes": ["1d", "1wk"], "actif": true },
-    "NQ=F":  { "nom": "Nasdaq 100 Futures","timeframes": ["1d", "1wk"], "actif": true }
+    "GC=F": { "nom": "Or (Gold)",          "timeframes": ["1d", "1wk"], "actif": true },
+    "NQ=F": { "nom": "Nasdaq 100 Futures", "timeframes": ["1d", "1wk"], "actif": true },
+    "CL=F": { "nom": "Pétrole WTI",        "timeframes": ["1d", "1wk"], "actif": true }
   }
 }
