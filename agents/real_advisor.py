@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.logger import get_logger
 from utils.real_portfolio_db import lire_investissements, ajouter_conseil
-from utils.data_fetcher import prix_actuel as fetch_prix
+from utils.real_price import get_adjusted_price
 from agents.asset_analyzer import analyser_actif_complet
 from agents.decision_engine import decider
 
@@ -18,19 +18,24 @@ logger = get_logger(__name__)
 
 
 def _enrichir(inv: dict) -> dict:
-    """Ajoute prix actuel + P&L latent au dict d'investissement réel."""
+    """Ajoute prix actuel calibré (Revolut) + P&L latent au dict d'investissement réel."""
     try:
-        prix = fetch_prix(inv["asset"])
+        info = get_adjusted_price(inv["asset"])
+        prix = info.get("price")
     except Exception:
         prix = None
+        info = {}
     if prix is None:
-        return {**inv, "prix_actuel": None, "pnl_pct": None, "pnl_eur": None}
+        return {**inv, "prix_actuel": None, "pnl_pct": None, "pnl_eur": None,
+                "prix_calibre": False}
     if inv["direction"] == "LONG":
         pnl_eur = (prix - inv["entry_price"]) * inv["quantity"]
     else:
         pnl_eur = (inv["entry_price"] - prix) * inv["quantity"]
     pnl_pct = (pnl_eur / inv["invested_amount"] * 100) if inv["invested_amount"] else 0
-    return {**inv, "prix_actuel": prix, "pnl_pct": pnl_pct, "pnl_eur": pnl_eur}
+    return {**inv, "prix_actuel": prix, "pnl_pct": pnl_pct, "pnl_eur": pnl_eur,
+            "prix_calibre": bool(info.get("calibrated")),
+            "prix_source":  info.get("source")}
 
 
 def evaluer_position_reelle(inv: dict) -> list[dict]:

@@ -15,7 +15,7 @@ from utils.real_portfolio_db import (
     lire_plans, positions_du_plan, progression_plan,
     ajouter_alerte_plan, lire_alertes_plans_actives,
 )
-from utils.data_fetcher import prix_actuel
+from utils.real_price import prix_actuel_calibre as prix_actuel
 
 logger = get_logger(__name__)
 

@@ -37,13 +37,22 @@
     </button>
 </div>
 
-<!-- Formulaire d'ajout (caché par défaut) -->
+<!-- Formulaire SIMPLIFIÉ v5.3 : ticker + date + heure + montant → l'agent calcule prix/qty -->
 <div id="form-add" class="card mb-3 hidden">
-    <h3 class="font-semibold mb-2">Nouvel investissement</h3>
+    <h3 class="font-semibold mb-2">➕ Nouvel investissement</h3>
+    <p class="text-xs text-slate-400 mb-2">Saisis juste l'action, la date/heure d'achat et le montant.
+    L'agent va chercher le prix historique et calculer la quantité.</p>
     <div class="space-y-2 text-sm">
-        <input id="f-asset" placeholder="Ticker (AAPL, BTC-USD…)" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
-        <input id="f-name"  placeholder="Nom (Apple)" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
         <div class="grid grid-cols-2 gap-2">
+            <input id="f-asset" placeholder="Ticker (VRT, BTC-USD…)" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+            <input id="f-name"  placeholder="Nom (Vertiv)" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+            <input id="f-date" type="date" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+            <input id="f-time" type="time" placeholder="Heure (opt.)" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+            <input id="f-amount" type="number" step="0.01" placeholder="Montant €" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+        </div>
+        <div class="grid grid-cols-3 gap-2">
             <select id="f-holding" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
                 <option value="actif">Actif (trade)</option>
                 <option value="moyen" selected>Moyen</option>
@@ -54,28 +63,23 @@
                 <option value="cfd">CFD</option>
                 <option value="crypto">Crypto</option>
             </select>
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-            <select id="f-direction" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
-                <option value="LONG" selected>LONG</option>
-                <option value="SHORT">SHORT (CFD)</option>
+            <select id="f-plan" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+                <option value="">— Sans plan —</option>
             </select>
-            <input id="f-leverage" type="number" step="0.1" value="1" placeholder="Levier" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
         </div>
-        <div class="grid grid-cols-3 gap-2">
-            <input id="f-price" type="number" step="0.0001" placeholder="Prix entrée" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
-            <input id="f-qty"   type="number" step="0.000001" placeholder="Quantité" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
-            <input id="f-amount" type="number" step="0.01" placeholder="Montant €" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
-        </div>
-        <input id="f-date" type="date" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+        <textarea id="f-thesis" placeholder="Pourquoi j'investis (thèse, optionnel)" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1.5 h-12"></textarea>
+
+        <!-- Aperçu (rempli après clic sur Aperçu) -->
+        <div id="preview-box" class="hidden bg-slate-800/60 border border-slate-700 rounded p-3 text-xs"></div>
+
         <div class="grid grid-cols-2 gap-2">
-            <input id="f-target" type="number" step="0.0001" placeholder="Cible prix (opt.)" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
-            <input id="f-stop" type="number" step="0.0001" placeholder="Stop mental (opt.)" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+            <button onclick="previewInvestment()" class="bg-slate-700 hover:bg-slate-600 text-slate-100 font-semibold py-2 rounded-lg">
+                🔍 Aperçu prix
+            </button>
+            <button onclick="confirmInvestment()" id="confirm-btn" disabled class="bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-700 disabled:text-slate-500 text-white font-semibold py-2 rounded-lg">
+                ✅ Confirmer
+            </button>
         </div>
-        <textarea id="f-thesis" placeholder="Pourquoi j'investis (thèse, optionnel)" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1.5 h-16"></textarea>
-        <button onclick="submitInvestment()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 rounded-lg">
-            Enregistrer
-        </button>
     </div>
 </div>
 
@@ -186,6 +190,16 @@ const PLAN_EMOJI = {global: "🌐", long_terme: "🟢", moyen_terme: "🟡", cou
 
 async function loadPlansForSelect() {
     _plansCache = await (await fetch("/api/plans")).json();
+    // Remplit aussi le select du formulaire d'ajout
+    const sel = document.getElementById("f-plan");
+    if (sel) {
+        let opts = `<option value="">— Sans plan —</option>`;
+        for (const p of _plansCache) {
+            const emoji = PLAN_EMOJI[p.plan_type] || "📌";
+            opts += `<option value="${p.id}">${emoji} ${p.name}</option>`;
+        }
+        sel.innerHTML = opts;
+    }
 }
 
 function planOptions(currentPlanId) {
@@ -232,7 +246,7 @@ async function loadPositions() {
             </div>
             <div class="grid grid-cols-2 gap-x-3 text-xs text-slate-300">
                 <div>Entrée : <span class="text-slate-100">${i.entry_price.toFixed(4)}</span></div>
-                <div>Actuel : <span class="text-slate-100">${i.prix_actuel ? i.prix_actuel.toFixed(4) : '—'}</span></div>
+                <div>Actuel : <span class="text-slate-100">${i.prix_actuel ? i.prix_actuel.toFixed(4) : '—'}</span>${i.prix_calibre ? ' <span class="text-emerald-300" title="Prix calibré sur Revolut">🎯</span>' : ''}</div>
                 <div>Quantité : <span class="text-slate-100">${i.quantity.toFixed(6)}</span></div>
                 <div>Investi : <span class="text-slate-100">${i.invested_amount.toFixed(2)}€</span></div>
                 ${i.target_price ? `<div>Cible : <span class="text-amber-300">${i.target_price.toFixed(4)}</span></div>` : ''}
@@ -247,6 +261,7 @@ async function loadPositions() {
                 </select>
             </div>
             <div class="mt-2 flex gap-2">
+                <button onclick="calibratePos('${i.asset}')" class="flex-1 text-xs bg-blue-700/40 text-blue-200 py-1 rounded" title="Aligner sur le prix Revolut">📐 Calibrer Revolut</button>
                 <button onclick="closePos(${i.id})" class="flex-1 text-xs bg-amber-700/40 text-amber-200 py-1 rounded">Fermer</button>
                 <button onclick="deletePos(${i.id})" class="text-xs bg-red-700/40 text-red-200 py-1 px-2 rounded">🗑️</button>
             </div>
@@ -287,35 +302,100 @@ async function loadAdvice() {
     `).join("");
 }
 
-async function submitInvestment() {
+// v5.3 : aperçu prix avant validation, puis confirmation
+let _previewData = null;
+
+async function previewInvestment() {
     const get = id => document.getElementById(id).value;
-    const payload = {
-        asset: get("f-asset").toUpperCase(),
-        asset_name: get("f-name"),
-        holding_type: get("f-holding"),
-        instrument_type: get("f-instrument"),
-        direction: get("f-direction"),
-        leverage: parseFloat(get("f-leverage")) || 1,
-        entry_price: parseFloat(get("f-price")),
-        quantity: parseFloat(get("f-qty")),
-        invested_amount: parseFloat(get("f-amount")),
-        entry_date: get("f-date") || new Date().toISOString().slice(0, 10),
-        target_price: parseFloat(get("f-target")) || null,
-        stop_loss_mental: parseFloat(get("f-stop")) || null,
-        investment_thesis: get("f-thesis"),
-    };
-    if (!payload.asset || !payload.entry_price || !payload.quantity || !payload.invested_amount) {
-        alert("Champs requis : Ticker, Prix entrée, Quantité, Montant");
+    const ticker = get("f-asset").trim().toUpperCase();
+    const date_  = get("f-date");
+    const time_  = get("f-time");
+    const amount = parseFloat(get("f-amount"));
+    const box    = document.getElementById("preview-box");
+    const btn    = document.getElementById("confirm-btn");
+
+    if (!ticker || !date_ || !amount) {
+        alert("Champs requis : Ticker, Date, Montant");
         return;
     }
-    const r = await fetch("/api/real/investments", {
-        method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(payload),
+    box.classList.remove("hidden");
+    box.innerHTML = `<div class="text-slate-400">⏳ Récupération du prix historique…</div>`;
+    btn.disabled = true;
+
+    const url = `/api/real/price-preview?ticker=${encodeURIComponent(ticker)}` +
+                `&date=${date_}${time_ ? `&time=${time_}` : ""}` +
+                `&amount=${amount}`;
+    const r = await fetch(url);
+    const j = await r.json();
+    if (j.error) {
+        box.innerHTML = `<div class="text-red-300">❌ ${j.error}</div>`;
+        return;
+    }
+    _previewData = {ticker, date_, time_, amount, ...j};
+    box.innerHTML = `
+        <div class="font-semibold text-emerald-300 mb-1">Aperçu — ${ticker}</div>
+        <div class="grid grid-cols-2 gap-x-3">
+            <div>Prix d'entrée : <span class="text-slate-100 font-bold">${j.price.toFixed(4)}</span></div>
+            <div>Quantité : <span class="text-slate-100 font-bold">${j.quantity.toFixed(6)}</span></div>
+            <div>Montant : <span class="text-slate-100">${amount.toFixed(2)}€</span></div>
+            <div>Méthode : <span class="text-slate-400">${j.method}</span></div>
+        </div>
+        <div class="text-slate-400 mt-1 text-xs">📅 ${j.actual_time}</div>
+        <div class="text-slate-400 mt-0.5 text-xs italic">${j.note || ""}</div>
+    `;
+    btn.disabled = false;
+}
+
+async function confirmInvestment() {
+    if (!_previewData) {
+        alert("Lance d'abord l'aperçu");
+        return;
+    }
+    const get = id => document.getElementById(id).value;
+    const payload = {
+        ticker:           _previewData.ticker,
+        date:             _previewData.date_,
+        time:             _previewData.time_ || null,
+        invested_amount:  _previewData.amount,
+        holding_type:     get("f-holding"),
+        instrument_type:  get("f-instrument"),
+        plan_id:          get("f-plan") ? parseInt(get("f-plan")) : null,
+        asset_name:       get("f-name") || null,
+        investment_thesis: get("f-thesis") || null,
+    };
+    const r = await fetch("/api/real/investments/simple", {
+        method: "POST", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(payload),
     });
     const j = await r.json();
-    if (j.saved) {
+    if (j.success) {
+        // reset
+        _previewData = null;
+        document.getElementById("preview-box").classList.add("hidden");
+        document.getElementById("confirm-btn").disabled = true;
+        ["f-asset","f-name","f-time","f-amount","f-thesis"].forEach(id => document.getElementById(id).value = "");
         toggleForm();
         loadResume(); loadPositions();
-    } else alert("Erreur : " + (j.error || "inconnue"));
+    } else {
+        alert("Erreur : " + (j.error || "inconnue"));
+    }
+}
+
+// v5.3 — Calibrer un ticker sur le prix Revolut
+async function calibratePos(ticker) {
+    const v = prompt(`Prix Revolut pour ${ticker} (€) :`);
+    if (!v) return;
+    const r = await fetch("/api/real/calibrate", {
+        method: "POST", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ticker, revolut_price: parseFloat(v)}),
+    });
+    const j = await r.json();
+    if (j.success) {
+        alert(`✅ ${ticker} calibré.\nAgent: ${j.agent_price}€ → Revolut: ${j.revolut_price}€\nFacteur: ${j.adjustment_factor}\n${j.note}`);
+        loadBudget(); loadPositions();
+    } else {
+        alert("Erreur : " + (j.error || "inconnue"));
+    }
 }
 
 async function closePos(id) {

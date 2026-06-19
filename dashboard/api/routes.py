@@ -294,6 +294,73 @@ def post_check_deviations():
     return jsonify({"alertes_creees": verifier_tous_les_plans()})
 
 
+# ── v5.3 : Saisie simplifiée + calibration Revolut ─────────────────────────
+
+@api.route("/real/price-preview")
+def get_real_price_preview():
+    """Aperçu : récupère le prix historique pour ticker+date(+heure)."""
+    from utils.real_price import get_historical_price
+    ticker = request.args.get("ticker", "").strip().upper()
+    date_str = request.args.get("date", "").strip()
+    time_str = request.args.get("time")
+    if not ticker or not date_str:
+        return jsonify({"error": "ticker et date requis"}), 400
+    amount = request.args.get("amount", type=float)
+    info = get_historical_price(ticker, date_str, time_str or None)
+    if not info.get("price"):
+        return jsonify({"error": info.get("error", "Prix indisponible")}), 400
+    out = dict(info)
+    if amount:
+        out["quantity"] = round(amount / info["price"], 6)
+        out["invested_amount"] = amount
+    return jsonify(out)
+
+
+@api.route("/real/investments/simple", methods=["POST"])
+def post_real_investment_simple():
+    """Création d'investissement à partir de ticker+date+heure+montant."""
+    from utils.real_portfolio_db import creer_investissement_simple, initialiser_real_db
+    initialiser_real_db()
+    data = request.get_json() or {}
+    required = ("ticker", "date", "invested_amount", "holding_type", "instrument_type")
+    missing = [k for k in required if not data.get(k)]
+    if missing:
+        return jsonify({"error": f"Champs requis : {missing}"}), 400
+    res = creer_investissement_simple(
+        ticker=data["ticker"].strip().upper(),
+        date_str=data["date"],
+        time_str=data.get("time"),
+        invested_amount=float(data["invested_amount"]),
+        holding_type=data["holding_type"],
+        instrument_type=data["instrument_type"],
+        plan_id=data.get("plan_id"),
+        asset_name=data.get("asset_name"),
+        thesis=data.get("investment_thesis"),
+    )
+    return jsonify(res), (200 if res.get("success") else 400)
+
+
+@api.route("/real/calibrate", methods=["POST"])
+def post_real_calibrate():
+    """Calibre le prix d'un ticker sur celui affiché par Revolut."""
+    from utils.real_price import calibrate_to_revolut
+    data = request.get_json() or {}
+    ticker = (data.get("ticker") or "").strip().upper()
+    revolut_price = data.get("revolut_price")
+    if not ticker or revolut_price is None:
+        return jsonify({"error": "ticker et revolut_price requis"}), 400
+    return jsonify(calibrate_to_revolut(ticker, float(revolut_price)))
+
+
+@api.route("/real/calibrate/<ticker>")
+def get_real_calibration(ticker):
+    """Lit le facteur de calibration courant pour un ticker."""
+    from utils.real_price import get_calibration, get_current_price
+    cal = get_calibration(ticker.strip().upper())
+    current = get_current_price(ticker.strip().upper())
+    return jsonify({"calibration": cal, "current": current})
+
+
 @api.route("/real/investments/<int:inv_id>/attach-plan", methods=["POST"])
 def post_attach_plan(inv_id):
     """Rattacher une position réelle à un plan."""
