@@ -237,6 +237,78 @@ def ajouter_investissement(p: dict) -> int:
     return pos_id
 
 
+def creer_investissement_exact(ticker: str, invested_amount: float, quantity: float,
+                                entry_date: str, holding_type: str,
+                                instrument_type: str,
+                                plan_id: int | None = None,
+                                asset_name: str | None = None,
+                                thesis: str | None = None) -> dict:
+    """v5.3.2 — Saisie EXACTE : montant + quantité Revolut → prix d'entrée exact.
+    Le prix d'entrée se déduit : entry_price = invested_amount / quantity."""
+    if quantity is None or quantity <= 0:
+        return {"success": False, "error": "Quantité invalide"}
+    if invested_amount is None or invested_amount <= 0:
+        return {"success": False, "error": "Montant invalide"}
+
+    entry_price = invested_amount / quantity
+    entry_date_iso = entry_date if "T" in entry_date else entry_date + "T00:00:00"
+
+    pos_id = ajouter_investissement({
+        "asset":           ticker,
+        "asset_name":      asset_name,
+        "holding_type":    holding_type,
+        "instrument_type": instrument_type,
+        "direction":       "LONG",
+        "entry_price":     entry_price,
+        "entry_date":      entry_date_iso,
+        "quantity":        quantity,
+        "invested_amount": invested_amount,
+        "plan_id":         plan_id,
+        "price_method":    "exact_revolut",
+        "investment_thesis": thesis,
+    })
+    return {
+        "success":     True,
+        "id":          pos_id,
+        "entry_price": round(entry_price, 4),
+        "quantity":    quantity,
+        "invested":    invested_amount,
+        "note":        "Prix d'entrée exact (basé sur la quantité Revolut)",
+    }
+
+
+def corriger_entree_avec_quantite(inv_id: int, real_quantity: float) -> dict:
+    """v5.3.2 — Corrige le prix d'entrée d'une position existante en utilisant
+    la quantité exacte de Revolut. Garde invested_amount fixe."""
+    if real_quantity is None or real_quantity <= 0:
+        return {"success": False, "error": "Quantité invalide"}
+    conn = get_connection()
+    row = conn.execute("SELECT * FROM real_investments WHERE id = ?", (inv_id,)).fetchone()
+    if not row:
+        conn.close()
+        return {"success": False, "error": "Position introuvable"}
+    old_entry = row["entry_price"]
+    invested  = row["invested_amount"]
+    new_entry = invested / real_quantity
+    notes_pref = (row["notes"] or "")
+    new_notes = (notes_pref + " ").strip() + f"[Corrigé via quantité Revolut : {old_entry:.4f} → {new_entry:.4f}]"
+    conn.execute("""
+        UPDATE real_investments
+        SET entry_price = ?, quantity = ?, price_method = 'exact_revolut',
+            notes = ?, updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+    """, (new_entry, real_quantity, new_notes, inv_id))
+    conn.commit()
+    conn.close()
+    return {
+        "success":         True,
+        "old_entry_price": round(old_entry, 4),
+        "new_entry_price": round(new_entry, 4),
+        "quantity":        real_quantity,
+        "invested":        invested,
+    }
+
+
 def creer_investissement_simple(ticker: str, date_str: str, time_str: str | None,
                                  invested_amount: float, holding_type: str,
                                  instrument_type: str,
