@@ -245,7 +245,7 @@ async function loadPositions() {
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-x-3 text-xs text-slate-300">
-                <div>Entrée : <span class="text-slate-100">${i.entry_price.toFixed(4)}</span></div>
+                <div>Entrée : <span class="text-slate-100">${(i.entry_price_display ?? i.entry_price).toFixed(4)}</span>${i.prix_calibre ? ' <span class="text-emerald-300/70" title="Calibré Revolut">🎯</span>' : ''}</div>
                 <div>Actuel : <span class="text-slate-100">${i.prix_actuel ? i.prix_actuel.toFixed(4) : '—'}</span>${i.prix_calibre ? ' <span class="text-emerald-300" title="Prix calibré sur Revolut">🎯</span>' : ''}</div>
                 <div>Quantité : <span class="text-slate-100">${i.quantity.toFixed(6)}</span></div>
                 <div>Investi : <span class="text-slate-100">${i.invested_amount.toFixed(2)}€</span></div>

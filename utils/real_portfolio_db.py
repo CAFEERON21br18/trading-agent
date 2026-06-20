@@ -187,13 +187,14 @@ def get_real_budget_summary(prix_courants: dict | None = None) -> dict:
         by_holding[h]    = by_holding.get(h, 0)    + p["invested_amount"]
         by_instrument[i] = by_instrument.get(i, 0) + p["invested_amount"]
 
-    # Valeur actuelle (prix Revolut calibré quand dispo — v5.3)
+    # Valeur actuelle : prix BRUTS (v5.3.1) — cohérent avec invested_amount stocké en brut
+    # La calibration ne sert qu'à l'affichage du prix unitaire, pas au calcul des montants.
     if prix_courants is None:
         prix_courants = {}
     current_value = 0.0
-    from utils.real_price import prix_actuel_calibre
+    from utils.real_price import prix_actuel_brut
     for p in positions:
-        prix = prix_courants.get(p["asset"]) or prix_actuel_calibre(p["asset"])
+        prix = prix_courants.get(p["asset"]) or prix_actuel_brut(p["asset"])
         if prix:
             current_value += p["quantity"] * prix
     unrealized_pnl = current_value - invested if invested else 0.0
@@ -531,13 +532,13 @@ def progression_plan(plan_id: int) -> dict:
     positions = positions_du_plan(plan_id)
     invested = sum(p["invested_amount"] for p in positions if p["status"] == "OPEN")
 
-    # Valeur actuelle des positions ouvertes (prix calibré Revolut — v5.3)
-    from utils.real_price import prix_actuel_calibre
+    # Valeur actuelle des positions ouvertes (v5.3.1 : prix BRUTS pour cohérence avec invested)
+    from utils.real_price import prix_actuel_brut
     valeur_actuelle = 0.0
     for p in positions:
         if p["status"] != "OPEN":
             continue
-        prix = prix_actuel_calibre(p["asset"])
+        prix = prix_actuel_brut(p["asset"])
         if prix:
             valeur_actuelle += p["quantity"] * prix
 
