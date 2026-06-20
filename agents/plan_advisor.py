@@ -15,7 +15,8 @@ from utils.real_portfolio_db import (
     lire_plans, positions_du_plan, progression_plan,
     ajouter_alerte_plan, lire_alertes_plans_actives,
 )
-from utils.real_price import prix_actuel_calibre as prix_actuel
+# v5.3.1 : ratio sur prix BRUTS — entry_price stocké est brut, donc current doit l'être aussi
+from utils.real_price import prix_actuel_brut as prix_actuel
 
 logger = get_logger(__name__)
 

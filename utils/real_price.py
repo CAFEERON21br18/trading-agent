@@ -214,6 +214,72 @@ def get_adjusted_price(ticker: str) -> dict:
 
 
 def prix_actuel_calibre(ticker: str) -> float | None:
-    """Helper simple : retourne le prix calibré ou None."""
+    """Helper simple : retourne le prix calibré ou None.
+    Réservé à l'affichage. Pour le P&L utiliser calculate_position_pnl."""
     r = get_adjusted_price(ticker)
     return r.get("price")
+
+
+def prix_actuel_brut(ticker: str) -> float | None:
+    """Helper simple : prix BRUT (non calibré) — référence pour le calcul du P&L."""
+    r = get_current_price(ticker)
+    return r.get("price")
+
+
+def get_display_entry_price(ticker: str, entry_raw: float) -> float:
+    """Prix d'entrée calibré pour l'affichage uniquement (≈ ce que Revolut affichait)."""
+    cal = get_calibration(ticker)
+    if cal and cal.get("adjustment_factor"):
+        return round(entry_raw * cal["adjustment_factor"], 4)
+    return entry_raw
+
+
+def calculate_position_pnl(investment: dict, current_raw: float | None = None) -> dict | None:
+    """
+    v5.3.1 — Calcul P&L CORRECT : prix bruts cohérents (entrée brute + actuel brut).
+    La calibration n'est utilisée que pour l'AFFICHAGE des prix unitaires.
+
+    Math : le facteur s'annule dans le ratio → le % est identique en raw ou calibré.
+    On garde le raw pour le calcul, et on affiche des prix calibrés pour la lisibilité.
+    """
+    ticker     = investment["asset"]
+    entry_raw  = investment["entry_price"]
+    quantity   = investment["quantity"]
+    invested   = investment["invested_amount"]
+    direction  = investment.get("direction", "LONG")
+
+    if current_raw is None:
+        info = get_current_price(ticker)
+        current_raw = info.get("price")
+        source = info.get("source")
+    else:
+        source = "cache"
+    if not current_raw:
+        return None
+
+    # P&L : tout en prix BRUTS → cohérent et mathématiquement exact
+    if direction == "LONG":
+        pnl_euros = (current_raw - entry_raw) * quantity
+    else:
+        pnl_euros = (entry_raw - current_raw) * quantity
+    pnl_percent   = (pnl_euros / invested * 100) if invested else 0.0
+    current_value = invested + pnl_euros
+
+    # Affichage : prix calibrés (pour ressembler à Revolut visuellement)
+    cal = get_calibration(ticker)
+    factor = cal["adjustment_factor"] if cal else 1.0
+    entry_display   = round(entry_raw   * factor, 4)
+    current_display = round(current_raw * factor, 4)
+
+    return {
+        "current_price_raw":      round(current_raw, 4),
+        "current_price_display":  current_display,
+        "entry_price_raw":        round(entry_raw, 4),
+        "entry_price_display":    entry_display,
+        "pnl_euros":              round(pnl_euros, 2),
+        "pnl_percent":            round(pnl_percent, 2),
+        "current_value":          round(current_value, 2),
+        "calibrated":             cal is not None,
+        "adjustment_factor":      factor,
+        "source":                 source,
+    }

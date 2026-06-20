@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.logger import get_logger
 from utils.real_portfolio_db import lire_investissements, ajouter_conseil
-from utils.real_price import get_adjusted_price
+from utils.real_price import calculate_position_pnl
 from agents.asset_analyzer import analyser_actif_complet
 from agents.decision_engine import decider
 
@@ -18,24 +18,26 @@ logger = get_logger(__name__)
 
 
 def _enrichir(inv: dict) -> dict:
-    """Ajoute prix actuel calibré (Revolut) + P&L latent au dict d'investissement réel."""
+    """Ajoute prix actuel + P&L (calcul brut, affichage calibré) — v5.3.1."""
     try:
-        info = get_adjusted_price(inv["asset"])
-        prix = info.get("price")
-    except Exception:
-        prix = None
-        info = {}
-    if prix is None:
+        pnl = calculate_position_pnl(inv)
+    except Exception as e:
+        logger.warning(f"calcul P&L {inv.get('asset')} : {e}")
+        pnl = None
+    if not pnl:
         return {**inv, "prix_actuel": None, "pnl_pct": None, "pnl_eur": None,
-                "prix_calibre": False}
-    if inv["direction"] == "LONG":
-        pnl_eur = (prix - inv["entry_price"]) * inv["quantity"]
-    else:
-        pnl_eur = (inv["entry_price"] - prix) * inv["quantity"]
-    pnl_pct = (pnl_eur / inv["invested_amount"] * 100) if inv["invested_amount"] else 0
-    return {**inv, "prix_actuel": prix, "pnl_pct": pnl_pct, "pnl_eur": pnl_eur,
-            "prix_calibre": bool(info.get("calibrated")),
-            "prix_source":  info.get("source")}
+                "prix_calibre": False, "entry_price_display": inv["entry_price"]}
+    return {
+        **inv,
+        "prix_actuel":          pnl["current_price_display"],  # calibré pour l'affichage
+        "prix_actuel_raw":      pnl["current_price_raw"],
+        "entry_price_display":  pnl["entry_price_display"],
+        "pnl_pct":              pnl["pnl_percent"],
+        "pnl_eur":              pnl["pnl_euros"],
+        "current_value":        pnl["current_value"],
+        "prix_calibre":         pnl["calibrated"],
+        "prix_source":          pnl["source"],
+    }
 
 
 def evaluer_position_reelle(inv: dict) -> list[dict]:
