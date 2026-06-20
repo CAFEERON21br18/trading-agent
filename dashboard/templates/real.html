@@ -37,21 +37,52 @@
     </button>
 </div>
 
-<!-- Formulaire SIMPLIFIÉ v5.3 : ticker + date + heure + montant → l'agent calcule prix/qty -->
+<!-- Formulaire v5.3.2 : 2 modes (Exact recommandé, Rapide approximatif) -->
 <div id="form-add" class="card mb-3 hidden">
     <h3 class="font-semibold mb-2">➕ Nouvel investissement</h3>
-    <p class="text-xs text-slate-400 mb-2">Saisis juste l'action, la date/heure d'achat et le montant.
-    L'agent va chercher le prix historique et calculer la quantité.</p>
+
+    <!-- Choix du mode -->
+    <div class="grid grid-cols-2 gap-2 mb-3 text-xs">
+        <label class="cursor-pointer">
+            <input type="radio" name="mode" value="exact" checked onchange="switchMode()" class="mr-1">
+            <span class="font-semibold text-emerald-300">Exact</span>
+            <span class="text-slate-400 block ml-5">Montant + quantité Revolut (recommandé)</span>
+        </label>
+        <label class="cursor-pointer">
+            <input type="radio" name="mode" value="rapide" onchange="switchMode()" class="mr-1">
+            <span class="font-semibold text-slate-300">Rapide</span>
+            <span class="text-slate-400 block ml-5">Date + heure + montant (approximatif)</span>
+        </label>
+    </div>
+
     <div class="space-y-2 text-sm">
         <div class="grid grid-cols-2 gap-2">
             <input id="f-asset" placeholder="Ticker (VRT, BTC-USD…)" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
             <input id="f-name"  placeholder="Nom (Vertiv)" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
         </div>
-        <div class="grid grid-cols-3 gap-2">
-            <input id="f-date" type="date" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
-            <input id="f-time" type="time" placeholder="Heure (opt.)" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
-            <input id="f-amount" type="number" step="0.01" placeholder="Montant €" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+
+        <!-- Mode EXACT (par défaut) -->
+        <div id="fields-exact">
+            <div class="text-xs text-slate-400 mb-1">📋 Recopie depuis ta position Revolut :</div>
+            <div class="grid grid-cols-3 gap-2">
+                <input id="f-date" type="date" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+                <input id="f-amount-exact" type="number" step="0.01" placeholder="Montant investi €" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+                <input id="f-qty" type="number" step="0.00000001" placeholder="Quantité (ex 0.108…)" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+            </div>
+            <div class="text-xs text-slate-500 mt-0.5">💡 Sur l'app Revolut, ouvre ta position : montant et quantité y sont affichés.</div>
         </div>
+
+        <!-- Mode RAPIDE -->
+        <div id="fields-rapide" class="hidden">
+            <div class="text-xs text-slate-400 mb-1">⚡ L'agent va chercher le prix historique yfinance :</div>
+            <div class="grid grid-cols-3 gap-2">
+                <input id="f-date-r" type="date" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+                <input id="f-time" type="time" placeholder="Heure (opt.)" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+                <input id="f-amount" type="number" step="0.01" placeholder="Montant €" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+            </div>
+            <div class="text-xs text-amber-300/80 mt-0.5">⚠️ Le prix d'entrée peut différer un peu de Revolut (spread, moment exact).</div>
+        </div>
+
         <div class="grid grid-cols-3 gap-2">
             <select id="f-holding" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
                 <option value="actif">Actif (trade)</option>
@@ -74,7 +105,7 @@
 
         <div class="grid grid-cols-2 gap-2">
             <button onclick="previewInvestment()" class="bg-slate-700 hover:bg-slate-600 text-slate-100 font-semibold py-2 rounded-lg">
-                🔍 Aperçu prix
+                🔍 Aperçu
             </button>
             <button onclick="confirmInvestment()" id="confirm-btn" disabled class="bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-700 disabled:text-slate-500 text-white font-semibold py-2 rounded-lg">
                 ✅ Confirmer
@@ -260,10 +291,15 @@ async function loadPositions() {
                     ${planOptions(i.plan_id)}
                 </select>
             </div>
-            <div class="mt-2 flex gap-2">
-                <button onclick="calibratePos('${i.asset}')" class="flex-1 text-xs bg-blue-700/40 text-blue-200 py-1 rounded" title="Aligner sur le prix Revolut">📐 Calibrer Revolut</button>
-                <button onclick="closePos(${i.id})" class="flex-1 text-xs bg-amber-700/40 text-amber-200 py-1 rounded">Fermer</button>
-                <button onclick="deletePos(${i.id})" class="text-xs bg-red-700/40 text-red-200 py-1 px-2 rounded">🗑️</button>
+            ${i.price_method !== 'exact_revolut' ? `
+            <div class="mt-1.5 text-xs text-amber-300/80 bg-amber-900/20 border border-amber-700/30 rounded px-2 py-1">
+                ⚠️ Prix d'entrée approximatif. Saisis la quantité Revolut pour corriger →
+            </div>` : ''}
+            <div class="mt-2 grid grid-cols-2 gap-2">
+                <button onclick="fixEntry(${i.id}, '${i.asset}', ${i.quantity})" class="text-xs bg-violet-700/40 text-violet-200 py-1 rounded" title="Recalcul du prix d'entrée via la quantité Revolut">🛠️ Corriger entrée</button>
+                <button onclick="calibratePos('${i.asset}')" class="text-xs bg-blue-700/40 text-blue-200 py-1 rounded" title="Aligner le prix actuel sur Revolut">📐 Calibrer actuel</button>
+                <button onclick="closePos(${i.id})" class="text-xs bg-amber-700/40 text-amber-200 py-1 rounded">Fermer</button>
+                <button onclick="deletePos(${i.id})" class="text-xs bg-red-700/40 text-red-200 py-1 rounded">🗑️ Supprimer</button>
             </div>
         </div>
     `).join("");
@@ -302,79 +338,142 @@ async function loadAdvice() {
     `).join("");
 }
 
-// v5.3 : aperçu prix avant validation, puis confirmation
+// v5.3.2 — 2 modes : Exact (recommandé) + Rapide (fallback yfinance)
 let _previewData = null;
 
+function currentMode() {
+    return document.querySelector('input[name="mode"]:checked').value;
+}
+
+function switchMode() {
+    const isExact = currentMode() === "exact";
+    document.getElementById("fields-exact").classList.toggle("hidden", !isExact);
+    document.getElementById("fields-rapide").classList.toggle("hidden", isExact);
+    document.getElementById("preview-box").classList.add("hidden");
+    document.getElementById("confirm-btn").disabled = true;
+    _previewData = null;
+}
+
 async function previewInvestment() {
-    const get = id => document.getElementById(id).value;
+    const get  = id => document.getElementById(id).value;
     const ticker = get("f-asset").trim().toUpperCase();
-    const date_  = get("f-date");
-    const time_  = get("f-time");
-    const amount = parseFloat(get("f-amount"));
-    const box    = document.getElementById("preview-box");
-    const btn    = document.getElementById("confirm-btn");
+    const box  = document.getElementById("preview-box");
+    const btn  = document.getElementById("confirm-btn");
+    if (!ticker) { alert("Ticker requis"); return; }
+    box.classList.remove("hidden"); btn.disabled = true;
 
-    if (!ticker || !date_ || !amount) {
-        alert("Champs requis : Ticker, Date, Montant");
-        return;
+    if (currentMode() === "exact") {
+        const date_  = get("f-date");
+        const amount = parseFloat(get("f-amount-exact"));
+        const qty    = parseFloat(get("f-qty"));
+        if (!date_ || !amount || !qty || qty <= 0) {
+            box.innerHTML = `<div class="text-red-300">❌ Date, Montant et Quantité requis.</div>`;
+            return;
+        }
+        const entry = amount / qty;
+        _previewData = {mode: "exact", ticker, date_, amount, qty};
+        box.innerHTML = `
+            <div class="font-semibold text-emerald-300 mb-1">✅ Aperçu EXACT — ${ticker}</div>
+            <div class="grid grid-cols-2 gap-x-3">
+                <div>Prix d'entrée : <span class="text-slate-100 font-bold">${entry.toFixed(4)}€</span></div>
+                <div>Quantité : <span class="text-slate-100 font-bold">${qty}</span></div>
+                <div>Montant investi : <span class="text-slate-100">${amount.toFixed(2)}€</span></div>
+                <div>Méthode : <span class="text-emerald-300">exact_revolut</span></div>
+            </div>
+            <div class="text-slate-400 mt-1 text-xs">📅 ${date_}</div>
+            <div class="text-emerald-300/80 mt-0.5 text-xs italic">Prix d'entrée exact (basé sur la quantité Revolut).</div>
+        `;
+        btn.disabled = false;
+    } else {
+        const date_  = get("f-date-r");
+        const time_  = get("f-time");
+        const amount = parseFloat(get("f-amount"));
+        if (!date_ || !amount) {
+            box.innerHTML = `<div class="text-red-300">❌ Date et Montant requis.</div>`;
+            return;
+        }
+        box.innerHTML = `<div class="text-slate-400">⏳ Récupération du prix historique…</div>`;
+        const url = `/api/real/price-preview?ticker=${encodeURIComponent(ticker)}&date=${date_}${time_ ? `&time=${time_}` : ""}&amount=${amount}`;
+        const r = await fetch(url); const j = await r.json();
+        if (j.error) { box.innerHTML = `<div class="text-red-300">❌ ${j.error}</div>`; return; }
+        _previewData = {mode: "rapide", ticker, date_, time_, amount, ...j};
+        box.innerHTML = `
+            <div class="font-semibold text-amber-300 mb-1">⚡ Aperçu RAPIDE — ${ticker}</div>
+            <div class="grid grid-cols-2 gap-x-3">
+                <div>Prix d'entrée : <span class="text-slate-100 font-bold">${j.price.toFixed(4)}€</span></div>
+                <div>Quantité : <span class="text-slate-100 font-bold">${j.quantity.toFixed(6)}</span></div>
+                <div>Montant : <span class="text-slate-100">${amount.toFixed(2)}€</span></div>
+                <div>Méthode : <span class="text-slate-400">${j.method}</span></div>
+            </div>
+            <div class="text-slate-400 mt-1 text-xs">📅 ${j.actual_time}</div>
+            <div class="text-amber-300/70 mt-0.5 text-xs italic">⚠️ Approximatif. Pour un suivi fidèle Revolut, utilise le mode Exact.</div>
+        `;
+        btn.disabled = false;
     }
-    box.classList.remove("hidden");
-    box.innerHTML = `<div class="text-slate-400">⏳ Récupération du prix historique…</div>`;
-    btn.disabled = true;
-
-    const url = `/api/real/price-preview?ticker=${encodeURIComponent(ticker)}` +
-                `&date=${date_}${time_ ? `&time=${time_}` : ""}` +
-                `&amount=${amount}`;
-    const r = await fetch(url);
-    const j = await r.json();
-    if (j.error) {
-        box.innerHTML = `<div class="text-red-300">❌ ${j.error}</div>`;
-        return;
-    }
-    _previewData = {ticker, date_, time_, amount, ...j};
-    box.innerHTML = `
-        <div class="font-semibold text-emerald-300 mb-1">Aperçu — ${ticker}</div>
-        <div class="grid grid-cols-2 gap-x-3">
-            <div>Prix d'entrée : <span class="text-slate-100 font-bold">${j.price.toFixed(4)}</span></div>
-            <div>Quantité : <span class="text-slate-100 font-bold">${j.quantity.toFixed(6)}</span></div>
-            <div>Montant : <span class="text-slate-100">${amount.toFixed(2)}€</span></div>
-            <div>Méthode : <span class="text-slate-400">${j.method}</span></div>
-        </div>
-        <div class="text-slate-400 mt-1 text-xs">📅 ${j.actual_time}</div>
-        <div class="text-slate-400 mt-0.5 text-xs italic">${j.note || ""}</div>
-    `;
-    btn.disabled = false;
 }
 
 async function confirmInvestment() {
-    if (!_previewData) {
-        alert("Lance d'abord l'aperçu");
-        return;
-    }
+    if (!_previewData) { alert("Lance d'abord l'aperçu"); return; }
     const get = id => document.getElementById(id).value;
-    const payload = {
-        ticker:           _previewData.ticker,
-        date:             _previewData.date_,
-        time:             _previewData.time_ || null,
-        invested_amount:  _previewData.amount,
-        holding_type:     get("f-holding"),
-        instrument_type:  get("f-instrument"),
-        plan_id:          get("f-plan") ? parseInt(get("f-plan")) : null,
-        asset_name:       get("f-name") || null,
+    const common = {
+        holding_type:      get("f-holding"),
+        instrument_type:   get("f-instrument"),
+        plan_id:           get("f-plan") ? parseInt(get("f-plan")) : null,
+        asset_name:        get("f-name") || null,
         investment_thesis: get("f-thesis") || null,
     };
-    const r = await fetch("/api/real/investments/simple", {
+    let url, payload;
+    if (_previewData.mode === "exact") {
+        url = "/api/real/investments/exact";
+        payload = {
+            ticker:          _previewData.ticker,
+            entry_date:      _previewData.date_,
+            invested_amount: _previewData.amount,
+            quantity:        _previewData.qty,
+            ...common,
+        };
+    } else {
+        url = "/api/real/investments/simple";
+        payload = {
+            ticker:          _previewData.ticker,
+            date:            _previewData.date_,
+            time:            _previewData.time_ || null,
+            invested_amount: _previewData.amount,
+            ...common,
+        };
+    }
+    const r = await fetch(url, {
         method: "POST", headers: {"Content-Type": "application/json"},
         body: JSON.stringify(payload),
     });
     const j = await r.json();
     if (j.success) {
-        // reset
         _previewData = null;
         document.getElementById("preview-box").classList.add("hidden");
         document.getElementById("confirm-btn").disabled = true;
-        ["f-asset","f-name","f-time","f-amount","f-thesis"].forEach(id => document.getElementById(id).value = "");
+        ["f-asset","f-name","f-time","f-amount","f-amount-exact","f-qty","f-thesis"]
+            .forEach(id => { const e = document.getElementById(id); if (e) e.value = ""; });
         toggleForm();
+        loadResume(); loadPositions();
+    } else {
+        alert("Erreur : " + (j.error || "inconnue"));
+    }
+}
+
+// v5.3.2 — Corriger le prix d'entrée d'une position existante via la quantité Revolut
+async function fixEntry(invId, ticker, currentQty) {
+    const v = prompt(
+        `Quelle quantité Revolut affiche pour ${ticker} ?\n(Actuel en BDD : ${currentQty})`,
+        currentQty,
+    );
+    if (!v) return;
+    const r = await fetch(`/api/real/investments/${invId}/fix-entry`, {
+        method: "POST", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({real_quantity: parseFloat(v)}),
+    });
+    const j = await r.json();
+    if (j.success) {
+        alert(`✅ Prix d'entrée corrigé\n${j.old_entry_price}€ → ${j.new_entry_price}€\n(quantité : ${j.quantity}, investi : ${j.invested}€)`);
         loadResume(); loadPositions();
     } else {
         alert("Erreur : " + (j.error || "inconnue"));

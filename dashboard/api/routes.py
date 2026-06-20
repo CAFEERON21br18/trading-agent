@@ -340,6 +340,42 @@ def post_real_investment_simple():
     return jsonify(res), (200 if res.get("success") else 400)
 
 
+@api.route("/real/investments/exact", methods=["POST"])
+def post_real_investment_exact():
+    """v5.3.2 — Saisie exacte : montant + quantité Revolut → prix d'entrée exact."""
+    from utils.real_portfolio_db import creer_investissement_exact, initialiser_real_db
+    initialiser_real_db()
+    data = request.get_json() or {}
+    required = ("ticker", "invested_amount", "quantity", "entry_date",
+                "holding_type", "instrument_type")
+    missing = [k for k in required if not data.get(k)]
+    if missing:
+        return jsonify({"error": f"Champs requis : {missing}"}), 400
+    res = creer_investissement_exact(
+        ticker=data["ticker"].strip().upper(),
+        invested_amount=float(data["invested_amount"]),
+        quantity=float(data["quantity"]),
+        entry_date=data["entry_date"],
+        holding_type=data["holding_type"],
+        instrument_type=data["instrument_type"],
+        plan_id=data.get("plan_id"),
+        asset_name=data.get("asset_name"),
+        thesis=data.get("investment_thesis"),
+    )
+    return jsonify(res), (200 if res.get("success") else 400)
+
+
+@api.route("/real/investments/<int:inv_id>/fix-entry", methods=["POST"])
+def post_real_fix_entry(inv_id):
+    """v5.3.2 — Corrige le prix d'entrée d'une position via la quantité Revolut exacte."""
+    from utils.real_portfolio_db import corriger_entree_avec_quantite
+    data = request.get_json() or {}
+    qty = data.get("real_quantity")
+    if qty is None:
+        return jsonify({"error": "real_quantity requis"}), 400
+    return jsonify(corriger_entree_avec_quantite(inv_id, float(qty)))
+
+
 @api.route("/real/calibrate", methods=["POST"])
 def post_real_calibrate():
     """Calibre le prix d'un ticker sur celui affiché par Revolut."""
