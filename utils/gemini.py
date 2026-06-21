@@ -27,7 +27,7 @@ logger = get_logger(__name__)
 MODEL_NAME            = "gemini-2.5-flash"
 MAX_RETRIES           = 3
 INITIAL_BACKOFF_SEC   = 2.0      # 2s → 4s → 8s
-MAX_REQUESTS_PER_MIN  = 10       # cap local pour ne pas dépasser le tier gratuit
+MAX_REQUESTS_PER_MIN  = 5        # tier gratuit gemini-2.5-flash = 5 req/min
 REQUEST_TIMEOUT_SEC   = 30
 
 # ── État partagé ────────────────────────────────────────────────────────────
