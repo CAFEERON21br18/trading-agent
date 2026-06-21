@@ -16,8 +16,11 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirna
 import config
 from utils.logger   import get_logger
 from utils.database import get_connection
-from agents.analysts.sentiment_analyst.news_fetcher import resume_news
+from agents.analysts.sentiment_analyst.news_fetcher import resume_news, recuperer_news
 from agents.analysts.sentiment_analyst.geopolitics  import resume_contexte_geopolitique
+from agents.analysts.sentiment_analyst._llm         import (
+    synthese_news_actif, narratif_geopolitique, narratif_global,
+)
 from agents.analysts.fundamental_analyst.onchain    import recuperer_dominance_btc
 
 logger = get_logger(__name__)
@@ -111,14 +114,15 @@ def evaluer_sentiment_global(fg_valeur: int | None) -> tuple[str, bool, int]:
 
 
 def generer_rapport_global() -> str:
-    """Génère le rapport de sentiment global du marché."""
+    """Génère le rapport de sentiment global du marché (+ narratif Gemini)."""
     fg        = recuperer_fear_greed_crypto()
     dominance = recuperer_dominance_btc()
-    corr_btc_spy = calculer_correlation("BTC-USD", "SPY")
-    corr_btc_eth = calculer_correlation("BTC-USD", "ETH-USD")
-    corr_btc_sol = calculer_correlation("BTC-USD", "SOL-USD")
-
-    fg_val    = fg.get("valeur")
+    corrs = {
+        "BTC ↔ SPY": calculer_correlation("BTC-USD", "SPY"),
+        "BTC ↔ ETH": calculer_correlation("BTC-USD", "ETH-USD"),
+        "BTC ↔ SOL": calculer_correlation("BTC-USD", "SOL-USD"),
+    }
+    fg_val = fg.get("valeur")
     sentiment, contrarian, confiance = evaluer_sentiment_global(fg_val)
 
     alerte_extreme = ""
@@ -128,7 +132,6 @@ def generer_rapport_global() -> str:
         elif fg_val > config.FEAR_GREED_EXTREME_HIGH:
             alerte_extreme = f"⚠️  ALERTE : F&G > {config.FEAR_GREED_EXTREME_HIGH} — signal contrarian de vente potentiel"
 
-    # Contexte géopolitique (cache 1h)
     geo = resume_contexte_geopolitique(nb_news=20)
     if geo.get("actif"):
         cats_str = ", ".join(f"{c}({n})" for c, n in geo["categories"].items())
@@ -138,7 +141,13 @@ def generer_rapport_global() -> str:
     else:
         bloc_geo = "Contexte géopolitique : aucun événement majeur détecté"
 
+    # v5.3.5 : narratifs Gemini (vides si LLM indispo)
+    narratif = narratif_global(fg, dominance, corrs, sentiment, contrarian, geo)
+    narratif_geo = narratif_geopolitique(geo)
+
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    bloc_narratif    = f"\n📖 Narratif marché : {narratif}\n"      if narratif else ""
+    bloc_narratif_geo = f"\n🌍 Narratif géo : {narratif_geo}\n"     if narratif_geo else ""
 
     rapport = f"""
 ANALYSE SENTIMENT — MARCHÉ GLOBAL — {now}
@@ -147,32 +156,31 @@ Fear & Greed Crypto : {fg_val if fg_val is not None else 'N/A'} ({fg['label']})
 Dominance BTC       : {f'{dominance:.1f}%' if dominance else 'N/A'}
 ────────────────────────────────────────────────────────────
 Corrélations (60 jours) :
-  - BTC ↔ SPY       : {interpreter_correlation(corr_btc_spy)}
-  - BTC ↔ ETH       : {interpreter_correlation(corr_btc_eth)}
-  - BTC ↔ SOL       : {interpreter_correlation(corr_btc_sol)}
+  - BTC ↔ SPY       : {interpreter_correlation(corrs['BTC ↔ SPY'])}
+  - BTC ↔ ETH       : {interpreter_correlation(corrs['BTC ↔ ETH'])}
+  - BTC ↔ SOL       : {interpreter_correlation(corrs['BTC ↔ SOL'])}
 ────────────────────────────────────────────────────────────
-{bloc_geo}
-────────────────────────────────────────────────────────────
+{bloc_geo}{bloc_narratif_geo}────────────────────────────────────────────────────────────
 Sentiment global    : {sentiment}
 Signal contrarian   : {'Oui — positions extrêmes' if contrarian else 'Non'}
 Confiance           : {confiance}/10
-{alerte_extreme}
-""".strip()
+{alerte_extreme}{bloc_narratif}""".strip()
     return rapport
 
 
 def generer_rapport_actif(ticker: str) -> str:
-    """Génère un rapport de sentiment pour un actif précis avec ses news."""
-    # Pour les crypto, on cherche par nom ; pour les actions, par ticker
+    """Rapport sentiment d'un actif : news brutes + synthèse Gemini."""
     requete_news = ticker.replace("-USD", "") if "-USD" in ticker else ticker
+    news_list = recuperer_news(requete_news, nb_max=5)
+    synthese = synthese_news_actif(ticker, news_list)  # v5.3.5
+    bloc_synthese = f"\n📖 Synthèse : {synthese}\n" if synthese else ""
 
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     rapport = f"""
 ANALYSE SENTIMENT — {ticker} — {now}
 ────────────────────────────────────────────────────────────
 News récentes :
-{resume_news(requete_news, nb_max=5)}
-""".strip()
+{resume_news(requete_news, nb_max=5)}{bloc_synthese}""".strip()
     return rapport
 
 
