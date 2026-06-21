@@ -136,12 +136,22 @@ def generer_rapport_quotidien() -> tuple[str, list[dict], list[dict]]:
     section_decisions = "\n\n---\n\n".join(
         formater_decision(d["decision"], d["analyses"]) for d in decisions
     )
+
+    # v5.3.7 — Narratif Gemini en tête de rapport (vide si LLM indispo)
+    try:
+        from agents.orchestrator_llm import narratif_quotidien
+        narratif = narratif_quotidien(decisions, sentiment_global, etat, monitor_resume)
+    except Exception as e:
+        logger.warning(f"Narratif quotidien : {e}")
+        narratif = ""
+    bloc_narratif = f"\n## 📖 Synthèse exécutive\n\n{narratif}\n" if narratif else ""
+
     rapport = f"""# AlphaSignal — Rapport Quotidien — {date_str}
 
 Généré le : {now.strftime("%Y-%m-%d %H:%M UTC")}
 Capital total : {config.CAPITAL:.0f}€ | Investissable : {config.CAPITAL_INVESTISSABLE:.0f}€ \
 ({config.MAX_CAPITAL_INVESTI_PCT:.0f}%) | Risque/trade : {config.RISK_PER_TRADE_PCT:.1f}%
-
+{bloc_narratif}
 ## ⚡ État du marché en 30 secondes
 
 {generer_resume_30s(decisions, sentiment_global)}

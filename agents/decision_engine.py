@@ -170,7 +170,7 @@ def decider(ticker: str, analyses: dict) -> dict:
     if decision == "NO_TRADE":
         conf_finale = max(1, int(conf_max))
 
-    return {
+    resultat = {
         "ticker":           ticker,
         "decision":         decision,
         "style":            style,           # "normal" | "learning"
@@ -185,6 +185,15 @@ def decider(ticker: str, analyses: dict) -> dict:
         "seuil_confiance_requis": seuil_conf,
         "intuition":        intuition,
     }
+
+    # v5.3.6 — Audit métacognitif Gemini (n'override pas, juste annote)
+    try:
+        from agents.decision_engine_meta import audit_metacognitif
+        resultat["metacognition"] = audit_metacognitif(ticker, resultat, analyses)
+    except Exception as e:
+        logger.warning(f"Métacognition {ticker} : {e}")
+        resultat["metacognition"] = ""
+    return resultat
 
 
 def reevaluer_position(position: dict, analyses: dict) -> dict:
