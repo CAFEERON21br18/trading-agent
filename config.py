@@ -37,6 +37,7 @@ SMTP_PORT          = int(_get_optional("SMTP_PORT", "587"))
 # ── APIs optionnelles ─────────────────────────────────────────────────────────
 NEWSAPI_KEY         = _get_optional("NEWSAPI_KEY")
 ALPHA_VANTAGE_KEY   = _get_optional("ALPHA_VANTAGE_KEY")
+GEMINI_API_KEY      = _get_optional("GEMINI_API_KEY")
 
 # ── Capital & Risk Management ─────────────────────────────────────────────────
 CAPITAL                   = float(_get_optional("CAPITAL", "1000"))
@@ -86,6 +87,7 @@ def afficher_config():
     print(f"  Email destinataire     : {EMAIL_RECIPIENT}")
     print(f"  NewsAPI                : {'✓ configurée' if NEWSAPI_KEY else '✗ non configurée (RSS utilisé)'}")
     print(f"  Alpha Vantage          : {'✓ configurée' if ALPHA_VANTAGE_KEY else '✗ non configurée'}")
+    print(f"  Gemini (Google)        : {'✓ configurée' if GEMINI_API_KEY else '✗ non configurée'}")
     print("=" * 60)
 
     # Avertissement capital stop
