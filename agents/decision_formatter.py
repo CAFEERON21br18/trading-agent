@@ -86,6 +86,50 @@ def formater_decision(decision: dict, analyses: dict) -> str:
     lignes.append("")
     lignes.append(f"**Raisonnement** : {decision['reasoning']}")
 
+    # v5.3.9 — Pipeline de raisonnement (5 skills) si exécuté
+    pipe = decision.get("pipeline_raisonnement") or {}
+    if pipe.get("executed"):
+        lignes.append("")
+        lignes.append("**🧠 Pipeline de raisonnement** :")
+
+        bay = pipe.get("bayesien") or {}
+        if bay.get("disponible"):
+            lignes.append(f"- 🎲 **Bayésien** : prior {bay.get('prior', 0):.0%} → "
+                          f"posterior {bay.get('posterior', 0):.0%} "
+                          f"({bay.get('delta', 0):+.0%}). {bay.get('raisonnement', '')[:200]}")
+
+        br = pipe.get("base_rates") or {}
+        if br.get("disponible"):
+            lignes.append(f"- 📊 **Base rates** ({br.get('verdict', '?')}) : "
+                          f"{br.get('taux_base', '?')}. "
+                          f"Biais détecté : {br.get('biais_individuel_detecte', '—')[:180]}")
+
+        so = pipe.get("second_ordre") or {}
+        if so.get("disponible"):
+            angle = so.get("angle_a_surveiller", "")
+            lignes.append(f"- 🔮 **2e ordre** ({so.get('verdict_de_decision', '?')}) : "
+                          f"angle à surveiller — {angle[:200]}")
+
+        pm = pipe.get("pre_mortem") or {}
+        if pm.get("disponible"):
+            risque = pm.get("risque_dominant", "")
+            lignes.append(f"- 😈 **Pré-mortem** ({pm.get('verdict', '?')}) : "
+                          f"risque dominant — {risque[:200]}")
+            for cm in (pm.get("contre_mesures") or [])[:2]:
+                lignes.append(f"    - contre-mesure : {cm}")
+
+        mc = pipe.get("metacognition") or {}
+        if mc.get("disponible"):
+            biais = ", ".join(b.get("biais", "?") if isinstance(b, dict) else str(b)
+                              for b in (mc.get("biais_detectes") or [])[:3]) or "aucun"
+            lignes.append(f"- 🪞 **Métacognition** ({mc.get('verdict', '?')}, "
+                          f"solidité {mc.get('score_solidite', '?')}/10). Biais : {biais}")
+
+        if pipe.get("raisons_ajustement"):
+            lignes.append(f"- 📉 **Taille ajustée** : "
+                          f"×{pipe.get('taille_factor_ajustement', 1):.2f} — "
+                          f"{', '.join(pipe['raisons_ajustement'])}")
+
     # Position (si BUY/SELL et risque validé)
     risk = analyses.get("risque", {})
     if decision["decision"] in ("BUY", "SELL") and risk.get("valide") and risk.get("signal"):
