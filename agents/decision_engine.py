@@ -193,6 +193,22 @@ def decider(ticker: str, analyses: dict) -> dict:
     except Exception as e:
         logger.warning(f"Métacognition {ticker} : {e}")
         resultat["metacognition"] = ""
+
+    # v5.3.9 — Pipeline de raisonnement (5 skills) sur BUY/SELL normaux uniquement
+    try:
+        from agents.skills.pipeline import executer_pipeline
+        regime = analyses.get("context", {}).get("regime_marche")
+        pipeline = executer_pipeline(ticker, analyses, resultat, regime=regime)
+        resultat["pipeline_raisonnement"] = pipeline
+        if pipeline.get("executed") and pipeline.get("taille_factor_ajustement", 1.0) < 1.0:
+            ancien = resultat["taille_factor"]
+            resultat["taille_factor"] = round(ancien * pipeline["taille_factor_ajustement"], 2)
+            logger.info(f"Taille {ticker} ajustée par pipeline : "
+                        f"{ancien:.2f} → {resultat['taille_factor']:.2f} "
+                        f"({', '.join(pipeline['raisons_ajustement'])})")
+    except Exception as e:
+        logger.warning(f"Pipeline raisonnement {ticker} : {e}")
+        resultat["pipeline_raisonnement"] = {"executed": False, "raison": str(e)[:200]}
     return resultat
 
 
