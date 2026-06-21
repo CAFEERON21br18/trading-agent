@@ -45,10 +45,19 @@ def _generer_rapport_hebdo() -> str:
     etat = etat_portefeuille(prix_courants={})
     intuition = stats_intuition()
 
+    # v5.3.7 — Narratif hebdo Gemini
+    try:
+        from agents.orchestrator_llm import narratif_hebdo
+        narratif = narratif_hebdo(cette_sem, etat, intuition)
+    except Exception as e:
+        logger.warning(f"Narratif hebdo : {e}")
+        narratif = ""
+    bloc_narratif = f"\n## 📖 Synthèse de la semaine\n\n{narratif}\n" if narratif else ""
+
     rapport = f"""# AlphaSignal — Rapport Hebdomadaire — Semaine {annee}-W{semaine:02d}
 
 Généré le : {now.strftime("%Y-%m-%d %H:%M UTC")}
-
+{bloc_narratif}
 ## 📊 Performance de la semaine
 
 - **Trades clôturés** : {nb} ({wins} gagnants, {nb - wins} perdants)
