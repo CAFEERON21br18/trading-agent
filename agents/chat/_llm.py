@@ -5,7 +5,8 @@ Gemini synthétise une réponse naturelle. Si indisponible : on retombe sur
 le template (comportement v5.3 inchangé).
 """
 
-from utils.gemini import ask_gemini_status, gemini_disponible
+from utils.llm    import ask_llm
+from utils.gemini import gemini_disponible
 
 
 SYSTEM_PROMPT = """Tu es AlphaSignal, un analyste quantitatif senior et gestionnaire de portefeuille.
@@ -115,6 +116,18 @@ MESSAGES_ERREUR_UI = {
                           "Chiffres bruts :"),
     "réseau":            ("⚠️ **Problème réseau vers Gemini** — réessaie dans un instant. "
                           "Chiffres bruts :"),
+    # v5.4.0 — fallback Groq
+    "clé_groq_manquante":("⚠️ **Quota Gemini épuisé et clé Groq absente** — ajoute "
+                          "`GROQ_API_KEY=…` dans `.env` pour le fallback automatique. "
+                          "Chiffres bruts :"),
+    "clé_groq_invalide": ("⚠️ **Quota Gemini épuisé et clé Groq invalide** — vérifie "
+                          "`GROQ_API_KEY` dans `.env` (la clé fournie a été rejetée par Groq). "
+                          "Chiffres bruts :"),
+    "rate_limit_groq":   ("⚠️ **IA saturée des deux côtés** — Gemini en quota et Groq en "
+                          "rate-limit. Réessaie dans 1 min. Chiffres bruts :"),
+    "both_failed":       ("⚠️ **Service IA temporairement indisponible** — Gemini en quota "
+                          "et fallback Groq KO (voir les logs pour le détail). "
+                          "Chiffres bruts du contexte :"),
     "inconnu":           ("⚠️ **Erreur IA inattendue** — voir les logs. Chiffres bruts :"),
 }
 
@@ -132,13 +145,16 @@ def enrichir_avec_gemini(question: str, intention: str,
         return f"{banniere}\n\n{template_reponse}", "llm_indispo:clé_manquante"
 
     prompt = _construire_prompt(question, intention, template_reponse, contexte)
-    res = ask_gemini_status(prompt, system=SYSTEM_PROMPT, temperature=0.6,
-                            max_output_tokens=900)
-    if res["ok"] and len(res["text"]) > 30:
-        return res["text"], "gemini"
+    res = ask_llm(prompt, system=SYSTEM_PROMPT, temperature=0.6,
+                   max_tokens=900, mode="verbose")
+    if res.get("text") and res.get("source") in ("gemini", "groq") and len(res["text"]) > 30:
+        # Indique discrètement quand c'est Groq qui a répondu (fallback)
+        suffixe = "\n\n_via Groq (fallback)_" if res["source"] == "groq" else ""
+        return res["text"] + suffixe, res["source"]
 
     # Échec — bannière d'erreur claire + template comme fallback
-    err_type = res.get("error_type") or "inconnu"
+    err_type = res.get("error") or "inconnu"
+    # Map vers les bannières existantes (les nouveaux types Groq utilisent inconnu)
     banniere = MESSAGES_ERREUR_UI.get(err_type, MESSAGES_ERREUR_UI["inconnu"])
     retry = res.get("retry_after_sec")
     if retry:

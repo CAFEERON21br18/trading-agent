@@ -194,9 +194,9 @@ def decider(ticker: str, analyses: dict) -> dict:
         logger.warning(f"Métacognition {ticker} : {e}")
         resultat["metacognition"] = ""
 
-    # v5.3.9 — Pipeline de raisonnement (5 skills) sur BUY/SELL normaux uniquement
+    # v5.4.0 — Pipeline GROUPÉ (1 appel LLM au lieu de 5) sur BUY/SELL normaux
     try:
-        from agents.skills.pipeline import executer_pipeline
+        from agents.skills.pipeline_grouped import executer_pipeline
         regime = analyses.get("context", {}).get("regime_marche")
         pipeline = executer_pipeline(ticker, analyses, resultat, regime=regime)
         resultat["pipeline_raisonnement"] = pipeline
