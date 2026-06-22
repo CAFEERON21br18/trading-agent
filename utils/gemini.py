@@ -138,6 +138,100 @@ def ask_gemini(prompt: str, system: str | None = None,
     return ""
 
 
+def ask_gemini_status(prompt: str, system: str | None = None,
+                       temperature: float = 0.7,
+                       max_output_tokens: int | None = None) -> dict:
+    """
+    Variante de ask_gemini qui retourne un dict structuré avec l'origine de l'échec.
+    Utilisé par le chat pour afficher un message d'erreur clair à l'utilisateur.
+
+    Returns:
+        {"ok": bool, "text": str, "error_type": str | None,
+         "error_message": str | None, "retry_after_sec": int | None}
+
+    error_type ∈ {"clé_manquante", "clé_invalide", "quota_quotidien",
+                   "rate_limit_minute", "service_unavailable",
+                   "réponse_vide", "réseau", "inconnu"}
+    """
+    if not prompt or not prompt.strip():
+        return {"ok": False, "text": "", "error_type": "réponse_vide",
+                "error_message": "Prompt vide", "retry_after_sec": None}
+
+    client = _get_client()
+    if client is None:
+        return {"ok": False, "text": "", "error_type": "clé_manquante",
+                "error_message": "Clé Gemini non configurée dans .env",
+                "retry_after_sec": None}
+
+    from google.genai import types
+    cfg_kwargs = {"temperature": temperature}
+    if system:
+        cfg_kwargs["system_instruction"] = system
+    if max_output_tokens:
+        cfg_kwargs["max_output_tokens"] = max_output_tokens
+    cfg = types.GenerateContentConfig(**cfg_kwargs)
+
+    backoff = INITIAL_BACKOFF_SEC
+    last_err = None
+    for tentative in range(1, MAX_RETRIES + 1):
+        try:
+            _respecter_rate_limit()
+            response = client.models.generate_content(
+                model=MODEL_NAME, contents=prompt, config=cfg,
+            )
+            text = (response.text or "").strip()
+            if text:
+                return {"ok": True, "text": text, "error_type": None,
+                        "error_message": None, "retry_after_sec": None}
+            return {"ok": False, "text": "", "error_type": "réponse_vide",
+                    "error_message": "Gemini a renvoyé une réponse vide",
+                    "retry_after_sec": None}
+        except Exception as e:
+            last_err = e
+            msg = str(e).lower()
+            # Quota quotidien (free tier 20/jour) — pas la peine de retry
+            if "perdayperproject" in msg.replace(" ", "") or "freetier" in msg.replace(" ", ""):
+                retry = _extraire_retry_delay(str(e))
+                return {"ok": False, "text": "", "error_type": "quota_quotidien",
+                        "error_message": "Quota Gemini quotidien atteint (20 req/jour, tier gratuit)",
+                        "retry_after_sec": retry}
+            # Rate limit minute
+            if "429" in msg or "rate" in msg or "quota" in msg or "resource_exhausted" in msg:
+                if tentative < MAX_RETRIES:
+                    logger.warning(f"Gemini rate limit (tentative {tentative}/{MAX_RETRIES}) — backoff {backoff:.0f}s")
+                    time.sleep(backoff); backoff *= 2; continue
+                retry = _extraire_retry_delay(str(e))
+                return {"ok": False, "text": "", "error_type": "rate_limit_minute",
+                        "error_message": "Rate limit Gemini (5 req/min) — retry échoué 3×",
+                        "retry_after_sec": retry}
+            if "api_key" in msg and "invalid" in msg:
+                return {"ok": False, "text": "", "error_type": "clé_invalide",
+                        "error_message": "Clé Gemini invalide", "retry_after_sec": None}
+            if "503" in msg or "unavailable" in msg:
+                if tentative < MAX_RETRIES:
+                    time.sleep(backoff); backoff *= 2; continue
+                return {"ok": False, "text": "", "error_type": "service_unavailable",
+                        "error_message": "Service Gemini momentanément indisponible (503)",
+                        "retry_after_sec": 60}
+            logger.error(f"Gemini erreur inconnue (tentative {tentative}) : {e}")
+
+    return {"ok": False, "text": "", "error_type": "inconnu",
+            "error_message": str(last_err)[:200] if last_err else "?",
+            "retry_after_sec": None}
+
+
+def _extraire_retry_delay(msg: str) -> int | None:
+    """Extrait 'Please retry in 37s' depuis l'erreur Google."""
+    import re
+    m = re.search(r"retry in (\d+)", msg)
+    if m:
+        return int(m.group(1))
+    m = re.search(r"retryDelay':\s*'(\d+)s", msg)
+    if m:
+        return int(m.group(1))
+    return None
+
+
 def gemini_disponible() -> bool:
     """Vérifie rapidement que Gemini est utilisable."""
     return _get_client() is not None
