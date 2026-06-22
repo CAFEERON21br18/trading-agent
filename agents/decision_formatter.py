@@ -86,11 +86,13 @@ def formater_decision(decision: dict, analyses: dict) -> str:
     lignes.append("")
     lignes.append(f"**Raisonnement** : {decision['reasoning']}")
 
-    # v5.3.9 — Pipeline de raisonnement (5 skills) si exécuté
+    # v5.3.9 / v5.4.0 — Pipeline de raisonnement (5 skills) si exécuté
     pipe = decision.get("pipeline_raisonnement") or {}
     if pipe.get("executed"):
         lignes.append("")
-        lignes.append("**🧠 Pipeline de raisonnement** :")
+        src     = pipe.get("source", "")
+        src_str = f" _(via {src})_" if src else ""
+        lignes.append(f"**🧠 Pipeline de raisonnement**{src_str} :")
 
         bay = pipe.get("bayesien") or {}
         if bay.get("disponible"):
