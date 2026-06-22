@@ -5,7 +5,7 @@ Gemini synthétise une réponse naturelle. Si indisponible : on retombe sur
 le template (comportement v5.3 inchangé).
 """
 
-from utils.gemini import ask_gemini, gemini_disponible
+from utils.gemini import ask_gemini_status, gemini_disponible
 
 
 SYSTEM_PROMPT = """Tu es AlphaSignal, un analyste quantitatif senior et gestionnaire de portefeuille.
@@ -99,17 +99,48 @@ def _construire_prompt(question: str, intention: str,
     return "\n".join(sections)
 
 
+MESSAGES_ERREUR_UI = {
+    "quota_quotidien":   ("⚠️ **Service IA temporairement indisponible** — "
+                          "le quota Gemini gratuit (20 req/jour) est épuisé. "
+                          "Reset chaque jour. En attendant, voici les chiffres bruts du contexte :"),
+    "rate_limit_minute": ("⚠️ **IA saturée** — trop de requêtes la minute écoulée. "
+                          "Réessaie dans une trentaine de secondes. Chiffres bruts en attendant :"),
+    "service_unavailable": ("⚠️ **Service Gemini en panne (503)** — momentanément indisponible côté Google. "
+                            "Chiffres bruts :"),
+    "clé_invalide":      ("❌ **Clé API Gemini invalide** — vérifie la valeur dans `.env`. "
+                          "Chiffres bruts :"),
+    "clé_manquante":     ("❌ **Clé API Gemini absente** — ajoute `GEMINI_API_KEY=…` dans `.env`. "
+                          "Chiffres bruts :"),
+    "réponse_vide":      ("⚠️ **L'IA n'a rien renvoyé** — réessaie ou reformule la question. "
+                          "Chiffres bruts :"),
+    "réseau":            ("⚠️ **Problème réseau vers Gemini** — réessaie dans un instant. "
+                          "Chiffres bruts :"),
+    "inconnu":           ("⚠️ **Erreur IA inattendue** — voir les logs. Chiffres bruts :"),
+}
+
+
 def enrichir_avec_gemini(question: str, intention: str,
                          template_reponse: str, contexte: dict) -> tuple[str, str]:
     """
     Tente d'enrichir la réponse template via Gemini.
-    Retourne (reponse_finale, source) où source ∈ {gemini, template, template_fallback}.
+    Retourne (reponse_finale, source) où source ∈ {gemini, template, llm_indispo:<type>}.
+    Si Gemini échoue, retourne une bannière d'erreur CLAIRE + le template
+    (au lieu de retourner silencieusement le template comme avant).
     """
     if not gemini_disponible():
-        return template_reponse, "template"
+        banniere = MESSAGES_ERREUR_UI["clé_manquante"]
+        return f"{banniere}\n\n{template_reponse}", "llm_indispo:clé_manquante"
+
     prompt = _construire_prompt(question, intention, template_reponse, contexte)
-    llm_text = ask_gemini(prompt, system=SYSTEM_PROMPT, temperature=0.6,
-                          max_output_tokens=900)
-    if llm_text and len(llm_text) > 30:
-        return llm_text, "gemini"
-    return template_reponse, "template_fallback"
+    res = ask_gemini_status(prompt, system=SYSTEM_PROMPT, temperature=0.6,
+                            max_output_tokens=900)
+    if res["ok"] and len(res["text"]) > 30:
+        return res["text"], "gemini"
+
+    # Échec — bannière d'erreur claire + template comme fallback
+    err_type = res.get("error_type") or "inconnu"
+    banniere = MESSAGES_ERREUR_UI.get(err_type, MESSAGES_ERREUR_UI["inconnu"])
+    retry = res.get("retry_after_sec")
+    if retry:
+        banniere = banniere.rstrip(":") + f" (retry possible dans ~{retry}s) :"
+    return f"{banniere}\n\n{template_reponse}", f"llm_indispo:{err_type}"
