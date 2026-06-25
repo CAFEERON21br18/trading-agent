@@ -2911,3 +2911,536 @@ Leçon : [1 phrase]
 - **Target 2** : 33,283.2003
 - **Raison** : Score composite +2.45 ≥ 2.0, signaux cohérents
 - **Résultat** : *en attente*
+
+---
+### SIG-0222 — 2026-06-20T06:31:10.791973+00:00
+- **Actif** : BTC-USD
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 63,635.9883
+- **Stop-loss** : 60,880.6279
+- **Target 1** : 69,146.7090
+- **Target 2** : 71,902.0693
+- **Raison** : Score composite +1.5 faible — trade d'apprentissage (micro-position)
+- **Résultat** : *en attente*
+
+---
+### SIG-0223 — 2026-06-20T06:31:10.796469+00:00
+- **Actif** : ETH-USD
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 1,726.2700
+- **Stop-loss** : 1,625.2823
+- **Target 1** : 1,928.2455
+- **Target 2** : 2,029.2333
+- **Raison** : Score composite +1.5 faible — trade d'apprentissage (micro-position)
+- **Résultat** : *en attente*
+
+---
+### SIG-0224 — 2026-06-20T06:31:10.800719+00:00
+- **Actif** : VRT
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 333.0500
+- **Stop-loss** : 312.6137
+- **Target 1** : 373.9226
+- **Target 2** : 394.3589
+- **Raison** : Score composite +2.1 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0225 — 2026-06-20T06:31:10.802383+00:00
+- **Actif** : AMAT
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 617.1100
+- **Stop-loss** : 567.7408
+- **Target 1** : 715.8484
+- **Target 2** : 765.2177
+- **Raison** : Score composite +2.1 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0226 — 2026-06-20T06:31:10.804171+00:00
+- **Actif** : MU
+- **Direction** : LONG
+- **Confiance** : 7/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 1,133.9900
+- **Stop-loss** : 1,014.2600
+- **Target 1** : 1,373.4499
+- **Target 2** : 1,493.1798
+- **Raison** : Score composite +2.45 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0227 — 2026-06-20T06:31:10.805616+00:00
+- **Actif** : NQ=F
+- **Direction** : LONG
+- **Confiance** : 7/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 30,505.7500
+- **Stop-loss** : 29,579.9332
+- **Target 1** : 32,357.3835
+- **Target 2** : 33,283.2003
+- **Raison** : Score composite +2.45 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0228 — 2026-06-21T06:31:08.956539+00:00
+- **Actif** : BTC-USD
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 64,196.5508
+- **Stop-loss** : 62,077.6730
+- **Target 1** : 68,434.3064
+- **Target 2** : 70,553.1842
+- **Raison** : Score composite +1.5 faible — trade d'apprentissage (micro-position)
+- **Résultat** : *en attente*
+
+---
+### SIG-0229 — 2026-06-21T06:31:08.960233+00:00
+- **Actif** : ETH-USD
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 1,733.7000
+- **Stop-loss** : 1,676.5186
+- **Target 1** : 1,848.0626
+- **Target 2** : 1,905.2439
+- **Raison** : Score composite +1.5 faible — trade d'apprentissage (micro-position)
+- **Résultat** : *en attente*
+
+---
+### SIG-0230 — 2026-06-21T06:31:08.963782+00:00
+- **Actif** : VRT
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 333.0500
+- **Stop-loss** : 312.6137
+- **Target 1** : 373.9226
+- **Target 2** : 394.3589
+- **Raison** : Score composite +2.1 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0231 — 2026-06-21T06:31:08.966751+00:00
+- **Actif** : AMAT
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 617.1100
+- **Stop-loss** : 567.7408
+- **Target 1** : 715.8484
+- **Target 2** : 765.2177
+- **Raison** : Score composite +2.1 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0232 — 2026-06-21T06:31:08.969001+00:00
+- **Actif** : MU
+- **Direction** : LONG
+- **Confiance** : 7/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 1,133.9900
+- **Stop-loss** : 1,014.2600
+- **Target 1** : 1,373.4499
+- **Target 2** : 1,493.1798
+- **Raison** : Score composite +2.45 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0233 — 2026-06-21T06:31:08.971521+00:00
+- **Actif** : NQ=F
+- **Direction** : LONG
+- **Confiance** : 7/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 30,505.7500
+- **Stop-loss** : 29,579.9332
+- **Target 1** : 32,357.3835
+- **Target 2** : 33,283.2003
+- **Raison** : Score composite +2.45 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0234 — 2026-06-22T06:45:25.463390+00:00
+- **Actif** : BTC-USD
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 64,024.0898
+- **Stop-loss** : 62,077.6730
+- **Target 1** : 67,916.9236
+- **Target 2** : 69,863.3404
+- **Raison** : Score composite +1.5 faible — trade d'apprentissage (micro-position)
+- **Résultat** : *en attente*
+
+---
+### SIG-0235 — 2026-06-22T06:45:25.478669+00:00
+- **Actif** : ETH-USD
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 1,733.7100
+- **Stop-loss** : 1,676.5186
+- **Target 1** : 1,848.0926
+- **Target 2** : 1,905.2839
+- **Raison** : Score composite +1.5 faible — trade d'apprentissage (micro-position)
+- **Résultat** : *en attente*
+
+---
+### SIG-0236 — 2026-06-22T06:45:25.484482+00:00
+- **Actif** : SOL-USD
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 73.7400
+- **Stop-loss** : 69.2032
+- **Target 1** : 82.8136
+- **Target 2** : 87.3503
+- **Raison** : Score composite +1.5 faible — trade d'apprentissage (micro-position)
+- **Résultat** : *en attente*
+
+---
+### SIG-0237 — 2026-06-22T06:45:25.491911+00:00
+- **Actif** : VRT
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 333.0500
+- **Stop-loss** : 312.6137
+- **Target 1** : 373.9226
+- **Target 2** : 394.3589
+- **Raison** : Score composite +2.1 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0238 — 2026-06-22T06:45:25.495643+00:00
+- **Actif** : AMAT
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 617.1100
+- **Stop-loss** : 567.7408
+- **Target 1** : 715.8484
+- **Target 2** : 765.2177
+- **Raison** : Score composite +2.1 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0239 — 2026-06-22T06:45:25.503278+00:00
+- **Actif** : MU
+- **Direction** : LONG
+- **Confiance** : 7/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 1,133.9900
+- **Stop-loss** : 1,014.2600
+- **Target 1** : 1,373.4499
+- **Target 2** : 1,493.1798
+- **Raison** : Score composite +2.45 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0240 — 2026-06-23T06:39:13.285583+00:00
+- **Actif** : BTC-USD
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 62,653.9492
+- **Stop-loss** : 62,077.6730
+- **Target 1** : 63,806.5017
+- **Target 2** : 64,382.7779
+- **Raison** : Score composite +1.5 faible — trade d'apprentissage (micro-position)
+- **Résultat** : *en attente*
+
+---
+### SIG-0241 — 2026-06-23T06:39:13.293097+00:00
+- **Actif** : SOL-USD
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 69.8500
+- **Stop-loss** : 67.8929
+- **Target 1** : 73.7642
+- **Target 2** : 75.7213
+- **Raison** : Score composite +1.5 faible — trade d'apprentissage (micro-position)
+- **Résultat** : *en attente*
+
+---
+### SIG-0242 — 2026-06-23T06:39:13.296759+00:00
+- **Actif** : HBAR-USD
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 0.0775
+- **Stop-loss** : 0.0765
+- **Target 1** : 0.0795
+- **Target 2** : 0.0804
+- **Raison** : Score composite +2.1 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0243 — 2026-06-23T06:39:13.300373+00:00
+- **Actif** : TSLA
+- **Direction** : SHORT
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 405.0500
+- **Stop-loss** : 410.6631
+- **Target 1** : 393.8238
+- **Target 2** : 388.2107
+- **Raison** : Score composite -2.1 ≤ -2.0, signaux baissiers
+- **Résultat** : *en attente*
+
+---
+### SIG-0244 — 2026-06-23T06:39:13.304936+00:00
+- **Actif** : MSFT
+- **Direction** : SHORT
+- **Confiance** : 8/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 367.3400
+- **Stop-loss** : 375.8599
+- **Target 1** : 350.3001
+- **Target 2** : 341.7802
+- **Raison** : Score composite -1.55 faible — trade d'apprentissage short (micro-position)
+- **Résultat** : *en attente*
+
+---
+### SIG-0245 — 2026-06-23T06:39:13.309208+00:00
+- **Actif** : AMZN
+- **Direction** : SHORT
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 232.7900
+- **Stop-loss** : 244.4101
+- **Target 1** : 209.5498
+- **Target 2** : 197.9297
+- **Raison** : Score composite -2.1 ≤ -2.0, signaux baissiers
+- **Résultat** : *en attente*
+
+---
+### SIG-0246 — 2026-06-23T06:39:13.311207+00:00
+- **Actif** : VRT
+- **Direction** : LONG
+- **Confiance** : 7/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 357.9600
+- **Stop-loss** : 328.6078
+- **Target 1** : 416.6643
+- **Target 2** : 446.0164
+- **Raison** : Score composite +2.45 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0247 — 2026-06-23T06:39:13.312848+00:00
+- **Actif** : AMAT
+- **Direction** : LONG
+- **Confiance** : 7/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 640.1800
+- **Stop-loss** : 591.7582
+- **Target 1** : 737.0236
+- **Target 2** : 785.4453
+- **Raison** : Score composite +2.45 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0248 — 2026-06-23T06:39:13.314368+00:00
+- **Actif** : QQQ
+- **Direction** : LONG
+- **Confiance** : 7/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 737.9500
+- **Stop-loss** : 715.6551
+- **Target 1** : 782.5399
+- **Target 2** : 804.8349
+- **Raison** : Score composite +2.45 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0249 — 2026-06-23T06:39:13.315872+00:00
+- **Actif** : NQ=F
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 30,051.0000
+- **Stop-loss** : 29,467.9200
+- **Target 1** : 31,217.1600
+- **Target 2** : 31,800.2400
+- **Raison** : Score composite +2.1 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0250 — 2026-06-24T06:40:22.868739+00:00
+- **Actif** : BTC-USD
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 62,769.8789
+- **Stop-loss** : 62,077.6730
+- **Target 1** : 64,154.2907
+- **Target 2** : 64,846.4967
+- **Raison** : Score composite +1.5 faible — trade d'apprentissage (micro-position)
+- **Résultat** : *en attente*
+
+---
+### SIG-0251 — 2026-06-24T06:40:22.873257+00:00
+- **Actif** : ETH-USD
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 1,673.3300
+- **Stop-loss** : 1,595.8067
+- **Target 1** : 1,828.3765
+- **Target 2** : 1,905.8998
+- **Raison** : Score composite +1.5 faible — trade d'apprentissage (micro-position)
+- **Résultat** : *en attente*
+
+---
+### SIG-0252 — 2026-06-24T06:40:22.876956+00:00
+- **Actif** : SOL-USD
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 69.8400
+- **Stop-loss** : 67.8929
+- **Target 1** : 73.7342
+- **Target 2** : 75.6813
+- **Raison** : Score composite +1.5 faible — trade d'apprentissage (micro-position)
+- **Résultat** : *en attente*
+
+---
+### SIG-0253 — 2026-06-24T06:40:22.881152+00:00
+- **Actif** : HBAR-USD
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 0.0774
+- **Stop-loss** : 0.0765
+- **Target 1** : 0.0793
+- **Target 2** : 0.0802
+- **Raison** : Score composite +2.1 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0254 — 2026-06-24T06:40:22.884933+00:00
+- **Actif** : VRT
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 318.3200
+- **Stop-loss** : 312.6137
+- **Target 1** : 329.7326
+- **Target 2** : 335.4389
+- **Raison** : Score composite +2.1 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0255 — 2026-06-24T06:40:22.888398+00:00
+- **Actif** : AMAT
+- **Direction** : LONG
+- **Confiance** : 7/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 585.8800
+- **Stop-loss** : 533.7737
+- **Target 1** : 690.0926
+- **Target 2** : 742.1989
+- **Raison** : Score composite +2.45 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0256 — 2026-06-24T06:40:22.891522+00:00
+- **Actif** : MU
+- **Direction** : LONG
+- **Confiance** : 7/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 1,051.7700
+- **Stop-loss** : 1,009.0693
+- **Target 1** : 1,137.1714
+- **Target 2** : 1,179.8721
+- **Raison** : Score composite +2.45 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0257 — 2026-06-24T06:40:22.893388+00:00
+- **Actif** : QQQ
+- **Direction** : LONG
+- **Confiance** : 7/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 713.6500
+- **Stop-loss** : 693.1568
+- **Target 1** : 754.6364
+- **Target 2** : 775.1297
+- **Raison** : Score composite +2.45 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0258 — 2026-06-24T06:40:22.895195+00:00
+- **Actif** : NQ=F
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 29,813.7500
+- **Stop-loss** : 29,467.9200
+- **Target 1** : 30,505.4100
+- **Target 2** : 30,851.2400
+- **Raison** : Score composite +2.1 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0259 — 2026-06-25T06:39:04.060386+00:00
+- **Actif** : VRT
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 316.4300
+- **Stop-loss** : 312.6137
+- **Target 1** : 324.0626
+- **Target 2** : 327.8789
+- **Raison** : Score composite +2.1 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0260 — 2026-06-25T06:39:04.065631+00:00
+- **Actif** : AMAT
+- **Direction** : LONG
+- **Confiance** : 7/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 588.9700
+- **Stop-loss** : 537.9306
+- **Target 1** : 691.0488
+- **Target 2** : 742.0882
+- **Raison** : Score composite +2.45 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0261 — 2026-06-25T06:39:04.070067+00:00
+- **Actif** : QQQ
+- **Direction** : LONG
+- **Confiance** : 7/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 710.6200
+- **Stop-loss** : 693.1568
+- **Target 1** : 745.5464
+- **Target 2** : 763.0095
+- **Raison** : Score composite +2.45 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
+
+---
+### SIG-0262 — 2026-06-25T06:39:04.073681+00:00
+- **Actif** : NQ=F
+- **Direction** : LONG
+- **Confiance** : 6/10
+- **Signal émis par** : Decision Engine
+- **Prix signal** : 30,124.5000
+- **Stop-loss** : 29,467.9200
+- **Target 1** : 31,437.6600
+- **Target 2** : 32,094.2400
+- **Raison** : Score composite +2.1 ≥ 2.0, signaux cohérents
+- **Résultat** : *en attente*
