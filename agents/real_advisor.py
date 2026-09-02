@@ -1,6 +1,7 @@
 """
-agents/real_advisor.py — Conseil pour le portefeuille RÉEL (v5.0)
+agents/real_advisor.py — Orchestrateur des conseils sur le portefeuille RÉEL.
 Ne fait JAMAIS d'action automatique. Génère des conseils, attend la décision user.
+Les règles sont dans agents/real_advisor_rules.py (v5.4.1).
 """
 
 import sys
@@ -9,10 +10,11 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.logger import get_logger
-from utils.real_portfolio_db import lire_investissements, ajouter_conseil
+from utils.real_portfolio_db import lire_investissements, ajouter_conseil, lire_plan
 from utils.real_price import calculate_position_pnl
 from agents.asset_analyzer import analyser_actif_complet
 from agents.decision_engine import decider
+from agents.real_advisor_rules import regles_position, regle_signal_technique
 
 logger = get_logger(__name__)
 
@@ -29,7 +31,7 @@ def _enrichir(inv: dict) -> dict:
                 "prix_calibre": False, "entry_price_display": inv["entry_price"]}
     return {
         **inv,
-        "prix_actuel":          pnl["current_price_display"],  # calibré pour l'affichage
+        "prix_actuel":          pnl["current_price_display"],
         "prix_actuel_raw":      pnl["current_price_raw"],
         "entry_price_display":  pnl["entry_price_display"],
         "pnl_pct":              pnl["pnl_percent"],
@@ -40,67 +42,64 @@ def _enrichir(inv: dict) -> dict:
     }
 
 
-def evaluer_position_reelle(inv: dict) -> list[dict]:
-    """
-    Évalue une position réelle et génère des conseils si pertinent.
-    Retourne liste de {advice_type, recommendation, reasoning, urgency}.
-    """
-    conseils = []
-    inv_e = _enrichir(inv)
-    prix = inv_e["prix_actuel"]
-    if prix is None:
-        return conseils
+def _charger_plan(plan_id) -> dict | None:
+    """Helper tolérant : retourne le plan ou None."""
+    if not plan_id:
+        return None
+    try:
+        return lire_plan(plan_id)
+    except Exception:
+        return None
 
+
+def _enrichir_llm(conseils: list[dict], inv: dict, inv_e: dict, plan: dict) -> None:
+    """Enrichit chaque conseil avec un wording LLM cohérent au plan (silencieux si KO)."""
+    from utils.llm import ask_llm
     pnl_pct = inv_e["pnl_pct"]
-    target  = inv["target_price"]
-    sl      = inv["stop_loss_mental"]
+    pnl_eur = inv_e["pnl_eur"]
+    plan_name = plan.get("name", "")
+    plan_type = plan.get("plan_type", "")
+    plan_obj  = (plan.get("objective") or "")[:200]
+    plan_vis  = (plan.get("vision") or "")[:200]
+    for c in conseils:
+        try:
+            prompt = (f"Position : {inv['asset']} à {pnl_pct:+.1f}% ({pnl_eur:+.2f}€).\n"
+                      f"Plan associé : {plan_name} ({plan_type})\n"
+                      f"  Objectif : {plan_obj}\n  Vision : {plan_vis}\n"
+                      f"Conseil de base : {c['recommendation']} — {c['reasoning'][:200]}\n\n"
+                      f"En 2 phrases max, conseil stratégique CONFORME au plan :")
+            r = ask_llm(prompt,
+                         system="Tu es un conseiller trading. Concis, factuel, respecte la stratégie du plan.",
+                         mode="silent", max_tokens=200)
+            if r.get("text"):
+                c["reasoning"] = r["text"]
+        except Exception:
+            pass  # garder le conseil règle-base si LLM KO
 
-    # 1. Cible atteinte
-    if target and inv["direction"] == "LONG" and prix >= target * 0.97:
-        conseils.append({
-            "advice_type": "ALERTE",
-            "recommendation": "prendre profit partiel",
-            "reasoning": f"{inv['asset']} approche ta cible {target:.2f} (actuel {prix:.2f}, +{pnl_pct:.1f}%). "
-                         "Envisage de prendre 50% de profit, laisser courir le reste.",
-            "urgency": "haute",
-        })
 
-    # 2. Stop mental violé
-    if sl and inv["direction"] == "LONG" and prix <= sl:
-        conseils.append({
-            "advice_type": "ALERTE",
-            "recommendation": "vendre / couper",
-            "reasoning": f"{inv['asset']} a passé ton stop mental {sl:.2f} (actuel {prix:.2f}, {pnl_pct:.1f}%). "
-                         "Ta thèse est-elle invalidée ? Si oui, couper proprement.",
-            "urgency": "haute",
-        })
+def evaluer_position_reelle(inv: dict) -> list[dict]:
+    """Évalue une position réelle et génère des conseils si pertinent."""
+    inv_e = _enrichir(inv)
+    if inv_e["prix_actuel"] is None:
+        return []
+    plan = _charger_plan(inv.get("plan_id"))
 
-    # 3. Position trop chargée en perte
-    if pnl_pct < -15:
-        conseils.append({
-            "advice_type": "CONSEIL",
-            "recommendation": "réévaluer la thèse",
-            "reasoning": f"{inv['asset']} en perte de {pnl_pct:.1f}%. "
-                         f"Thèse initiale : '{inv.get('investment_thesis', 'non documentée')}'. "
-                         "Reste-t-elle valable ? Sinon, coupe et redéploie.",
-            "urgency": "moyenne",
-        })
+    # Règles déterministes (toujours dispo, sans LLM)
+    conseils = regles_position(inv, inv_e, plan)
 
-    # 4. Analyse technique défavorable
+    # Règle 4 : analyse technique (signal SELL fort)
     try:
         analyses = analyser_actif_complet(inv["asset"])
         decision = decider(inv["asset"], analyses)
-        if inv["direction"] == "LONG" and decision["decision"] == "SELL" and decision["confidence"] >= 7:
-            conseils.append({
-                "advice_type": "CONSEIL",
-                "recommendation": "envisager fermeture",
-                "reasoning": f"L'agent détecte un signal SELL fort sur {inv['asset']} "
-                             f"(conf {decision['confidence']}/10) : {decision['reasoning'][:200]}",
-                "urgency": "moyenne",
-            })
+        c4 = regle_signal_technique(inv, decision, plan)
+        if c4:
+            conseils.append(c4)
     except Exception as e:
         logger.warning(f"Analyse {inv['asset']} pour conseil : {e}")
 
+    # Enrichissement LLM optionnel
+    if conseils and plan:
+        _enrichir_llm(conseils, inv, inv_e, plan)
     return conseils
 
 

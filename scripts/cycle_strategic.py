@@ -66,8 +66,20 @@ def main() -> int:
 
         queue = lire_queue()
         logger.info(f"Stratégique : {total_decouvertes} découverte(s), queue à {len(queue)} actifs")
+
+        # v5.4.1 — Conseils sur le portefeuille réel (toutes les 4h)
+        nb_conseils = 0
+        try:
+            from agents.real_advisor import evaluer_tout_le_portefeuille
+            nb_conseils = evaluer_tout_le_portefeuille()
+            logger.info(f"Real advisor : {nb_conseils} conseil(s) générés")
+        except Exception as e:
+            logger.error(f"Real advisor échoué : {e}")
+
         update_heartbeat(CYCLE, status="healthy", duration_sec=_t.time() - t0,
-                         extra={"decouvertes": total_decouvertes, "queue_len": len(queue)})
+                         extra={"decouvertes": total_decouvertes,
+                                "queue_len": len(queue),
+                                "conseils_reels": nb_conseils})
         return 0
     except Exception as e:
         logger.error(f"❌ Cycle STRATÉGIQUE échoué : {e}")
