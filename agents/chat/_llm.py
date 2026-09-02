@@ -71,9 +71,22 @@ def _construire_prompt(question: str, intention: str,
     if asset_data:
         sections.append("== ANALYSE ACTIFS ==")
         for t, d in list(asset_data.items())[:3]:
-            sections.append(f"{t} : décision {d.get('decision')} "
-                            f"(conf {d.get('confidence')}/10, score {d.get('score', 0):+.2f}) "
-                            f"— {(d.get('reasoning') or '')[:250]}")
+            if d.get("in_watchlist"):
+                # v5.4.2 : actif suivi → décision + reasoning existants
+                sections.append(f"{t} [suivi] : décision {d.get('decision')} "
+                                f"(conf {d.get('confidence')}/10, score {d.get('score', 0):+.2f}) "
+                                f"— {(d.get('reasoning') or '')[:250]}")
+            elif d.get("found"):
+                # v5.4.2 : actif hors watchlist → chiffres yfinance à la volée
+                sections.append(
+                    f"{t} [hors watchlist, yfinance] : "
+                    f"prix {d.get('prix')}, RSI {d.get('rsi')}, "
+                    f"SMA20 {d.get('sma20')}, SMA50 {d.get('sma50')}, "
+                    f"perf 1 mois {d.get('change_1m_pct')}%. "
+                    f"⚠️ Pas d'analyse Decision Engine — actif non suivi par l'agent."
+                )
+            else:
+                sections.append(f"{t} : {d.get('note') or d.get('error') or 'données indisponibles'}")
         sections.append("")
 
     market = contexte.get("market_context") or {}

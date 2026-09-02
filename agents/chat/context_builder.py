@@ -1,31 +1,19 @@
 """
-agents/chat/context_builder.py — Assemble le contexte pour répondre à une question
+agents/chat/context_builder.py — Assemble le contexte pour répondre à une question.
+v5.4.2 : le chat récupère les données à la volée pour les actifs hors watchlist.
+La logique d'extraction et de fallback yfinance est dans _extraction.py.
 """
 
 import sys
 import os
-import re
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from utils.logger import get_logger
 from utils.helpers import charger_watchlist, tous_les_tickers
+from agents.chat._extraction import extraire_tickers, get_asset_a_la_volee
 
 logger = get_logger(__name__)
-
-
-def _extraire_tickers(question: str) -> list[str]:
-    """Trouve les tickers mentionnés dans la question."""
-    q = question.upper()
-    candidats = set()
-    try:
-        for t in tous_les_tickers(charger_watchlist()):
-            base = t.split("-")[0].split("=")[0]
-            if base in q or t in q:
-                candidats.add(t)
-    except Exception:
-        pass
-    return list(candidats)
 
 
 def build_context(question: str) -> dict:
@@ -53,23 +41,33 @@ def build_context(question: str) -> dict:
         logger.warning(f"Real context : {e}")
         context["real_resume"] = {}
 
-    # 3. Actifs mentionnés
-    tickers = _extraire_tickers(question)
+    # 3. Actifs mentionnés — v5.4.2 : watchlist OU à la volée (yfinance)
+    tickers = extraire_tickers(question)
     context["tickers_mentionnes"] = tickers
     context["asset_data"] = {}
+    watchlist_set: set[str] = set()
+    try:
+        watchlist_set = set(tous_les_tickers(charger_watchlist()))
+    except Exception:
+        pass
     for t in tickers[:3]:
         try:
-            from agents.asset_analyzer import analyser_actif_complet
-            from agents.decision_engine import decider
-            an = analyser_actif_complet(t)
-            dc = decider(t, an)
-            context["asset_data"][t] = {
-                "technique":   an.get("technique"),
-                "decision":    dc.get("decision"),
-                "confidence":  dc.get("confidence"),
-                "score":       dc.get("score_composite"),
-                "reasoning":   dc.get("reasoning"),
-            }
+            if t in watchlist_set:
+                from agents.asset_analyzer import analyser_actif_complet
+                from agents.decision_engine import decider
+                an = analyser_actif_complet(t)
+                dc = decider(t, an)
+                context["asset_data"][t] = {
+                    "in_watchlist": True,
+                    "technique":    an.get("technique"),
+                    "decision":     dc.get("decision"),
+                    "confidence":   dc.get("confidence"),
+                    "score":        dc.get("score_composite"),
+                    "reasoning":    dc.get("reasoning"),
+                }
+            else:
+                data = get_asset_a_la_volee(t)
+                context["asset_data"][t] = {"in_watchlist": False, **data}
         except Exception as e:
             logger.warning(f"Asset data {t} : {e}")
 
