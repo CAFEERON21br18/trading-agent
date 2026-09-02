@@ -20,7 +20,9 @@ import config
 logger = get_logger(__name__)
 
 MODEL_GEMINI = "gemini-2.5-flash"
-MODEL_GROQ   = "llama-3.3-70b-versatile"
+# v5.4.2 : llama-3.3-70b-versatile a été déprécié par Groq → bascule sur
+# groq/compound-mini (rapide, réponses complètes, français correct).
+MODEL_GROQ   = "groq/compound-mini"
 
 
 def ask_llm(prompt: str, system: str | None = None,
