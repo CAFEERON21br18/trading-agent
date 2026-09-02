@@ -61,10 +61,25 @@ def _construire_prompt(question: str, intention: str,
         sections.append(f"{real.get('open_count', 0)} positions ouvertes, "
                         f"investi {real.get('total_invested', 0):.2f}€, "
                         f"P&L réalisé {real.get('realized_pnl', 0):+.2f}€")
+        # v5.4.3 : chaque position vient avec son plan (thèse, vision) pour
+        # que l'agent conseille en cohérence avec la stratégie du plan.
+        from utils.real_portfolio_db import lire_plan as _lp
+        plans_cache: dict = {}
         for i in (contexte.get("real_open") or [])[:5]:
+            plan_str = ""
+            pid = i.get("plan_id")
+            if pid:
+                if pid not in plans_cache:
+                    try: plans_cache[pid] = _lp(pid) or {}
+                    except Exception: plans_cache[pid] = {}
+                p = plans_cache[pid]
+                if p:
+                    plan_str = (f" [plan « {p.get('name','?')} » : "
+                                 f"{(p.get('objective') or '')[:60]} | "
+                                 f"thèse : {(p.get('investment_reasons') or p.get('vision') or '—')[:60]}]")
             sections.append(f"  {i['asset']} : qty {i['quantity']:.4f}, "
                             f"entrée {i['entry_price']:.2f}€, "
-                            f"{i['holding_type']}/{i['instrument_type']}")
+                            f"{i['holding_type']}/{i['instrument_type']}{plan_str}")
         sections.append("")
 
     asset_data = contexte.get("asset_data") or {}

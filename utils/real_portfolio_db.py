@@ -126,6 +126,15 @@ def initialiser_real_db() -> None:
             c.execute("ALTER TABLE investment_plans ADD COLUMN allocated_budget_percent REAL")
         except Exception:
             pass
+        # v5.4.3 : champs descriptifs supplémentaires (raisons + notes perso)
+        try:
+            c.execute("ALTER TABLE investment_plans ADD COLUMN investment_reasons TEXT")
+        except Exception:
+            pass
+        try:
+            c.execute("ALTER TABLE investment_plans ADD COLUMN personal_notes TEXT")
+        except Exception:
+            pass
         # v5.1 : alertes des plans
         c.execute("""
             CREATE TABLE IF NOT EXISTS plan_alerts (
@@ -524,7 +533,10 @@ def modifier_plan(plan_id: int, updates: dict) -> bool:
     """Modifie un plan. Seuls les champs présents dans updates sont touchés."""
     allowed = {"name", "objective", "target_return_percent", "target_amount",
                "time_horizon", "vision", "risk_tolerance", "allocated_budget",
-               "max_position_size", "rules", "status", "progress_notes"}
+               "allocated_budget_percent", "max_position_size", "rules", "status",
+               "progress_notes",
+               # v5.4.3 : champs descriptifs
+               "investment_reasons", "personal_notes"}
     sets, vals = [], []
     for k, v in updates.items():
         if k in allowed:

@@ -61,13 +61,18 @@ def _enrichir_llm(conseils: list[dict], inv: dict, inv_e: dict, plan: dict) -> N
     plan_type = plan.get("plan_type", "")
     plan_obj  = (plan.get("objective") or "")[:200]
     plan_vis  = (plan.get("vision") or "")[:200]
+    plan_rea  = (plan.get("investment_reasons") or "")[:250]  # v5.4.3 : thèse
+    plan_not  = (plan.get("personal_notes") or "")[:200]      # v5.4.3 : notes user
     for c in conseils:
         try:
             prompt = (f"Position : {inv['asset']} à {pnl_pct:+.1f}% ({pnl_eur:+.2f}€).\n"
                       f"Plan associé : {plan_name} ({plan_type})\n"
-                      f"  Objectif : {plan_obj}\n  Vision : {plan_vis}\n"
-                      f"Conseil de base : {c['recommendation']} — {c['reasoning'][:200]}\n\n"
-                      f"En 2 phrases max, conseil stratégique CONFORME au plan :")
+                      f"  Objectif : {plan_obj}\n"
+                      f"  Vision   : {plan_vis}\n"
+                      + (f"  Thèse    : {plan_rea}\n"  if plan_rea else "")
+                      + (f"  Notes    : {plan_not}\n"  if plan_not else "")
+                      + f"Conseil de base : {c['recommendation']} — {c['reasoning'][:200]}\n\n"
+                      f"En 2 phrases max, conseil stratégique CONFORME au plan et à la thèse :")
             r = ask_llm(prompt,
                          system="Tu es un conseiller trading. Concis, factuel, respecte la stratégie du plan.",
                          mode="silent", max_tokens=200)
