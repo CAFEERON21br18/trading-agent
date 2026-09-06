@@ -33,6 +33,28 @@ def _verifier_position(pos: dict) -> dict | None:
     direction = pos["direction"]
     sl, tp1, tp2 = pos["stop_loss"], pos["target_1"], pos.get("target_2")
 
+    # v5.5.1 — Trailing stop (opt-in, s'active en amont via API)
+    if pos.get("trailing_stop_active"):
+        try:
+            from agents.technical_skills.trailing_stop import (
+                mettre_a_jour_trailing_stop, touche_trailing,
+            )
+            maj = mettre_a_jour_trailing_stop(pos, prix)
+            if maj:
+                pos["trailing_stop_price"] = maj["nouveau"]
+                logger.info(f"Trailing {pos['ticker']} #{pos['id']} : "
+                            f"{maj['ancien']} → {maj['nouveau']} (Δ {maj['delta']:+.4f})")
+            if touche_trailing(pos, prix):
+                ts_val = pos.get("trailing_stop_price")
+                op = "≤" if direction == "LONG" else "≥"
+                return fermer_position(
+                    pos["id"], prix,
+                    f"Trailing stop touché ({prix:.4f} {op} {ts_val:.4f})",
+                    "CLOSED_TRAILING",
+                )
+        except Exception as e:
+            logger.warning(f"Trailing stop {pos['ticker']} : {e}")
+
     if direction == "LONG":
         if prix <= sl:
             return fermer_position(pos["id"], prix, f"Stop-loss touché ({prix:.4f} ≤ {sl:.4f})", "CLOSED_SL")

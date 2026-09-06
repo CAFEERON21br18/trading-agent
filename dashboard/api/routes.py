@@ -124,6 +124,20 @@ def get_intuition():
     return jsonify(stats_intuition())
 
 
+@api.route("/positions/<int:pos_id>/trailing-stop", methods=["POST"])
+def post_trailing_stop(pos_id):
+    """v5.5.1 — Active/désactive le trailing stop sur une position paper.
+    Body : {"active": true|false, "atr_multiplier": 2.0 (opt)}."""
+    from agents.technical_skills.trailing_stop import (
+        activer_trailing_stop, desactiver_trailing_stop,
+    )
+    data = request.get_json() or {}
+    if data.get("active"):
+        return jsonify(activer_trailing_stop(pos_id,
+            float(data.get("atr_multiplier", 2.0))))
+    return jsonify(desactiver_trailing_stop(pos_id))
+
+
 @api.route("/regime")
 def get_regime():
     """v5.5.0 — Régime de marché courant (global + actifs suivis)."""
