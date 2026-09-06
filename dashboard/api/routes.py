@@ -138,6 +138,20 @@ def post_trailing_stop(pos_id):
     return jsonify(desactiver_trailing_stop(pos_id))
 
 
+@api.route("/calendar")
+def get_calendar():
+    """v5.5.4 — Calendrier économique : macro + earnings de la watchlist."""
+    from agents.technical_skills.economic_calendar import evenements_a_surveiller
+    from utils.helpers import charger_watchlist, tous_les_tickers
+    tickers = []
+    try:
+        tickers = tous_les_tickers(charger_watchlist())
+    except Exception:
+        pass
+    jours = int(request.args.get("jours", 14))
+    return jsonify(evenements_a_surveiller(tickers, jours_avant=jours))
+
+
 @api.route("/correlation")
 def get_correlation():
     """v5.5.3 — Matrice de corrélation du portefeuille paper OPEN + alertes."""
