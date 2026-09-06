@@ -77,6 +77,13 @@ def initialiser_paper_db() -> None:
                 created_at                TEXT DEFAULT (datetime('now'))
             )
         """)
+        # v5.5.1 — Trailing stop intelligent (Skill technique 2)
+        try: c.execute("ALTER TABLE positions ADD COLUMN trailing_stop_active INTEGER DEFAULT 0")
+        except Exception: pass
+        try: c.execute("ALTER TABLE positions ADD COLUMN trailing_stop_price REAL")
+        except Exception: pass
+        try: c.execute("ALTER TABLE positions ADD COLUMN atr_multiplier REAL DEFAULT 2.0")
+        except Exception: pass
         conn.commit()
         conn.close()
         logger.info("BDD paper trading initialisée.")
