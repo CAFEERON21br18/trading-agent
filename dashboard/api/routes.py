@@ -138,6 +138,20 @@ def post_trailing_stop(pos_id):
     return jsonify(desactiver_trailing_stop(pos_id))
 
 
+@api.route("/stress-test")
+def get_stress_test():
+    """v5.5.7 — Stress test du portefeuille sur un choc prédéfini.
+    Query: ?choc=marche_-15 (défaut) ou 'all' pour tous."""
+    from agents.technical_skills.scenario_simulation import (
+        stress_test_portefeuille, tous_les_stress_tests, CHOCS_PREDEFINIS,
+    )
+    key = request.args.get("choc", "marche_-15")
+    if key == "all":
+        return jsonify({"chocs_dispo": list(CHOCS_PREDEFINIS.keys()),
+                         "resultats": tous_les_stress_tests()})
+    return jsonify(stress_test_portefeuille(key))
+
+
 @api.route("/news-catalysts")
 def get_news_catalysts():
     """v5.5.6 — Scan de la watchlist pour catalyseurs news récents."""
