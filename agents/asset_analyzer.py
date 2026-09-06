@@ -116,11 +116,24 @@ def analyser_actif_complet(ticker: str, sentiment_global: dict | None = None,
     sentiment  = _sentiment(ticker)
     risque     = _risque(ticker, technique, cash_disponible, nb_positions_visees)
     memory     = consulter_memoire(ticker)
+    context = dict(sentiment_global or {})
+    # v5.5.0 — Régime de marché courant pour cet actif + global (Skill 1)
+    try:
+        from agents.technical_skills.market_regime import dernier_regime
+        r_actif = dernier_regime(ticker)
+        r_glob  = dernier_regime("global")
+        if r_actif:
+            context["regime_marche"] = r_actif.get("regime")
+            context["regime_adx"]    = r_actif.get("adx")
+        if r_glob:
+            context["regime_global"] = r_glob.get("regime")
+    except Exception:
+        pass
     return {
         "technique":   technique,
         "fondamental": fondamental,
         "sentiment":   sentiment,
         "risque":      risque,
         "memory":      memory,
-        "context":     sentiment_global or {},
+        "context":     context,
     }

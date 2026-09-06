@@ -76,10 +76,31 @@ def main() -> int:
         except Exception as e:
             logger.error(f"Real advisor échoué : {e}")
 
+        # v5.5.0 — Détection régime de marché (global + actifs clés)
+        regime_global_str = "indispo"
+        try:
+            from agents.technical_skills.market_regime import (
+                detecter_regime_actif, detecter_regime_global, enregistrer_regime
+            )
+            from utils.real_portfolio_db import initialiser_real_db
+            initialiser_real_db()  # s'assure que la table existe
+            rg = detecter_regime_global()
+            enregistrer_regime("global", rg)
+            regime_global_str = f"{rg['regime_global']} ({rg['mode']})"
+            logger.info(f"Régime global : {regime_global_str}")
+            for tk in ("BTC-USD", "SPY", "NVDA", "AAPL", "QQQ"):
+                r = detecter_regime_actif(tk)
+                if r["regime"] != "indispo":
+                    enregistrer_regime(tk, r)
+                    logger.info(f"  Régime {tk:8s} : {r['regime']} (ADX {r['adx']})")
+        except Exception as e:
+            logger.error(f"Régime marché échoué : {e}")
+
         update_heartbeat(CYCLE, status="healthy", duration_sec=_t.time() - t0,
                          extra={"decouvertes": total_decouvertes,
                                 "queue_len": len(queue),
-                                "conseils_reels": nb_conseils})
+                                "conseils_reels": nb_conseils,
+                                "regime_global": regime_global_str})
         return 0
     except Exception as e:
         logger.error(f"❌ Cycle STRATÉGIQUE échoué : {e}")

@@ -124,6 +124,23 @@ def get_intuition():
     return jsonify(stats_intuition())
 
 
+@api.route("/regime")
+def get_regime():
+    """v5.5.0 — Régime de marché courant (global + actifs suivis)."""
+    from agents.technical_skills.market_regime import dernier_regime
+    from utils.helpers import charger_watchlist, tous_les_tickers
+    global_r = dernier_regime("global")
+    per_asset: dict = {}
+    try:
+        for t in tous_les_tickers(charger_watchlist())[:20]:
+            r = dernier_regime(t)
+            if r:
+                per_asset[t] = r
+    except Exception:
+        pass
+    return jsonify({"global": global_r, "actifs": per_asset})
+
+
 # ── v5.0 — Portefeuille RÉEL ─────────────────────────────────────────────
 
 @api.route("/real/portfolio")

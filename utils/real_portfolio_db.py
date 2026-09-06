@@ -135,6 +135,21 @@ def initialiser_real_db() -> None:
             c.execute("ALTER TABLE investment_plans ADD COLUMN personal_notes TEXT")
         except Exception:
             pass
+        # v5.5.0 : table du régime de marché (Skill technique 1)
+        c.execute("""
+            CREATE TABLE IF NOT EXISTS market_regime (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                scope TEXT NOT NULL,
+                regime TEXT NOT NULL,
+                adx REAL,
+                detail TEXT,
+                detected_at TEXT DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        c.execute(
+            "CREATE INDEX IF NOT EXISTS idx_regime_scope_date "
+            "ON market_regime(scope, detected_at DESC)"
+        )
         # v5.1 : alertes des plans
         c.execute("""
             CREATE TABLE IF NOT EXISTS plan_alerts (
