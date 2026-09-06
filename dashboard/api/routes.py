@@ -138,6 +138,13 @@ def post_trailing_stop(pos_id):
     return jsonify(desactiver_trailing_stop(pos_id))
 
 
+@api.route("/correlation")
+def get_correlation():
+    """v5.5.3 — Matrice de corrélation du portefeuille paper OPEN + alertes."""
+    from agents.technical_skills.correlation import correlation_portefeuille
+    return jsonify(correlation_portefeuille())
+
+
 @api.route("/regime")
 def get_regime():
     """v5.5.0 — Régime de marché courant (global + actifs suivis)."""
