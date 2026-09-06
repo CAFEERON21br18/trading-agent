@@ -138,6 +138,13 @@ def post_trailing_stop(pos_id):
     return jsonify(desactiver_trailing_stop(pos_id))
 
 
+@api.route("/liquidity/<ticker>")
+def get_liquidity(ticker):
+    """v5.5.5 — Analyse de liquidité d'un ticker."""
+    from agents.technical_skills.liquidity import analyser_liquidite
+    return jsonify(analyser_liquidite(ticker))
+
+
 @api.route("/calendar")
 def get_calendar():
     """v5.5.4 — Calendrier économique : macro + earnings de la watchlist."""

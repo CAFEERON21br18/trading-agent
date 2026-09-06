@@ -8,12 +8,12 @@ brute) : ici on récompense l'alignement de plusieurs sources.
 Python pur, aucun LLM. Aucune BDD (le grade est joint à la décision).
 """
 
-# Grade → seuil de critères remplis
+# Grade → seuil de critères remplis (v5.5.5 : sur 9 critères désormais)
 GRADES = [
-    ("A+", 7),
-    ("A",  6),
-    ("B",  4),
-    ("C",  2),
+    ("A+", 8),
+    ("A",  7),
+    ("B",  5),
+    ("C",  3),
     ("D",  0),
 ]
 
@@ -79,6 +79,17 @@ def noter_setup(analyses: dict, decision_result: dict) -> dict:
     signal = risque.get("signal") or {}
     rr_1 = signal.get("rr_1") if isinstance(signal, dict) else None
     criteres["rr_favorable"] = bool(rr_1 and rr_1 >= 1.5)
+
+    # 9. v5.5.5 — Liquidité suffisante (Skill 6)
+    ticker = decision_result.get("ticker")
+    if ticker:
+        try:
+            from agents.technical_skills.liquidity import liquidite_suffisante
+            criteres["liquidite_ok"] = bool(liquidite_suffisante(ticker))
+        except Exception:
+            criteres["liquidite_ok"] = True  # bénéfice du doute
+    else:
+        criteres["liquidite_ok"] = True
 
     score = sum(1 for v in criteres.values() if v)
 
