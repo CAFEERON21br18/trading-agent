@@ -138,6 +138,13 @@ def post_trailing_stop(pos_id):
     return jsonify(desactiver_trailing_stop(pos_id))
 
 
+@api.route("/backtest/<ticker>")
+def get_backtest(ticker):
+    """v5.5.8 — Backtest avec split in/out sample sur toutes les stratégies."""
+    from agents.technical_skills.backtester_pro import tester_toutes_strategies_avec_validation
+    return jsonify(tester_toutes_strategies_avec_validation(ticker))
+
+
 @api.route("/stress-test")
 def get_stress_test():
     """v5.5.7 — Stress test du portefeuille sur un choc prédéfini.
