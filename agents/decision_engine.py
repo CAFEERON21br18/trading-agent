@@ -186,6 +186,19 @@ def decider(ticker: str, analyses: dict) -> dict:
         "intuition":        intuition,
     }
 
+    # v5.5.2 — Score de qualité du setup (Skill technique 3)
+    try:
+        from agents.technical_skills.setup_quality import noter_setup
+        qual = noter_setup(analyses, resultat)
+        resultat["quality_grade"]     = qual["grade"]
+        resultat["quality_score"]     = qual["score"]
+        resultat["quality_criteres"]  = qual["criteres"]
+        resultat["budget_boost"]      = qual["budget_boost"]
+    except Exception as e:
+        logger.warning(f"Setup quality {ticker} : {e}")
+        resultat["quality_grade"] = "?"
+        resultat["budget_boost"]  = 1.0
+
     # v5.3.6 — Audit métacognitif Gemini (n'override pas, juste annote)
     try:
         from agents.decision_engine_meta import audit_metacognitif
