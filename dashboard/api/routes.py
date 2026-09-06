@@ -138,6 +138,14 @@ def post_trailing_stop(pos_id):
     return jsonify(desactiver_trailing_stop(pos_id))
 
 
+@api.route("/attribution")
+def get_attribution():
+    """v5.5.9 — Attribution performance : par classe actif / direction / sortie / ticker."""
+    from agents.technical_skills.performance_attribution import rapport_attribution_complet
+    limite = int(request.args.get("limite", 500))
+    return jsonify(rapport_attribution_complet(limite))
+
+
 @api.route("/backtest/<ticker>")
 def get_backtest(ticker):
     """v5.5.8 — Backtest avec split in/out sample sur toutes les stratégies."""
