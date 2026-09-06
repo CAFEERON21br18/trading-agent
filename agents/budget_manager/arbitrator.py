@@ -20,11 +20,12 @@ MONTANT_MIN_VIABLE = 15.0  # v5: 15€ minimum (était 10€ en v4.1)
 
 
 def _calculer_score(demande: dict) -> float:
-    """Score d'une demande = confiance × (1 + winrate/100) × urgence_factor."""
+    """Score d'une demande = confiance × (1 + winrate/100) × urgence × boost_qualité (v5.5.2)."""
     conf = float(demande.get("confiance", 0) or 0)
     winrate = float(demande.get("winrate_historique", 50.0))  # 50% par défaut si inconnu
     urgence = demande.get("urgence", "moyenne").lower()
-    return conf * (1 + winrate / 100) * URGENCE_FACTOR.get(urgence, 1.0)
+    boost = float(demande.get("budget_boost", 1.0) or 1.0)   # v5.5.2 : bonus/malus selon grade A/B/C/D
+    return conf * (1 + winrate / 100) * URGENCE_FACTOR.get(urgence, 1.0) * boost
 
 
 def arbitrer(demandes: list[dict], cash_disponible: float, mode_params: dict,

@@ -30,8 +30,16 @@ def formater_decision(decision: dict, analyses: dict) -> str:
     emoji  = EMOJI_DECISION.get(decision["decision"], "")
 
     # En-tête
+    # v5.5.2 : badge grade qualité du setup
+    grade = decision.get("quality_grade")
+    q_score = decision.get("quality_score")
+    if grade and grade != "?":
+        from agents.technical_skills.setup_quality import grade_emoji
+        badge = f"  {grade_emoji(grade)} setup **{grade}** ({q_score}/8)"
+    else:
+        badge = ""
     lignes = [
-        f"### {emoji} {ticker} — {decision['decision']} ({decision['confidence']}/10)",
+        f"### {emoji} {ticker} — {decision['decision']} ({decision['confidence']}/10){badge}",
         "",
         f"**Score composite** : {decision['score_composite']:+.2f} "
         f"(seuil BUY ≥ +3.0, SELL ≤ −3.0)",
