@@ -93,12 +93,17 @@ def recuperer_news_yahoo_rss(ticker: str, nb_max: int = 5) -> list[dict]:
 
 
 def recuperer_news(ticker_ou_requete: str, nb_max: int = 5) -> list[dict]:
-    """Essaie NewsAPI d'abord, RSS Yahoo en fallback."""
-    news = recuperer_news_newsapi(ticker_ou_requete, nb_max)
-    if news:
-        return news
-    # Fallback RSS — fonctionne avec un ticker (BTC-USD, AAPL, etc.)
-    return recuperer_news_yahoo_rss(ticker_ou_requete, nb_max)
+    """Essaie NewsAPI d'abord, RSS Yahoo en fallback. v5.5.6 : cache 1h
+    (TTL par défaut 30min de utils/cache) pour éviter les 429 NewsAPI/RSS."""
+    from utils.cache import avec_cache
+    def _fetcher() -> list[dict]:
+        news = recuperer_news_newsapi(ticker_ou_requete, nb_max)
+        if news:
+            return news
+        return recuperer_news_yahoo_rss(ticker_ou_requete, nb_max)
+    # cle = ticker_nb pour différencier les tailles de requête
+    res = avec_cache("news", f"{ticker_ou_requete}_{nb_max}", _fetcher)
+    return res if isinstance(res, list) else []
 
 
 def resume_news(ticker_ou_requete: str, nb_max: int = 5) -> str:

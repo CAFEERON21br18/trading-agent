@@ -138,6 +138,19 @@ def post_trailing_stop(pos_id):
     return jsonify(desactiver_trailing_stop(pos_id))
 
 
+@api.route("/news-catalysts")
+def get_news_catalysts():
+    """v5.5.6 — Scan de la watchlist pour catalyseurs news récents."""
+    from agents.technical_skills.news_catalyst import scanner_watchlist, catalyseurs_hauts
+    from utils.helpers import charger_watchlist, tous_les_tickers
+    try:
+        tickers = tous_les_tickers(charger_watchlist())
+    except Exception:
+        tickers = []
+    scan = scanner_watchlist(tickers)
+    return jsonify({"scan": scan, "hauts_uniquement": catalyseurs_hauts(scan)})
+
+
 @api.route("/liquidity/<ticker>")
 def get_liquidity(ticker):
     """v5.5.5 — Analyse de liquidité d'un ticker."""
