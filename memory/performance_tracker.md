@@ -1,6 +1,6 @@
 # AlphaSignal — Performance de l'Agent
 
-> Dernière mise à jour : 2026-06-25 06:39 UTC
+> Dernière mise à jour : 2026-09-20 06:34 UTC
 
 ## Performance globale (tous trades clôturés)
 

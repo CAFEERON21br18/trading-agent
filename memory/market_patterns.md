@@ -64,3 +64,27 @@ Fiabilité estimée : [X%]
 - Win rate : 67%
 - P&L moyen : +2.79%
 - Fiabilité estimée : Forte
+
+2026-06-26 — ETH-USD — Pattern récurrent LONG  (PATTERN-ETH-USD-LONG)
+- Observé : 4 fois
+- Win rate : 0%
+- P&L moyen : -5.10%
+- Fiabilité estimée : Faible
+
+2026-06-27 — MSFT — Pattern récurrent SHORT  (PATTERN-MSFT-SHORT)
+- Observé : 34 fois
+- Win rate : 3%
+- P&L moyen : -5.34%
+- Fiabilité estimée : Faible
+
+2026-09-05 — VRT — Pattern récurrent LONG  (PATTERN-VRT-LONG)
+- Observé : 4 fois
+- Win rate : 100%
+- P&L moyen : +4.35%
+- Fiabilité estimée : Forte
+
+2026-09-09 — AAPL — Pattern récurrent LONG  (PATTERN-AAPL-LONG)
+- Observé : 4 fois
+- Win rate : 25%
+- P&L moyen : -0.97%
+- Fiabilité estimée : Faible

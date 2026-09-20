@@ -29,3 +29,29 @@
 `2026-06-01 — RISQUE — ETH-USD : 3 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-ETH-USD-2026-06)
 
 `2026-06-01 — RISQUE — BTC-USD : 3 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-BTC-USD-2026-06)
+
+`2026-06-27 — RISQUE — MSFT : 33 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-MSFT-2026-06)
+
+`2026-07-01 — RISQUE — SOL-USD : 5 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-SOL-USD-2026-07)
+
+`2026-07-01 — RISQUE — BTC-USD : 4 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-BTC-USD-2026-07)
+
+`2026-07-01 — RISQUE — MSFT : 33 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-MSFT-2026-07)
+
+`2026-07-01 — RISQUE — ETH-USD : 5 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-ETH-USD-2026-07)
+
+`2026-08-25 — RISQUE — SOL-USD : 6 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-SOL-USD-2026-08)
+
+`2026-08-25 — RISQUE — BTC-USD : 5 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-BTC-USD-2026-08)
+
+`2026-08-25 — RISQUE — ETH-USD : 6 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-ETH-USD-2026-08)
+
+`2026-08-25 — RISQUE — MSFT : 33 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-MSFT-2026-08)
+
+`2026-09-01 — RISQUE — SOL-USD : 75 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-SOL-USD-2026-09)
+
+`2026-09-01 — RISQUE — BTC-USD : 4 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-BTC-USD-2026-09)
+
+`2026-09-01 — RISQUE — MSFT : 15 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-MSFT-2026-09)
+
+`2026-09-09 — RISQUE — AAPL : 3 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-AAPL-2026-09)
