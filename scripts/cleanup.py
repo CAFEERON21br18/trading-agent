@@ -16,6 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.logger import get_logger
 from utils.cache import vider as vider_cache, stats as stats_cache
 from utils.heartbeat import update_heartbeat
+from utils.lock_manager import LOCK_DIR
 
 logger = get_logger("cleanup")
 
@@ -46,12 +47,12 @@ def _supprimer_fichiers_vieux(dossier: str, max_age_jours: int, ext: str | None 
 
 
 def _purger_locks_expires() -> int:
-    """Supprime les fichiers /tmp/alphasignal_*.lock orphelins."""
+    """Supprime les fichiers alphasignal_*.lock orphelins (même dossier que lock_manager)."""
     nb = 0
-    for f in os.listdir("/tmp"):
+    for f in os.listdir(LOCK_DIR):
         if not f.startswith("alphasignal_") or not f.endswith(".lock"):
             continue
-        chemin = os.path.join("/tmp", f)
+        chemin = os.path.join(LOCK_DIR, f)
         try:
             age = time.time() - os.path.getmtime(chemin)
             if age > 30 * 60:  # > 30 min
