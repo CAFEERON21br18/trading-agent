@@ -17,10 +17,7 @@ TACHES_WINDOWS = ["critical", "tactical", "strategic", "daily", "weekly", "clean
 # Codes LastTaskResult (schtasks) à connaître — tout code hors de cette liste = échec.
 CODE_SUCCES        = 0
 CODE_EN_COURS      = 267009  # normal pour "dashboard" (tâche continue au démarrage)
-CODE_JAMAIS_LANCEE = 267011  # normal pour "weekly"/"cleanup" avant leur premier passage
-
-# Tâches pour lesquelles "jamais lancée" est un état attendu (pas encore de dimanche écoulé).
-TACHES_JAMAIS_LANCEE_OK = {"weekly", "cleanup"}
+CODE_JAMAIS_LANCEE = 267011  # neutre pour toute tâche (récemment créée, pas encore déclenchée)
 
 
 def verifier_taches_windows(noms: list[str] | None = None,
@@ -67,11 +64,10 @@ def verifier_taches_windows(noms: list[str] | None = None,
             details.append(f"{nom} : OK (dernier résultat 0)")
         elif code == CODE_EN_COURS:
             details.append(f"{nom} : en cours d'exécution (normal)")
-        elif code == CODE_JAMAIS_LANCEE and nom in TACHES_JAMAIS_LANCEE_OK:
-            details.append(f"{nom} : jamais lancée — normal avant son premier passage")
         elif code == CODE_JAMAIS_LANCEE:
-            echecs.append(nom)
-            details.append(f"{nom} : jamais lancée (code {code}) — inattendu pour cette tâche")
+            # Neutre, pas un échec : un cycle qui aurait dû tourner et ne l'a pas fait
+            # est déjà détecté par les checks [2] (rapport) et [3] (heartbeat).
+            details.append(f"{nom} : jamais lancée — normal si récemment (ré)installée")
         else:
             echecs.append(nom)
             details.append(f"{nom} : échec (dernier résultat {code})")
