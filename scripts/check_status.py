@@ -26,7 +26,14 @@ def _wn(msg): print(f"  ⚠️  {msg}")
 
 
 def check_scheduler() -> bool:
-    """Vérifie que launchd connaît bien le job."""
+    """Vérifie que le scheduler de l'OS connaît bien les tâches AlphaSignal."""
+    if sys.platform == "win32":
+        return _check_scheduler_windows()
+    return _check_scheduler_launchd()
+
+
+def _check_scheduler_launchd() -> bool:
+    """Vérifie que launchd connaît bien le job (macOS)."""
     print("\n[1] Scheduler launchd")
     try:
         result = subprocess.run(["launchctl", "list"], capture_output=True, text=True, timeout=10)
@@ -40,6 +47,22 @@ def check_scheduler() -> bool:
     except Exception as e:
         _ko(f"Impossible de vérifier launchctl : {e}")
         return False
+
+
+def _check_scheduler_windows() -> bool:
+    """Vérifie les 7 tâches AlphaSignal dans le Planificateur de tâches (Windows)."""
+    print("\n[1] Scheduler — Planificateur de tâches Windows")
+    from utils.scheduler_check import verifier_taches_windows
+    ok, details, manquantes, echecs = verifier_taches_windows()
+    for ligne in details:
+        print(f"     {ligne}")
+    if manquantes:
+        _ko(f"Tâches manquantes : {', '.join(manquantes)}")
+    if echecs:
+        _ko(f"Tâches en échec : {', '.join(echecs)}")
+    if ok:
+        _ok("Les 7 tâches sont présentes et saines")
+    return ok
 
 
 def check_dernier_rapport() -> bool:
