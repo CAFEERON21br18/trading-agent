@@ -39,6 +39,9 @@ NEWSAPI_KEY         = _get_optional("NEWSAPI_KEY")
 ALPHA_VANTAGE_KEY   = _get_optional("ALPHA_VANTAGE_KEY")
 GEMINI_API_KEY      = _get_optional("GEMINI_API_KEY")
 GROQ_API_KEY        = _get_optional("GROQ_API_KEY")
+# Modèle de fallback Groq (voir utils/llm.py) : configurable car Groq retire
+# régulièrement ses modèles (llama-3.3-70b-versatile puis compound-mini).
+GROQ_MODEL          = _get_optional("GROQ_MODEL", "openai/gpt-oss-120b")
 
 # ── Capital & Risk Management ─────────────────────────────────────────────────
 CAPITAL                   = float(_get_optional("CAPITAL", "1000"))
