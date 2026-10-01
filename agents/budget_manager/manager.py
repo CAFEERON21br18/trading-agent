@@ -11,6 +11,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 
 import config
 from utils.logger import get_logger
+from utils.audit_trace import zone_audit
 from utils.portfolio_db import lire_positions_ouvertes
 from agents.budget_manager.strategy import (
     detecter_mode, parametres_mode, capital_investissable, diagnostic,
@@ -46,6 +47,7 @@ def _cash_disponible_actuel(mode: str) -> float:
     return max(0.0, cap_inv - deja_investi)
 
 
+@zone_audit("budget_manager")  # audit du chat (Phase 4) : no-op hors requête auditée
 def traiter_demandes(demandes: list[dict], conviction_force: bool = False) -> dict:
     """
     Point d'entrée principal : reçoit une liste de demandes, retourne les allocations.

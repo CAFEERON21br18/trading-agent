@@ -14,6 +14,8 @@ from utils.database import get_connection
 from agents.chat.context_builder import build_context
 from agents.chat._formatters import formater_par_intention
 from agents.chat._llm import enrichir_avec_gemini
+from agents.chat._audit import auditer_message
+from utils.audit_trace import noter_contexte
 
 logger = get_logger(__name__)
 
@@ -62,11 +64,13 @@ def _detecter_intention(question: str) -> str:
     return "general"
 
 
+@auditer_message("chat")  # Phase 4 : chaque message → une ligne message_audit
 def repondre(question: str) -> dict:
     """Génère une réponse à partir de la question + contexte (+ Gemini si dispo)."""
     initialiser_chat_db()
     intention = _detecter_intention(question)
     contexte  = build_context(question)
+    noter_contexte(contexte)  # audit : contexte injecté au LLM
 
     # 1. Construit la réponse template (fallback + matière première Gemini)
     template = formater_par_intention(intention, contexte)
@@ -101,6 +105,8 @@ def historique(limite: int = 50) -> list[dict]:
 
 
 def vider_historique() -> bool:
+    """Vide chat_history uniquement. Ne touche JAMAIS message_audit (journal
+    d'audit séparé, purgé seulement par sa rétention dédiée)."""
     conn = get_connection()
     conn.execute("DELETE FROM chat_history")
     conn.commit()

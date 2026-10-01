@@ -8,6 +8,8 @@ de l'agent au fil du temps.
 import os
 from datetime import datetime, timezone
 
+from utils.audit_trace import noter_ecriture
+
 _MEMORY_DIR = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
     "memory"
@@ -53,5 +55,7 @@ def logger_audit(ticker: str, decision: str, audit: dict) -> None:
                 f.write("**Angles morts** :\n")
                 for a in angles[:3]:
                     f.write(f"- {a}\n")
+        # Audit du chat (Phase 4) : écriture mémoire déclenchée par un message ?
+        noter_ecriture("fichier", "memory/metacognition_log.md", "APPEND")
     except Exception:
         pass  # le log ne doit JAMAIS bloquer une décision
