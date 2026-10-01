@@ -135,6 +135,8 @@
 
 {% block scripts %}
 <script>
+// Phase 4 / E1b : tout texte venant de l'API passe par escHtml() (base.html) —
+// noms de plans (saisis via le chat), actif, thèse, conseils (texte LLM)…
 const eur = (v) => (v == null) ? "—" : (v >= 0 ? "+" : "") + v.toFixed(2) + "€";
 const pct = (v) => (v == null) ? "—" : (v >= 0 ? "+" : "") + v.toFixed(2) + "%";
 const colorPnl = (v) => v == null ? "text-slate-400" : v >= 0 ? "text-emerald-400" : "text-red-400";
@@ -186,7 +188,7 @@ async function loadBudget() {
             const p = v / b.invested * 100;
             html.push(`
                 <div class="text-xs flex justify-between mb-0.5">
-                    <span>${EMOJI_HOLD[k] || ''} ${k}</span><span>${v.toFixed(0)}€ (${p.toFixed(0)}%)</span>
+                    <span>${EMOJI_HOLD[k] || ''} ${escHtml(k)}</span><span>${v.toFixed(0)}€ (${p.toFixed(0)}%)</span>
                 </div>
                 ${barre(p, "bg-blue-500")}
             `);
@@ -196,7 +198,7 @@ async function loadBudget() {
             const p = v / b.invested * 100;
             html.push(`
                 <div class="text-xs flex justify-between mb-0.5">
-                    <span>${EMOJI_INST[k] || ''} ${k}</span><span>${v.toFixed(0)}€ (${p.toFixed(0)}%)</span>
+                    <span>${EMOJI_INST[k] || ''} ${escHtml(k)}</span><span>${v.toFixed(0)}€ (${p.toFixed(0)}%)</span>
                 </div>
                 ${barre(p, "bg-purple-500")}
             `);
@@ -227,7 +229,7 @@ async function loadPlansForSelect() {
         let opts = `<option value="">— Sans plan —</option>`;
         for (const p of _plansCache) {
             const emoji = PLAN_EMOJI[p.plan_type] || "📌";
-            opts += `<option value="${p.id}">${emoji} ${p.name}</option>`;
+            opts += `<option value="${p.id}">${emoji} ${escHtml(p.name)}</option>`;
         }
         sel.innerHTML = opts;
     }
@@ -239,7 +241,7 @@ function planOptions(currentPlanId) {
         // Le plan Global est juste un parent ; on permet de rattacher en priorité aux sous-plans
         const sel = currentPlanId === p.id ? "selected" : "";
         const emoji = PLAN_EMOJI[p.plan_type] || "📌";
-        opts += `<option value="${p.id}" ${sel}>${emoji} ${p.name}</option>`;
+        opts += `<option value="${p.id}" ${sel}>${emoji} ${escHtml(p.name)}</option>`;
     }
     return opts;
 }
@@ -249,7 +251,7 @@ function planLabel(planId) {
     const p = _plansCache.find(x => x.id === planId);
     if (!p) return "";
     const emoji = PLAN_EMOJI[p.plan_type] || "📌";
-    return `<span class="pill pill-buy ml-1">${emoji} ${p.name}</span>`;
+    return `<span class="pill pill-buy ml-1">${emoji} ${escHtml(p.name)}</span>`;
 }
 
 async function loadPositions() {
@@ -264,10 +266,10 @@ async function loadPositions() {
         <div class="card">
             <div class="flex justify-between items-start mb-2">
                 <div>
-                    <span class="font-bold">${i.asset}</span>
-                    <span class="text-xs text-slate-400 ml-1">${i.asset_name || ''}</span>
-                    <span class="ml-2 pill pill-paper">${i.holding_type}</span>
-                    <span class="ml-1 pill pill-neutral">${i.instrument_type}</span>
+                    <span class="font-bold">${escHtml(i.asset)}</span>
+                    <span class="text-xs text-slate-400 ml-1">${escHtml(i.asset_name || '')}</span>
+                    <span class="ml-2 pill pill-paper">${escHtml(i.holding_type)}</span>
+                    <span class="ml-1 pill pill-neutral">${escHtml(i.instrument_type)}</span>
                     ${planLabel(i.plan_id)}
                 </div>
                 <div class="text-right">
@@ -283,7 +285,7 @@ async function loadPositions() {
                 ${i.target_price ? `<div>Cible : <span class="text-amber-300">${i.target_price.toFixed(4)}</span></div>` : ''}
                 ${i.stop_loss_mental ? `<div>Stop : <span class="text-red-300">${i.stop_loss_mental.toFixed(4)}</span></div>` : ''}
             </div>
-            ${i.investment_thesis ? `<div class="mt-2 text-xs text-slate-400 italic">${i.investment_thesis}</div>` : ''}
+            ${i.investment_thesis ? `<div class="mt-2 text-xs text-slate-400 italic">${escHtml(i.investment_thesis)}</div>` : ''}
             <!-- Rattachement à un plan (v5.2) -->
             <div class="mt-2 flex items-center gap-2">
                 <span class="text-xs text-slate-400 whitespace-nowrap">🎯 Plan :</span>
@@ -296,8 +298,9 @@ async function loadPositions() {
                 ⚠️ Prix d'entrée approximatif. Saisis la quantité Revolut pour corriger →
             </div>` : ''}
             <div class="mt-2 grid grid-cols-2 gap-2">
-                <button onclick="fixEntry(${i.id}, '${i.asset}', ${i.quantity})" class="text-xs bg-violet-700/40 text-violet-200 py-1 rounded" title="Recalcul du prix d'entrée via la quantité Revolut">🛠️ Corriger entrée</button>
-                <button onclick="calibratePos('${i.asset}')" class="text-xs bg-blue-700/40 text-blue-200 py-1 rounded" title="Aligner le prix actuel sur Revolut">📐 Calibrer actuel</button>
+                <!-- Ticker dans du JavaScript en attribut : escHtml(JSON.stringify(…)), jamais entre apostrophes -->
+                <button onclick="fixEntry(${i.id}, ${escHtml(JSON.stringify(i.asset))}, ${i.quantity})" class="text-xs bg-violet-700/40 text-violet-200 py-1 rounded" title="Recalcul du prix d'entrée via la quantité Revolut">🛠️ Corriger entrée</button>
+                <button onclick="calibratePos(${escHtml(JSON.stringify(i.asset))})" class="text-xs bg-blue-700/40 text-blue-200 py-1 rounded" title="Aligner le prix actuel sur Revolut">📐 Calibrer actuel</button>
                 <button onclick="closePos(${i.id})" class="text-xs bg-amber-700/40 text-amber-200 py-1 rounded">Fermer</button>
                 <button onclick="deletePos(${i.id})" class="text-xs bg-red-700/40 text-red-200 py-1 rounded">🗑️ Supprimer</button>
             </div>
@@ -328,8 +331,8 @@ async function loadAdvice() {
     const COLOR = {haute: 'border-red-500', moyenne: 'border-amber-500', basse: 'border-slate-500'};
     el.innerHTML = list.map(a => `
         <div class="border-l-4 ${COLOR[a.urgency] || 'border-slate-500'} bg-slate-800/40 p-2 rounded">
-            <div class="text-xs"><span class="font-bold">${a.asset || '?'}</span> <span class="text-amber-300">${a.advice_type}</span> — ${a.recommendation}</div>
-            <div class="text-xs text-slate-400 mt-0.5">${a.reasoning}</div>
+            <div class="text-xs"><span class="font-bold">${escHtml(a.asset || '?')}</span> <span class="text-amber-300">${escHtml(a.advice_type)}</span> — ${escHtml(a.recommendation)}</div>
+            <div class="text-xs text-slate-400 mt-0.5">${escHtml(a.reasoning)}</div>
             <div class="flex gap-1 mt-1.5">
                 <button onclick="respondAdvice(${a.id}, 'suivi')" class="text-xs bg-emerald-700/40 text-emerald-200 px-2 py-0.5 rounded">J'ai suivi</button>
                 <button onclick="respondAdvice(${a.id}, 'ignoré')" class="text-xs bg-slate-700 text-slate-300 px-2 py-0.5 rounded">J'ai ignoré</button>
@@ -373,14 +376,14 @@ async function previewInvestment() {
         const entry = amount / qty;
         _previewData = {mode: "exact", ticker, date_, amount, qty};
         box.innerHTML = `
-            <div class="font-semibold text-emerald-300 mb-1">✅ Aperçu EXACT — ${ticker}</div>
+            <div class="font-semibold text-emerald-300 mb-1">✅ Aperçu EXACT — ${escHtml(ticker)}</div>
             <div class="grid grid-cols-2 gap-x-3">
                 <div>Prix d'entrée : <span class="text-slate-100 font-bold">${entry.toFixed(4)}€</span></div>
                 <div>Quantité : <span class="text-slate-100 font-bold">${qty}</span></div>
                 <div>Montant investi : <span class="text-slate-100">${amount.toFixed(2)}€</span></div>
                 <div>Méthode : <span class="text-emerald-300">exact_revolut</span></div>
             </div>
-            <div class="text-slate-400 mt-1 text-xs">📅 ${date_}</div>
+            <div class="text-slate-400 mt-1 text-xs">📅 ${escHtml(date_)}</div>
             <div class="text-emerald-300/80 mt-0.5 text-xs italic">Prix d'entrée exact (basé sur la quantité Revolut).</div>
         `;
         btn.disabled = false;
@@ -395,17 +398,17 @@ async function previewInvestment() {
         box.innerHTML = `<div class="text-slate-400">⏳ Récupération du prix historique…</div>`;
         const url = `/api/real/price-preview?ticker=${encodeURIComponent(ticker)}&date=${date_}${time_ ? `&time=${time_}` : ""}&amount=${amount}`;
         const r = await fetch(url); const j = await r.json();
-        if (j.error) { box.innerHTML = `<div class="text-red-300">❌ ${j.error}</div>`; return; }
+        if (j.error) { box.innerHTML = `<div class="text-red-300">❌ ${escHtml(j.error)}</div>`; return; }
         _previewData = {mode: "rapide", ticker, date_, time_, amount, ...j};
         box.innerHTML = `
-            <div class="font-semibold text-amber-300 mb-1">⚡ Aperçu RAPIDE — ${ticker}</div>
+            <div class="font-semibold text-amber-300 mb-1">⚡ Aperçu RAPIDE — ${escHtml(ticker)}</div>
             <div class="grid grid-cols-2 gap-x-3">
                 <div>Prix d'entrée : <span class="text-slate-100 font-bold">${j.price.toFixed(4)}€</span></div>
                 <div>Quantité : <span class="text-slate-100 font-bold">${j.quantity.toFixed(6)}</span></div>
                 <div>Montant : <span class="text-slate-100">${amount.toFixed(2)}€</span></div>
-                <div>Méthode : <span class="text-slate-400">${j.method}</span></div>
+                <div>Méthode : <span class="text-slate-400">${escHtml(j.method)}</span></div>
             </div>
-            <div class="text-slate-400 mt-1 text-xs">📅 ${j.actual_time}</div>
+            <div class="text-slate-400 mt-1 text-xs">📅 ${escHtml(j.actual_time)}</div>
             <div class="text-amber-300/70 mt-0.5 text-xs italic">⚠️ Approximatif. Pour un suivi fidèle Revolut, utilise le mode Exact.</div>
         `;
         btn.disabled = false;

@@ -44,6 +44,8 @@
 
 {% block scripts %}
 <script>
+// Phase 4 / E1b : tout texte venant de l'API passe par escHtml() (base.html) —
+// nom, vision, objectif… peuvent avoir été saisis via le chat.
 const eur = (v) => (v == null) ? "—" : (v >= 0 ? "+" : "") + v.toFixed(2) + "€";
 const pct = (v) => (v == null) ? "—" : (v >= 0 ? "+" : "") + v.toFixed(2) + "%";
 const colorPnl = (v) => v == null ? "text-slate-400" : v >= 0 ? "text-emerald-400" : "text-red-400";
@@ -82,8 +84,8 @@ async function loadPlans() {
                 <div class="flex justify-between items-start">
                     <div>
                         <span class="text-lg">${TYPE_EMOJI[p.plan_type] || '📌'}</span>
-                        <span class="font-bold ml-1">${p.name}</span>
-                        <span class="pill pill-neutral ml-2">${p.plan_type}</span>
+                        <span class="font-bold ml-1">${escHtml(p.name)}</span>
+                        <span class="pill pill-neutral ml-2">${escHtml(p.plan_type)}</span>
                     </div>
                     <div class="text-right ${colorPnl(prog.pnl_total)}">
                         <div class="font-bold">${eur(prog.pnl_total)}</div>
@@ -92,10 +94,10 @@ async function loadPlans() {
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-xs text-slate-300 mt-2">
                     <div>Budget : <span class="text-slate-100">${(p.allocated_budget || 0).toFixed(0)}€</span></div>
-                    <div>Horizon : <span class="text-slate-100">${p.time_horizon || '?'}</span></div>
+                    <div>Horizon : <span class="text-slate-100">${escHtml(p.time_horizon || '?')}</span></div>
                 </div>
                 ${progBar}
-                ${p.objective ? `<div class="mt-2 text-xs text-slate-400 italic">${p.objective}</div>` : ''}
+                ${p.objective ? `<div class="mt-2 text-xs text-slate-400 italic">${escHtml(p.objective)}</div>` : ''}
             </div>`;
     }));
     el.innerHTML = htmls.join("");
@@ -111,9 +113,9 @@ async function loadAlerts() {
     const COLORS = {important: 'border-red-500', attention: 'border-amber-500', info: 'border-blue-500'};
     el.innerHTML = alerts.map(a => `
         <div class="border-l-4 ${COLORS[a.severity] || 'border-slate-500'} bg-slate-800/40 p-2 rounded">
-            <div class="text-xs"><span class="font-bold">${a.plan_name || 'Plan'}</span>
-                <span class="text-amber-300 ml-1">[${a.alert_type}]</span></div>
-            <div class="text-xs text-slate-300 mt-0.5">${a.message}</div>
+            <div class="text-xs"><span class="font-bold">${escHtml(a.plan_name || 'Plan')}</span>
+                <span class="text-amber-300 ml-1">[${escHtml(a.alert_type)}]</span></div>
+            <div class="text-xs text-slate-300 mt-0.5">${escHtml(a.message)}</div>
             <div class="flex gap-1 mt-1.5">
                 <button onclick="respondAlert(${a.id}, 'suivi')" class="text-xs bg-emerald-700/40 text-emerald-200 px-2 py-0.5 rounded">J'ai suivi</button>
                 <button onclick="respondAlert(${a.id}, 'ignoré')" class="text-xs bg-slate-700 text-slate-300 px-2 py-0.5 rounded">J'ai ignoré</button>
@@ -131,14 +133,14 @@ async function openPlan(id) {
     // v5.4.3 : mode lecture + bouton édition
     document.getElementById("modal-content").innerHTML = `
         <div class="text-sm space-y-2">
-            <div><span class="text-slate-400">Type :</span> ${p.plan_type}</div>
-            <div><span class="text-slate-400">Objectif :</span> ${p.objective || '—'}</div>
-            <div><span class="text-slate-400">Rendement cible :</span> +${p.target_return_percent || 0}%</div>
-            <div><span class="text-slate-400">Horizon :</span> ${p.time_horizon || '—'}</div>
+            <div><span class="text-slate-400">Type :</span> ${escHtml(p.plan_type)}</div>
+            <div><span class="text-slate-400">Objectif :</span> ${escHtml(p.objective || '—')}</div>
+            <div><span class="text-slate-400">Rendement cible :</span> +${escHtml(p.target_return_percent || 0)}%</div>
+            <div><span class="text-slate-400">Horizon :</span> ${escHtml(p.time_horizon || '—')}</div>
             <div><span class="text-slate-400">Budget :</span> ${(p.allocated_budget || 0).toFixed(0)}€</div>
-            <div><span class="text-slate-400">Vision :</span> <span class="italic">${p.vision || '—'}</span></div>
-            <div><span class="text-slate-400">Thèse :</span> <span class="italic">${p.investment_reasons || '—'}</span></div>
-            <div><span class="text-slate-400">Notes perso :</span> <span class="italic">${p.personal_notes || '—'}</span></div>
+            <div><span class="text-slate-400">Vision :</span> <span class="italic">${escHtml(p.vision || '—')}</span></div>
+            <div><span class="text-slate-400">Thèse :</span> <span class="italic">${escHtml(p.investment_reasons || '—')}</span></div>
+            <div><span class="text-slate-400">Notes perso :</span> <span class="italic">${escHtml(p.personal_notes || '—')}</span></div>
             <div class="border-t border-slate-700 my-2"></div>
             <div><strong>Progression actuelle</strong></div>
             <div>P&L total : <span class="${colorPnl(prog.pnl_total)}">${eur(prog.pnl_total)} (${pct(prog.progression_pct)})</span></div>
@@ -147,9 +149,10 @@ async function openPlan(id) {
             <div class="border-t border-slate-700 my-2"></div>
             <div><strong>Positions liées (${positions.length})</strong></div>
             ${positions.length === 0 ? '<div class="text-xs text-slate-400">Aucune position rattachée. Va sur la page Réel pour rattacher.</div>'
-              : positions.map(pos => `<div class="text-xs">• ${pos.asset} (${pos.invested_amount.toFixed(0)}€) ${pos.status}</div>`).join("")}
+              : positions.map(pos => `<div class="text-xs">• ${escHtml(pos.asset)} (${pos.invested_amount.toFixed(0)}€) ${escHtml(pos.status)}</div>`).join("")}
             <div class="flex gap-2 pt-3 border-t border-slate-700 mt-3">
-                <button onclick='editPlan(${JSON.stringify(p)})' class="flex-1 text-xs bg-emerald-700/40 text-emerald-200 py-1.5 rounded">✏️ Éditer</button>
+                <!-- JSON dans un attribut : escHtml(JSON.stringify(…)) — une apostrophe (« l'économie ») cassait le bouton -->
+                <button onclick="editPlan(${escHtml(JSON.stringify(p))})" class="flex-1 text-xs bg-emerald-700/40 text-emerald-200 py-1.5 rounded">✏️ Éditer</button>
                 <button onclick="deletePlan(${id})" class="flex-1 text-xs bg-red-700/40 text-red-200 py-1.5 rounded">🗑️ Supprimer</button>
             </div>
         </div>
@@ -158,32 +161,31 @@ async function openPlan(id) {
 
 // v5.4.3 : formulaire d'édition complète du plan
 function editPlan(p) {
-    const esc = s => (s || '').replace(/"/g, '&quot;').replace(/</g, '&lt;');
     document.getElementById("modal-title").textContent = `✏️ ${p.name}`;
     document.getElementById("modal-content").innerHTML = `
       <div class="text-sm space-y-2">
         <label class="block">Objectif
-          <textarea id="e-obj" class="w-full bg-slate-900 border border-slate-700 rounded p-1.5 h-12">${esc(p.objective)}</textarea>
+          <textarea id="e-obj" class="w-full bg-slate-900 border border-slate-700 rounded p-1.5 h-12">${escHtml(p.objective)}</textarea>
         </label>
         <div class="grid grid-cols-2 gap-2">
           <label>Rendement visé %
-            <input id="e-target-pct" type="number" step="0.1" value="${p.target_return_percent ?? ''}" class="w-full bg-slate-900 border border-slate-700 rounded p-1.5">
+            <input id="e-target-pct" type="number" step="0.1" value="${escHtml(p.target_return_percent ?? '')}" class="w-full bg-slate-900 border border-slate-700 rounded p-1.5">
           </label>
           <label>Montant cible €
-            <input id="e-target-eur" type="number" step="1" value="${p.target_amount ?? ''}" class="w-full bg-slate-900 border border-slate-700 rounded p-1.5">
+            <input id="e-target-eur" type="number" step="1" value="${escHtml(p.target_amount ?? '')}" class="w-full bg-slate-900 border border-slate-700 rounded p-1.5">
           </label>
         </div>
         <label class="block">Horizon
-          <input id="e-hor" type="text" value="${esc(p.time_horizon)}" class="w-full bg-slate-900 border border-slate-700 rounded p-1.5" placeholder="ex : 2-5 ans">
+          <input id="e-hor" type="text" value="${escHtml(p.time_horizon)}" class="w-full bg-slate-900 border border-slate-700 rounded p-1.5" placeholder="ex : 2-5 ans">
         </label>
         <label class="block">Vision / Stratégie
-          <textarea id="e-vis" class="w-full bg-slate-900 border border-slate-700 rounded p-1.5 h-16">${esc(p.vision)}</textarea>
+          <textarea id="e-vis" class="w-full bg-slate-900 border border-slate-700 rounded p-1.5 h-16">${escHtml(p.vision)}</textarea>
         </label>
         <label class="block">Raisons / Thèse d'investissement <span class="text-slate-500 text-xs">(pourquoi tu investis)</span>
-          <textarea id="e-rea" class="w-full bg-slate-900 border border-slate-700 rounded p-1.5 h-24" placeholder="Ex : IA infrastructure va transformer l'économie, je veux être exposé aux entreprises qui construisent les datacenters...">${esc(p.investment_reasons)}</textarea>
+          <textarea id="e-rea" class="w-full bg-slate-900 border border-slate-700 rounded p-1.5 h-24" placeholder="Ex : IA infrastructure va transformer l'économie, je veux être exposé aux entreprises qui construisent les datacenters...">${escHtml(p.investment_reasons)}</textarea>
         </label>
         <label class="block">Notes personnelles
-          <textarea id="e-not" class="w-full bg-slate-900 border border-slate-700 rounded p-1.5 h-16" placeholder="Ex : ne pas paniquer sur -20%, renforcer sur corrections >15%">${esc(p.personal_notes)}</textarea>
+          <textarea id="e-not" class="w-full bg-slate-900 border border-slate-700 rounded p-1.5 h-16" placeholder="Ex : ne pas paniquer sur -20%, renforcer sur corrections >15%">${escHtml(p.personal_notes)}</textarea>
         </label>
         <div class="flex gap-2 pt-3 border-t border-slate-700 mt-3">
           <button onclick="openPlan(${p.id})" class="flex-1 text-xs bg-slate-700 py-1.5 rounded">Annuler</button>
