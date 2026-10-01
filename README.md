@@ -40,9 +40,13 @@ Installe 6 cycles : **critical** (5min), **tactical** (30min), **strategic** (4h
 ```bash
 python dashboard/app.py
 ```
-- Mac : http://localhost:8080
-- iPhone (Wi-Fi commun) : `http://<IP_Mac>:8080`
+- Ce PC : http://localhost:8080
+- iPhone (Wi-Fi maison ou 4G) : via Tailscale Serve uniquement,
+  `https://<nom-machine>.<tailnet>.ts.net/` (voir « Accès distant » plus bas)
   → Safari → Partager → "Ajouter à l'écran d'accueil" pour PWA
+
+Le dashboard n'écoute que sur `127.0.0.1` (`DASHBOARD_HOST`, défaut) : il n'est
+plus joignable directement depuis le Wi-Fi local (`http://<IP>:8080`).
 
 ---
 
@@ -156,6 +160,11 @@ Le dashboard est accessible depuis n'importe où via le tailnet, en HTTPS,
 sans exposition publique (pas de Funnel, pas de règle de pare-feu Windows
 supplémentaire — Tailscale route via sa propre interface).
 
+C'est aussi le seul accès depuis le téléphone, y compris à la maison : le
+dashboard écoute sur `127.0.0.1` et Tailscale Serve proxifie HTTPS 443 →
+`127.0.0.1:8080`. `DASHBOARD_HOST=0.0.0.0` rouvrirait l'accès Wi-Fi direct —
+à éviter : le dashboard n'a pas d'authentification (chat stratégique compris).
+
 **Prérequis**
 - Tailscale installé et connecté sur la machine Windows (`tailscale status`)
 - MagicDNS activé sur le tailnet
@@ -194,6 +203,7 @@ dashboard (et donc le portefeuille paper/réel) publiquement sur Internet.
 | Pas d'emails reçus | `tail logs/launchd_daily.log` puis `cat logs/errors.log` |
 | Mac dort à 7h30 | `RunAtLoad: true` dans le plist daily rattrape au réveil |
 | Port 8080 occupé | `pkill -f dashboard/app.py` ou changer `DASHBOARD_PORT` |
+| Téléphone : `http://<IP>:8080` ne répond plus | Normal (bind 127.0.0.1) → passer par `https://<nom-machine>.<tailnet>.ts.net/` |
 | Cache pollué | `python -c "from utils.cache import vider; vider()"` |
 
 ---
