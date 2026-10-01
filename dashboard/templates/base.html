@@ -26,6 +26,22 @@
         navigator.serviceWorker.register("/sw.js").catch(() => {});
       }
     </script>
+    <script>
+      // Phase 4 / E1b — échappement HTML commun à toutes les pages.
+      // Toute donnée texte insérée via innerHTML ou dans un attribut passe par
+      // escHtml (& < > " ' — les cinq). Dans du JavaScript placé dans un
+      // attribut (onclick="f(…)"), utiliser escHtml(JSON.stringify(valeur)) :
+      // le navigateur décode les entités AVANT d'exécuter le JavaScript.
+      function escHtml(s) {
+        if (s === null || s === undefined) return "";
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+    </script>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen pb-20">
     <!-- Header -->
