@@ -150,6 +150,42 @@ L'agent peut **s'écarter des indicateurs** s'il a un bon pressentiment :
 
 ---
 
+## 🌐 Accès distant (Tailscale Serve)
+
+Le dashboard est accessible depuis n'importe où via le tailnet, en HTTPS,
+sans exposition publique (pas de Funnel, pas de règle de pare-feu Windows
+supplémentaire — Tailscale route via sa propre interface).
+
+**Prérequis**
+- Tailscale installé et connecté sur la machine Windows (`tailscale status`)
+- MagicDNS activé sur le tailnet
+- Dashboard lancé (tâche `\AlphaSignal\dashboard` du Planificateur, déjà
+  installée par `install_tasks_windows.ps1`)
+
+**Activer**
+```powershell
+.venv\Scripts\python.exe scripts\setup_tailscale.py
+```
+Affiche l'URL finale, du type `https://<nom-machine>.<tailnet>.ts.net/`.
+Idempotent : relancer le script ne duplique pas la configuration.
+
+**Vérifier l'état**
+```powershell
+tailscale status          # le node est-il connecté ?
+tailscale serve status    # qu'est-ce qui est actuellement partagé ?
+```
+
+**Désactiver**
+```powershell
+.venv\Scripts\python.exe scripts\teardown_tailscale.py
+```
+Retire tout le partage Tailscale Serve (équivalent à `tailscale serve reset`).
+
+⚠️ Ne jamais utiliser `tailscale funnel` sur ce projet : cela exposerait le
+dashboard (et donc le portefeuille paper/réel) publiquement sur Internet.
+
+---
+
 ## 🛠️ Dépannage
 
 | Problème | Solution |
