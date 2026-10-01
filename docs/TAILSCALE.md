@@ -37,9 +37,11 @@ La ligne *Tailscale* doit maintenant apparaître avec ✅.
 Une fois Tailscale actif sur les 2 appareils (icône verte dans la
 status bar) :
 
-- **En 4G** ou sur un autre WiFi → ouvrir `http://<TAILSCALE_IP>:8080`
-  (ou `http://<MAGIC_DNS_NAME>:8080`) dans Safari / Chrome.
-- Le dashboard répond exactement comme sur le WiFi maison.
+- **Partout** (4G, autre WiFi, WiFi maison) → ouvrir
+  `https://<MAGIC_DNS_NAME>/` dans Safari / Chrome (Tailscale Serve,
+  configuré par `scripts/setup_tailscale.py`).
+- `http://<TAILSCALE_IP>:8080` et `http://<IP_LAN>:8080` ne répondent
+  plus : le dashboard n'écoute que sur 127.0.0.1 (`DASHBOARD_HOST`).
 - **Aucun port de la box n'est ouvert** — 100% privé, chiffré.
 
 ## Sécurité — ce qu'il faut savoir

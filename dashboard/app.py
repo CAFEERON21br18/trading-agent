@@ -1,7 +1,8 @@
 """
 dashboard/app.py — Application Flask AlphaSignal
-PWA mobile-first accessible sur le réseau Wi-Fi local.
-Démarrage : python dashboard/app.py → http://<IP_Mac>:5000
+PWA mobile-first. Écoute sur 127.0.0.1 par défaut (DASHBOARD_HOST) ;
+accès téléphone via Tailscale Serve (scripts/setup_tailscale.py).
+Démarrage : python dashboard/app.py → http://localhost:8080
 """
 
 import sys
@@ -93,10 +94,15 @@ def service_worker():
 # ── Démarrage ─────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    # host=0.0.0.0 → accessible depuis tout appareil sur le Wi-Fi local
+    # host=127.0.0.1 (défaut) → seul ce PC, et Tailscale Serve qui proxifie
+    # vers 127.0.0.1, joignent le dashboard. Pas d'authentification : en
+    # 0.0.0.0, tout appareil du Wi-Fi local pourrait écrire dans le chat.
     # port=8080 → évite le conflit avec AirPlay Receiver sur macOS (port 5000)
+    HOST = os.getenv("DASHBOARD_HOST", "127.0.0.1")
     PORT = int(os.getenv("DASHBOARD_PORT", "8080"))
-    logger.info(f"Dashboard AlphaSignal — démarrage sur http://0.0.0.0:{PORT}")
+    logger.info(f"Dashboard AlphaSignal — démarrage sur http://{HOST}:{PORT}")
     logger.info(f"Accès local : http://localhost:{PORT}")
-    logger.info(f"Accès Wi-Fi (téléphone) : http://192.168.1.171:{PORT}")
-    app.run(host="0.0.0.0", port=PORT, debug=False)
+    logger.info("Accès téléphone : Tailscale Serve (scripts/setup_tailscale.py)")
+    if HOST not in ("127.0.0.1", "localhost", "::1"):
+        logger.warning(f"Dashboard joignable hors de ce PC (DASHBOARD_HOST={HOST})")
+    app.run(host=HOST, port=PORT, debug=False)

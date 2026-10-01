@@ -134,7 +134,10 @@ Après : `mettre_a_jour_performance_md()` synchronise tout (intuition + learner)
 
 ## Dashboard PWA (`dashboard/app.py` sur port 8080) — v5 : 10 pages
 Pages : Overview, Portfolio, **Réel** (v5), **Chat** (v5), Watchlist, Explorers, Journal, Budget, Memory, Settings.
-Accessible localement et sur Wi-Fi (iPhone via "Ajouter à l'écran d'accueil").
+Écoute sur **127.0.0.1** (`DASHBOARD_HOST`, défaut) — plus d'accès direct depuis le Wi-Fi local.
+iPhone (maison ou 4G) : uniquement via Tailscale Serve `https://<machine>.<tailnet>.ts.net/`
+puis "Ajouter à l'écran d'accueil". Ne pas repasser en 0.0.0.0 : le dashboard n'a pas
+d'authentification, tout le réseau local pourrait écrire dans le chat stratégique.
 LaunchAgent `com.alphasignal.dashboard` avec KeepAlive — relance auto si crash.
 
 ## Portefeuille RÉEL (v5) — séparé du paper

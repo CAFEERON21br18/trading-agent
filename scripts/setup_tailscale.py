@@ -7,11 +7,10 @@ Usage : .venv\\Scripts\\python.exe scripts\\setup_tailscale.py
 Important :
 - Ne touche jamais à Tailscale Funnel (exposition publique Internet) :
   ce script n'appelle que `tailscale serve`.
-- Le dashboard Flask continue d'écouter sur 0.0.0.0 (accès Wi-Fi local
-  existant, voir CLAUDE.md) : on ne le fait PAS basculer sur 127.0.0.1.
-  Tailscale Serve proxifie en interne via l'interface Tailscale, donc
-  aucune règle de pare-feu Windows supplémentaire n'est nécessaire — ce
-  n'est pas une exposition sur le réseau physique.
+- Le dashboard Flask écoute sur 127.0.0.1 (DASHBOARD_HOST, défaut) :
+  Tailscale Serve proxifie vers 127.0.0.1:<port> et c'est le seul accès
+  depuis le téléphone. Aucune règle de pare-feu Windows n'est nécessaire
+  et rien n'est exposé sur le réseau physique.
 - Idempotent : si le port est déjà proxifié, ne relance pas `serve`.
 """
 
