@@ -8,14 +8,19 @@ Tous les modules qui ont besoin d'un LLM passent par ask_llm().
   configurable via GROQ_MODEL (.env), openai/gpt-oss-120b par défaut
 - Mode "silent" pour les cycles auto (retourne text=None si tout KO)
 - Mode "verbose" pour le chat (retourne une bannière d'erreur claire)
+- v5.7 (audit Phase 4) : la réponse contient aussi `tentatives` (une entrée
+  par fournisseur essayé, erreur brute masquée). Ajout rétrocompatible.
 """
 
 import sys
 import os
+import time
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.logger import get_logger
+from utils.secret_mask import masquer_secrets
+from utils.audit_trace import noter_appel_llm
 import config
 
 logger = get_logger(__name__)
@@ -41,6 +46,16 @@ def _modele_raisonneur(model: str) -> bool:
     return "gpt-oss" in model
 
 
+def cle_groq() -> str | None:
+    """Clé Groq de CE processus (chargée au démarrage : un dashboard lancé
+    avant une modification de .env garde l'ancienne clé)."""
+    return getattr(config, "GROQ_API_KEY", None) or os.getenv("GROQ_API_KEY")
+
+
+def modele_groq() -> str:
+    return getattr(config, "GROQ_MODEL", None) or os.getenv("GROQ_MODEL") or DEFAULT_MODEL_GROQ
+
+
 def ask_llm(prompt: str, system: str | None = None,
              mode: str = "silent",
              temperature: float = 0.7,
@@ -50,28 +65,52 @@ def ask_llm(prompt: str, system: str | None = None,
 
     Returns:
         {text: str|None, source: "gemini"|"groq"|None,
-         error: str|None, retry_after_sec: int|None}
+         error: str|None, retry_after_sec: int|None,
+         tentatives: [{fournisseur, modele, ok, type_erreur, erreur, duree_ms}]}
 
     Si mode="verbose" et les deux LLM sont KO, text contient une
     bannière d'erreur en français (pas None).
     """
+    tentatives = []
+    debut = time.monotonic()
     g = _try_gemini(prompt, system, temperature, max_tokens)
+    tentatives.append(_tentative("gemini", MODEL_GEMINI, g, debut))
     if g["text"]:
-        return {**g, "source": "gemini"}
+        return _conclure(g, "gemini", tentatives, prompt, system)
 
     logger.warning(f"Gemini KO ({g['error']}) → fallback Groq")
+    debut = time.monotonic()
     q = _try_groq(prompt, system, temperature, max_tokens)
+    tentatives.append(_tentative("groq", modele_groq(), q, debut))
     if q["text"]:
-        return {**q, "source": "groq"}
+        return _conclure(q, "groq", tentatives, prompt, system)
 
     logger.error(f"Gemini ET Groq KO : {g['error']} | {q['error']}")
     if mode == "verbose":
         msg = (f"⚠️ Services IA temporairement indisponibles "
                f"(Gemini : {g['error']}, Groq : {q['error']}).")
-        return {"text": msg, "source": None, "error": "both_failed",
-                "retry_after_sec": g.get("retry_after_sec")}
-    return {"text": None, "source": None, "error": "both_failed",
-            "retry_after_sec": g.get("retry_after_sec")}
+        return _conclure({"text": msg, "error": "both_failed",
+                          "retry_after_sec": g.get("retry_after_sec")},
+                         None, tentatives, prompt, system)
+    return _conclure({"text": None, "error": "both_failed",
+                      "retry_after_sec": g.get("retry_after_sec")},
+                     None, tentatives, prompt, system)
+
+
+def _tentative(fournisseur: str, modele: str, r: dict, debut: float) -> dict:
+    """Une entrée de `tentatives` : résultat d'un fournisseur, erreur brute masquée."""
+    return {"fournisseur": fournisseur, "modele": modele, "ok": bool(r.get("text")),
+            "type_erreur": r.get("error"), "erreur": masquer_secrets(r.get("erreur_brute")),
+            "duree_ms": int((time.monotonic() - debut) * 1000)}
+
+
+def _conclure(r: dict, source, tentatives: list, prompt, system) -> dict:
+    """Format de retour historique + `tentatives` ; signale l'appel à l'audit
+    du chat (no-op hors requête auditée)."""
+    res = {"text": r.get("text"), "source": source, "error": r.get("error"),
+           "retry_after_sec": r.get("retry_after_sec"), "tentatives": tentatives}
+    noter_appel_llm("ask_llm", prompt, system, res, sum(t["duree_ms"] for t in tentatives))
+    return res
 
 
 def _try_gemini(prompt, system, temperature, max_tokens):
@@ -81,15 +120,16 @@ def _try_gemini(prompt, system, temperature, max_tokens):
                              max_output_tokens=max_tokens)
     return {"text": res["text"] if res["ok"] else None,
             "error": res.get("error_type"),
-            "retry_after_sec": res.get("retry_after_sec")}
+            "retry_after_sec": res.get("retry_after_sec"),
+            "erreur_brute": res.get("error_message")}
 
 
 def _try_groq(prompt, system, temperature, max_tokens):
     """Tente Groq (modèle configurable via GROQ_MODEL). Retourne {text, error, retry_after_sec}."""
-    api_key = getattr(config, "GROQ_API_KEY", None) or os.getenv("GROQ_API_KEY")
+    api_key = cle_groq()
     if not api_key:
         return {"text": None, "error": "clé_groq_manquante", "retry_after_sec": None}
-    model = getattr(config, "GROQ_MODEL", None) or os.getenv("GROQ_MODEL") or DEFAULT_MODEL_GROQ
+    model = modele_groq()
     try:
         from groq import Groq
         client = Groq(api_key=api_key)
@@ -114,13 +154,18 @@ def _try_groq(prompt, system, temperature, max_tokens):
         return {"text": text, "error": None, "retry_after_sec": None}
     except Exception as e:
         err = str(e).lower()
+        brute = str(e)[:300]  # erreur d'origine, gardée pour l'audit (masquée en aval)
         if "401" in err or "invalid_api_key" in err or "authentication" in err:
-            return {"text": None, "error": "clé_groq_invalide", "retry_after_sec": None}
+            return {"text": None, "error": "clé_groq_invalide", "retry_after_sec": None,
+                    "erreur_brute": brute}
         if "429" in err or "rate" in err:
-            return {"text": None, "error": "rate_limit_groq", "retry_after_sec": 60}
+            return {"text": None, "error": "rate_limit_groq", "retry_after_sec": 60,
+                    "erreur_brute": brute}
         if "quota" in err:
-            return {"text": None, "error": "quota_groq", "retry_after_sec": 3600}
-        return {"text": None, "error": str(e)[:80], "retry_after_sec": None}
+            return {"text": None, "error": "quota_groq", "retry_after_sec": 3600,
+                    "erreur_brute": brute}
+        return {"text": None, "error": str(e)[:80], "retry_after_sec": None,
+                "erreur_brute": brute}
 
 
 def llm_disponible() -> dict:

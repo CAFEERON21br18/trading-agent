@@ -20,6 +20,7 @@ from collections import deque
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.logger import get_logger
+from utils.audit_trace import compter_appel_llm
 import config
 
 logger = get_logger(__name__)
@@ -78,6 +79,7 @@ def _respecter_rate_limit() -> None:
         _request_times.append(time.time())
 
 
+@compter_appel_llm  # audit du chat (Phase 4) : no-op hors requête auditée
 def ask_gemini(prompt: str, system: str | None = None,
                 temperature: float = 0.7,
                 max_output_tokens: int | None = None) -> str:

@@ -10,6 +10,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.logger import get_logger
+from utils.audit_trace import zone_audit
 
 logger = get_logger(__name__)
 
@@ -104,6 +105,7 @@ def _seuil_confiance_requis(analyses: dict) -> int:
     return 7
 
 
+@zone_audit("decision_engine")  # audit du chat (Phase 4) : no-op hors requête auditée
 def decider(ticker: str, analyses: dict) -> dict:
     """
     Entrée principale du Decision Engine — 5 étapes (v4) :

@@ -13,6 +13,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 
 from utils.logger import get_logger
 from utils.real_portfolio_db import creer_plan, get_real_budget_summary
+from utils.audit_trace import noter_contexte
+from agents.chat._audit import auditer_message
 
 logger = get_logger(__name__)
 
@@ -67,6 +69,7 @@ def _terminer(session_id: str, plan_id: int) -> dict:
     }
 
 
+@auditer_message("plan")  # Phase 4 : chaque message → une ligne message_audit
 def etape_creation_plan(session_id: str, message: str) -> dict:
     """
     État machine de création de plan.
@@ -95,6 +98,7 @@ def etape_creation_plan(session_id: str, message: str) -> dict:
 
     etape = session["etape"]
     brouillon = session["brouillon"]
+    noter_contexte({"session_id": session_id, "etape": etape, "brouillon": dict(brouillon)})
 
     # Étape TYPE
     if etape == "type":

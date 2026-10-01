@@ -7,6 +7,7 @@ import sqlite3
 import os
 from datetime import datetime
 from utils.logger import get_logger
+from utils.audit_trace import tracer_sql
 
 logger = get_logger(__name__)
 
@@ -20,6 +21,7 @@ def get_connection() -> sqlite3.Connection:
     conn = sqlite3.connect(DB_PATH)
     conn.execute("PRAGMA journal_mode=WAL")
     conn.row_factory = sqlite3.Row  # Accès par nom de colonne
+    tracer_sql(conn)  # audit du chat (Phase 4) : no-op hors requête auditée
     return conn
 
 
