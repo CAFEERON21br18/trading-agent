@@ -106,7 +106,7 @@ def _seuil_confiance_requis(analyses: dict) -> int:
 
 
 @zone_audit("decision_engine")  # audit du chat (Phase 4) : no-op hors requête auditée
-def decider(ticker: str, analyses: dict) -> dict:
+def decider(ticker: str, analyses: dict, origine: str = "cycle") -> dict:
     """
     Entrée principale du Decision Engine — 5 étapes (v4) :
       1. Collecter & normaliser
@@ -114,6 +114,7 @@ def decider(ticker: str, analyses: dict) -> dict:
       3. Vérifier les overrides
       4. Consulter l'intuition (mémoire + contexte)
       5. Décider et logger
+    origine="chat" (Phase 4 / E2) : décision technique seule, voir plus bas.
     """
     scores      = _normaliser(analyses)
     score_total = round(sum(scores.values()), 2)
@@ -200,6 +201,13 @@ def decider(ticker: str, analyses: dict) -> dict:
         logger.warning(f"Setup quality {ticker} : {e}")
         resultat["quality_grade"] = "?"
         resultat["budget_boost"]  = 1.0
+
+    # Phase 4 / E2 — origine="chat" : ni audit métacognitif ni pipeline (aucun
+    # appel LLM, aucune écriture dans metacognition_log). Cycles : inchangés.
+    if origine == "chat":
+        resultat.update(origine="chat", metacognition="", pipeline_raisonnement={
+            "executed": False, "raison": "origine=chat : non exécuté"})
+        return resultat
 
     # v5.3.6 — Audit métacognitif Gemini (n'override pas, juste annote)
     try:

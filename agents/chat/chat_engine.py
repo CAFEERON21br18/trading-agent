@@ -64,6 +64,16 @@ def _detecter_intention(question: str) -> str:
     return "general"
 
 
+def _pied_decisions(contexte: dict) -> str:
+    """Phase 4 / E2 (c) : statut de chaque décision affichée, indépendant du LLM.
+    Le pipeline peut réduire la taille sous le minimum viable du Budget Manager :
+    une décision du chat n'est donc jamais « la décision d'un cycle »."""
+    lignes = [f"ℹ️ {t} : décision technique calculée à la volée ({d.get('calculee_a', '?')}), "
+              "avant validation métacognitive et budgétaire — aucun ordre passé."
+              for t, d in (contexte.get("asset_data") or {}).items() if d.get("in_watchlist")]
+    return ("\n\n" + "\n".join(lignes)) if lignes else ""
+
+
 @auditer_message("chat")  # Phase 4 : chaque message → une ligne message_audit
 def repondre(question: str) -> dict:
     """Génère une réponse à partir de la question + contexte (+ Gemini si dispo)."""
@@ -77,6 +87,7 @@ def repondre(question: str) -> dict:
 
     # 2. Enrichissement Gemini (graceful : retombe sur le template si KO)
     reponse, source = enrichir_avec_gemini(question, intention, template, contexte)
+    reponse += _pied_decisions(contexte)
     logger.info(f"Chat [{intention}] source={source} ({len(reponse)} car.)")
 
     # 3. Historique

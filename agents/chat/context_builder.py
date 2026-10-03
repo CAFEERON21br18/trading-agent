@@ -9,11 +9,23 @@ import os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
+import config
 from utils.logger import get_logger
 from utils.helpers import charger_watchlist, tous_les_tickers
 from agents.chat._extraction import extraire_tickers, get_asset_a_la_volee
 
 logger = get_logger(__name__)
+
+
+def _heure_locale() -> str:
+    """Heure locale du calcul (« 15h20 »), fuseau config.TIMEZONE."""
+    try:
+        return datetime.now(ZoneInfo(config.TIMEZONE)).strftime("%Hh%M")
+    except Exception:
+        return datetime.now().strftime("%Hh%M")
 
 
 def build_context(question: str) -> dict:
@@ -42,6 +54,8 @@ def build_context(question: str) -> dict:
         context["real_resume"] = {}
 
     # 3. Actifs mentionnés — v5.4.2 : watchlist OU à la volée (yfinance)
+    # Phase 4 / E2 : liste ordonnée (watchlist d'abord) → tickers[:3] déterministe ;
+    # decider(origine="chat") : décision technique, sans LLM ni écriture mémoire.
     tickers = extraire_tickers(question)
     context["tickers_mentionnes"] = tickers
     context["asset_data"] = {}
@@ -56,7 +70,7 @@ def build_context(question: str) -> dict:
                 from agents.asset_analyzer import analyser_actif_complet
                 from agents.decision_engine import decider
                 an = analyser_actif_complet(t)
-                dc = decider(t, an)
+                dc = decider(t, an, origine="chat")
                 context["asset_data"][t] = {
                     "in_watchlist": True,
                     "technique":    an.get("technique"),
@@ -64,6 +78,8 @@ def build_context(question: str) -> dict:
                     "confidence":   dc.get("confidence"),
                     "score":        dc.get("score_composite"),
                     "reasoning":    dc.get("reasoning"),
+                    "origine":      "chat",           # calculée à la volée, pas un cycle
+                    "calculee_a":   _heure_locale(),
                 }
             else:
                 data = get_asset_a_la_volee(t)
