@@ -3,6 +3,21 @@
 Points relevés pendant la Phase 4 (audit du chat stratégique, 01/10/2026).
 Non traités : chacun fera l'objet d'un travail séparé.
 
+## ⚠️ PRIORITÉ HAUTE — Décisions du cycle tactical persistées nulle part
+
+- `scripts/cycle_tactical.py:63-74` : `decider()` tourne toutes les 15 min
+  (queue ≤ 5 tickers + 8 tickers de la watchlist hors positions ouvertes).
+  Les décisions restent en mémoire le temps d'`executer_ouvertures`, puis
+  sont perdues : HOLD, NO_TRADE, et BUY/SELL refusés par le Budget Manager
+  ne laissent aucune trace.
+- Seule trace existante : la table `signals`, écrite par la routine
+  quotidienne (un lot vers 07h40), uniquement pour les BUY/SELL validés
+  par le Risk Manager.
+- **Prérequis du registre de signaux.** Conséquence immédiate : le chat ne
+  peut pas réutiliser une décision de cycle ; depuis E2 il calcule sa propre
+  décision à la volée (`decider(..., origine="chat")`). Relevé le 03/10/2026,
+  volontairement non traité dans E2.
+
 ## 1. Rotation des logs cassée (Windows)
 
 - Les cycles et le dashboard écrivent tous dans `logs/alphasignal.log` et
