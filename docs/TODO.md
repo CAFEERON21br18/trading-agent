@@ -82,9 +82,11 @@ Non traités : chacun fera l'objet d'un travail séparé.
 
 - `agents/decision_engine_meta.py::audit_metacognitif` fait un appel Gemini
   direct pour chaque décision sauf HOLD (BUY, SELL et NO_TRADE ; cycles et
-  conseiller réel). Son résultat
-  (`resultat["metacognition"]`) ne sert qu'au formatage des rapports
-  (`agents/decision_formatter.py`) : il ne change ni l'action ni la taille.
+  conseiller réel). Son résultat (`resultat["metacognition"]`) n'est lu par
+  **aucun code** et n'est sérialisé nulle part : il ne change ni l'action ni
+  la taille. (Correction du 05/10 : `decision_formatter` lit le verdict
+  métacognitif du *pipeline*, `pipeline_raisonnement["metacognition"]`, pas
+  celui-ci.)
 - **Mesurer d'abord** combien d'appels par jour il représente (et leur part
   du quota Gemini de 20 requêtes/jour) avant de décider quoi que ce soit.
 
@@ -97,3 +99,24 @@ Non traités : chacun fera l'objet d'un travail séparé.
   interface ne s'en sert pour le budget aujourd'hui (le formulaire d'édition
   de la page Plans ne touche ni budget, ni pourcentage, ni statut), mais ils
   sont joignables sans authentification depuis le tailnet.
+
+## 8. JUSTESSE — P&L latent inconnu présenté comme 0 au LLM du chat
+
+- Le chat construit son contexte avec `etat_portefeuille(with_live_prices=False)`
+  (`agents/chat/context_builder.py`) : aucune position n'a de prix, donc
+  `prix_actuel` et `unrealized_pnl_euros` valent `null` pour toutes.
+- `agents/paper_trader/portfolio.py:95` fait
+  `sum(p.get("unrealized_pnl_euros") or 0 …)` : l'inconnu devient **0**, et
+  `total_value` = capital + 0.
+- Le prompt annonce alors « P&L latent : +0.00€ » (constaté dans
+  `message_audit` n°13, 03/10 : 11 positions, 11 `prix_actuel` à null) : un
+  chiffre inconnu est présenté comme un zéro factuel.
+
+## 9. Conseils réels tronqués, stockés tels quels
+
+- `agents/real_advisor.py::_enrichir_llm` remplace la justification d'un
+  conseil par le texte du LLM, appelé avec `max_tokens=200`
+  (`real_advisor.py:76-80`), sans vérifier que la phrase est complète.
+- Exemples dans `real_advice_log` (03/10 vers 07h05) : n°2518 « VRT est en
+  ligne avec », n°2515 « Maintenez la position MU, ». Ces textes sont
+  affichés tels quels dans « Conseils en attente » (page Réel).
