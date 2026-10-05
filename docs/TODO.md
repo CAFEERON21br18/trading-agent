@@ -62,3 +62,38 @@ Non traités : chacun fera l'objet d'un travail séparé.
   `len(advice)`). La liste n'est jamais injectée dans le prompt.
 - Depuis la Phase 4, `message_audit` n'en stocke qu'un extrait (20 conseils
   et le total), mais le chargement complet a toujours lieu.
+
+## 5. `memory/metacognition_log.md` : ne jamais l'utiliser comme source
+
+- **Aucun code ne le lit** : seul `agents/skills/_log.py` y écrit. Ni le
+  pipeline (ses signaux comportementaux viennent de la base), ni
+  `memory_reader`, ni le module `learner`, ni la page Memory du dashboard.
+- **Ne jamais l'utiliser comme source du registre de signaux** : texte libre,
+  aucune origine enregistrée (cycle, chat, conseiller réel), et la période
+  22/06 → 02/09/2026 n'est pas vérifiable (messages du chat effacés, aucun
+  journal sur ce PC).
+- Entrées venant du chat, connues (rapport E3 du 03/10/2026) :
+  ligne 18778 (01/10 22:07 UTC, AMAT, **confirmée** par `message_audit`),
+  ligne 3982 (02/09 00:19 UTC, AAPL, **probable**). Non marquées
+  volontairement : une modification sur place entrerait en concurrence avec
+  les cycles qui écrivent dans le fichier. Depuis E2, le chat n'y écrit plus.
+
+## 6. Piste quota LLM : l'audit métacognitif des cycles
+
+- `agents/decision_engine_meta.py::audit_metacognitif` fait un appel Gemini
+  direct pour chaque décision sauf HOLD (BUY, SELL et NO_TRADE ; cycles et
+  conseiller réel). Son résultat
+  (`resultat["metacognition"]`) ne sert qu'au formatage des rapports
+  (`agents/decision_formatter.py`) : il ne change ni l'action ni la taille.
+- **Mesurer d'abord** combien d'appels par jour il représente (et leur part
+  du quota Gemini de 20 requêtes/jour) avant de décider quoi que ce soit.
+
+## 7. `POST` et `PUT /api/plans` ne sont pas plafonnés
+
+- E4 plafonne uniquement le mode plan du chat (`agents/chat/plan_builder.py`,
+  règle dans `agents/chat/_plan_budget.py`).
+- `POST /api/plans` (création) et `PUT /api/plans/<id>` (`modifier_plan` :
+  budget en €, pourcentage, statut…) n'appliquent aucun plafond. Aucune
+  interface ne s'en sert pour le budget aujourd'hui (le formulaire d'édition
+  de la page Plans ne touche ni budget, ni pourcentage, ni statut), mais ils
+  sont joignables sans authentification depuis le tailnet.
