@@ -89,6 +89,8 @@ Non traités : chacun fera l'objet d'un travail séparé.
   celui-ci.)
 - **Mesurer d'abord** combien d'appels par jour il représente (et leur part
   du quota Gemini de 20 requêtes/jour) avant de décider quoi que ce soit.
+- Mesuré le 05/10 : ≈ 565 appels/jour, tous en échec hors de la fenêtre de
+  08h00. **Désactivé par défaut depuis Q1** (`METACOG_AUDIT_ENABLED=false`).
 
 ## 7. `POST` et `PUT /api/plans` ne sont pas plafonnés
 

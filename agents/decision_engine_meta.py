@@ -3,6 +3,8 @@ agents/decision_engine_meta.py — Métacognition Gemini sur les décisions (v5.
 Audit critique d'une décision après qu'elle ait été prise par le rule-based engine.
 N'override JAMAIS la décision — ajoute juste un champ "metacognition" pour traçabilité.
 Skippé sur HOLD pur (trop fréquent + peu d'intérêt). Fallback "" si Gemini KO.
+Phase 4 / Q1 : désactivé par défaut (config.METACOG_AUDIT_ENABLED) — son
+résultat n'est lu par aucun code (docs/TODO.md §6).
 """
 
 import sys
@@ -10,6 +12,7 @@ import os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+import config
 from utils.gemini import ask_gemini, gemini_disponible
 
 
@@ -58,6 +61,8 @@ def audit_metacognitif(ticker: str, decision_result: dict, analyses: dict) -> st
     Audit critique d'une décision. Retourne une chaîne courte ou "".
     Skippé sur HOLD pur (économie d'appels LLM sur le cas le plus fréquent).
     """
+    if not config.METACOG_AUDIT_ENABLED:
+        return ""  # Phase 4 / Q1 : aucun appel Gemini (comme origine="chat")
     dec = decision_result.get("decision")
     if dec == "HOLD":
         return ""
