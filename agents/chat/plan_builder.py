@@ -12,9 +12,10 @@ import re
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from utils.logger import get_logger
-from utils.real_portfolio_db import creer_plan, get_real_budget_summary
+from utils.real_portfolio_db import creer_plan
 from utils.audit_trace import noter_contexte
 from agents.chat._audit import auditer_message
+from agents.chat._plan_budget import refus_budget_plan, formater_recap, resume_plafond
 
 logger = get_logger(__name__)
 
@@ -81,7 +82,6 @@ def etape_creation_plan(session_id: str, message: str) -> dict:
     # Démarrage
     if session is None or message.strip().lower() in ("nouveau", "start", "recommencer"):
         session = _nouveau_brouillon(session_id)
-        budget = get_real_budget_summary()
         return {
             "etat":  "en_cours",
             "etape": "type",
@@ -91,8 +91,7 @@ def etape_creation_plan(session_id: str, message: str) -> dict:
                 "• `court_terme` (swing, day trading)\n"
                 "• `actions` / `crypto` / `cfd`\n"
                 "• `custom` (à toi de définir)\n\n"
-                f"💰 Budget disponible : {budget.get('available', 0):.0f}€ "
-                f"(sur capital total {budget.get('total_capital', 0):.0f}€)"
+                f"💰 {resume_plafond()}"  # Phase 4 / E4 : même plafond que le contrôle
             ),
         }
 
@@ -124,6 +123,9 @@ def etape_creation_plan(session_id: str, message: str) -> dict:
         if b is None or b <= 0:
             return {"etat": "en_cours", "etape": "budget",
                     "reponse": "Montant invalide. Indique un nombre en euros (ex: '300' ou '500€')."}
+        refus = refus_budget_plan(b)  # Phase 4 / E4 : plafond (capital − investi − plans actifs)
+        if refus:
+            return {"etat": "en_cours", "etape": "budget", "reponse": refus}
         brouillon["allocated_budget"] = b
         session["etape"] = "objectif"
         return {"etat": "en_cours", "etape": "objectif",
@@ -159,13 +161,18 @@ def etape_creation_plan(session_id: str, message: str) -> dict:
         brouillon["max_position_size"] = round(brouillon["allocated_budget"] * 0.3, 2)
         session["etape"] = "valider"
         return {"etat": "en_cours", "etape": "valider",
-                "reponse": _formater_recap(brouillon) +
+                "reponse": formater_recap(brouillon) +
                            "\n\nRéponds `valider` pour créer ce plan, ou `ajuster` pour modifier."}
 
     # Étape VALIDER
     if etape == "valider":
         m = message.strip().lower()
         if m in ("valider", "ok", "go", "oui"):
+            # E4 : revérifié à la validation (le réel a pu bouger depuis l'étape budget)
+            refus = refus_budget_plan(brouillon["allocated_budget"])
+            if refus:
+                session["etape"] = "budget"
+                return {"etat": "en_cours", "etape": "budget", "reponse": refus}
             try:
                 pid = creer_plan(brouillon)
                 return _terminer(session_id, pid)
@@ -182,16 +189,3 @@ def etape_creation_plan(session_id: str, message: str) -> dict:
 
     # Fallback
     return {"etat": "erreur", "reponse": "État de conversation inconnu — relance avec 'nouveau'."}
-
-
-def _formater_recap(b: dict) -> str:
-    return (
-        f"📌 **Plan proposé** :\n"
-        f"- Type : {b.get('plan_type')}\n"
-        f"- Nom : {b.get('name')}\n"
-        f"- Budget alloué : {b.get('allocated_budget', 0):.0f}€\n"
-        f"- Objectif : +{b.get('target_return_percent', 0):.0f}% → {b.get('target_amount', 0):.0f}€\n"
-        f"- Horizon : {b.get('time_horizon')}\n"
-        f"- Vision : {b.get('vision', '')[:200]}\n"
-        f"- Taille max/position : {b.get('max_position_size', 0):.0f}€"
-    )
