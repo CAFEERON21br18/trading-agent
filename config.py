@@ -71,6 +71,12 @@ try:
 except ValueError:  # valeur illisible : défaut plutôt qu'un arrêt de tous les cycles
     AUDIT_RETENTION_DAYS = 90
 
+# ── Audit métacognitif Gemini (Phase 4 / Q1) ──────────────────────────────────
+# Un appel Gemini par décision non-HOLD, résultat lu par aucun code (TODO §6).
+# Désactivé par défaut ; toute valeur autre que 1/true/oui/yes = désactivé.
+METACOG_AUDIT_ENABLED = _get_optional("METACOG_AUDIT_ENABLED", "false").strip().lower() in (
+    "1", "true", "oui", "yes")
+
 # ── Chemins des fichiers ──────────────────────────────────────────────────────
 BASE_DIR          = os.path.dirname(os.path.abspath(__file__))
 WATCHLIST_FILE    = os.path.join(BASE_DIR, "data", "watchlist.json")
