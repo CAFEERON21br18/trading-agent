@@ -12,6 +12,7 @@ l'échec est seulement loggé, la réponse est déjà partie.
 """
 
 import threading
+from datetime import datetime, timedelta, timezone
 
 from utils.database import get_connection
 from utils.logger import get_logger
@@ -19,6 +20,7 @@ from utils.logger import get_logger
 logger = get_logger(__name__)
 
 TIMEOUT_VERROU_SEC = 10  # attente max d'un verrou SQLite avant abandon (loggé)
+TIMEOUT_PURGE_SEC = 30   # la purge attend la fin d'une écriture d'audit en cours
 
 COLONNES = (
     "timestamp", "source", "message_utilisateur", "contexte_injecte",
@@ -77,6 +79,29 @@ def inserer_audit(enregistrement: dict) -> int | None:
             [enregistrement.get(c) for c in COLONNES])
         conn.commit()
         return cur.lastrowid
+    finally:
+        conn.close()
+
+
+def purger_audit(jours: int) -> int:
+    """Rétention (Phase 4, partie C) : supprime les lignes de plus de `jours` jours.
+    Retourne le nombre de lignes supprimées ; jours ≤ 0 → purge désactivée.
+
+    Concurrence avec le chat, sans lock manager : une seule transaction DELETE,
+    et SQLite n'admet qu'un écrivain à la fois — une écriture d'audit en cours
+    fait attendre la purge (busy_timeout), et inversement. Une ligne en cours
+    d'écriture porte l'heure du moment : jamais concernée par la coupure.
+    Seule suppression de message_audit dans tout le code (aucune route HTTP)."""
+    if jours <= 0:
+        return 0
+    seuil = (datetime.now(timezone.utc) - timedelta(days=jours)).isoformat(timespec="seconds")
+    conn = get_connection()
+    try:
+        conn.execute(f"PRAGMA busy_timeout = {TIMEOUT_PURGE_SEC * 1000}")
+        initialiser_audit_db(conn)
+        cur = conn.execute("DELETE FROM message_audit WHERE timestamp < ?", (seuil,))
+        conn.commit()
+        return cur.rowcount
     finally:
         conn.close()
 

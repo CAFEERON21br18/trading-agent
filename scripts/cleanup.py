@@ -4,6 +4,7 @@ scripts/cleanup.py — Nettoyage hebdomadaire (dimanche 3h)
 - Cache > 7 jours → vidé
 - Locks expirés → supprimés
 - Vieux rapports daily → archivés (garde 60 jours)
+- Audit du chat : message_audit au-delà de AUDIT_RETENTION_DAYS → supprimé
 """
 
 import sys
@@ -13,6 +14,7 @@ from datetime import datetime, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+import config
 from utils.logger import get_logger
 from utils.cache import vider as vider_cache, stats as stats_cache
 from utils.heartbeat import update_heartbeat
@@ -63,6 +65,19 @@ def _purger_locks_expires() -> int:
     return nb
 
 
+def _purger_audit() -> int:
+    """Rétention de message_audit (Phase 4). Jamais bloquant pour le cleanup : -1 si erreur."""
+    try:
+        from utils.message_audit_db import purger_audit
+        n = purger_audit(config.AUDIT_RETENTION_DAYS)
+        logger.info(f"Audit du chat : {n} ligne(s) de message_audit supprimée(s) "
+                    f"(> {config.AUDIT_RETENTION_DAYS} jours)")
+        return n
+    except Exception as e:
+        logger.error(f"Purge message_audit : {e}")
+        return -1
+
+
 def main() -> int:
     import time as _t
     t0 = _t.time()
@@ -86,11 +101,15 @@ def main() -> int:
     n_locks = _purger_locks_expires()
     rapport.append(f"  Locks orphelins supprimés : {n_locks}")
 
+    # Audit du chat (Phase 4) : rétention de message_audit
+    n_audit = _purger_audit()
+    rapport.append(f"  message_audit > {config.AUDIT_RETENTION_DAYS}j supprimés : {n_audit}")
+
     # Reports unsent (ré-essayer plus tard pourrait être utile, on les garde)
     logger.info("\n".join(rapport))
     update_heartbeat("cleanup", status="healthy", duration_sec=_t.time() - t0,
                      extra={"logs_supprimes": n_logs, "rapports_supprimes": n_rapports,
-                            "locks_supprimes": n_locks})
+                            "locks_supprimes": n_locks, "audit_supprimes": n_audit})
     return 0
 
 
