@@ -64,6 +64,13 @@ FEAR_GREED_EXTREME_HIGH    = int(_get_optional("FEAR_GREED_EXTREME_HIGH", "80"))
 REPORT_TIME = _get_optional("REPORT_TIME", "07:30")
 TIMEZONE    = _get_optional("TIMEZONE", "Europe/Lisbon")
 
+# ── Audit du chat (Phase 4) ───────────────────────────────────────────────────
+# Rétention de message_audit en jours, purgée par le cycle cleanup (≤ 0 : jamais)
+try:
+    AUDIT_RETENTION_DAYS = int(_get_optional("AUDIT_RETENTION_DAYS", "90"))
+except ValueError:  # valeur illisible : défaut plutôt qu'un arrêt de tous les cycles
+    AUDIT_RETENTION_DAYS = 90
+
 # ── Chemins des fichiers ──────────────────────────────────────────────────────
 BASE_DIR          = os.path.dirname(os.path.abspath(__file__))
 WATCHLIST_FILE    = os.path.join(BASE_DIR, "data", "watchlist.json")
