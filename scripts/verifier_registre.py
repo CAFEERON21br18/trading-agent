@@ -6,7 +6,9 @@ Contrôle :
   a été supprimée ou insérée) et son empreinte correspond à son contenu
   (sinon elle a été modifiée après écriture) ;
 - la présence des trois triggers d'ajout seul ;
-- les passages : lignes écrites conformes à la clôture, passages jamais clos.
+- les passages : lignes écrites conformes à la clôture, passages jamais clos ;
+- les ancres quotidiennes (R3) : chacune décrit la chaîne telle qu'elle était à la fin
+  de son jour (nombre de lignes, dernière empreinte).
 
 Usage :
   python scripts/verifier_registre.py                 # base par défaut (data/registre.db)
@@ -41,12 +43,22 @@ def verifier(chemin: str = CHEMIN, jour: str | None = None) -> dict:
     erreurs = [f"trigger absent : {t}" for t in sorted(TRIGGERS - triggers)]
     precedent, par_type, ecrites, clos = GENESE, Counter(), Counter(), {}
     ancre = {"lignes": 0, "derniere_empreinte": None}
+    par_jour, dernier_par_jour = Counter(), {}  # R3 : contrôle des lignes « ancre »
     for r in lignes:
         l = dict(zip(("id", *COLONNES, "hash"), r))
         if l["hash_precedent"] != precedent:
             erreurs.append(f"id {l['id']} : maillon rompu (ligne précédente supprimée, insérée ou modifiée)")
         if empreinte_ligne(l) != l["hash"]:
             erreurs.append(f"id {l['id']} : contenu modifié après écriture")
+        if l["type"] == "ancre":  # l'ancre doit décrire la chaîne telle qu'elle était à la fin de son jour
+            a = json.loads(l["contenu"])
+            j = a.get("jour") or ""
+            attendu = (sum(n for d, n in par_jour.items() if d <= j),
+                       max((v for d, v in dernier_par_jour.items() if d <= j), default=(0, None))[1])
+            if (a.get("lignes"), a.get("derniere_empreinte")) != attendu:
+                erreurs.append(f"id {l['id']} : ancre du {j} incohérente avec la chaîne")
+        par_jour[l["horodatage"][:10]] += 1
+        dernier_par_jour[l["horodatage"][:10]] = (l["id"], l["hash"])
         precedent = l["hash"]
         par_type[l["type"]] += 1
         if l["type"] in ("decision", "reevaluation"):

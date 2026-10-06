@@ -21,11 +21,14 @@ from utils.valeurs import nombre_ou_none
 logger = get_logger(__name__)
 
 
-def ouvrir(cycle: str):
-    """Passage du cycle, ou None si le registre est indisponible (le cycle continue)."""
+def ouvrir(cycle: str, **details):
+    """Passage du cycle, ou None si le registre est indisponible (le cycle continue).
+    details (R3) : recopiés dans la ligne de clôture (ex. déclencheur d'une intervention manuelle)."""
     try:
+        if cycle == "manuel":  # R3 : le dashboard tourne longtemps, relire le commit courant
+            registre.version_code.cache_clear()
         p = registre.ouvrir_passage(cycle)
-        p.t0 = time.monotonic()
+        p.t0, p.details = time.monotonic(), {k: v for k, v in details.items() if v is not None}
         return p
     except Exception as e:
         logger.warning(f"Registre : passage {cycle} non ouvert : {e}")
@@ -37,7 +40,8 @@ def clore(passage, toujours: bool = True, details: dict | None = None) -> None:
     if passage is None or (not toujours and passage.ecrites + passage.erreurs == 0):
         return
     duree = round(time.monotonic() - getattr(passage, "t0", time.monotonic()), 1)
-    registre.clore_passage(passage, passage.ecrites + passage.erreurs, {"duree_s": duree, **(details or {})})
+    registre.clore_passage(passage, passage.ecrites + passage.erreurs,
+                           {"duree_s": duree, **getattr(passage, "details", {}), **(details or {})})
 
 
 def _derniere_barre(ticker: str) -> dict | None:

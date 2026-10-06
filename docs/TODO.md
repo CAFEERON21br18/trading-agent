@@ -218,6 +218,17 @@ Non traités : chacun fera l'objet d'un travail séparé.
 - Le cycle `manuel` est déjà admis par le schéma (CHECK de
   `utils/registre_schema.py`, ajouté avant la première écriture pour éviter
   une migration). Reste à brancher les routes en R3.
+- **Fait en R3** (`utils/registre_manuel.py`) : les trois routes ci-dessus
+  ouvrent un passage `manuel` avec leur déclencheur (trailing stop : ligne
+  `TRAILING_ACTIVE` ou `TRAILING_DESACTIVE` ; run-analysis : décisions de la
+  routine ; watchlist : actifs ajoutés, retirés, ordre modifié). La
+  composition de la watchlist (ordre compris) entre dans l'empreinte des
+  paramètres. Inventaire du 06/10/2026 : aucune autre route ne modifie une
+  position paper.
+- Non enregistrées (hors périmètre paper) : les routes du portefeuille réel
+  (`/api/real/*`, `/api/plans/*`, `/api/chat/create-plan`). Elles changent les
+  positions évaluées par le conseiller, dont les décisions sont au registre
+  (origine `conseiller`).
 
 ## 14. Découvertes des explorateurs jamais analysées faute de prix
 
@@ -283,3 +294,21 @@ Non traités : chacun fera l'objet d'un travail séparé.
 - À trancher : l'intention était-elle d'exiger 9 sur un actif au mauvais
   winrate ? Si oui, c'est un oubli et le brancher changerait des décisions
   (décision séparée, à évaluer avec REGISTRE_CRITERES) ; sinon, le supprimer.
+
+## 16. La page Settings réordonne la watchlist (ordre alphabétique)
+
+- `GET /api/watchlist` renvoie la watchlist par `jsonify`, et Flask trie les
+  clés (`DefaultJSONProvider.sort_keys = True`, Flask 3.1.3). La page Settings
+  garde cet objet trié et le renvoie en entier à chaque clic sur un actif
+  (`toggleAsset`, `POST /api/settings/watchlist`) : `data/watchlist.json` est
+  alors réécrit dans l'ordre alphabétique (catégories et tickers).
+- Effet : le tactical n'analyse que les 8 premiers actifs hors positions
+  ouvertes (`scripts/cycle_tactical.py`, étape 4). Un simple clic change donc
+  les actifs analysés. Relevé le 06/10/2026 (R3) ; le fichier est encore
+  identique à sa version commitée du 19/06 (a404ac6), dans son ordre d'origine.
+- Depuis R3, un tel changement est visible : passage `manuel` avec
+  `ordre_modifie`, et nouvelle ligne `parametres` (l'ordre fait partie de
+  l'empreinte).
+- À décider : garder l'ordre du fichier (réponse sans tri pour cette route,
+  ou renvoi du seul changement), ou rendre la sélection du tactical
+  indépendante de l'ordre.

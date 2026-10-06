@@ -131,11 +131,14 @@ def post_trailing_stop(pos_id):
     from agents.technical_skills.trailing_stop import (
         activer_trailing_stop, desactiver_trailing_stop,
     )
+    from utils.registre_manuel import noter_trailing
     data = request.get_json() or {}
     if data.get("active"):
-        return jsonify(activer_trailing_stop(pos_id,
-            float(data.get("atr_multiplier", 2.0))))
-    return jsonify(desactiver_trailing_stop(pos_id))
+        res = activer_trailing_stop(pos_id, float(data.get("atr_multiplier", 2.0)))
+    else:
+        res = desactiver_trailing_stop(pos_id)
+    noter_trailing(pos_id, bool(data.get("active")), res)  # registre (Phase 4, R3) : cycle « manuel »
+    return jsonify(res)
 
 
 @api.route("/attribution")
@@ -560,7 +563,8 @@ def post_run_analysis():
     def _run():
         try:
             from agents.orchestrator import lancer_routine_quotidienne
-            lancer_routine_quotidienne(envoyer_emails=True)
+            from utils.registre_manuel import ROUTE_ANALYSE
+            lancer_routine_quotidienne(envoyer_emails=True, declencheur=ROUTE_ANALYSE)  # registre : « manuel » (R3)
         except Exception as e:
             logger.error(f"Run analysis manuel échoué : {e}")
 
@@ -580,8 +584,12 @@ def post_watchlist():
     )
     try:
         import json as _json
+        from utils.registre import composition_watchlist
+        from utils.registre_manuel import noter_watchlist
+        avant = composition_watchlist()
         with open(chemin, "w", encoding="utf-8") as f:
             _json.dump(data, f, indent=2, ensure_ascii=False)
+        noter_watchlist(avant)  # registre (Phase 4, R3) : cycle « manuel », différence de composition
         return jsonify({"saved": True})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
