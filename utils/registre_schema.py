@@ -9,6 +9,8 @@ sera relue dans SQLite (types normalisés, JSON canonique).
 import json
 import hashlib
 
+from utils.valeurs import nombre_ou_none
+
 GENESE = "0" * 64
 CHAMPS = ("decision", "style", "score", "confiance", "prix", "position_id")
 COLONNES = ("horodatage", "type", "cycle", "passage_id", "ticker", *CHAMPS,
@@ -58,6 +60,6 @@ def _normaliser(champs: dict) -> dict:
         if v is not None and c in _ENTIERS:
             v = int(v)
         elif v is not None and c in _REELS:
-            v = float(v)
+            v = nombre_ou_none(v)  # R2c : NaN/infini → None (SQLite relirait NULL : empreinte fausse)
         out[c] = v
     return out
