@@ -103,6 +103,13 @@ try:
 except ValueError:
     GEMINI_RETRY_MAX_SEC = 10
 
+# ── P&L latent du chat (Phase 4, TODO §8) ─────────────────────────────────────
+# Âge maximum (minutes) du dernier prix relevé par les cycles ; au-delà, inconnu
+try:
+    CHAT_PRIX_AGE_MAX_MIN = max(1, int(_get_optional("CHAT_PRIX_AGE_MAX_MIN", "30")))
+except ValueError:
+    CHAT_PRIX_AGE_MAX_MIN = 30
+
 # ── Chemins des fichiers ──────────────────────────────────────────────────────
 BASE_DIR          = os.path.dirname(os.path.abspath(__file__))
 WATCHLIST_FILE    = os.path.join(BASE_DIR, "data", "watchlist.json")

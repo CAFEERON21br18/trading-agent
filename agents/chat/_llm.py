@@ -7,6 +7,7 @@ Phase 4 / Q4 : appelant « chat » (réserve Gemini) ; Groq tenté même sans cl
 """
 
 from utils.llm    import ask_llm, llm_disponible
+from agents.chat._pnl_latent import nd, texte_pnl  # TODO §8 : inconnu → « non disponible »
 
 
 SYSTEM_PROMPT = """Tu es AlphaSignal, un analyste quantitatif senior et gestionnaire de portefeuille.
@@ -44,13 +45,13 @@ def _construire_prompt(question: str, intention: str,
                         f"Cash : {paper.get('cash', 0):.2f}€")
         sections.append(f"Positions : {paper.get('open_positions_count', 0)}/"
                         f"{paper.get('max_positions', 20)} | "
-                        f"P&L latent : {paper.get('unrealized_pnl', 0):+.2f}€")
+                        f"P&L latent : {texte_pnl(contexte.get('pnl_latent'))}")
         sections.append(f"Mode : {'défensif' if paper.get('mode_defensif') else 'normal'}")
         sections.append("")
 
     perf = contexte.get("performance") or {}
     if perf and perf.get("nb_trades"):
-        sections.append(f"Performance (20 derniers trades) : "
+        sections.append(f"Performance ({perf['nb_trades']} derniers trades avec résultat, 20 au plus) : "
                         f"winrate {perf.get('win_rate', 0):.0f}%, "
                         f"profit factor {perf.get('profit_factor', 0):.2f}")
         sections.append("")
@@ -88,16 +89,16 @@ def _construire_prompt(question: str, intention: str,
         for t, d in list(asset_data.items())[:3]:
             if d.get("in_watchlist"):
                 # v5.4.2 : actif suivi → décision + reasoning existants
-                sections.append(f"{t} [suivi] : décision {d.get('decision')} "
-                                f"(conf {d.get('confidence')}/10, score {d.get('score', 0):+.2f}) "
+                sections.append(f"{t} [suivi] : décision {nd(d.get('decision'))} "
+                                f"(conf {nd(d.get('confidence'), '{}/10')}, score {nd(d.get('score'), '{:+.2f}')}) "
                                 f"— {(d.get('reasoning') or '')[:250]}")
             elif d.get("found"):
                 # v5.4.2 : actif hors watchlist → chiffres yfinance à la volée
                 sections.append(
                     f"{t} [hors watchlist, yfinance] : "
-                    f"prix {d.get('prix')}, RSI {d.get('rsi')}, "
-                    f"SMA20 {d.get('sma20')}, SMA50 {d.get('sma50')}, "
-                    f"perf 1 mois {d.get('change_1m_pct')}%. "
+                    f"prix {nd(d.get('prix'))}, RSI {nd(d.get('rsi'))}, "
+                    f"SMA20 {nd(d.get('sma20'))}, SMA50 {nd(d.get('sma50'))}, "
+                    f"perf 1 mois {nd(d.get('change_1m_pct'), '{}%')}. "
                     f"⚠️ Pas d'analyse Decision Engine — actif non suivi par l'agent."
                 )
             else:

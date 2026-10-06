@@ -124,6 +124,24 @@ Non traités : chacun fera l'objet d'un travail séparé.
 - Le prompt annonce alors « P&L latent : +0.00€ » (constaté dans
   `message_audit` n°13, 03/10 : 11 positions, 11 `prix_actuel` à null) : un
   chiffre inconnu est présenté comme un zéro factuel.
+- **Corrigé pour le chat (06/10)** : `portfolio.prix_actuel` dépose chaque prix
+  relevé par les cycles dans `data/cache/dernier_prix/` (`utils/dernier_prix.py`,
+  sans appel réseau en plus) ; le chat valorise les positions à ce prix s'il a
+  moins de `CHAT_PRIX_AGE_MAX_MIN` (30 min), indique son heure et la couverture
+  (« sur 8 positions sur 13 »), sinon « non disponible ».
+- Reste à traiter (relevé dans l'inventaire du 06/10, non corrigé) :
+  - **Dashboard, page Overview** : `dashboard/api/queries.py:19` appelle le même
+    `etat_portefeuille(with_live_prices=False)` → « P&L latent +0.00€ », valeur
+    totale = capital (`overview.html:51-55`), `unrealized_pnl_pct || 0` (`:70`).
+    Pourra lire le même cache `utils/dernier_prix.py`.
+  - **P&L réalisé réel** : `utils/real_portfolio_db.py:486` compte 0 pour une
+    position réelle close sans `realized_pnl` (aucune au 06/10).
+  - **Mode défensif** : `agents/paper_trader/portfolio.py:41` compte un P&L
+    inconnu comme « pas une perte » (fonction partagée avec la gestion du risque
+    des cycles ; aucune position close sans P&L au 06/10).
+  - **Défaut inverse** (`agents/chat/_extraction.py`) : une perf. 1 mois de
+    0,0 % devient `None` (`:151`, test `if change_1m`), un RSI sans aucune baisse
+    devient `None` au lieu de 100 (`:135`).
 
 ## 9. Conseils réels tronqués, stockés tels quels
 

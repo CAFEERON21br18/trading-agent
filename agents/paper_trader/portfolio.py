@@ -10,6 +10,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 
 import config
 from utils.logger import get_logger
+from utils.dernier_prix import enregistrer as enregistrer_dernier_prix
 from utils.portfolio_db import (
     lire_positions_ouvertes, lire_positions_recentes_fermees, lire_dernier_snapshot,
 )
@@ -27,7 +28,10 @@ def prix_actuel(ticker: str) -> float | None:
         hist = yf.Ticker(ticker).history(period="1d")
         if hist.empty:
             return None
-        return float(hist["Close"].iloc[-1])
+        prix = float(hist["Close"].iloc[-1])
+        # Phase 4 (TODO §8) : déposé pour le chat, qui le relit sans réseau ; n'échoue jamais
+        enregistrer_dernier_prix(ticker, prix, hist.index[-1])
+        return prix
     except Exception as e:
         logger.error(f"Prix actuel {ticker} : {e}")
         return None
