@@ -23,6 +23,7 @@ from agents.paper_trader.cycle           import (
 )
 from agents.paper_trader.monitor         import monitorer_positions
 from utils.registre_cycles                import ouvrir, clore, enregistrer_decisions
+from utils.registre_ancre                 import section_registre
 from agents.paper_trader.portfolio       import etat_portefeuille
 from agents.trade_journalist.journalist  import enregistrer_signal
 from agents.trade_journalist.performance_tracker import (
@@ -89,10 +90,11 @@ def generer_tableau_watchlist(decisions: list[dict]) -> str:
     return "\n".join(lignes)
 
 
-def generer_rapport_quotidien() -> tuple[str, list[dict], list[dict]]:
+def generer_rapport_quotidien(declencheur: str | None = None) -> tuple[str, list[dict], list[dict]]:
     """
     Routine complète : monitor → analyses → decisions → cycle paper → snapshot → rapport.
     Retourne (rapport_md, decisions_actives, all_decisions).
+    declencheur (R3) : route du dashboard → passage « manuel » dans le registre.
     """
     logger.info("Génération du rapport quotidien (Decision Engine + Paper Trading)...")
     now      = datetime.now(timezone.utc)
@@ -100,7 +102,8 @@ def generer_rapport_quotidien() -> tuple[str, list[dict], list[dict]]:
 
     # ── 0. Init paper DB + monitor des positions existantes (fermeture SL/TP) ──
     init_paper()
-    passage = ouvrir("quotidien")  # registre (Phase 4, R2) ; non clos si la routine plante avant l'étape 3
+    cycle_registre = "manuel" if declencheur else "quotidien"  # registre (Phase 4, R2/R3)
+    passage = ouvrir(cycle_registre, declencheur=declencheur)  # non clos si la routine plante avant l'étape 3
     monitor_resume = monitorer_positions(passage)
 
     # ── 1. Sentiment global ──────────────────────────────────────────────────
@@ -155,6 +158,7 @@ def generer_rapport_quotidien() -> tuple[str, list[dict], list[dict]]:
     except Exception as e:
         logger.warning(f"Section pipeline du rapport : {e}")
         bloc_pipeline = ""
+    bloc_registre = section_registre(cycle_registre)  # R3 : vérification + ancre de la veille ; ne lève jamais
 
     rapport = f"""# AlphaSignal — Rapport Quotidien — {date_str}
 
@@ -181,7 +185,7 @@ Capital total : {config.CAPITAL:.0f}€ | Investissable : {config.CAPITAL_INVEST
 ## 🧠 Décisions par actif
 
 {section_decisions}
-{bloc_pipeline}
+{bloc_pipeline}{bloc_registre}
 ## ⚠️ Disclaimer
 
 Les analyses fournies sont à titre informatif uniquement. Toutes les décisions de trading
@@ -191,7 +195,7 @@ sont en mode **paper trading** (simulé) — aucun ordre réel n'est exécuté s
     return rapport, actifs_buy_sell, decisions
 
 
-def lancer_routine_quotidienne(envoyer_emails: bool = True) -> dict:
+def lancer_routine_quotidienne(envoyer_emails: bool = True, declencheur: str | None = None) -> dict:
     """
     Routine quotidienne complète : analyses + rapport + alertes + mémoire.
     Retourne un résumé des actions effectuées.
@@ -210,7 +214,7 @@ def lancer_routine_quotidienne(envoyer_emails: bool = True) -> dict:
         return resume
 
     # ── Génération rapport (monitor + Decision Engine + cycle paper) ────────
-    rapport_md, decisions_actives, _ = generer_rapport_quotidien()
+    rapport_md, decisions_actives, _ = generer_rapport_quotidien(declencheur)
     resume["signaux_forts"] = len(decisions_actives)
     date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 

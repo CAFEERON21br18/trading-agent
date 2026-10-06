@@ -55,14 +55,28 @@ def version_code() -> str | None:
     return None
 
 
+def composition_watchlist() -> dict:
+    """Actifs actifs de la watchlist, par catégorie, dans l'ordre du fichier (R3 : l'ordre
+    compte, le tactical n'analyse que les 8 premiers actifs hors positions ouvertes)."""
+    import json
+    try:
+        with open(config.WATCHLIST_FILE, encoding="utf-8") as f:
+            data = json.load(f)
+        return {cat: [t for t, info in actifs.items() if (info or {}).get("actif", True)]
+                for cat, actifs in data.items() if not cat.startswith("_") and isinstance(actifs, dict)}
+    except Exception as e:
+        return {"erreur": str(e)[:120]}
+
+
 def parametres_actifs() -> dict:
-    """Paramètres qui influencent une décision (seuils, risque, pipeline, LLM)."""
+    """Paramètres qui influencent une décision (seuils, risque, pipeline, LLM, watchlist)."""
     p = {k: getattr(config, k, None) for k in (
         "CAPITAL", "MAX_CAPITAL_INVESTI_PCT", "RISK_PER_TRADE_PCT", "MAX_POSITIONS_SIMULTANEES",
         "SEUIL_BUY", "SEUIL_SELL", "PIPELINE_FALLBACK_FACTOR", "PIPELINE_FALLBACK_ALERT",
         "METACOG_AUDIT_ENABLED", "GEMINI_RETRY_MAX_SEC", "CHAT_PRIX_AGE_MAX_MIN",
         "SEUIL_CONFIANCE_PAPER", "SEUIL_CONFIANCE_PAPER_DEFENSIF", "SEUIL_CONFIANCE_LEARNING")}
     p["GEMINI_RESERVE_POUR"] = sorted(getattr(config, "GEMINI_RESERVE_POUR", []))
+    p["WATCHLIST"] = composition_watchlist()  # R3
     try:
         from agents.decision_engine import POIDS, SEUIL_LEARNING, SEUIL_CONTRADICTION
         from agents.analysts.risk_manager.manager import RR_MINIMUM
@@ -161,4 +175,18 @@ def clore_passage(passage: Passage, attendues: int, details: dict | None = None)
         return True
     except Exception as e:
         logger.warning(f"Registre : clôture du passage {passage.cycle} {passage.id} non enregistrée : {e}")
+        return False
+
+
+def enregistrer_ancre(cycle: str, contenu: dict) -> bool:
+    """R3 : ligne « ancre » (jour, nombre de lignes, dernière empreinte). Ne lève jamais."""
+    try:
+        conn = _connexion()
+        try:
+            _ajouter(conn, {**_ligne("ancre", None, contenu=contenu), "cycle": cycle})
+        finally:
+            conn.close()
+        return True
+    except Exception as e:
+        logger.warning(f"Registre : ancre du {contenu.get('jour')} non enregistrée : {e}")
         return False
