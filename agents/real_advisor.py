@@ -95,7 +95,9 @@ def evaluer_position_reelle(inv: dict) -> list[dict]:
     # Règle 4 : analyse technique (signal SELL fort)
     try:
         analyses = analyser_actif_complet(inv["asset"])
-        decision = decider(inv["asset"], analyses)
+        # Phase 4 / Q2 : origine distincte pour garder l'ancien comportement du pipeline
+        # (appel à chaque passage, sans cache ni mode Prudent)
+        decision = decider(inv["asset"], analyses, origine="conseiller")
         c4 = regle_signal_technique(inv, decision, plan)
         if c4:
             conseils.append(c4)

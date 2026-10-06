@@ -218,12 +218,14 @@ def decider(ticker: str, analyses: dict, origine: str = "cycle") -> dict:
         resultat["metacognition"] = ""
 
     # v5.4.0 — Pipeline GROUPÉ (1 appel LLM au lieu de 5) sur BUY/SELL normaux
+    # Phase 4 / Q2 : une analyse par actif, action et jour (cache), sinon mode Prudent
     try:
-        from agents.skills.pipeline_grouped import executer_pipeline
+        from agents.skills.pipeline_cache import executer_pipeline_cache
         regime = analyses.get("context", {}).get("regime_marche")
-        pipeline = executer_pipeline(ticker, analyses, resultat, regime=regime)
+        pipeline = executer_pipeline_cache(ticker, analyses, resultat, regime=regime, origine=origine)
         resultat["pipeline_raisonnement"] = pipeline
-        if pipeline.get("executed") and pipeline.get("taille_factor_ajustement", 1.0) < 1.0:
+        if ((pipeline.get("executed") or pipeline.get("fallback"))
+                and pipeline.get("taille_factor_ajustement", 1.0) < 1.0):
             ancien = resultat["taille_factor"]
             resultat["taille_factor"] = round(ancien * pipeline["taille_factor_ajustement"], 2)
             logger.info(f"Taille {ticker} ajustée par pipeline : "
