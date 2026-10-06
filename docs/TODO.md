@@ -218,3 +218,53 @@ Non traités : chacun fera l'objet d'un travail séparé.
 - Le cycle `manuel` est déjà admis par le schéma (CHECK de
   `utils/registre_schema.py`, ajouté avant la première écriture pour éviter
   une migration). Reste à brancher les routes en R3.
+
+## 14. Découvertes des explorateurs jamais analysées faute de prix
+
+- Le tactical analyse à chaque passage les 5 premières entrées de la queue
+  (`scripts/cycle_tactical.py`, étape 3). Les indicateurs ne lisent que la
+  table `prices`, qui ne contient que les 23 actifs de la watchlist (seule
+  la watchlist est collectée par `scripts/fetch_data.py`), et les
+  explorateurs excluent la watchlist de leur scan (`agents/explorers/base.py:67`) :
+  **aucun ticker de la queue n'a donc de prix** (sauf un actif retiré de la
+  watchlist, dont les anciennes barres resteraient en base). Résultat :
+  « Aucune donnée en BDD pour X [1d] », les 4 sous-agents NEUTRE,
+  confiance 0, décision HOLD avec un score de 0.
+- Mesures (lecture seule, 06/10/2026) :
+  - 40 tickers distincts sans données dans le log du tactical les 05 et
+    06/10 (USDMXN=X à lui seul : 330 messages) ;
+  - aucune position paper ouverte sur un actif hors watchlist, depuis le
+    début (16 tickers, tous dans la watchlist) ;
+  - l'étape de la queue dure 3,0 s par passage en médiane (p90 5 s,
+    74 passages) ;
+  - les explorateurs téléchargent déjà 6 mois de barres journalières par
+    actif scanné (`screening_helpers.df_avec_indicateurs`, cache 5 min),
+    puis les jettent.
+- Dans le registre, ces décisions sont marquées `suite.resultat =
+  "sans_donnees"` (R2c) et exclues des analyses (REGISTRE_CRITERES v1.1).
+- **Décision à prendre plus tard, deux options :**
+  - **(a) Collecter les prix des actifs de la queue avant l'analyse.**
+    - Coût : pour chaque nouveau ticker, les trois téléchargements de
+      `fetch_data` (2 ans en 1d, 5 ans en 1wk, 60 jours en 1h), soit environ
+      1 200 lignes de `prices` par action et 2 400 par crypto, et quelques
+      secondes par ticker
+      (environ 40 nouveaux tickers en deux jours) ; ensuite un
+      rafraîchissement de 10 jours à chaque passage, ou des barres figées
+      comme avant P10. Plus d'appels à Yahoo, déjà en 429 sur les flux RSS.
+      Variante moins chère : enregistrer les 6 mois déjà téléchargés par
+      l'explorateur, mais l'historique est alors plus court que pour la
+      watchlist.
+    - Effet : les découvertes reçoivent une vraie analyse et peuvent ouvrir
+      des positions paper hors watchlist. L'univers traité s'élargit au-delà
+      des groupes de REGISTRE_CRITERES (ces actifs y sont « comptés seuls ») ;
+      l'analyse fondamentale de ces actifs reste limitée par les quotas
+      d'Alpha Vantage.
+  - **(b) Ne plus analyser la queue.**
+    - Coût : quelques lignes (supprimer ou désactiver l'étape 3) et la doc
+      (CLAUDE.md, CLAUDE.md des explorateurs) à aligner.
+    - Effet : environ 3 s gagnées par passage, 5 recherches de news en moins
+      par passage (NewsAPI est déjà saturé : 742 réponses 429 dans le log du
+      tactical le 06/10), environ 450 lignes vides en moins par jour dans le
+      registre. Aucun effet sur les trades : faute de prix, la queue ne peut
+      ouvrir aucune position aujourd'hui. Les explorateurs ne servent plus qu'aux alertes email
+      (score ≥ 7) ; leurs découvertes ne sont jamais évaluées.

@@ -16,6 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.logger import get_logger
 from utils import registre
+from utils.valeurs import nombre_ou_none
 
 logger = get_logger(__name__)
 
@@ -102,6 +103,15 @@ def resume_decision(ticker: str, d: dict, analyses: dict, source: str, origine: 
     return champs, contenu
 
 
+def _sans_donnees(suite: dict, analyses: dict) -> dict:
+    """R2c : décision prise sans prix (actif absent de la table prices, ex. ticker de la
+    queue hors watchlist) → statut explicite, exclu des analyses R4 (REGISTRE_CRITERES
+    v1.1). Seul l'enregistrement change : decider() et le cycle restent tels quels."""
+    if nombre_ou_none((analyses.get("technique") or {}).get("prix")) is not None:
+        return suite
+    return {**suite, "resultat": "sans_donnees", "resultat_cycle": suite.get("resultat")}
+
+
 def enregistrer_decisions(passage, decisions: list, execution: dict | None, source: str, origine: str = "cycle") -> None:
     """Une ligne par décision du passage ({ticker, decision, analyses}), avec sa suite."""
     if passage is None:
@@ -109,6 +119,7 @@ def enregistrer_decisions(passage, decisions: list, execution: dict | None, sour
     for x in decisions:
         try:
             suite = x.get("suite") or _suite(x["ticker"], x["decision"], execution)
+            suite = _sans_donnees(suite, x["analyses"])
             champs, contenu = resume_decision(x["ticker"], x["decision"], x["analyses"], source, origine, suite)
             registre.enregistrer(passage, "decision", x["ticker"], champs, contenu)
         except Exception as e:
