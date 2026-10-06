@@ -130,14 +130,18 @@ async function loadWatchlist() {
 }
 
 async function toggleAsset(cat, ticker, actif) {
-    watchlistData[cat][ticker].actif = actif;
-    const r = await fetch("/api/settings/watchlist", {
+    // P14 (TODO §16) : seul cet actif est envoyé ; le reste du fichier (ordre compris) ne change pas
+    const r = await fetch("/api/settings/watchlist/actif", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(watchlistData),
+        body: JSON.stringify({ categorie: cat, ticker: ticker, actif: actif }),
     });
     const j = await r.json();
-    if (!j.saved) alert("Erreur sauvegarde : " + (j.error || "inconnue"));
+    if (!j.saved) {
+        alert("Erreur sauvegarde : " + (j.error || "inconnue"));
+        return loadWatchlist();  // réafficher l'état réel du fichier
+    }
+    watchlistData[cat][ticker].actif = actif;
 }
 
 async function runAnalysis() {

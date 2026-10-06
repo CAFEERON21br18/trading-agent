@@ -23,6 +23,7 @@ logger = get_logger(__name__)
 
 ROUTE_TRAILING = "POST /api/positions/<id>/trailing-stop"
 ROUTE_WATCHLIST = "POST /api/settings/watchlist"
+ROUTE_WATCHLIST_ACTIF = "POST /api/settings/watchlist/actif"  # P14 : un seul actif
 ROUTE_ANALYSE = "POST /api/run-analysis"
 
 
@@ -61,12 +62,12 @@ def _a_plat(compo: dict) -> list:
     return [t for tickers in compo.values() if isinstance(tickers, list) for t in tickers]
 
 
-def noter_watchlist(avant: dict) -> None:
+def noter_watchlist(avant: dict, route: str = ROUTE_WATCHLIST) -> None:
     """Après l'écriture de data/watchlist.json : différence de composition avec avant."""
     try:
         apres = composition_watchlist()
         a, b = _a_plat(avant), _a_plat(apres)
-        passage = ouvrir("manuel", declencheur=ROUTE_WATCHLIST, action="watchlist")
+        passage = ouvrir("manuel", declencheur=route, action="watchlist")
         if passage is not None:
             clore(passage, details={
                 "ajoutes": [t for t in b if t not in a], "retires": [t for t in a if t not in b],

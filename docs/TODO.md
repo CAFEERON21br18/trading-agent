@@ -312,3 +312,10 @@ Non traités : chacun fera l'objet d'un travail séparé.
 - À décider : garder l'ordre du fichier (réponse sans tri pour cette route,
   ou renvoi du seul changement), ou rendre la sélection du tactical
   indépendante de l'ordre.
+- **Corrigé en P14** (ordre du fichier gardé ; `dashboard/api/watchlist_io.py`) :
+  `GET /api/watchlist` répond sans tri ; la page Settings n'envoie plus que
+  l'actif cliqué (`POST /api/settings/watchlist/actif`), dont seul le booléen
+  `actif` change, sur sa ligne ; `POST /api/settings/watchlist` (page
+  ancienne restée ouverte, autre client) garde l'ordre du fichier existant.
+  La sélection des 8 actifs du tactical dépend toujours de cet ordre, qui ne
+  change plus que par une édition volontaire du fichier.
