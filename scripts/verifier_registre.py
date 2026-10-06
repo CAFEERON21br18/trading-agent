@@ -66,6 +66,7 @@ def verifier(chemin: str = CHEMIN, jour: str | None = None) -> dict:
 
 
 def main() -> int:
+    sys.stdout.reconfigure(errors="replace")  # console Windows (cp1252) : ✅/❌ affichés « ? » au lieu de planter
     parser = argparse.ArgumentParser(description="Vérifie le registre des décisions (lecture seule).")
     parser.add_argument("--base", default=CHEMIN)
     parser.add_argument("--jour", help="AAAA-MM-JJ : ancre (lignes et dernière empreinte jusqu'à ce jour inclus)")
