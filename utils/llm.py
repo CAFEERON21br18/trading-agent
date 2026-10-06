@@ -144,7 +144,7 @@ def _try_gemini(prompt, system, temperature, max_tokens):
     return {"text": res["text"] if res["ok"] else None,
             "error": res.get("error_type"),
             "retry_after_sec": res.get("retry_after_sec"),
-            "erreur_brute": res.get("error_message")}
+            "erreur_brute": res.get("message_brut") or res.get("error_message")}  # Q5
 
 
 def _try_groq(prompt, system, temperature, max_tokens):
