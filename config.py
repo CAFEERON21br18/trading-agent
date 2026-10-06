@@ -124,6 +124,16 @@ except ValueError:
     SEUIL_SELL = -2.0
 SEUIL_SELL = SEUIL_SELL if SEUIL_SELL < 0 else -2.0
 
+# ── Paper Trader : porte de confiance (Phase 4, P13) ──────────────────────────
+# Filtre final avant ouverture (agents/paper_trader/rules.py), après le pré-filtre
+# du Budget Manager (confiance_min du mode, agents/budget_manager/strategy.py) :
+# le seuil effectif est le plus haut des deux. Valeurs appliquées jusqu'ici :
+# 8 (tirée de ALERT_CONFIDENCE_THRESHOLD, désormais réservé aux alertes email),
+# 9 après 3 positions fermées perdantes d'affilée, 4 pour un trade d'apprentissage.
+SEUIL_CONFIANCE_PAPER          = int(_get_optional("SEUIL_CONFIANCE_PAPER", "8"))
+SEUIL_CONFIANCE_PAPER_DEFENSIF = int(_get_optional("SEUIL_CONFIANCE_PAPER_DEFENSIF", "9"))
+SEUIL_CONFIANCE_LEARNING       = int(_get_optional("SEUIL_CONFIANCE_LEARNING", "4"))
+
 # ── Chemins des fichiers ──────────────────────────────────────────────────────
 BASE_DIR          = os.path.dirname(os.path.abspath(__file__))
 WATCHLIST_FILE    = os.path.join(BASE_DIR, "data", "watchlist.json")

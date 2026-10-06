@@ -268,3 +268,18 @@ Non traités : chacun fera l'objet d'un travail séparé.
       registre. Aucun effet sur les trades : faute de prix, la queue ne peut
       ouvrir aucune position aujourd'hui. Les explorateurs ne servent plus qu'aux alertes email
       (score ≥ 7) ; leurs découvertes ne sont jamais évaluées.
+
+## 15. `_seuil_confiance_requis` calculé mais jamais appliqué (code mort ou oubli ?)
+
+- `agents/decision_engine.py:101` : `_seuil_confiance_requis(analyses)` renvoie 9
+  si l'actif a au moins 3 trades et un winrate sous `WINRATE_PRUDENCE` (35 %),
+  sinon 7. `decider()` le calcule (`:124`) et le renvoie dans
+  `seuil_confiance_requis` (`:189`), mais **aucun filtre ne le lit** (relevé
+  le 06/10/2026, P13).
+- Les filtres réellement appliqués sont le pré-filtre du Budget Manager
+  (`confiance_min` du mode) et la porte du Paper Trader
+  (`SEUIL_CONFIANCE_PAPER`, 8 ; 9 après 3 pertes d'affilée ;
+  `SEUIL_CONFIANCE_LEARNING`, 4).
+- À trancher : l'intention était-elle d'exiger 9 sur un actif au mauvais
+  winrate ? Si oui, c'est un oubli et le brancher changerait des décisions
+  (décision séparée, à évaluer avec REGISTRE_CRITERES) ; sinon, le supprimer.

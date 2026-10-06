@@ -31,9 +31,10 @@ def peut_ouvrir(decision: dict, analyses: dict, etat_porte: dict) -> tuple[bool,
     if decision["decision"] not in ("BUY", "SELL"):
         refus.append(f"Décision = {decision['decision']} (ni BUY ni SELL)")
 
-    # 2. Confiance ≥ seuil (v4.1 : 4 minimum pour learning, sinon seuil mode BM)
-    seuil = etat_porte.get("seuil_confiance", config.ALERT_CONFIDENCE_THRESHOLD)
-    seuil_min_absolu = 4 if style == "learning" else seuil
+    # 2. Confiance ≥ seuil de la porte (Phase 4, P13 : config.SEUIL_CONFIANCE_*) : learning 4,
+    #    sinon 8 (9 en défensif). S'ajoute au pré-filtre du Budget Manager (confiance_min du mode).
+    seuil = etat_porte.get("seuil_confiance", config.SEUIL_CONFIANCE_PAPER)
+    seuil_min_absolu = config.SEUIL_CONFIANCE_LEARNING if style == "learning" else seuil
     if decision["confidence"] < seuil_min_absolu:
         refus.append(f"Confiance {decision['confidence']}/10 < seuil {seuil_min_absolu}/10 ({style})")
 
