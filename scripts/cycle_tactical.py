@@ -162,12 +162,18 @@ def main() -> int:
                     f"{total_dec + total_obs} découvertes/obs, "
                     f"{nb_opp_open + nb_wl_open} ouvert, {fermes} fermé")
 
+        try:  # Phase 4 / Q2 : fallbacks du pipeline du jour + alerte au-delà du seuil
+            from agents.skills.pipeline_cache import etat_fallbacks
+            pipeline_hb = etat_fallbacks()
+        except Exception as e:
+            pipeline_hb = {"alerte_pipeline": f"compteur indisponible : {e}"}
         update_heartbeat(CYCLE, status="healthy", duration_sec=duree, extra={
             "decouvertes":  total_dec,
             "observations": total_obs,
             "ouvertures":   nb_opp_open + nb_wl_open,
             "fermetures":   fermes,
             "analyses":     nb_opp_an + nb_wl_an,
+            **pipeline_hb,
         })
         return 0
     except Exception as e:

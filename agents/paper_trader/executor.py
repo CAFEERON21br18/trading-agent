@@ -102,7 +102,9 @@ def ouvrir_position_depuis_decision(decision: dict, analyses: dict) -> int | Non
         "confidence":      decision["confidence"],
         "entry_reason":    prefixe + decision.get("reasoning", ""),
         "signals_used":    f"DE [{style}] | conv:{len(decision.get('convergences', []))} | "
-                           f"contra:{len(decision.get('contradictions', []))}",
+                           f"contra:{len(decision.get('contradictions', []))}"
+                           # Phase 4 / Q2 : position ouverte en mode Prudent (pipeline en échec)
+                           + (" | pipeline:fallback" if (decision.get("pipeline_raisonnement") or {}).get("fallback") else ""),
     }
     pos_id = creer_position(payload)
     logger.info(f"Position #{pos_id} ouverte (paper) : {direction} {ticker} {payload['quantity']:.6f}u "

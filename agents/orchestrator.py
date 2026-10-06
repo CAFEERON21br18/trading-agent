@@ -145,6 +145,12 @@ def generer_rapport_quotidien() -> tuple[str, list[dict], list[dict]]:
         logger.warning(f"Narratif quotidien : {e}")
         narratif = ""
     bloc_narratif = f"\n## 📖 Synthèse exécutive\n\n{narratif}\n" if narratif else ""
+    try:  # Phase 4 / Q2 : alerte si trop de fallbacks du pipeline (mode Prudent)
+        from agents.skills.pipeline_cache import section_rapport
+        bloc_pipeline = section_rapport()
+    except Exception as e:
+        logger.warning(f"Section pipeline du rapport : {e}")
+        bloc_pipeline = ""
 
     rapport = f"""# AlphaSignal — Rapport Quotidien — {date_str}
 
@@ -171,7 +177,7 @@ Capital total : {config.CAPITAL:.0f}€ | Investissable : {config.CAPITAL_INVEST
 ## 🧠 Décisions par actif
 
 {section_decisions}
-
+{bloc_pipeline}
 ## ⚠️ Disclaimer
 
 Les analyses fournies sont à titre informatif uniquement. Toutes les décisions de trading

@@ -77,6 +77,19 @@ except ValueError:  # valeur illisible : défaut plutôt qu'un arrêt de tous le
 METACOG_AUDIT_ENABLED = _get_optional("METACOG_AUDIT_ENABLED", "false").strip().lower() in (
     "1", "true", "oui", "yes")
 
+# ── Pipeline groupé : mode Prudent (Phase 4 / Q2) ─────────────────────────────
+# Sans résultat du jour en cache et pipeline en échec : taille × ce facteur (0 à 1)
+try:
+    PIPELINE_FALLBACK_FACTOR = min(1.0, max(0.0, float(_get_optional("PIPELINE_FALLBACK_FACTOR", "0.5"))))
+except ValueError:
+    PIPELINE_FALLBACK_FACTOR = 0.5
+# Alerte (heartbeat, rapport quotidien) au-delà de ce nombre de couples (ticker, action)
+# DISTINCTS en fallback dans la journée
+try:
+    PIPELINE_FALLBACK_ALERT = int(_get_optional("PIPELINE_FALLBACK_ALERT", "5"))
+except ValueError:
+    PIPELINE_FALLBACK_ALERT = 5
+
 # ── Chemins des fichiers ──────────────────────────────────────────────────────
 BASE_DIR          = os.path.dirname(os.path.abspath(__file__))
 WATCHLIST_FILE    = os.path.join(BASE_DIR, "data", "watchlist.json")

@@ -78,6 +78,18 @@ def _purger_audit() -> int:
         return -1
 
 
+def _purger_pipeline() -> str:
+    """Rétention du cache du pipeline (7 j) et des fallbacks (30 j), Phase 4 / Q2."""
+    try:
+        from agents.skills.pipeline_cache import purger
+        n_cache, n_fallbacks = purger()
+        logger.info(f"Pipeline : {n_cache} ligne(s) de cache et {n_fallbacks} fallback(s) supprimés")
+        return f"{n_cache} cache / {n_fallbacks} fallbacks"
+    except Exception as e:
+        logger.error(f"Purge pipeline : {e}")
+        return "erreur"
+
+
 def main() -> int:
     import time as _t
     t0 = _t.time()
@@ -104,6 +116,7 @@ def main() -> int:
     # Audit du chat (Phase 4) : rétention de message_audit
     n_audit = _purger_audit()
     rapport.append(f"  message_audit > {config.AUDIT_RETENTION_DAYS}j supprimés : {n_audit}")
+    rapport.append(f"  Pipeline (cache > 7j, fallbacks > 30j) supprimés : {_purger_pipeline()}")
 
     # Reports unsent (ré-essayer plus tard pourrait être utile, on les garde)
     logger.info("\n".join(rapport))
