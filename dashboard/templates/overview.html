@@ -15,6 +15,7 @@
     <div class="card">
         <div class="text-xs text-slate-400">P&L non-réalisé</div>
         <div id="kpi-pnl" class="text-2xl font-bold mt-1">—</div>
+        <div id="kpi-pnl-detail" class="text-xs text-slate-400 mt-1"></div>
     </div>
     <div class="card">
         <div class="text-xs text-slate-400">Positions</div>
@@ -43,16 +44,44 @@
 const eur = (v) => (v >= 0 ? "+" : "") + v.toFixed(2) + "€";
 const pct = (v) => (v >= 0 ? "+" : "") + v.toFixed(2) + "%";
 const colorPnl = (v) => v >= 0 ? "text-emerald-400" : "text-red-400";
+// TODO §8 : une valeur inconnue s'affiche « non disponible », jamais 0 ; une somme
+// partielle est signalée comme telle (même règle que le chat)
+const ND = "non disponible";
+const KPI_ND = "text-lg font-semibold mt-2 text-slate-400";
+const prixQuand = (pos) => pos.prix_cloture_du ? ` · clôture ${escHtml(pos.prix_cloture_du)}`
+                         : pos.prix_releve ? ` · ${escHtml(pos.prix_releve)}` : "";
+function detailPnl(l) {
+    if (!l.nb_positions) return l.texte || "";
+    if (!l.nb_avec_prix) return `aucun prix de moins de ${l.age_max_min} min`;
+    const h = l.releve_min === l.releve_max ? `prix de ${l.releve_min}` : `prix ${l.releve_min}–${l.releve_max}`;
+    const cl = Object.values(l.clotures || {}).reduce((n, t) => n + t.length, 0);
+    return `${l.nb_avec_prix}/${l.nb_positions} positions · ${h}` +
+           (l.partiel !== null ? " · total non disponible" : "") +
+           (cl ? ` · ${cl} au cours de clôture précédent` : "");
+}
 
 async function loadOverview() {
     const p = await (await fetch("/api/portfolio")).json();
     document.getElementById("kpi-capital").textContent = p.capital_total.toFixed(0) + "€";
     const valEl = document.getElementById("kpi-value");
-    valEl.textContent = p.total_value.toFixed(2) + "€";
-    valEl.className = "text-2xl font-bold mt-1 " + colorPnl(p.total_value - p.capital_total);
+    if (p.total_value === null) {
+        valEl.textContent = ND; valEl.className = KPI_ND;
+    } else {
+        valEl.textContent = p.total_value.toFixed(2) + "€";
+        valEl.className = "text-2xl font-bold mt-1 " + colorPnl(p.total_value - p.capital_total);
+    }
     const pnlEl = document.getElementById("kpi-pnl");
-    pnlEl.textContent = eur(p.unrealized_pnl);
-    pnlEl.className = "text-2xl font-bold mt-1 " + colorPnl(p.unrealized_pnl);
+    const l = p.pnl_latent || {};
+    const v = p.unrealized_pnl !== null ? p.unrealized_pnl : l.partiel;
+    if (v === null || v === undefined) {
+        pnlEl.textContent = ND; pnlEl.className = KPI_ND;
+    } else if (p.unrealized_pnl === null) {
+        pnlEl.textContent = eur(v) + " (partiel)"; pnlEl.className = "text-2xl font-bold mt-1 text-amber-400";
+    } else {
+        pnlEl.textContent = eur(v); pnlEl.className = "text-2xl font-bold mt-1 " + colorPnl(v);
+    }
+    pnlEl.title = l.texte || "";
+    document.getElementById("kpi-pnl-detail").textContent = detailPnl(l);
     document.getElementById("kpi-pos").textContent = `${p.open_positions_count}/${p.max_positions}`;
 
     const list = document.getElementById("positions-list");
@@ -67,8 +96,9 @@ async function loadOverview() {
                         <span class="font-bold ml-2">${pos.ticker}</span>
                     </div>
                     <div class="text-right">
-                        <div class="${colorPnl(pos.unrealized_pnl_pct || 0)}">${pos.unrealized_pnl_pct !== null ? pct(pos.unrealized_pnl_pct) : '—'}</div>
-                        <div class="text-xs text-slate-400">${pos.invested_amount.toFixed(0)}€</div>
+                        <div class="${pos.unrealized_pnl_pct !== null ? colorPnl(pos.unrealized_pnl_pct) : 'text-slate-400'}"
+                             title="${pos.unrealized_pnl_pct !== null ? '' : 'prix non disponible'}">${pos.unrealized_pnl_pct !== null ? pct(pos.unrealized_pnl_pct) : 'n/d'}</div>
+                        <div class="text-xs text-slate-400">${pos.invested_amount.toFixed(0)}€${prixQuand(pos)}</div>
                     </div>
                 </div>
             </a>`).join("");

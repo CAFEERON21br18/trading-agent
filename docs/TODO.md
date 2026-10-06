@@ -130,10 +130,11 @@ Non traités : chacun fera l'objet d'un travail séparé.
   moins de `CHAT_PRIX_AGE_MAX_MIN` (30 min), indique son heure et la couverture
   (« sur 8 positions sur 13 »), sinon « non disponible ».
 - Reste à traiter (relevé dans l'inventaire du 06/10, non corrigé) :
-  - **Dashboard, page Overview** : `dashboard/api/queries.py:19` appelle le même
-    `etat_portefeuille(with_live_prices=False)` → « P&L latent +0.00€ », valeur
-    totale = capital (`overview.html:51-55`), `unrealized_pnl_pct || 0` (`:70`).
-    Pourra lire le même cache `utils/dernier_prix.py`.
+  - ~~**Dashboard, page Overview**~~ : **corrigé le 06/10/2026**. `/api/portfolio`
+    (`dashboard/api/queries.py`) valorise les positions au même cache de prix,
+    avec la règle du chat (couverture, heure des prix, « non disponible » ;
+    somme partielle signalée, jamais présentée comme le total).
+    `etat_portefeuille` et les cycles inchangés.
   - **P&L réalisé réel** : `utils/real_portfolio_db.py:486` compte 0 pour une
     position réelle close sans `realized_pnl` (aucune au 06/10).
   - **Mode défensif** : `agents/paper_trader/portfolio.py:41` compte un P&L
