@@ -8,15 +8,18 @@ L'explorateur **recommande** — le Decision Engine **décide** — le Budget Ma
 
 ## Pipeline d'une découverte
 ```
-Universe (top N actifs) → Screener (filtres + score) → Queue (explorer_queue.json)
-   → Email "🔍 OPPORTUNITÉ" si score ≥ 8 → Decision Engine analyse → Budget Manager alloue
+Universe (top N actifs) → Screener (filtres + score) → Queue (explorer_queue.json) si score ≥ 4
+   → Email "🔍 OPPORTUNITÉ" si score ≥ 7 → Decision Engine analyse → Budget Manager alloue
 ```
 
 ## Score de potentiel (1-10)
-- 1-3 : actif suspect, ignorer
-- 4-5 : à surveiller, pas urgent
-- 6-7 : candidat sérieux, à analyser → ajout queue
-- 8-10 : opportunité forte → email immédiat
+Seuils appliqués par le code : `agents/explorers/base.py` (`SEUIL_QUEUE` = 4,
+`SEUIL_OBSERVATION` = 6, `SEUIL_EMAIL_FORT` = 7). Le cycle tactical analyse à chaque
+passage les 5 premiers éléments de la queue de score ≥ 4.
+- 1-3 : actif suspect, ignorer (pas d'ajout en queue)
+- 4-5 : en observation → ajout queue
+- 6 : candidat sérieux → ajout queue
+- 7-10 : opportunité forte → ajout queue + email immédiat
 
 ## Limites globales (max watchlist + queue)
 - **Max 30 actifs** dans la watchlist ACTIVE

@@ -27,5 +27,6 @@ Top 50-300 cryptos par market cap (via CoinGecko API gratuite).
 
 ## Règles
 - Ne re-scanner un ticker déjà en watchlist active que si position ouverte
-- Toujours classer la découverte dans `explorer_queue.json` si score ≥ 6
-- Email immédiat si score ≥ 8
+- Toujours classer la découverte dans `explorer_queue.json` si score ≥ 4
+  (seuils réels : `agents/explorers/base.py`)
+- Email immédiat si score ≥ 7

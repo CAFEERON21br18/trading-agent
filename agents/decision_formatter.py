@@ -8,6 +8,8 @@ import os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+import config
+
 EMOJI_DECISION = {"BUY": "🟢", "SELL": "🔴", "HOLD": "🟡", "NO_TRADE": "⚪"}
 
 
@@ -42,7 +44,7 @@ def formater_decision(decision: dict, analyses: dict) -> str:
         f"### {emoji} {ticker} — {decision['decision']} ({decision['confidence']}/10){badge}",
         "",
         f"**Score composite** : {decision['score_composite']:+.2f} "
-        f"(seuil BUY ≥ +3.0, SELL ≤ −3.0)",
+        f"(seuil BUY ≥ {config.SEUIL_BUY:+.1f}, SELL ≤ {config.SEUIL_SELL:+.1f})".replace("-", "−"),
         "",
         "**Synthèse des analyses** :",
     ]
