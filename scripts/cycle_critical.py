@@ -15,6 +15,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.logger import get_logger
 from utils.lock_manager import acquerir_lock, liberer_lock
 from utils.heartbeat import update_heartbeat
+from utils.registre_cycles import ouvrir, clore
 
 logger = get_logger("cycle_critical")
 CYCLE = "critical"
@@ -28,12 +29,13 @@ def main() -> int:
         logger.warning("Lock critical déjà acquis (instance précédente trop longue ?) — abandon")
         update_heartbeat(CYCLE, status="skipped", duration_sec=0)
         return 0
+    passage = ouvrir("critique")  # registre (Phase 4, R2) : clôtures SL/TP et stops déplacés
     try:
         from utils.portfolio_db import initialiser_paper_db
         from agents.paper_trader.monitor import monitorer_positions
 
         initialiser_paper_db()
-        res = monitorer_positions()
+        res = monitorer_positions(passage)
         logger.info(f"⚡ Critical : {res['verifiees']} surveillée(s), "
                     f"{res['fermees_tp']} TP, {res['fermees_sl']} SL, "
                     f"{res.get('lockin_actifs', 0)} LOCK-IN")
@@ -48,6 +50,7 @@ def main() -> int:
                          extra={"error": str(e)[:200]})
         return 1
     finally:
+        clore(passage, toujours=False)  # ligne de passage seulement s'il y a eu un événement
         liberer_lock(CYCLE)
 
 

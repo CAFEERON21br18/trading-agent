@@ -13,6 +13,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.logger import get_logger
 from utils.lock_manager import acquerir_lock, liberer_lock, doit_skipper
 from utils.heartbeat import update_heartbeat
+from utils.registre_cycles import ouvrir, clore
 
 logger = get_logger("cycle_strategic")
 CYCLE = "strategic"
@@ -30,6 +31,7 @@ def main() -> int:
     if not acquerir_lock(CYCLE):
         update_heartbeat(CYCLE, status="skipped", duration_sec=0)
         return 0
+    passage = ouvrir("strategique")  # registre (Phase 4, R2), clos dans le finally
     try:
         from utils.portfolio_db import initialiser_paper_db
         from agents.paper_trader.monitor import monitorer_positions
@@ -44,7 +46,7 @@ def main() -> int:
 
         initialiser_paper_db()
         # 1. Monitor positions
-        monitorer_positions()
+        monitorer_positions(passage)
 
         # 2. Lancer les 7 explorateurs
         explorateurs = [
@@ -71,7 +73,7 @@ def main() -> int:
         nb_conseils = 0
         try:
             from agents.real_advisor import evaluer_tout_le_portefeuille
-            nb_conseils = evaluer_tout_le_portefeuille()
+            nb_conseils = evaluer_tout_le_portefeuille(passage)
             logger.info(f"Real advisor : {nb_conseils} conseil(s) générés")
         except Exception as e:
             logger.error(f"Real advisor échoué : {e}")
@@ -109,6 +111,7 @@ def main() -> int:
                          extra={"error": str(e)[:200]})
         return 1
     finally:
+        clore(passage)
         liberer_lock(CYCLE)
 
 

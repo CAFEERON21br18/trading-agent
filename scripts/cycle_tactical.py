@@ -20,6 +20,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.logger import get_logger
 from utils.lock_manager import acquerir_lock, liberer_lock, doit_skipper
 from utils.heartbeat import update_heartbeat
+from utils.registre_cycles import ouvrir, clore, enregistrer_decisions, noter_cloture, noter_evenement
 
 logger = get_logger("cycle_tactical")
 CYCLE = "tactical"
@@ -51,7 +52,7 @@ def _lancer_explorateurs() -> tuple[int, int]:
     return total_dec, total_obs
 
 
-def _analyser_et_trader(tickers: list[str], source: str) -> tuple[int, int]:
+def _analyser_et_trader(tickers: list[str], source: str, passage=None) -> tuple[int, int]:
     """Pour chaque ticker, lance Decision Engine + tente d'ouvrir.
     Retourne (analyses, ouvertures)."""
     if not tickers:
@@ -68,19 +69,21 @@ def _analyser_et_trader(tickers: list[str], source: str) -> tuple[int, int]:
             decisions.append({"ticker": t, "decision": decision, "analyses": analyses})
         except Exception as e:
             logger.error(f"  ⚠️ Analyse {t} ({source}) : {str(e)[:80]}")
-    ouvertures = 0
+    ouvertures, res = 0, None
     if decisions:
         try:
             res = executer_ouvertures(decisions)
             ouvertures = len(res.get("ouvertes", []))
         except Exception as e:
             logger.error(f"  ⚠️ Exécution ouvertures ({source}) : {e}")
+    enregistrer_decisions(passage, decisions, res, source)  # registre (Phase 4, R2) ; ne lève jamais
     logger.info(f"  📈 [{source}] {len(decisions)} analysés → {ouvertures} ouverture(s)")
     return len(decisions), ouvertures
 
 
-def _reevaluer_positions() -> int:
-    """Réévalue chaque position ouverte. Ferme si signal inverse fort."""
+def _reevaluer_positions(passage=None) -> int:
+    """Réévalue chaque position ouverte. Ferme si signal inverse fort.
+    Registre (Phase 4, R2) : seuls les CLOSE sont enregistrés, jamais les GARDER."""
     from utils.portfolio_db import lire_positions_ouvertes, fermer_position as db_fermer
     from agents.asset_analyzer import analyser_actif_complet
     from agents.decision_engine import reevaluer_position
@@ -99,8 +102,11 @@ def _reevaluer_positions() -> int:
                 prix = prix_actuel(p["ticker"])
                 if prix:
                     fermer_position(p["id"], prix, verdict["raison"], "CLOSED_REVERSAL")
+                    noter_cloture(passage, p, "reevaluation", verdict["raison"])
                     fermes += 1
                     logger.info(f"  🔒 Position fermée par réévaluation : {p['ticker']} — {verdict['raison']}")
+                else:
+                    noter_evenement(passage, p, "CLOSE_NON_EXECUTE", None, {"raison": str(verdict["raison"])[:160]})
         except Exception as e:
             logger.error(f"  ⚠️ Réévaluation {p.get('ticker', '?')} : {e}")
     return fermes
@@ -120,6 +126,7 @@ def main() -> int:
         update_heartbeat(CYCLE, status="skipped_lock", duration_sec=0)
         return 0
 
+    passage = ouvrir(CYCLE)  # registre des décisions (Phase 4, R2), clos dans le finally
     try:
         from utils.portfolio_db import initialiser_paper_db
         from utils.helpers import charger_watchlist, tous_les_tickers
@@ -129,7 +136,7 @@ def main() -> int:
 
         # 1. Monitor positions (SL/TP)
         logger.info("📍 ÉTAPE 1 — Monitor positions (SL/TP)")
-        monitorer_positions()
+        monitorer_positions(passage)
 
         # 2. Lancer les 7 explorateurs
         logger.info("🔍 ÉTAPE 2 — Scan des 7 explorateurs")
@@ -140,7 +147,7 @@ def main() -> int:
         from agents.explorers.queue_manager import lire_queue, retirer
         opportunites = [q for q in lire_queue() if q["score"] >= 4]
         tickers_opp = [q["ticker"] for q in opportunites[:5]]
-        nb_opp_an, nb_opp_open = _analyser_et_trader(tickers_opp, "queue")
+        nb_opp_an, nb_opp_open = _analyser_et_trader(tickers_opp, "queue", passage)
         for t in tickers_opp:
             retirer(t)
 
@@ -150,11 +157,11 @@ def main() -> int:
         ouvertes = {p["ticker"] for p in lire_positions_ouvertes()}
         watchlist_tickers = [t for t in tous_les_tickers(charger_watchlist())
                               if t not in ouvertes][:8]  # limiter à 8 pour rester rapide
-        nb_wl_an, nb_wl_open = _analyser_et_trader(watchlist_tickers, "watchlist")
+        nb_wl_an, nb_wl_open = _analyser_et_trader(watchlist_tickers, "watchlist", passage)
 
         # 5. Réévaluer les positions ouvertes
         logger.info("🔄 ÉTAPE 5 — Réévaluation positions ouvertes")
-        fermes = _reevaluer_positions()
+        fermes = _reevaluer_positions(passage)
 
         duree = time.time() - t0
         logger.info("=" * 70)
@@ -183,6 +190,7 @@ def main() -> int:
                          extra={"error": str(e)[:200]})
         return 1
     finally:
+        clore(passage)
         liberer_lock(CYCLE)
 
 

@@ -14,11 +14,12 @@ from utils.portfolio_db import lire_positions_ouvertes
 from agents.paper_trader.portfolio import prix_actuel
 from agents.paper_trader.executor import fermer_position
 from agents.paper_trader.lockin import lister_lockin, desactiver_lockin
+from utils.registre_cycles import noter_cloture, noter_evenement
 
 logger = get_logger(__name__)
 
 
-def _verifier_position(pos: dict) -> dict | None:
+def _verifier_position(pos: dict, passage=None) -> dict | None:
     """
     Vérifie SL et TP sur une position. Retourne le résultat de fermeture si touché.
     Logique : sur 1 jour, on ne sait pas si SL ou TP a été touché en 1er.
@@ -44,6 +45,8 @@ def _verifier_position(pos: dict) -> dict | None:
                 pos["trailing_stop_price"] = maj["nouveau"]
                 logger.info(f"Trailing {pos['ticker']} #{pos['id']} : "
                             f"{maj['ancien']} → {maj['nouveau']} (Δ {maj['delta']:+.4f})")
+                noter_evenement(passage, pos, "STOP_DEPLACE", prix,  # registre (Phase 4, R2)
+                                {"ancien": maj["ancien"], "nouveau": maj["nouveau"]})
             if touche_trailing(pos, prix):
                 ts_val = pos.get("trailing_stop_price")
                 op = "≤" if direction == "LONG" else "≥"
@@ -72,10 +75,12 @@ def _verifier_position(pos: dict) -> dict | None:
     return None
 
 
-def monitorer_positions() -> dict:
+def monitorer_positions(passage=None) -> dict:
     """
     Vérifie toutes les positions ouvertes. Les positions en LOCK-IN sont vérifiées EN PREMIER.
     Après fermeture, le LOCK-IN éventuel est désactivé.
+    passage (Phase 4, R2) : passage du registre du cycle appelant ; clôtures et stops
+    déplacés y sont enregistrés (None : rien n'est enregistré).
     """
     positions = lire_positions_ouvertes()
     if not positions:
@@ -91,12 +96,13 @@ def monitorer_positions() -> dict:
     fermes_tp, fermes_sl, details = 0, 0, []
     for p in positions_triees:
         try:
-            res = _verifier_position(p)
+            res = _verifier_position(p, passage)
         except Exception as e:
             logger.error(f"Monitor erreur sur position #{p['id']} ({p['ticker']}) : {e}")
             continue
         if res is None:
             continue
+        noter_cloture(passage, p, "suivi")  # registre (Phase 4, R2) : statut et P&L relus en base
         details.append({
             "ticker":    p["ticker"],
             "pnl_euros": res["pnl_euros"],

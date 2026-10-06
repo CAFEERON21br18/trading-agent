@@ -15,6 +15,7 @@ from utils.real_price import calculate_position_pnl
 from agents.asset_analyzer import analyser_actif_complet
 from agents.decision_engine import decider
 from agents.real_advisor_rules import regles_position, regle_signal_technique
+from utils.registre_cycles import enregistrer_decisions
 
 logger = get_logger(__name__)
 
@@ -82,7 +83,7 @@ def _enrichir_llm(conseils: list[dict], inv: dict, inv_e: dict, plan: dict) -> N
             pass  # garder le conseil règle-base si LLM KO
 
 
-def evaluer_position_reelle(inv: dict) -> list[dict]:
+def evaluer_position_reelle(inv: dict, passage=None) -> list[dict]:
     """Évalue une position réelle et génère des conseils si pertinent."""
     inv_e = _enrichir(inv)
     if inv_e["prix_actuel"] is None:
@@ -93,6 +94,7 @@ def evaluer_position_reelle(inv: dict) -> list[dict]:
     conseils = regles_position(inv, inv_e, plan)
 
     # Règle 4 : analyse technique (signal SELL fort)
+    decision = analyses = None
     try:
         analyses = analyser_actif_complet(inv["asset"])
         # Phase 4 / Q2 : origine distincte pour garder l'ancien comportement du pipeline
@@ -107,10 +109,15 @@ def evaluer_position_reelle(inv: dict) -> list[dict]:
     # Enrichissement LLM optionnel
     if conseils and plan:
         _enrichir_llm(conseils, inv, inv_e, plan)
+    if decision is not None:  # registre (Phase 4, R2) : décision du conseiller et conseils produits
+        enregistrer_decisions(passage, [{"ticker": inv["asset"], "decision": decision, "analyses": analyses, "suite": {
+            "resultat": "conseils", "investissement_id": inv.get("id"),
+            "conseils": [{"type": c.get("advice_type"), "reco": c.get("recommendation"),
+                          "urgence": c.get("urgency")} for c in conseils][:5]}}], None, "position_reelle", "conseiller")
     return conseils
 
 
-def evaluer_tout_le_portefeuille() -> int:
+def evaluer_tout_le_portefeuille(passage=None) -> int:
     """Boucle sur toutes les positions ouvertes, génère et enregistre les conseils.
     Retourne le nb de conseils créés."""
     invs = lire_investissements(filtre_status="OPEN")
@@ -118,7 +125,7 @@ def evaluer_tout_le_portefeuille() -> int:
         return 0
     nb = 0
     for inv in invs:
-        for conseil in evaluer_position_reelle(inv):
+        for conseil in evaluer_position_reelle(inv, passage):
             ajouter_conseil(inv["id"], conseil["advice_type"], conseil["recommendation"],
                             conseil["reasoning"], conseil["urgency"])
             nb += 1
