@@ -6,6 +6,11 @@
 .env
 
 # Base de données locale
+# Dépôt public : aucune base SQLite versionnée, quels que soient son nom et son
+# dossier (database.db, registre.db, copies, sauvegardes…), ni ses fichiers WAL
+*.db
+*-wal
+*-shm
 data/database.db
 data/market_data/
 data/indicators/
