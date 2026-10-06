@@ -71,6 +71,7 @@ def noter_watchlist(avant: dict) -> None:
             clore(passage, details={
                 "ajoutes": [t for t in b if t not in a], "retires": [t for t in a if t not in b],
                 "ordre_modifie": [t for t in a if t in b] != [t for t in b if t in a],
-                "actifs_avant": len(a), "actifs_apres": len(b), "composition": apres})
+                "actifs_avant": len(a), "actifs_apres": len(b),
+                "composition": [[cat, tickers] for cat, tickers in apres.items()]})  # R3b : ordre des catégories gardé
     except Exception as e:
         logger.warning(f"Registre : modification de la watchlist non enregistrée : {e}")
