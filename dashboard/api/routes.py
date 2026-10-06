@@ -46,7 +46,8 @@ def get_position(pos_id):
 
 @api.route("/watchlist")
 def get_watchlist():
-    return jsonify(queries.watchlist())
+    from dashboard.api.watchlist_io import reponse_sans_tri
+    return reponse_sans_tri(queries.watchlist())  # P14 : ordre du fichier (jsonify trie les clés)
 
 
 @api.route("/journal")
@@ -583,13 +584,33 @@ def post_watchlist():
         "data", "watchlist.json",
     )
     try:
-        import json as _json
         from utils.registre import composition_watchlist
         from utils.registre_manuel import noter_watchlist
+        from dashboard.api.watchlist_io import ecrire_watchlist
         avant = composition_watchlist()
-        with open(chemin, "w", encoding="utf-8") as f:
-            _json.dump(data, f, indent=2, ensure_ascii=False)
+        ecrire_watchlist(chemin, data)  # P14 : jamais de réordonnancement du fichier existant
         noter_watchlist(avant)  # registre (Phase 4, R3) : cycle « manuel », différence de composition
+        return jsonify({"saved": True})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@api.route("/settings/watchlist/actif", methods=["POST"])
+def post_watchlist_actif():
+    """P14 (TODO §16) : active ou désactive un seul actif ; le reste du fichier ne change pas.
+    Body : {"categorie": "crypto", "ticker": "BTC-USD", "actif": true|false}."""
+    d = request.get_json() or {}
+    if not d.get("categorie") or not d.get("ticker") or not isinstance(d.get("actif"), bool):
+        return jsonify({"error": "categorie, ticker et actif (booléen) requis"}), 400
+    try:
+        from utils.registre import composition_watchlist
+        from utils.registre_manuel import noter_watchlist, ROUTE_WATCHLIST_ACTIF
+        from dashboard.api.watchlist_io import basculer_actif, CHEMIN
+        avant = composition_watchlist()
+        erreur = basculer_actif(CHEMIN, d["categorie"], d["ticker"], d["actif"])
+        if erreur:
+            return jsonify({"error": erreur}), 404
+        noter_watchlist(avant, ROUTE_WATCHLIST_ACTIF)  # registre (Phase 4, R3) : cycle « manuel »
         return jsonify({"saved": True})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
