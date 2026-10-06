@@ -90,6 +90,13 @@ try:
 except ValueError:
     PIPELINE_FALLBACK_ALERT = 5
 
+# ── Réserve Gemini (Phase 4 / Q4) ─────────────────────────────────────────────
+# Appelants de ask_llm(appelant=...) qui tentent Gemini (20 requêtes/jour) avant
+# Groq ; les autres (pipeline, conseiller_reel…) vont directement à Groq.
+# Liste vide = aucun. Un appel sans appelant garde l'ancien comportement.
+GEMINI_RESERVE_POUR = frozenset(a.strip().lower() for a in _get_optional(
+    "GEMINI_RESERVE_POUR", "chat,narratif_quotidien,narratif_hebdo").split(",") if a.strip())
+
 # ── Chemins des fichiers ──────────────────────────────────────────────────────
 BASE_DIR          = os.path.dirname(os.path.abspath(__file__))
 WATCHLIST_FILE    = os.path.join(BASE_DIR, "data", "watchlist.json")

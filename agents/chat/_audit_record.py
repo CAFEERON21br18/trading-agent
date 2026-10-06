@@ -89,9 +89,9 @@ def _champs_llm(type_message, trace, resultat) -> dict:
         res = appel.get("resultat") or {}
         chaine += res.get("tentatives") or []
         prompt = f"[SYSTEM]\n{appel.get('system') or ''}\n\n[PROMPT]\n{appel.get('prompt') or ''}"
-    elif source == "llm_indispo:clé_manquante":
-        chaine.append({"fournisseur": "gemini", "ok": False, "type_erreur": "clé_manquante",
-                       "note": "Groq non tenté : clé Gemini absente (agents/chat/_llm.py)"})
+    elif source == "llm_indispo:clé_manquante":  # Q4 : aucune clé LLM, rien n'est tenté
+        chaine += [{"fournisseur": "gemini", "ok": False, "type_erreur": "clé_manquante"},
+                   {"fournisseur": "groq", "ok": False, "type_erreur": "clé_groq_manquante"}]
 
     llm = source if source in _SOURCES_LLM else "rule_based"
     if llm == "rule_based":

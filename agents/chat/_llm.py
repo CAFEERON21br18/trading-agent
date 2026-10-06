@@ -3,10 +3,10 @@ agents/chat/_llm.py — Couche LLM Gemini pour le chat stratégique (v5.3.4).
 Le contexte structuré + le template (fallback) sont injectés dans le prompt.
 Gemini synthétise une réponse naturelle. Si indisponible : on retombe sur
 le template (comportement v5.3 inchangé).
+Phase 4 / Q4 : appelant « chat » (réserve Gemini) ; Groq tenté même sans clé Gemini.
 """
 
-from utils.llm    import ask_llm
-from utils.gemini import gemini_disponible
+from utils.llm    import ask_llm, llm_disponible
 
 
 SYSTEM_PROMPT = """Tu es AlphaSignal, un analyste quantitatif senior et gestionnaire de portefeuille.
@@ -138,8 +138,8 @@ MESSAGES_ERREUR_UI = {
                             "Chiffres bruts :"),
     "clé_invalide":      ("❌ **Clé API Gemini invalide** — vérifie la valeur dans `.env`. "
                           "Chiffres bruts :"),
-    "clé_manquante":     ("❌ **Clé API Gemini absente** — ajoute `GEMINI_API_KEY=…` dans `.env`. "
-                          "Chiffres bruts :"),
+    "clé_manquante":     ("❌ **Aucune clé IA configurée** — ajoute `GEMINI_API_KEY=…` et/ou "
+                          "`GROQ_API_KEY=…` dans `.env`. Chiffres bruts :"),
     "réponse_vide":      ("⚠️ **L'IA n'a rien renvoyé** — réessaie ou reformule la question. "
                           "Chiffres bruts :"),
     "réseau":            ("⚠️ **Problème réseau vers Gemini** — réessaie dans un instant. "
@@ -168,13 +168,13 @@ def enrichir_avec_gemini(question: str, intention: str,
     Si Gemini échoue, retourne une bannière d'erreur CLAIRE + le template
     (au lieu de retourner silencieusement le template comme avant).
     """
-    if not gemini_disponible():
+    if not any(llm_disponible().values()):  # Q4 : ni Gemini ni Groq configuré
         banniere = MESSAGES_ERREUR_UI["clé_manquante"]
         return f"{banniere}\n\n{template_reponse}", "llm_indispo:clé_manquante"
 
     prompt = _construire_prompt(question, intention, template_reponse, contexte)
     res = ask_llm(prompt, system=SYSTEM_PROMPT, temperature=0.6,
-                   max_tokens=900, mode="verbose")
+                   max_tokens=900, mode="verbose", appelant="chat")
     if res.get("text") and res.get("source") in ("gemini", "groq") and len(res["text"]) > 30:
         # Indique discrètement quand c'est Groq qui a répondu (fallback)
         suffixe = "\n\n_via Groq (fallback)_" if res["source"] == "groq" else ""

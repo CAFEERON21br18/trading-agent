@@ -75,7 +75,7 @@ def _enrichir_llm(conseils: list[dict], inv: dict, inv_e: dict, plan: dict) -> N
                       f"En 2 phrases max, conseil stratégique CONFORME au plan et à la thèse :")
             r = ask_llm(prompt,
                          system="Tu es un conseiller trading. Concis, factuel, respecte la stratégie du plan.",
-                         mode="silent", max_tokens=200)
+                         mode="silent", max_tokens=200, appelant="conseiller_reel")
             if r.get("text"):
                 c["reasoning"] = r["text"]
         except Exception:

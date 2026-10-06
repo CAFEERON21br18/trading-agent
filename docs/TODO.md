@@ -122,3 +122,15 @@ Non traités : chacun fera l'objet d'un travail séparé.
 - Exemples dans `real_advice_log` (03/10 vers 07h05) : n°2518 « VRT est en
   ligne avec », n°2515 « Maintenez la position MU, ». Ces textes sont
   affichés tels quels dans « Conseils en attente » (page Réel).
+
+## 10. Anciens skills : code mort, à supprimer (commit de nettoyage séparé)
+
+- `agents/skills/pipeline.py` n'est importé par aucun module (remplacé par
+  `pipeline_grouped.py`). Il est le seul à importer `bayesien.py`,
+  `base_rates.py`, `metacognition.py`, `pre_mortem.py` et `second_ordre.py`,
+  qui appellent `ask_gemini` en direct, hors de la réserve Gemini (Q4).
+- Relevé le 06/10/2026 pendant Q4 : 0 appel en production. Ne pas les
+  rebrancher tels quels ; vérifier les imports avant suppression.
+- Le Sentiment Analyst (`sentiment_analyst/_llm.py`) garde lui aussi
+  `ask_gemini` en direct : laissé volontairement, il n'est appelé que par
+  le bloc `__main__` d'`analyst.py` (lancement manuel).

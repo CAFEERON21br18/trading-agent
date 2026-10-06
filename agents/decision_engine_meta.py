@@ -5,6 +5,8 @@ N'override JAMAIS la décision — ajoute juste un champ "metacognition" pour tr
 Skippé sur HOLD pur (trop fréquent + peu d'intérêt). Fallback "" si Gemini KO.
 Phase 4 / Q1 : désactivé par défaut (config.METACOG_AUDIT_ENABLED) — son
 résultat n'est lu par aucun code (docs/TODO.md §6).
+Phase 4 / Q4 : via ask_llm(appelant="audit_metacognitif"), hors réserve
+Gemini sauf ajout à GEMINI_RESERVE_POUR → Groq directement.
 """
 
 import sys
@@ -13,7 +15,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import config
-from utils.gemini import ask_gemini, gemini_disponible
+from utils.llm import ask_llm, llm_disponible
 
 
 SYSTEM_PROMPT = """Tu es un AUDITEUR MÉTACOGNITIF pour AlphaSignal.
@@ -66,7 +68,7 @@ def audit_metacognitif(ticker: str, decision_result: dict, analyses: dict) -> st
     dec = decision_result.get("decision")
     if dec == "HOLD":
         return ""
-    if not gemini_disponible():
+    if not any(llm_disponible().values()):
         return ""
 
     score    = decision_result.get("score_composite", 0)
@@ -102,5 +104,5 @@ ANALYSES BRUTES :
 
 Ton audit (2-4 phrases, début par OK/DOUTE/ALERTE) :"""
 
-    return ask_gemini(prompt, system=SYSTEM_PROMPT, temperature=0.4,
-                      max_output_tokens=350)
+    return ask_llm(prompt, system=SYSTEM_PROMPT, temperature=0.4, max_tokens=350,
+                   appelant="audit_metacognitif").get("text") or ""

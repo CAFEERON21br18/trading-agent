@@ -96,7 +96,8 @@ def _resume(r: dict) -> dict:
         "decider_lances": act.get("decider_lances", []),
         "ecritures_persistantes": [f"{e.get('operation')} {e.get('cible')}" for e in ecritures],
         "appels_llm": (act.get("appels_llm") or {}).get("total", 0),
-        "fallback": [{k: e.get(k) for k in ("fournisseur", "ok", "type_erreur")}
+        "fallback": [{**{k: e.get(k) for k in ("fournisseur", "ok", "type_erreur")},
+                      **({"statut": e["statut"]} if e.get("statut") else {})}  # Q4 : « réservé »
                      for e in (_json(r["chaine_de_fallback"]) or []) if e.get("fournisseur")],
         "decisions": [{"cible": d.get("cible"), **(d.get("resultat") or {})}
                       for d in (_json(r["decisions_trading_generees"]) or [])],
