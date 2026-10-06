@@ -9,6 +9,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 
 from utils.logger import get_logger
+from utils.valeurs import nombre_ou_none
 
 logger = get_logger(__name__)
 
@@ -132,8 +133,11 @@ def calculer_taille_position(capital_total: float, risque_pct: float,
     }
 
 
-def calculer_rr(prix_entree: float, stop_loss: float, target: float, direction: str) -> float:
-    """Calcule le ratio risque/récompense pour un target donné."""
+def calculer_rr(prix_entree: float, stop_loss: float, target: float, direction: str) -> float | None:
+    """Calcule le ratio risque/récompense pour un target donné.
+    Phase 4 : None si un prix manque (NULL en base → NaN), au lieu d'un faux R:R de 0."""
+    if any(nombre_ou_none(v) is None for v in (prix_entree, stop_loss, target)):
+        return None
     risque = abs(prix_entree - stop_loss)
     if risque == 0:
         return 0

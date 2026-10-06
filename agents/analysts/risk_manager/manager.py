@@ -104,7 +104,9 @@ def valider_signal(ticker: str, direction: str, prix_entree: float,
     rr_1 = calculer_rr(prix_entree, stop_loss, target_1, direction)
     rr_2 = calculer_rr(prix_entree, stop_loss, target_2, direction)
 
-    if rr_1 < RR_MINIMUM:
+    if rr_1 is None:  # Phase 4 : veto conservé, avec la raison exacte (pas « R:R 0.00 »)
+        rejets.append(f"Données de prix manquantes pour {ticker} [{timeframe}] : R:R non calculable")
+    elif rr_1 < RR_MINIMUM:
         rejets.append(f"R:R insuffisant : {rr_1:.2f} < {RR_MINIMUM} (minimum requis)")
 
     # ── Calcul de la taille de position ─────────────────────────────────────
