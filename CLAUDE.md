@@ -50,7 +50,8 @@ Les indicateurs sont des **GUIDES, pas des lois**. L'agent peut s'écarter s'il 
 - **Chat stratégique** → `agents/chat/` (réponses contextuelles basées sur paper + réel + mémoire + knowledge)
 
 ## Les 7 explorateurs mondiaux (`agents/explorers/`)
-Crypto / Stock / Index / ETF / Commodity / Forex / CFD Index — scan ~180 actifs/run.
+Crypto / Stock / Index / ETF / Commodity / Forex / CFD Index — scan ~180 actifs/run,
+lancés à chaque passage du tactical (toutes les 15 min) et par le stratégique (4 h).
 Découvertes → `data/explorer_queue.json` si score ≥ 4 → analyse complète par le tactical
 (5 premières de la queue par passage) ; email si score ≥ 7 (`agents/explorers/base.py`).
 
@@ -58,7 +59,7 @@ Découvertes → `data/explorer_queue.json` si score ≥ 4 → analyse complète
 | Cycle | Fréquence | Rôle |
 |---|---|---|
 | 🔴 Critical | 5 min | Vérifier SL/TP positions (priorité absolue) |
-| 🟡 Tactical | 30 min | Monitor + queue (score ≥ 4, 5 par passage) |
+| 🟡 Tactical | 15 min | Monitor SL/TP + 7 explorateurs + queue (score ≥ 4, 5 par passage) + watchlist (8 actifs hors positions) + réévaluation des positions |
 | 🟢 Strategic | 4h | Lancer les 7 explorateurs |
 | 🔵 Daily | 7h30 | Routine complète + email rapport |
 | 🟣 Weekly | Dim 20h | Revue hebdo + rapport |
