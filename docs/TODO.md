@@ -190,3 +190,31 @@ Non traités : chacun fera l'objet d'un travail séparé.
   il ne filtre aucun trade sur sa qualité.
 - Décision de conception à prendre plus tard (par exemple un objectif fondé
   sur les niveaux de marché, ou la suppression de ce filtre).
+
+## 13. Registre : interventions manuelles depuis le dashboard non enregistrées (à faire en R3)
+
+- Depuis R2 (06/10/2026), le registre (`data/registre.db`) enregistre les
+  décisions et les événements de position des cycles, mais pas les actions
+  manuelles faites depuis le dashboard. **Facteur de confusion pour les
+  analyses R4** : une position dont le comportement a été modifié à la main
+  serait comptée comme une décision des cycles.
+- Routes concernées (`dashboard/api/routes.py`, inventaire au 06/10/2026) :
+  - `POST /api/positions/<id>/trailing-stop` (`:127`) : active ou désactive le
+    trailing stop d'une position paper. Les déplacements du stop qui suivent
+    sont enregistrés par les cycles (`STOP_DEPLACE`), pas l'activation ;
+  - `POST /api/run-analysis` (`:557`) : lance la routine quotidienne dans le
+    processus du dashboard. Elle est enregistrée comme un passage
+    `quotidien` ordinaire, et ses ouvertures de positions avec ; à distinguer
+    (cycle `manuel` ou origine `dashboard`) ;
+  - `POST /api/settings/watchlist` (`:571`) : change les actifs analysés ;
+    la watchlist ne fait pas partie de l'empreinte des paramètres. **En R3,
+    la composition de la watchlist doit entrer dans l'empreinte des
+    paramètres** (`parametres_actifs`, `utils/registre.py`) : un changement
+    de watchlist crée alors une nouvelle ligne `parametres`. Au 06/10/2026,
+    cette route est le seul code qui écrit `data/watchlist.json` ; les
+    explorateurs alimentent la queue, pas la watchlist (CLAUDE.md dit
+    « élargie automatiquement par les 7 explorateurs »).
+  - Toute route ajoutée plus tard qui modifie une position paper.
+- Le cycle `manuel` est déjà admis par le schéma (CHECK de
+  `utils/registre_schema.py`, ajouté avant la première écriture pour éviter
+  une migration). Reste à brancher les routes en R3.

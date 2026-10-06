@@ -22,6 +22,7 @@ from agents.paper_trader.cycle           import (
     formater_section_portefeuille,
 )
 from agents.paper_trader.monitor         import monitorer_positions
+from utils.registre_cycles                import ouvrir, clore, enregistrer_decisions
 from agents.paper_trader.portfolio       import etat_portefeuille
 from agents.trade_journalist.journalist  import enregistrer_signal
 from agents.trade_journalist.performance_tracker import (
@@ -99,7 +100,8 @@ def generer_rapport_quotidien() -> tuple[str, list[dict], list[dict]]:
 
     # ── 0. Init paper DB + monitor des positions existantes (fermeture SL/TP) ──
     init_paper()
-    monitor_resume = monitorer_positions()
+    passage = ouvrir("quotidien")  # registre (Phase 4, R2) ; non clos si la routine plante avant l'étape 3
+    monitor_resume = monitorer_positions(passage)
 
     # ── 1. Sentiment global ──────────────────────────────────────────────────
     fg = recuperer_fear_greed_crypto()
@@ -126,6 +128,8 @@ def generer_rapport_quotidien() -> tuple[str, list[dict], list[dict]]:
 
     # ── 3. Cycle paper : ouvrir les nouvelles positions ──────────────────────
     cycle_resume = executer_ouvertures(decisions)
+    enregistrer_decisions(passage, decisions, cycle_resume, "watchlist")
+    clore(passage)
 
     # ── 4. Snapshot quotidien du portefeuille ────────────────────────────────
     enregistrer_snapshot_quotidien()

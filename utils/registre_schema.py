@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS registre (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     horodatage TEXT NOT NULL,
     type TEXT NOT NULL CHECK (type IN ('decision', 'reevaluation', 'passage', 'parametres', 'ancre')),
-    cycle TEXT CHECK (cycle IN ('tactical', 'quotidien', 'strategique')),
+    cycle TEXT CHECK (cycle IN ('tactical', 'quotidien', 'strategique', 'critique', 'manuel')),
     passage_id TEXT, ticker TEXT, decision TEXT, style TEXT, score REAL, confiance INTEGER,
     prix REAL, position_id INTEGER, parametres TEXT, version_code TEXT,
     contenu TEXT NOT NULL,
