@@ -11,6 +11,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.logger import get_logger
 from utils.cache import avec_cache
+from utils.valeurs import nombre_ou_none, ohlc_ou_none
 
 logger = get_logger(__name__)
 
@@ -87,14 +88,12 @@ def recuperer_ohlcv_yf(ticker: str, periode: str = "1mo", intervalle: str = "1d"
             return []
         rows = []
         for ts, row in hist.iterrows():
-            rows.append({
-                "date":   str(ts)[:19],
-                "open":   float(row.get("Open", 0) or 0),
-                "high":   float(row.get("High", 0) or 0),
-                "low":    float(row.get("Low", 0) or 0),
-                "close":  float(row.get("Close", 0) or 0),
-                "volume": float(row.get("Volume", 0) or 0),
-            })
+            ohlc = ohlc_ou_none(row)  # Phase 4 : barre sans prix (NaN) écartée, jamais mise à 0
+            if ohlc is None:
+                logger.warning(f"{ticker} {str(ts)[:19]} : barre sans prix (NaN) écartée")
+                continue
+            rows.append({"date": str(ts)[:19], **dict(zip(("open", "high", "low", "close"), ohlc)),
+                         "volume": nombre_ou_none(row.get("Volume"))})
         return rows
 
     return avec_cache("prix_ohlcv", cle, fetch) or []

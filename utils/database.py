@@ -8,6 +8,7 @@ import os
 from datetime import datetime
 from utils.logger import get_logger
 from utils.audit_trace import tracer_sql
+from utils.valeurs import nombre_ou_none, ohlc_ou_none
 
 logger = get_logger(__name__)
 
@@ -130,37 +131,41 @@ def initialiser_base():
 def sauvegarder_prix(ticker: str, timeframe: str, df) -> int:
     """
     Sauvegarde un DataFrame OHLCV dans la table prices.
-    Ignore les doublons (UNIQUE sur ticker + timeframe + timestamp).
-    Retourne le nombre de lignes insérées.
+    Ignore les doublons (UNIQUE sur ticker + timeframe + timestamp), SAUF une
+    ligne existante dont un prix est NULL : elle est remplacée (Phase 4).
+    Une barre sans prix (NaN) n'est jamais enregistrée.
+    Retourne le nombre de lignes insérées ou réparées.
     """
-    lignes_inserees = 0
+    lignes_inserees = sans_prix = 0
     try:
         conn = get_connection()
         cursor = conn.cursor()
 
         for timestamp, row in df.iterrows():
+            ohlc = ohlc_ou_none(row)
+            if ohlc is None:
+                sans_prix += 1
+                continue
             try:
                 cursor.execute("""
-                    INSERT OR IGNORE INTO prices
+                    INSERT INTO prices
                         (ticker, timeframe, timestamp, open, high, low, close, volume)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                """, (
-                    ticker,
-                    timeframe,
-                    str(timestamp),
-                    float(row.get("Open",  0) or 0),
-                    float(row.get("High",  0) or 0),
-                    float(row.get("Low",   0) or 0),
-                    float(row.get("Close", 0) or 0),
-                    float(row.get("Volume",0) or 0),
-                ))
+                    ON CONFLICT(ticker, timeframe, timestamp) DO UPDATE SET
+                        open = excluded.open, high = excluded.high, low = excluded.low,
+                        close = excluded.close, volume = COALESCE(prices.volume, excluded.volume)
+                    WHERE prices.open IS NULL OR prices.high IS NULL
+                       OR prices.low IS NULL OR prices.close IS NULL
+                """, (ticker, timeframe, str(timestamp), *ohlc, nombre_ou_none(row.get("Volume"))))
                 lignes_inserees += cursor.rowcount
             except Exception as e:
                 logger.warning(f"Ligne ignorée ({ticker} {timestamp}) : {e}")
 
         conn.commit()
         conn.close()
-        logger.info(f"{ticker} [{timeframe}] : {lignes_inserees} nouvelles lignes sauvegardées.")
+        if sans_prix:
+            logger.warning(f"{ticker} [{timeframe}] : {sans_prix} barre(s) sans prix (NaN) non enregistrée(s).")
+        logger.info(f"{ticker} [{timeframe}] : {lignes_inserees} lignes nouvelles ou réparées.")
 
     except Exception as e:
         logger.error(f"Erreur sauvegarde prix {ticker} : {e}")
