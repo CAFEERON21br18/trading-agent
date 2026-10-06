@@ -60,13 +60,15 @@ def parametres_actifs() -> dict:
     p = {k: getattr(config, k, None) for k in (
         "CAPITAL", "MAX_CAPITAL_INVESTI_PCT", "RISK_PER_TRADE_PCT", "MAX_POSITIONS_SIMULTANEES",
         "SEUIL_BUY", "SEUIL_SELL", "PIPELINE_FALLBACK_FACTOR", "PIPELINE_FALLBACK_ALERT",
-        "METACOG_AUDIT_ENABLED", "GEMINI_RETRY_MAX_SEC", "CHAT_PRIX_AGE_MAX_MIN")}
+        "METACOG_AUDIT_ENABLED", "GEMINI_RETRY_MAX_SEC", "CHAT_PRIX_AGE_MAX_MIN",
+        "SEUIL_CONFIANCE_PAPER", "SEUIL_CONFIANCE_PAPER_DEFENSIF", "SEUIL_CONFIANCE_LEARNING")}
     p["GEMINI_RESERVE_POUR"] = sorted(getattr(config, "GEMINI_RESERVE_POUR", []))
     try:
         from agents.decision_engine import POIDS, SEUIL_LEARNING, SEUIL_CONTRADICTION
         from agents.analysts.risk_manager.manager import RR_MINIMUM
+        from agents.budget_manager.strategy import PARAMETRES as MODES_BM  # P13 : pré-filtre de confiance, tailles
         p.update(POIDS=POIDS, SEUIL_LEARNING=SEUIL_LEARNING, SEUIL_CONTRADICTION=SEUIL_CONTRADICTION,
-                 RR_MINIMUM=RR_MINIMUM)
+                 RR_MINIMUM=RR_MINIMUM, MODES_BM=MODES_BM)
     except Exception as e:
         p["erreur_lecture"] = str(e)[:120]
     return p

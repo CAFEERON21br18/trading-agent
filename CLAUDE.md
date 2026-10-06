@@ -77,21 +77,29 @@ Seuils (config `SEUIL_BUY` / `SEUIL_SELL`, valeurs par défaut) : BUY si score �
 entre ±0.5 et ±2.0 : BUY/SELL d'apprentissage (micro-position) | sinon HOLD
 
 ## Budget Manager — 4 modes
-| Mode | Cap.invest | Conf.min | Taille | Max/trade | Bascule auto |
+| Mode | Cap.invest | Conf.min (pré-filtre BM) | Taille | Max/trade | Bascule auto |
 |---|---|---|---|---|---|
-| NORMAL | 500€ (50%) | 7 | ×1.0 | 25% | défaut |
-| DEFENSIF | 300€ (30%) | 8 | ×0.5 | 20% | 3+ pertes ou DD > 8% |
-| AGRESSIF | 500€ | 5 | ×1.3 | 35% | 5+ wins ET +10% |
-| CONVICTION | 500€ | 9 | ×1.0 | 40% | manuel (1 trade) |
+| NORMAL | 500€ (50%) | 4 | ×1.0 | 10% | défaut |
+| DEFENSIF | 300€ (30%) | 7 | ×0.5 | 20% | 3+ pertes ou DD > 8% |
+| AGRESSIF | 500€ | 3 | ×1.3 | 35% | 5+ wins ET +10% |
+| CONVICTION | 500€ | 8 | ×1.0 | 40% | manuel (1 trade) |
+
+Conf.min (`agents/budget_manager/strategy.py`) n'est qu'un pré-filtre. La porte du
+Paper Trader applique ensuite `SEUIL_CONFIANCE_PAPER` (config, 8 ; 9 =
+`SEUIL_CONFIANCE_PAPER_DEFENSIF` après 3 positions fermées perdantes d'affilée) aux
+trades normaux et `SEUIL_CONFIANCE_LEARNING` (4) aux trades d'apprentissage. **Seuil
+effectif = le plus haut des deux** : en NORMAL, 8 pour un trade normal, 4 pour un
+trade d'apprentissage.
 
 Allocation : score = confiance × (1 + winrate/100) × urgence — proportionnel.
 
 ## Paper Trader — règles d'entrée
 - Décision = BUY ou SELL
-- Confiance ≥ seuil du mode BM
+- Confiance ≥ seuil effectif (pré-filtre du mode BM, puis porte du Paper Trader :
+  8 ; 9 après 3 pertes d'affilée ; 4 pour un trade d'apprentissage)
 - Au moins 1 paire de sous-agents convergente
 - Risk Manager validé
-- < 5 positions ouvertes
+- < 20 positions ouvertes (`MAX_POSITIONS_SIMULTANEES` du `.env` ; défaut du code : 5)
 - Pas de doublon sur cet actif
 - Capital investissable disponible
 

@@ -51,8 +51,10 @@ def risque_par_trade_pct() -> float:
 
 
 def seuil_confiance_actuel() -> int:
-    """Retourne le seuil de confiance minimum (9 en défensif, sinon ALERT_CONFIDENCE_THRESHOLD)."""
-    return 9 if est_en_mode_defensif() else config.ALERT_CONFIDENCE_THRESHOLD
+    """Seuil de confiance de la porte du Paper Trader : SEUIL_CONFIANCE_PAPER_DEFENSIF (9) en
+    défensif, sinon SEUIL_CONFIANCE_PAPER (8). Phase 4, P13 : auparavant 9 codé en dur et
+    ALERT_CONFIDENCE_THRESHOLD (seuil des alertes email), mêmes valeurs."""
+    return config.SEUIL_CONFIANCE_PAPER_DEFENSIF if est_en_mode_defensif() else config.SEUIL_CONFIANCE_PAPER
 
 
 def _enrichir_avec_prix(positions: list[dict], prix_courants: dict[str, float] | None,

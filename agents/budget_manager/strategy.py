@@ -21,6 +21,11 @@ DRAWDOWN_DEFENSIF_PCT = 8.0     # drawdown total > 8% → défensif
 GAIN_AGRESSIF_PCT     = 10.0    # gain portefeuille > 10% → agressif
 
 # Paramètres par mode (v4.1 : seuils abaissés pour favoriser l'apprentissage)
+# confiance_min est un PRÉ-FILTRE (arbitrator.py), appliqué à toutes les décisions. La porte
+# du Paper Trader applique ensuite config.SEUIL_CONFIANCE_PAPER (8 ; 9 après 3 pertes
+# d'affilée) aux trades normaux et config.SEUIL_CONFIANCE_LEARNING (4) aux trades
+# d'apprentissage : le seuil effectif est le plus haut des deux (Phase 4, P13).
+# Ex. en NORMAL : 8 pour un trade normal, 4 pour un trade d'apprentissage.
 PARAMETRES = {
     "NORMAL": {
         "capital_investissable_pct": 50.0,
