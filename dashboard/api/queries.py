@@ -11,12 +11,51 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 
 import config
 from utils.database import get_connection
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 def portfolio_resume() -> dict:
-    """Snapshot du portefeuille + dernier état (mode rapide — pas d'appel yfinance live)."""
+    """Snapshot du portefeuille + dernier état (mode rapide — pas d'appel yfinance live).
+    TODO §8 : P&L latent au dernier prix relevé par les cycles (cache de P8), même règle
+    que le chat. etat_portefeuille est inchangé : seule la réponse de la page change."""
     from agents.paper_trader.portfolio import etat_portefeuille
-    return etat_portefeuille(with_live_prices=False)
+    etat = etat_portefeuille(with_live_prices=False)
+    try:
+        from agents.chat._pnl_latent import pnl_latent_paper
+        pnl = pnl_latent_paper(etat["open_positions"])
+    except Exception as e:
+        logger.warning(f"P&L latent (Overview) : {e}")
+        pnl = None
+    return {**etat, **_valorisation(etat, pnl)}
+
+
+def _valorisation(etat: dict, pnl: dict | None) -> dict:
+    """P&L latent, valeur totale et détail par position : un inconnu n'est jamais 0."""
+    from agents.chat._pnl_latent import texte_pnl, _heure
+    from utils.portfolio_db import lire_dernier_snapshot
+    if not etat["open_positions"]:  # aucune position : le zéro est réel
+        return {"pnl_latent": {"texte": "aucune position ouverte", "nb_positions": 0}}
+    info = {"texte": texte_pnl(pnl), "age_max_min": config.CHAT_PRIX_AGE_MAX_MIN}
+    inconnu = {"unrealized_pnl": None, "total_value": None, "daily_return_percent": None, "pnl_latent": info}
+    if pnl is None:
+        return inconnu
+    for pos in etat["open_positions"]:
+        v = pnl["positions"].get(pos["id"])
+        if v:
+            pos.update(prix_actuel=v["prix"], unrealized_pnl_euros=v["pnl"], unrealized_pnl_pct=v["pnl_pct"],
+                       prix_releve=v["releve"], prix_cloture_du=v["cloture_du"])
+    info.update(nb_avec_prix=pnl["nb_avec_prix"], nb_positions=pnl["nb_positions"], manquants=pnl["manquants"],
+                partiel=None if pnl["complet"] else pnl["total"], clotures=pnl["clotures"],
+                releve_min=_heure(pnl["releve_min"]) if pnl["releve_min"] else None,
+                releve_max=_heure(pnl["releve_max"]) if pnl["releve_max"] else None)
+    if not pnl["complet"]:  # somme partielle : jamais présentée comme le total
+        return inconnu
+    total_value = etat["capital_total"] + pnl["total"]
+    dernier = lire_dernier_snapshot()
+    return {"unrealized_pnl": pnl["total"], "total_value": total_value, "pnl_latent": info,
+            "daily_return_percent": (total_value / dernier["total_value"] - 1) * 100 if dernier else None}
 
 
 def equity_curve(limite: int = 90) -> list[dict]:

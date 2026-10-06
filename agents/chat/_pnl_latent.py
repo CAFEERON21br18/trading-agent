@@ -43,7 +43,7 @@ def _seance_precedente(prix: dict) -> str | None:
 def pnl_latent_paper(positions: list[dict], maintenant: datetime | None = None) -> dict:
     """P&L latent des positions qui ont un prix assez récent, et ce qui manque."""
     maintenant = maintenant or datetime.now(timezone.utc)
-    total, releves, manquants, clotures = 0.0, [], [], {}
+    total, releves, manquants, clotures, detail = 0.0, [], [], {}, {}
     for p in positions:
         prix = lire_dernier_prix(p["ticker"])
         releve = datetime.fromisoformat(prix["recupere_a"]) if prix else None
@@ -51,15 +51,20 @@ def pnl_latent_paper(positions: list[dict], maintenant: datetime | None = None) 
             manquants.append(p["ticker"])
             continue
         ecart = prix["prix"] - p["entry_price"]  # même formule que agents/paper_trader/portfolio.py
-        total += (ecart if p["direction"] == "LONG" else -ecart) * p["quantity"]
+        pnl = (ecart if p["direction"] == "LONG" else -ecart) * p["quantity"]
+        total += pnl
         releves.append(releve)
         seance = _seance_precedente(prix)
         if seance:
             clotures.setdefault(seance, []).append(p["ticker"])
+        # Détail par position (page Overview) : pourcentage inconnu si rien d'investi, jamais 0
+        detail[p.get("id", p["ticker"])] = {
+            "prix": prix["prix"], "pnl": pnl, "releve": _heure(releve), "cloture_du": seance,
+            "pnl_pct": pnl / p["invested_amount"] * 100 if p.get("invested_amount") else None}
     return {"total": total if releves else None, "complet": bool(positions) and not manquants,
             "nb_avec_prix": len(releves), "nb_positions": len(positions), "manquants": manquants,
             "releve_min": min(releves) if releves else None,
-            "releve_max": max(releves) if releves else None, "clotures": clotures}
+            "releve_max": max(releves) if releves else None, "clotures": clotures, "positions": detail}
 
 
 def texte_pnl(info: dict | None) -> str:
