@@ -1,5 +1,6 @@
 """
 agents/orchestrator_llm.py — Narratifs Gemini pour les rapports (v5.3.7).
+Phase 4 / Q4 : via ask_llm, appelants réservés Gemini puis Groq en secours.
 Transforme les sections structurées en synthèse en prose, ajoutée AVANT
 les blocs détaillés pour un coup d'œil rapide.
 Fallback gracieux : "" → la section narrative est simplement omise.
@@ -10,7 +11,7 @@ import os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from utils.gemini import ask_gemini, gemini_disponible
+from utils.llm import ask_llm, llm_disponible
 
 
 SYSTEM_PROMPT_DAILY = """Tu rédiges le RÉSUMÉ EXÉCUTIF du rapport quotidien d'AlphaSignal,
@@ -49,7 +50,7 @@ INTERDICTIONS :
 def narratif_quotidien(decisions: list[dict], sentiment_global: dict,
                        etat: dict, monitor_resume: dict | None = None) -> str:
     """Résumé exécutif du rapport quotidien."""
-    if not gemini_disponible():
+    if not any(llm_disponible().values()):
         return ""
 
     buys  = [d for d in decisions if d["decision"]["decision"] == "BUY"]
@@ -104,13 +105,13 @@ def narratif_quotidien(decisions: list[dict], sentiment_global: dict,
     parts.append("")
     parts.append("Ton résumé exécutif (5-8 phrases) :")
 
-    return ask_gemini("\n".join(parts), system=SYSTEM_PROMPT_DAILY,
-                      temperature=0.5, max_output_tokens=700)
+    return ask_llm("\n".join(parts), system=SYSTEM_PROMPT_DAILY, temperature=0.5,
+                   max_tokens=700, appelant="narratif_quotidien").get("text") or ""
 
 
 def narratif_hebdo(cette_sem: list[dict], etat: dict, intuition: dict) -> str:
     """Résumé exécutif du rapport hebdomadaire."""
-    if not gemini_disponible():
+    if not any(llm_disponible().values()):
         return ""
     nb = len(cette_sem)
     wins = sum(1 for p in cette_sem if (p.get("pnl_euros") or 0) > 0)
@@ -153,5 +154,5 @@ def narratif_hebdo(cette_sem: list[dict], etat: dict, intuition: dict) -> str:
     parts.append("")
     parts.append("Ton résumé exécutif (6-10 phrases) :")
 
-    return ask_gemini("\n".join(parts), system=SYSTEM_PROMPT_WEEKLY,
-                      temperature=0.5, max_output_tokens=900)
+    return ask_llm("\n".join(parts), system=SYSTEM_PROMPT_WEEKLY, temperature=0.5,
+                   max_tokens=900, appelant="narratif_hebdo").get("text") or ""

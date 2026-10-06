@@ -100,7 +100,7 @@ Prior suggéré : {ctx_bay['prior']:.2f}
 Produis le JSON des 5 analyses :"""
 
     res = ask_llm(prompt, system=REASONING_SYSTEM, temperature=0.4,
-                   max_tokens=1500, mode="silent")
+                   max_tokens=1500, mode="silent", appelant="pipeline")
     if not res.get("text"):
         return {"executed": False, "raison": f"LLM KO : {res.get('error')}",
                 "source": None}

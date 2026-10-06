@@ -10,6 +10,8 @@ Tous les modules qui ont besoin d'un LLM passent par ask_llm().
 - Mode "verbose" pour le chat (retourne une bannière d'erreur claire)
 - v5.7 (audit Phase 4) : la réponse contient aussi `tentatives` (une entrée
   par fournisseur essayé, erreur brute masquée). Ajout rétrocompatible.
+- Phase 4 / Q4 : paramètre `appelant`. Hors config.GEMINI_RESERVE_POUR,
+  Gemini n'est pas tenté (tentative au statut « réservé »), Groq directement.
 """
 
 import sys
@@ -56,43 +58,64 @@ def modele_groq() -> str:
     return getattr(config, "GROQ_MODEL", None) or os.getenv("GROQ_MODEL") or DEFAULT_MODEL_GROQ
 
 
+def gemini_autorise(appelant: str | None) -> bool:
+    """Q4 : sans appelant, comportement historique (Gemini tenté) ; sinon
+    l'appelant doit figurer dans config.GEMINI_RESERVE_POUR."""
+    return appelant is None or appelant.strip().lower() in config.GEMINI_RESERVE_POUR
+
+
 def ask_llm(prompt: str, system: str | None = None,
              mode: str = "silent",
              temperature: float = 0.7,
-             max_tokens: int | None = None) -> dict:
+             max_tokens: int | None = None,
+             appelant: str | None = None) -> dict:
     """
     Appel LLM avec fallback automatique Gemini → Groq.
+    appelant (Q4) : hors config.GEMINI_RESERVE_POUR, Gemini n'est pas tenté
+    et l'appel part directement chez Groq. None = comportement inchangé.
 
     Returns:
         {text: str|None, source: "gemini"|"groq"|None,
          error: str|None, retry_after_sec: int|None,
          tentatives: [{fournisseur, modele, ok, type_erreur, erreur, duree_ms}]}
+        (Gemini sauté : ok=None, statut="réservé", appelant)
 
     Si mode="verbose" et les deux LLM sont KO, text contient une
     bannière d'erreur en français (pas None).
     """
     tentatives = []
+    sfx = f" [{appelant}]" if appelant else ""
+    tente = gemini_autorise(appelant)
     debut = time.monotonic()
-    g = _try_gemini(prompt, system, temperature, max_tokens)
-    tentatives.append(_tentative("gemini", MODEL_GEMINI, g, debut))
-    if g["text"]:
-        return _conclure(g, "gemini", tentatives, prompt, system)
-
-    logger.warning(f"Gemini KO ({g['error']}) → fallback Groq")
+    if tente:
+        g = _try_gemini(prompt, system, temperature, max_tokens)
+        tentatives.append(_tentative("gemini", MODEL_GEMINI, g, debut))
+        if g["text"]:
+            if appelant:
+                logger.info(f"Gemini OK{sfx}")
+            return _conclure(g, "gemini", tentatives, prompt, system)
+        logger.warning(f"Gemini KO ({g['error']}) → fallback Groq{sfx}")
+    else:  # sauté volontairement (réserve) : ni tenté, ni en échec
+        g = {"text": None, "error": "réservé", "retry_after_sec": None}
+        tentatives.append({"fournisseur": "gemini", "modele": MODEL_GEMINI, "ok": None,
+                           "statut": "réservé", "appelant": appelant,
+                           "type_erreur": None, "erreur": None, "duree_ms": 0})
     debut = time.monotonic()
     q = _try_groq(prompt, system, temperature, max_tokens)
     tentatives.append(_tentative("groq", modele_groq(), q, debut))
     if q["text"]:
         return _conclure(q, "groq", tentatives, prompt, system)
 
-    logger.error(f"Gemini ET Groq KO : {g['error']} | {q['error']}")
+    logger.error((f"Gemini ET Groq KO : {g['error']}" if tente else "Groq KO (Gemini réservé)")
+                 + f" | {q['error']}{sfx}")
+    err = "both_failed" if tente else f"groq_ko:{q['error']}, gemini réservé"  # Q4 : raison exacte
     if mode == "verbose":
         msg = (f"⚠️ Services IA temporairement indisponibles "
                f"(Gemini : {g['error']}, Groq : {q['error']}).")
-        return _conclure({"text": msg, "error": "both_failed",
+        return _conclure({"text": msg, "error": err,
                           "retry_after_sec": g.get("retry_after_sec")},
                          None, tentatives, prompt, system)
-    return _conclure({"text": None, "error": "both_failed",
+    return _conclure({"text": None, "error": err,
                       "retry_after_sec": g.get("retry_after_sec")},
                      None, tentatives, prompt, system)
 
