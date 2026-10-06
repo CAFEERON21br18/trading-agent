@@ -3,12 +3,15 @@ agents/chat/_formatters.py — Formatters templates pour le chat (fallback Gemin
 Ces fonctions transforment le contexte structuré en texte lisible.
 Servent à la fois de fallback (si Gemini indispo) et de matière première
 au prompt LLM.
+TODO §8 : une valeur inconnue s'affiche « non disponible », jamais 0.
 """
+
+from agents.chat._pnl_latent import NON_DISPO, nd, texte_pnl
 
 
 def _eur(v) -> str:
     if v is None:
-        return "—"
+        return NON_DISPO
     return f"{v:+.2f}€" if isinstance(v, (int, float)) else str(v)
 
 
@@ -22,11 +25,11 @@ def formater_paper_status(ctx: dict) -> str:
         f"- Capital total : {p.get('capital_total', 0):.2f}€",
         f"- Investi : {p.get('invested', 0):.2f}€ | Cash : {p.get('cash', 0):.2f}€",
         f"- Positions ouvertes : {p.get('open_positions_count', 0)}/{p.get('max_positions', 20)}",
-        f"- P&L latent : {_eur(p.get('unrealized_pnl'))}",
+        f"- P&L latent : {texte_pnl(ctx.get('pnl_latent'))}",
     ]
     if perf and perf.get("nb_trades"):
-        lignes.append(f"- 20 derniers trades : winrate {perf.get('win_rate', 0):.0f}%, "
-                      f"profit factor {perf.get('profit_factor', 0):.2f}")
+        lignes.append(f"- {perf['nb_trades']} derniers trades avec résultat (20 au plus) : "
+                      f"winrate {perf.get('win_rate', 0):.0f}%, profit factor {perf.get('profit_factor', 0):.2f}")
     lignes.append(f"- Mode : {'défensif' if p.get('mode_defensif') else 'NORMAL'}")
     return "\n".join(lignes)
 
@@ -54,6 +57,13 @@ def formater_real_status(ctx: dict) -> str:
     return "\n".join(lignes)
 
 
+def _sans_decision(data: dict) -> str:
+    """Pas de décision ≠ signal neutre (TODO §8)."""
+    if data.get("in_watchlist") is False:
+        return "  Analyse du Decision Engine non disponible : actif hors watchlist."
+    return "  Analyse technique non disponible (calcul en échec ou données manquantes)."
+
+
 def formater_advice_sell(ctx: dict) -> str:
     tickers = ctx.get("tickers_mentionnes", [])
     if not tickers:
@@ -63,8 +73,11 @@ def formater_advice_sell(ctx: dict) -> str:
     for t in tickers[:2]:
         data = ctx.get("asset_data", {}).get(t, {})
         rep.append(f"**{t}** :")
-        if data.get("decision") == "SELL":
-            rep.append(f"  ✓ Signal SELL (score {data.get('score', 0):+.2f}, conf {data.get('confidence')}/10)")
+        if not data.get("decision"):
+            rep.append(_sans_decision(data))
+        elif data.get("decision") == "SELL":
+            rep.append(f"  ✓ Signal SELL (score {nd(data.get('score'), '{:+.2f}')}, "
+                       f"conf {nd(data.get('confidence'), '{}/10')})")
             rep.append(f"  Raison : {data.get('reasoning', '')[:200]}")
         elif data.get("decision") == "BUY":
             rep.append(f"  ⚠️ Au contraire signal BUY (conf {data.get('confidence')}/10). "
@@ -83,8 +96,11 @@ def formater_advice_buy(ctx: dict) -> str:
     for t in tickers[:2]:
         data = ctx.get("asset_data", {}).get(t, {})
         rep.append(f"**{t}** :")
-        if data.get("decision") == "BUY":
-            rep.append(f"  ✓ Signal BUY (score {data.get('score', 0):+.2f}, conf {data.get('confidence')}/10)")
+        if not data.get("decision"):
+            rep.append(_sans_decision(data))
+        elif data.get("decision") == "BUY":
+            rep.append(f"  ✓ Signal BUY (score {nd(data.get('score'), '{:+.2f}')}, "
+                       f"conf {nd(data.get('confidence'), '{}/10')})")
             rep.append(f"  Raison : {data.get('reasoning', '')[:200]}")
         elif data.get("decision") == "SELL":
             rep.append(f"  ⚠️ Signal SELL (conf {data.get('confidence')}/10). Acheter ici = contre tendance.")

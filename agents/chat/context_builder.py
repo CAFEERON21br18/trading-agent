@@ -42,6 +42,15 @@ def build_context(question: str) -> dict:
     except Exception as e:
         logger.warning(f"Paper context : {e}")
         context["paper_portfolio"] = {}
+    try:  # TODO §8 : P&L latent au dernier prix relevé par les cycles, sans appel réseau
+        from agents.chat._pnl_latent import pnl_latent_paper
+        context["pnl_latent"] = pnl_latent_paper(context["paper_open"])
+    except Exception as e:
+        logger.warning(f"P&L latent : {e}")
+        context["pnl_latent"] = None
+    if context["paper_portfolio"]:  # sans prix, etat_portefeuille met 0 : ce n'est pas un chiffre
+        pnl = context["pnl_latent"] or {}
+        context["paper_portfolio"]["unrealized_pnl"] = pnl.get("total") if pnl.get("complet") else None
 
     # 2. Real portfolio
     try:
