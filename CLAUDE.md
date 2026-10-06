@@ -51,13 +51,14 @@ Les indicateurs sont des **GUIDES, pas des lois**. L'agent peut s'écarter s'il 
 
 ## Les 7 explorateurs mondiaux (`agents/explorers/`)
 Crypto / Stock / Index / ETF / Commodity / Forex / CFD Index — scan ~180 actifs/run.
-Découvertes → `data/explorer_queue.json` → analyse complète si score ≥ 6.
+Découvertes → `data/explorer_queue.json` si score ≥ 4 → analyse complète par le tactical
+(5 premières de la queue par passage) ; email si score ≥ 7 (`agents/explorers/base.py`).
 
 ## Les 5 cycles d'exécution (lock-managés via `utils/lock_manager.py`)
 | Cycle | Fréquence | Rôle |
 |---|---|---|
 | 🔴 Critical | 5 min | Vérifier SL/TP positions (priorité absolue) |
-| 🟡 Tactical | 30 min | Monitor + queue (opportunités fortes ≥ 8) |
+| 🟡 Tactical | 30 min | Monitor + queue (score ≥ 4, 5 par passage) |
 | 🟢 Strategic | 4h | Lancer les 7 explorateurs |
 | 🔵 Daily | 7h30 | Routine complète + email rapport |
 | 🟣 Weekly | Dim 20h | Revue hebdo + rapport |
@@ -71,7 +72,8 @@ Découvertes → `data/explorer_queue.json` → analyse complète si score ≥ 6
 5. **Décider** BUY / SELL / HOLD / NO_TRADE + logger si écart aux indicateurs
 
 Pondérations : Technique 35% | Fondamental 25% | Sentiment 20% | Risk 20% (veto)
-Seuils : BUY si score ≥ +3.0 | SELL si ≤ −3.0 | sinon HOLD
+Seuils (config `SEUIL_BUY` / `SEUIL_SELL`, valeurs par défaut) : BUY si score ≥ +2.0 | SELL si ≤ −2.0 |
+entre ±0.5 et ±2.0 : BUY/SELL d'apprentissage (micro-position) | sinon HOLD
 
 ## Budget Manager — 4 modes
 | Mode | Cap.invest | Conf.min | Taille | Max/trade | Bascule auto |
@@ -119,7 +121,7 @@ Après : `mettre_a_jour_performance_md()` synchronise tout (intuition + learner)
 
 ## Alertes email immédiates
 🚀 Position ouverte | 🟢/🔴 Position fermée | 🚨 Signal fort ≥ 8 |
-⚠️ F&G extrême | 🔍 Opportunité explorer ≥ 8 | 📉 Dégradation perf |
+⚠️ F&G extrême | 🔍 Opportunité explorer ≥ 7 | 📉 Dégradation perf |
 📊 Rapport quotidien (7h30) | 📊 Rapport hebdo (dim 20h)
 
 ## Règles absolues

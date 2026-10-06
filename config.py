@@ -110,6 +110,20 @@ try:
 except ValueError:
     CHAT_PRIX_AGE_MAX_MIN = 30
 
+# ── Decision Engine : seuils du score composite ───────────────────────────────
+# BUY normal si score ≥ SEUIL_BUY, SELL normal si score ≤ SEUIL_SELL (négatif).
+# Valeur illisible, ou de mauvais signe : défaut (+2.0 / −2.0).
+try:
+    SEUIL_BUY = float(_get_optional("SEUIL_BUY", "2.0"))
+except ValueError:
+    SEUIL_BUY = 2.0
+SEUIL_BUY = SEUIL_BUY if SEUIL_BUY > 0 else 2.0
+try:
+    SEUIL_SELL = float(_get_optional("SEUIL_SELL", "-2.0"))
+except ValueError:
+    SEUIL_SELL = -2.0
+SEUIL_SELL = SEUIL_SELL if SEUIL_SELL < 0 else -2.0
+
 # ── Chemins des fichiers ──────────────────────────────────────────────────────
 BASE_DIR          = os.path.dirname(os.path.abspath(__file__))
 WATCHLIST_FILE    = os.path.join(BASE_DIR, "data", "watchlist.json")

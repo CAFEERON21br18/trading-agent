@@ -9,6 +9,7 @@ import os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+import config
 from utils.logger import get_logger
 from utils.audit_trace import zone_audit
 
@@ -18,8 +19,8 @@ logger = get_logger(__name__)
 POIDS = {"technique": 0.35, "fondamental": 0.25, "sentiment": 0.20, "risque": 0.20}
 
 # ── Seuils de décision (v4.1 — moins prudent pour favoriser l'apprentissage) ──
-SEUIL_BUY              = 2.0   # BUY normal si score ≥ +2.0 (avant : +3.0)
-SEUIL_SELL             = -2.0  # SELL normal si score ≤ -2.0 (avant : -3.0)
+SEUIL_BUY              = config.SEUIL_BUY    # BUY normal si score ≥ SEUIL_BUY (défaut +2.0 ; avant v4.1 : +3.0)
+SEUIL_SELL             = config.SEUIL_SELL   # SELL normal si score ≤ SEUIL_SELL (défaut -2.0 ; avant v4.1 : -3.0)
 SEUIL_LEARNING         = 0.5   # BUY/SELL learning (micro-position) si |score| ≥ 0.5
 SEUIL_CONTRADICTION    = 8     # contradiction majeure : confiance ≥ 8/10 (avant : 7)
 WINRATE_PRUDENCE       = 35.0  # win rate sous lequel on exige confiance plus élevée
