@@ -1,6 +1,8 @@
 # Registre des décisions — critères de lecture pré-enregistrés
 
-**Statut : v1 du 06/10/2026, commitée avant la première écriture du registre (R2).**
+**Statut : v1 du 06/10/2026, commitée avant la première écriture du registre (R2) ;
+v1.1 du 06/10/2026 (décisions sans données exclues, §0.1), commitée avant toute
+lecture.**
 Toute modification ultérieure, y compris celle des coûts, fait l'objet d'un
 nouveau commit daté. Elle ne s'applique qu'aux données enregistrées après ce
 commit, et jamais après avoir regardé un résultat.
@@ -39,6 +41,20 @@ après coup.
   bloc, ou plusieurs jours d'un même actif, sont moyennés en une seule observation.
 - **Chaque résultat affiche son nombre d'observations indépendantes**, et le
   nombre de lignes du registre à titre d'information seulement.
+- **Décisions sans données de prix : exclues** (v1.1). Une ligne `decision`
+  dont l'analyse n'avait aucun prix n'est ni une observation, ni comptée dans
+  un dénominateur, pour toutes les questions. Elle est reconnue :
+  - depuis R2c, à `suite.resultat = "sans_donnees"` ;
+  - pour toutes les lignes, y compris celles écrites avant R2c, à la colonne
+    `prix` vide (c'est le même critère : le prix de l'analyse technique est
+    absent).
+
+  Raison : sans prix, les quatre sous-agents sont neutres et la décision
+  (HOLD, score 0) est imposée par l'absence de données, pas prise ; le
+  rendement ne peut pas non plus être calculé (pas de p0). Ces lignes sont
+  comptées à part et le compte (lignes, tickers distincts) est affiché avec
+  chaque résultat. Au 06/10/2026, ce sont les tickers de la queue des
+  explorateurs (TODO §14).
 
 ### 0.2 Rendement mesuré
 - **Prix de départ** p0 : le prix enregistré dans la ligne, c'est-à-dire la
@@ -228,9 +244,14 @@ la taille réduite tombe sous le minimum viable de 15 €.
 - **Prix de départ décalé.** p0 est la dernière clôture en base ; pour les
   cryptos, c'est le relevé de 06h30 UTC, pas un prix exécutable au moment de la
   décision.
-- **Composition changeante.** Les explorateurs ajoutent des actifs à la
-  watchlist au fil du temps : on ne compare pas toujours les mêmes actifs d'un
-  mois à l'autre.
+- **Composition changeante.** La watchlist peut être modifiée depuis le
+  dashboard (correction v1.1 : les explorateurs ne l'élargissent pas, ils
+  alimentent la queue) : on ne compare pas toujours les mêmes actifs d'un mois
+  à l'autre. La composition entrera dans l'empreinte des paramètres en R3
+  (TODO §13).
+- **Rien sur les découvertes des explorateurs.** Tant que les actifs de la
+  queue n'ont pas de prix (TODO §14), leurs décisions sont exclues (§0.1) : le
+  registre ne dit pas si les explorateurs trouvent de bonnes opportunités.
 - **Rupture de série du 06/10/2026** (TODO §11) : aucune donnée antérieure à P10
   n'est utilisée pour décider. Les volumes du §0.4 ne servent qu'à dimensionner.
 - **Pas de lien de cause à effet sur les LLM.** Un verdict constant ne permet
@@ -255,3 +276,8 @@ la taille réduite tombe sous le minimum viable de 15 €.
 - v0, 06/10/2026 : brouillon avec options.
 - v1, 06/10/2026 : options retenues, volumes et délais recalculés avec les trois
   groupes. Commitée avant R2.
+- v1.1, 06/10/2026 : décisions sans données de prix exclues de toutes les
+  questions (§0.1, marquage R2c) ; §4 corrigé (la watchlist n'est modifiée que
+  depuis le dashboard) et complété (découvertes des explorateurs). Commitée
+  avant toute lecture : le registre n'a fait l'objet que du contrôle technique
+  de R2 (15 lignes, aucun rendement calculé).
