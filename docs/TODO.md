@@ -163,3 +163,29 @@ Non traités : chacun fera l'objet d'un travail séparé.
 - Le Sentiment Analyst (`sentiment_analyst/_llm.py`) garde lui aussi
   `ask_gemini` en direct : laissé volontairement, il n'est appelé que par
   le bloc `__main__` d'`analyst.py` (lancement manuel).
+
+## 11. ⚠️ Rupture de série des données de prix — 06/10/2026 (P9 et P10)
+
+- Le 06/10/2026, P9 a réparé 42 barres journalières à prix NULL (actions et
+  ETF, juin et août) et P10 a remplacé environ 1 500 barres enregistrées avant
+  leur clôture puis figées (journalières des cryptos et des futures, quelques
+  actions des 23-24/09, hebdomadaires de tous les actifs, horaires des cryptos).
+- Les indicateurs changent (ATR des cryptos +18 à +40 %, futures +12 à +20 %),
+  ainsi que les stops et une partie des signaux : sur les 119 signaux émis
+  depuis le 28/09, rejoués sans réseau, 23 signaux techniques diffèrent
+  (12 crypto, 3 futures, 8 actions).
+- **Les résultats paper d'avant et d'après le 06/10/2026 ne sont pas
+  comparables** (winrate, P&L, performance par actif, intuition) : ils
+  reposent sur des données corrigées. Ne pas les agréger sans le signaler.
+
+## 12. R:R structurellement constant à 2.0
+
+- `calculer_targets` (`agents/analysts/risk_manager/position_sizer.py:41`)
+  place l'objectif 1 à 2 × la distance du stop : le R:R de l'objectif 1 vaut
+  toujours 2.0 (741 signaux sur 741 au 06/10/2026, avant comme après P10).
+- Le filtre du Risk Manager (`R:R < RR_MINIMUM` = 1.2,
+  `agents/analysts/risk_manager/manager.py:23` et `:109`) ne peut donc rejeter
+  que des données manquantes (depuis P9 : « Données de prix manquantes ») ;
+  il ne filtre aucun trade sur sa qualité.
+- Décision de conception à prendre plus tard (par exemple un objectif fondé
+  sur les niveaux de marché, ou la suppression de ce filtre).

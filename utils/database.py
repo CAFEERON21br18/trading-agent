@@ -128,11 +128,13 @@ def initialiser_base():
         raise
 
 
-def sauvegarder_prix(ticker: str, timeframe: str, df) -> int:
+def sauvegarder_prix(ticker: str, timeframe: str, df, duree_barre: str | None = None) -> int:
     """
     Sauvegarde un DataFrame OHLCV dans la table prices.
     Ignore les doublons (UNIQUE sur ticker + timeframe + timestamp), SAUF une
     ligne existante dont un prix est NULL : elle est remplacée (Phase 4).
+    duree_barre (« +1 day »…) : une barre enregistrée avant sa clôture, il y a
+    moins de 3 jours, est réécrite tant qu'elle n'est pas close (Phase 4, P10).
     Une barre sans prix (NaN) n'est jamais enregistrée.
     Retourne le nombre de lignes insérées ou réparées.
     """
@@ -152,11 +154,14 @@ def sauvegarder_prix(ticker: str, timeframe: str, df) -> int:
                         (ticker, timeframe, timestamp, open, high, low, close, volume)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                     ON CONFLICT(ticker, timeframe, timestamp) DO UPDATE SET
-                        open = excluded.open, high = excluded.high, low = excluded.low,
-                        close = excluded.close, volume = COALESCE(prices.volume, excluded.volume)
-                    WHERE prices.open IS NULL OR prices.high IS NULL
-                       OR prices.low IS NULL OR prices.close IS NULL
-                """, (ticker, timeframe, str(timestamp), *ohlc, nombre_ou_none(row.get("Volume"))))
+                        open = excluded.open, high = excluded.high, low = excluded.low, close = excluded.close,
+                        volume = CASE WHEN prices.close IS NULL THEN COALESCE(prices.volume, excluded.volume)
+                                      ELSE COALESCE(excluded.volume, prices.volume) END,
+                        created_at = datetime('now')
+                    WHERE prices.open IS NULL OR prices.high IS NULL OR prices.low IS NULL OR prices.close IS NULL
+                       OR (prices.created_at < datetime(prices.timestamp, ?)
+                           AND prices.created_at >= datetime('now', '-3 days'))
+                """, (ticker, timeframe, str(timestamp), *ohlc, nombre_ou_none(row.get("Volume")), duree_barre))
                 lignes_inserees += cursor.rowcount
             except Exception as e:
                 logger.warning(f"Ligne ignorée ({ticker} {timestamp}) : {e}")

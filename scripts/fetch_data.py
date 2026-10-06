@@ -21,10 +21,12 @@ from utils.helpers  import charger_watchlist, formater_prix, timestamp_maintenan
 logger = get_logger(__name__)
 
 # Mapping timeframe watchlist → paramètres yfinance
+# duree : durée d'une barre (modificateur SQLite) ; une barre enregistrée avant sa
+# clôture est réécrite à la collecte suivante (Phase 4, P10 : barres incomplètes figées)
 TIMEFRAME_CONFIG = {
-    "1d":  {"period": "2y",  "interval": "1d"},
-    "1wk": {"period": "5y",  "interval": "1wk"},
-    "4h":  {"period": "60d", "interval": "1h"},  # yfinance n'a pas de 4H natif
+    "1d":  {"period": "2y",  "interval": "1d",  "duree": "+1 day"},
+    "1wk": {"period": "5y",  "interval": "1wk", "duree": "+7 days"},
+    "4h":  {"period": "60d", "interval": "1h",  "duree": "+1 hour"},  # yfinance n'a pas de 4H natif
 }
 
 # URL de l'API Fear & Greed Index (gratuite, sans clé)
@@ -125,7 +127,7 @@ def collecter_toute_la_watchlist(watchlist: dict) -> dict:
             for tf in timeframes:
                 df = recuperer_ohlcv_yfinance(ticker, tf)
                 if not df.empty:
-                    nb = sauvegarder_prix(ticker, tf, df)
+                    nb = sauvegarder_prix(ticker, tf, df, TIMEFRAME_CONFIG.get(tf, {}).get("duree"))
                     resume[ticker][tf] = nb
                 else:
                     resume[ticker][tf] = 0
