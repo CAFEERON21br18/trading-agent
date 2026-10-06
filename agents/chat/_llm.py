@@ -130,7 +130,7 @@ def _construire_prompt(question: str, intention: str,
 
 MESSAGES_ERREUR_UI = {
     "quota_quotidien":   ("⚠️ **Service IA temporairement indisponible** — "
-                          "le quota Gemini gratuit (20 req/jour) est épuisé. "
+                          "le quota Gemini gratuit du jour est épuisé. "
                           "Reset chaque jour. En attendant, voici les chiffres bruts du contexte :"),
     "rate_limit_minute": ("⚠️ **IA saturée** — trop de requêtes la minute écoulée. "
                           "Réessaie dans une trentaine de secondes. Chiffres bruts en attendant :"),

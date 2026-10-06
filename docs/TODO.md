@@ -44,6 +44,17 @@ Non traités : chacun fera l'objet d'un travail séparé.
   `ask_gemini_status` remplace le message d'origine par un texte fixe pour
   toutes les catégories connues : l'audit ne voit l'erreur brute de Gemini
   que pour les erreurs « inconnu ».
+- **Gemini corrigé en Q5 (06/10)** : « freetier » figurait dans les 429 par
+  jour ET par minute (41 965 « PerDay » et 36 « PerMinute » dans les logs,
+  tous comptés en quota quotidien). Classement désormais d'après le quotaId
+  (`utils/gemini_erreurs.py`), `429_inconnu` sans identifiant, message brut
+  masqué dans les logs et l'audit. Limites lues dans les réponses de Google :
+  20 requêtes/jour et 5/minute (quotaValue). Remise à zéro quotidienne : les
+  retryDelay longs (> 1 h) pointent tous vers 01h00 heure de Lisbonne (minuit
+  UTC), mais certains 429 « par jour » n'annoncent que quelques secondes, et
+  Gemini a répondu au chat le 06/10 à 16h04 après un « par jour » à 07h32 :
+  à confirmer avec les messages bruts désormais journalisés. Groq reste à
+  corriger.
 
 ## 3. Bandeau d'erreur générique du chat
 

@@ -96,6 +96,12 @@ except ValueError:
 # Liste vide = aucun. Un appel sans appelant garde l'ancien comportement.
 GEMINI_RESERVE_POUR = frozenset(a.strip().lower() for a in _get_optional(
     "GEMINI_RESERVE_POUR", "chat,narratif_quotidien,narratif_hebdo").split(",") if a.strip())
+# Q5 : 429 Gemini par minute → une seule nouvelle tentative si Google demande
+# d'attendre au plus ce nombre de secondes (retryDelay) ; au-delà, repli Groq.
+try:
+    GEMINI_RETRY_MAX_SEC = max(0, int(_get_optional("GEMINI_RETRY_MAX_SEC", "10")))
+except ValueError:
+    GEMINI_RETRY_MAX_SEC = 10
 
 # ── Chemins des fichiers ──────────────────────────────────────────────────────
 BASE_DIR          = os.path.dirname(os.path.abspath(__file__))

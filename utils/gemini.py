@@ -21,13 +21,14 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.logger import get_logger
 from utils.audit_trace import compter_appel_llm
+from utils.gemini_erreurs import classer_erreur, message_brut, message_erreur, pause_minute
 import config
 
 logger = get_logger(__name__)
 
 MODEL_NAME            = "gemini-2.5-flash"
 MAX_RETRIES           = 3
-INITIAL_BACKOFF_SEC   = 2.0      # 2s → 4s → 8s
+INITIAL_BACKOFF_SEC   = 2.0      # 503 : 2s → 4s (429 par minute : retryDelay de Google, Q5)
 MAX_REQUESTS_PER_MIN  = 5        # tier gratuit gemini-2.5-flash = 5 req/min
 REQUEST_TIMEOUT_SEC   = 30
 
@@ -111,7 +112,6 @@ def ask_gemini(prompt: str, system: str | None = None,
         cfg_kwargs["max_output_tokens"] = max_output_tokens
     cfg = types.GenerateContentConfig(**cfg_kwargs)
 
-    backoff = INITIAL_BACKOFF_SEC
     for tentative in range(1, MAX_RETRIES + 1):
         try:
             _respecter_rate_limit()
@@ -124,18 +124,17 @@ def ask_gemini(prompt: str, system: str | None = None,
             logger.warning("Gemini a renvoyé une réponse vide")
             return ""
         except Exception as e:
-            msg = str(e).lower()
-            is_rate = ("429" in msg or "rate" in msg or "quota" in msg
-                       or "resource_exhausted" in msg)
-            if is_rate and tentative < MAX_RETRIES:
+            typ, _ = classer_erreur(e)  # Q5 : 429 classé d'après le quotaId de Google
+            pause = (pause_minute(e, tentative, config.GEMINI_RETRY_MAX_SEC)
+                     if typ == "rate_limit_minute" else None)
+            if pause:  # retryDelay de Google ≤ seuil : une seule nouvelle tentative
                 logger.warning(
-                    f"Gemini 429/rate limit (tentative {tentative}/{MAX_RETRIES})"
-                    f" — backoff {backoff:.0f}s"
+                    f"Gemini rate_limit_minute (tentative {tentative}/{MAX_RETRIES})"
+                    f" — nouvel essai dans {pause}s : {message_brut(e)}"
                 )
-                time.sleep(backoff)
-                backoff *= 2
+                time.sleep(pause)
                 continue
-            logger.error(f"Gemini échec (tentative {tentative}) : {e}")
+            logger.error(f"Gemini échec {typ} (tentative {tentative}) : {message_brut(e)}")
             return ""
     return ""
 
@@ -150,9 +149,10 @@ def ask_gemini_status(prompt: str, system: str | None = None,
     Returns:
         {"ok": bool, "text": str, "error_type": str | None,
          "error_message": str | None, "retry_after_sec": int | None}
+        + "message_brut" (Q5 : erreur d'origine masquée) en cas d'exception
 
     error_type ∈ {"clé_manquante", "clé_invalide", "quota_quotidien",
-                   "rate_limit_minute", "service_unavailable",
+                   "rate_limit_minute", "429_inconnu", "service_unavailable",
                    "réponse_vide", "réseau", "inconnu"}
     """
     if not prompt or not prompt.strip():
@@ -190,45 +190,42 @@ def ask_gemini_status(prompt: str, system: str | None = None,
                     "retry_after_sec": None}
         except Exception as e:
             last_err = e
-            msg = str(e).lower()
-            # Quota quotidien (free tier 20/jour) — pas la peine de retry
-            if "perdayperproject" in msg.replace(" ", "") or "freetier" in msg.replace(" ", ""):
-                retry = _extraire_retry_delay(str(e))
-                return {"ok": False, "text": "", "error_type": "quota_quotidien",
-                        "error_message": "Quota Gemini quotidien atteint (20 req/jour, tier gratuit)",
-                        "retry_after_sec": retry}
-            # Rate limit minute
-            if "429" in msg or "rate" in msg or "quota" in msg or "resource_exhausted" in msg:
-                if tentative < MAX_RETRIES:
-                    logger.warning(f"Gemini rate limit (tentative {tentative}/{MAX_RETRIES}) — backoff {backoff:.0f}s")
-                    time.sleep(backoff); backoff *= 2; continue
-                retry = _extraire_retry_delay(str(e))
-                return {"ok": False, "text": "", "error_type": "rate_limit_minute",
-                        "error_message": "Rate limit Gemini (5 req/min) — retry échoué 3×",
-                        "retry_after_sec": retry}
-            if "api_key" in msg and "invalid" in msg:
-                return {"ok": False, "text": "", "error_type": "clé_invalide",
-                        "error_message": "Clé Gemini invalide", "retry_after_sec": None}
-            if "503" in msg or "unavailable" in msg:
-                if tentative < MAX_RETRIES:
-                    time.sleep(backoff); backoff *= 2; continue
-                return {"ok": False, "text": "", "error_type": "service_unavailable",
-                        "error_message": "Service Gemini momentanément indisponible (503)",
-                        "retry_after_sec": 60}
-            logger.error(f"Gemini erreur inconnue (tentative {tentative}) : {e}")
+            # Q5 : 429 classé d'après le quotaId de Google (par jour : échec immédiat ;
+            # par minute : retryDelay de Google si ≤ GEMINI_RETRY_MAX_SEC, une seule
+            # fois, sinon repli Groq ; sans identifiant : 429_inconnu)
+            typ, limite = classer_erreur(e)
+            brut = message_brut(e)
+            pause = {"service_unavailable": backoff, "inconnu": 0}.get(typ)  # None : pas de nouvel essai
+            if typ == "rate_limit_minute":
+                pause = pause_minute(e, tentative, config.GEMINI_RETRY_MAX_SEC)
+            essai = pause is not None and tentative < MAX_RETRIES
+            suite = (f" — nouvel essai dans {pause:.0f}s" if essai and pause
+                     else " — sans nouvel essai" if typ == "rate_limit_minute" else "")
+            (logger.error if typ == "inconnu" else logger.warning)(
+                f"Gemini {typ} (tentative {tentative}/{MAX_RETRIES}){suite} : {brut}")
+            if essai:
+                if pause:
+                    time.sleep(pause); backoff *= 2
+                continue
+            retry = {"service_unavailable": 60, "clé_invalide": None,
+                     "inconnu": None}.get(typ, _extraire_retry_delay(str(e)))
+            return {"ok": False, "text": "", "error_type": typ,
+                    "error_message": message_erreur(typ, limite, brut),
+                    "message_brut": brut, "retry_after_sec": retry}
 
     return {"ok": False, "text": "", "error_type": "inconnu",
-            "error_message": str(last_err)[:200] if last_err else "?",
+            "error_message": message_brut(last_err)[:200] if last_err else "?",
             "retry_after_sec": None}
 
 
 def _extraire_retry_delay(msg: str) -> int | None:
-    """Extrait 'Please retry in 37s' depuis l'erreur Google."""
+    """Extrait le délai de l'erreur Google. Q5 : retryDelay (en secondes) d'abord,
+    car « retry in 17h27m2s » était lu comme 17 secondes."""
     import re
-    m = re.search(r"retry in (\d+)", msg)
+    m = re.search(r"retryDelay':\s*'(\d+)s", msg)
     if m:
         return int(m.group(1))
-    m = re.search(r"retryDelay':\s*'(\d+)s", msg)
+    m = re.search(r"retry in (\d+)", msg)
     if m:
         return int(m.group(1))
     return None
