@@ -76,7 +76,9 @@ def parametres_actifs() -> dict:
         "METACOG_AUDIT_ENABLED", "GEMINI_RETRY_MAX_SEC", "CHAT_PRIX_AGE_MAX_MIN",
         "SEUIL_CONFIANCE_PAPER", "SEUIL_CONFIANCE_PAPER_DEFENSIF", "SEUIL_CONFIANCE_LEARNING")}
     p["GEMINI_RESERVE_POUR"] = sorted(getattr(config, "GEMINI_RESERVE_POUR", []))
-    p["WATCHLIST"] = composition_watchlist()  # R3
+    # R3 ; R3b : paires [catégorie, tickers], car l'empreinte est calculée sur un JSON à clés
+    # triées (_canon) : un dictionnaire y perdrait l'ordre des catégories
+    p["WATCHLIST"] = [[cat, tickers] for cat, tickers in composition_watchlist().items()]
     try:
         from agents.decision_engine import POIDS, SEUIL_LEARNING, SEUIL_CONTRADICTION
         from agents.analysts.risk_manager.manager import RR_MINIMUM
