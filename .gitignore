@@ -57,3 +57,7 @@ logs/
 # Résultats de backtest (volumieux)
 strategies/backtest_results/*.png
 strategies/backtest_results/*.html
+
+# Graphify (carte du code) : tout est régénérable sans LLM (graphify extract . --code-only),
+# et manifest.json / .graphify_root sont propres à la machine
+graphify-out/
