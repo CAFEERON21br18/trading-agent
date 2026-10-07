@@ -16,6 +16,11 @@ def _cibles(liens, source, types=None):
     return {l["cible"] for l in liens if l["source"] == source and (types is None or l["type"] in types)}
 
 
+def _noms(ids):
+    """Libellés lisibles des composants (« Collecte des prix » plutôt que fetch_data)."""
+    return ", ".join(tc.COMPOSANTS[i][0] if i in tc.COMPOSANTS else i.split(":")[-1] for i in sorted(ids))
+
+
 def _incoherence(ident, titre, detail, noeuds, preuves=None):
     return {"id": ident, "titre": titre, "detail": detail, "noeuds": sorted(set(noeuds)),
             "preuves": preuves or [], "todo": tc.TODO_INCOHERENCES.get(ident)}
@@ -37,8 +42,8 @@ def _explorateurs_sans_prix(noeuds, liens):
     explo += consommateurs
     return _incoherence(
         "explorateurs_sans_prix", "Les découvertes des explorateurs n'ont pas de prix",
-        "Les explorateurs remplissent la queue, mais seuls "
-        f"{', '.join(sorted({l['source'] for l in ecrivains})) or 'aucun composant'} écrivent "
+        "Les explorateurs remplissent la queue, mais seul(e) "
+        f"{_noms({l['source'] for l in ecrivains}) or 'aucun composant'} écrit "
         "dans prices : l'analyse d'un ticker de la queue ne trouve aucune barre (HOLD, score 0).",
         explo + ["table:prices"] + [l["source"] for l in ecrivains] + lecteurs,
         [p for l in ecrivains for p in l["preuves"]])
@@ -74,7 +79,7 @@ def _explorateurs_plusieurs_cycles(noeuds, liens):
     lanceurs = sorted(set().union(*multiples.values()))
     return _incoherence(
         "explorateurs_plusieurs_cycles", "Les explorateurs tournent dans plusieurs cycles",
-        f"{len(multiples)} explorateur(s) lancé(s) par {', '.join(lanceurs)}.",
+        f"{len(multiples)} explorateur(s) lancé(s) par : {_noms(lanceurs)}.",
         list(multiples) + lanceurs)
 
 
@@ -99,12 +104,12 @@ def _tables_sans_ecrivain(noeuds, liens, arbres, comp):
                            ts.acces_fichiers(arbres, set(tc.FICHIERS_MEMOIRE))
                            if c in modules_lecteurs and mode == "ecrit"})
         aval = sorted({l["cible"] for l in liens if l["source"] in fichiers} - set(lecteurs))
-        suite = (f" En aval, via {', '.join(f[8:] for f in fichiers)} : {', '.join(aval)}."
+        suite = (f" En aval, via {', '.join(f[8:] for f in fichiers)} : {_noms(aval)}."
                  if aval else "")
         trouves.append(_incoherence(
             "table_sans_ecrivain_production", f"{table} n'est jamais écrite en production",
             f"Seules écritures : {', '.join(sorted(f'{c} ({f})' for c, f in ecrivains))}, appelées "
-            f"uniquement depuis un bloc __main__ ou un outil manuel. Lue par : {', '.join(lecteurs)}."
+            f"uniquement depuis un bloc __main__ ou un outil manuel. Lue par : {_noms(lecteurs)}."
             + suite,
             [f"table:{table}"] + lecteurs + fichiers + aval + [comp[c] for c, _ in ecrivains if c in comp],
             demo))

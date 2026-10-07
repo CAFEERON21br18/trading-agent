@@ -62,7 +62,7 @@
 
     <!-- Bottom navigation (mobile-first) -->
     <nav class="fixed bottom-0 left-0 right-0 bg-slate-800 border-t border-slate-700 z-10">
-        <div class="grid grid-cols-11 max-w-4xl mx-auto">
+        <div class="grid grid-cols-12 max-w-4xl mx-auto">
             {% set nav_items = [
               ('overview', '/', '🏠', 'Home'),
               ('portfolio', '/portfolio', '💼', 'Pf'),
@@ -74,6 +74,7 @@
               ('journal', '/journal', '📔', 'Jrnl'),
               ('budget', '/budget', '💵', 'Bud'),
               ('memory', '/memory', '🧠', 'Mem'),
+              ('architecture', '/architecture', '🗺️', 'Arch'),
               ('settings', '/settings', '⚙️', 'Set'),
             ] %}
             {% for slug, href, emoji, label in nav_items %}
