@@ -83,6 +83,11 @@ def page_plans():
     return render_template("plans.html", page="plans")
 
 
+@app.route("/architecture")
+def page_architecture():
+    return render_template("architecture.html", page="architecture")
+
+
 @app.route("/manifest.json")
 def manifest():
     """Manifest PWA — pour 'Ajouter à l'écran d'accueil' sur iPhone."""
