@@ -153,7 +153,7 @@ Non traités : chacun fera l'objet d'un travail séparé.
   ligne avec », n°2515 « Maintenez la position MU, ». Ces textes sont
   affichés tels quels dans « Conseils en attente » (page Réel).
 
-## 10. Anciens skills : code mort, à supprimer (commit de nettoyage séparé)
+## 10. Code mort à supprimer : anciens skills et visualizer (commit de nettoyage séparé)
 
 - `agents/skills/pipeline.py` n'est importé par aucun module (remplacé par
   `pipeline_grouped.py`). Il est le seul à importer `bayesien.py`,
@@ -161,6 +161,20 @@ Non traités : chacun fera l'objet d'un travail séparé.
   qui appellent `ask_gemini` en direct, hors de la réserve Gemini (Q4).
 - Relevé le 06/10/2026 pendant Q4 : 0 appel en production. Ne pas les
   rebrancher tels quels ; vérifier les imports avant suppression.
+- **`agents/skills/__init__.py` importe aussi les 5 skills** (ligne
+  `from agents.skills import bayesien, pre_mortem, ...` + `__all__`) : tout
+  import de `agents.skills.pipeline_grouped` ou `pipeline_cache` les charge,
+  sans jamais les appeler. La suppression doit retirer cette ligne et
+  `__all__` (et la docstring qui les présente), sinon le paquet ne s'importe
+  plus et `pipeline_grouped` casse. Confirmé par Graphify le 07/10/2026 :
+  `pipeline.py` n'a aucune arête entrante ; les 5 skills n'en ont que depuis
+  `pipeline.py` et `__init__.py`.
+- **`agents/backtester/visualizer.py`** (graphiques equity/drawdown en PNG
+  vers `strategies/backtest_results/`) : importé par aucun module, ni
+  aujourd'hui ni dans l'historique git (`git log -S` : seul le commit initial
+  v4.1 du 04/05/2026 le mentionne). À supprimer dans le même commit de
+  nettoyage. Attention : il crée `strategies/backtest_results/` à l'import
+  (`os.makedirs` au niveau module), sans effet puisqu'il n'est jamais importé.
 - Le Sentiment Analyst (`sentiment_analyst/_llm.py`) garde lui aussi
   `ask_gemini` en direct : laissé volontairement, il n'est appelé que par
   le bloc `__main__` d'`analyst.py` (lancement manuel).
@@ -319,3 +333,46 @@ Non traités : chacun fera l'objet d'un travail séparé.
   ancienne restée ouverte, autre client) garde l'ordre du fichier existant.
   La sélection des 8 actifs du tactical dépend toujours de cet ordre, qui ne
   change plus que par une édition volontaire du fichier.
+
+## 17. Fonctionnalités annoncées mais jamais appelées : brancher ou supprimer ?
+
+Relevé le 07/10/2026 avec Graphify (modules sans aucune arête entrante),
+confirmé par grep et par `git log -S` sur tout l'historique : **aucun de ces
+modules n'a jamais été importé** depuis son ajout. Ce n'est pas une régression,
+ils n'ont jamais été branchés. Ne rien supprimer avant décision.
+
+- **`agents/knowledge/pretrade_analysis.py`** (ajouté le 19/06/2026, a404ac6, v5.0)
+  - Censé faire : l'« analyse pré-trade en 8 sections » de CLAUDE.md (modules
+    v5.0), en mode complet (cycles quotidien et stratégique, décisions
+    importantes) ou condensé (tactical, couches 1, 7 et 8), avec rendu Markdown.
+  - Entraîne `agents/knowledge/chart_reading.py` (« lecture multi-timeframe en
+    5 couches », lui aussi listé dans CLAUDE.md) : son seul importeur est
+    `pretrade_analysis.py`, donc il n'est jamais exécuté non plus.
+  - La section 3 (catalyseurs) est un placeholder : « Earnings/guidance non
+    implémentés ».
+  - Question : brancher (où ? dans le rapport quotidien, l'email d'ouverture
+    de position ou le chat) ou supprimer les deux modules et retirer leur
+    mention de CLAUDE.md ?
+- **`agents/paper_trader/rotation.py`** (ajouté le 19/06/2026, a404ac6, v5.0)
+  - Censé faire : la « rotation v5 » du Paper Trader (CLAUDE.md). Si les
+    `MAX_POSITIONS_SIMULTANEES` slots sont pleins et qu'une opportunité arrive
+    avec au moins 2 points de confiance de plus que la position la plus faible
+    (ou un score composite supérieur de plus de 1.5), proposer de fermer
+    cette position.
+  - Aujourd'hui, quand les slots sont pleins, la nouvelle opportunité est
+    simplement refusée.
+  - Question : brancher (changerait des décisions : fermetures anticipées,
+    à évaluer avec REGISTRE_CRITERES, et à enregistrer dans le registre) ou
+    supprimer et retirer « rotation v5 » de CLAUDE.md ?
+- **`agents/report_sections.py`** (présent dès le commit initial v4.1 du
+  04/05/2026, ecc6e7e)
+  - Censé faire : deux sections du rapport quotidien pour les signaux
+    ACHAT/VENTE, News (3 articles NewsAPI par actif) et Fondamentaux. Sa
+    docstring dit « appelée depuis orchestrator.py », ce qui n'a jamais été le
+    cas dans l'historique git.
+  - Le rapport actuel (`agents/orchestrator.py`) n'a pas ces sections. Le
+    module filtre sur le vocabulaire v4 (`signal` = « ACHAT »/« VENTE ») : à
+    vérifier contre le format actuel des décisions (BUY/SELL) avant tout
+    branchement.
+  - Question : brancher (coût NewsAPI : 1 requête par signal actif) ou
+    supprimer ?
