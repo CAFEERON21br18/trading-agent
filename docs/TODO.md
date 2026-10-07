@@ -18,6 +18,42 @@ Non traités : chacun fera l'objet d'un travail séparé.
   décision à la volée (`decider(..., origine="chat")`). Relevé le 03/10/2026,
   volontairement non traité dans E2.
 
+## ⚠️ PRIORITÉ HAUTE — `signal_results` jamais alimentée en production
+
+- Seul écrivain : `cloturer_signal()` (`agents/trade_journalist/journalist.py:97`),
+  appelé uniquement par le bloc de démonstration `__main__` de
+  `performance_tracker.py` (valeurs fictives BTC/ETH/AAPL). Les signaux de la
+  routine quotidienne (`orchestrator.py:229`, `enregistrer_signal`) ne sont
+  jamais clôturés. Relevé le 07/10/2026 (carte du code, Phase 3).
+- Lecture statique : **des décisions lisent des statistiques issues de cette
+  table** (jointure `INNER JOIN signal_results`) :
+  - `utils/memory_lookups.py` (`winrate_par_actif`, `winrate_recent`,
+    `pertes_consecutives_recentes`, `setups_similaires`) → contexte du pipeline
+    groupé (`agents/skills/_memory_context.py` → `pipeline_grouped.py`), donc
+    coefficient de taille des BUY/SELL ;
+  - `performance_tracker.stats_par_actif` / `calculer_stats_globales` →
+    `mettre_a_jour_performance_md()` (routine quotidienne) →
+    `memory/performance_tracker.md` → `memory_reader.lire_winrate_par_actif` →
+    override « track record défavorable » (`decision_engine.py:82`),
+    `_seuil_confiance_requis` (§15), intuition (`agents/intuition.py`), et
+    `winrate_historique` du Budget Manager (`paper_trader/cycle.py:50`,
+    allocation) ;
+  - `verifier_alerte_degradation` (email « dégradation perf ») et le contexte
+    du chat (`calculer_stats_globales`).
+- **À vérifier demain sur la tour, avant tout autre travail sur ce point**
+  (lecture seule) :
+  - `SELECT COUNT(*) FROM signal_results` et le contenu : vide, ou seulement
+    les lignes de démonstration / de test (`scripts/nettoyer_signaux_test.py`) ?
+  - contenu de `memory/performance_tracker.md` (table « Performance par
+    actif ») : vide, données de démonstration, ou autre source ?
+  - dans le registre, des décisions dont l'override « track record » ou
+    l'intuition a joué, et le `winrate_historique` transmis au Budget Manager
+    (50 par défaut si inconnu).
+- Si la table est vide : ces décisions reposent sur une table vide (winrate
+  inconnu, overrides jamais déclenchés, 50 % par défaut). Si elle ne contient
+  que des lignes de démonstration : elles reposent sur des **données
+  fictives**, ce qui est pire. Ne rien corriger avant ce constat.
+
 ## 1. Rotation des logs cassée (Windows)
 
 - Les cycles et le dashboard écrivent tous dans `logs/alphasignal.log` et
@@ -376,3 +412,27 @@ ils n'ont jamais été branchés. Ne rien supprimer avant décision.
     branchement.
   - Question : brancher (coût NewsAPI : 1 requête par signal actif) ou
     supprimer ?
+
+## 18. Le cycle stratégique ne traite pas la queue
+
+- `scripts/cycle_strategic.py` : sa docstring annonce « Lance les 7
+  explorateurs + traite la queue (analyses complètes) ». En réalité il lit la
+  queue seulement pour en journaliser la longueur (`lire_queue()`, puis
+  `logger.info(... queue à N actifs)`) ; il n'importe ni `asset_analyzer` ni
+  `decision_engine`. Relevé le 07/10/2026 (carte du code, Phase 3).
+- Seul le tactical analyse la queue (5 entrées par passage, puis retirées).
+- À décider : corriger la docstring (et CLAUDE.md), ou lui faire réellement
+  analyser la queue (sans effet tant que §14 n'est pas réglé : les tickers de
+  la queue n'ont pas de prix).
+
+## 19. Les explorateurs tournent deux fois
+
+- Le tactical (toutes les 15 min, `_lancer_explorateurs`, import dynamique
+  par nom de module) **et** le stratégique (toutes les 4 h) lancent les mêmes
+  7 explorateurs. Le passage de 4 h n'apporte rien de plus : la queue est déjà
+  alimentée toutes les 15 min. Coût : un scan complet (~180 actifs, 6 mois de
+  barres journalières par actif) en plus toutes les 4 h, sur Yahoo déjà en 429.
+- Seule différence relevée : `CryptoExplorer(nb_max=50)` dans le stratégique.
+- À décider : retirer les explorateurs du stratégique, ou les retirer du
+  tactical et garder un rythme de 4 h (ce qui changerait la fraîcheur des
+  découvertes).
