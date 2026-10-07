@@ -9,6 +9,9 @@ suppression dans Obsidian ne touche pas graphify-out/, et le cache d'extraction
 
 Fichiers copiés : GRAPH_REPORT.md (lisible dans Obsidian) et graph.html
 (graphe interactif, à ouvrir dans un navigateur).
+Notes générées : une par module Python dans 90-Graphify/modules/, liens vers
+les modules importés, tags code-mort / orphelin (voir scripts/graphify_modules.py).
+Les notes écrites à la main dans ce dossier ne sont jamais touchées.
 
 Usage :
   python scripts/sync_graphify_vault.py                       # vault par défaut
@@ -23,16 +26,21 @@ import shutil
 import argparse
 
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, RACINE)
+
+from scripts.graphify_modules import generer_notes, ecrire_notes
+
 SOURCE = os.path.join(RACINE, "graphify-out")
 VAULT_DEFAUT = os.path.join(os.path.expanduser("~"), "Documents", "AlphaSignalVault")
 DOSSIER_VAULT = "90-Graphify"
+DOSSIER_MODULES = "modules"
 FICHIERS = ("GRAPH_REPORT.md", "graph.html")
 
 
 def sync_vault(source, vault, dry_run=False):
     """Copie les FICHIERS de source vers vault/90-Graphify ; renvoie la liste des manquants."""
     cible = os.path.join(vault, DOSSIER_VAULT)
-    manquants = [f for f in FICHIERS if not os.path.isfile(os.path.join(source, f))]
+    manquants = [f for f in FICHIERS + ("graph.json",) if not os.path.isfile(os.path.join(source, f))]
     if manquants:
         return manquants
     if not dry_run:
@@ -44,6 +52,13 @@ def sync_vault(source, vault, dry_run=False):
         if not dry_run:
             # copy2 conserve la date de modification (utile pour voir la fraîcheur)
             shutil.copy2(src, dst)
+
+    notes = generer_notes(os.path.join(source, "graph.json"), RACINE)
+    ecrites, supprimees, ignorees = ecrire_notes(os.path.join(cible, DOSSIER_MODULES), notes, dry_run)
+    print(f"{'[dry-run] ' if dry_run else ''}{DOSSIER_MODULES}/ : {ecrites} note(s) écrite(s), "
+          f"{supprimees} périmée(s) supprimée(s)")
+    if ignorees:
+        print(f"Notes manuelles laissées intactes : {', '.join(ignorees)}", file=sys.stderr)
     return []
 
 
