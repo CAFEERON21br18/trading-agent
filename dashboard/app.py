@@ -13,6 +13,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from dashboard.api.routes import api
 from dashboard.api.audit_routes import audit_api
+from dashboard.api.topology_routes import topology_api
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -22,6 +23,7 @@ app = Flask(__name__,
             static_folder="static")
 app.register_blueprint(api)
 app.register_blueprint(audit_api)  # Phase 4 / C : consultation de message_audit (GET seulement)
+app.register_blueprint(topology_api)  # Phase 3 : carte de l'agent (GET seulement, sans base)
 
 
 # ── Pages HTML ────────────────────────────────────────────────────────────────
