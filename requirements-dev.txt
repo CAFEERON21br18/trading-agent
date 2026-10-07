@@ -1,0 +1,11 @@
+# ============================================================
+# AlphaSignal — Dépendances de développement (outillage, hors cycles)
+# Installer avec : .venv\Scripts\pip.exe install -r requirements-dev.txt
+# Les cycles de la tour n'en ont pas besoin (voir requirements.txt).
+# ============================================================
+
+# Graphify : carte du code (extraction AST locale, sans appel LLM).
+# Paquet officiel « graphifyy » (double y), publié par GitHub Actions depuis
+# Graphify-Labs/graphify (attestation PyPI Trusted Publishing vérifiée).
+# Version figée : le paquet publie presque tous les jours.
+graphifyy==0.9.79
