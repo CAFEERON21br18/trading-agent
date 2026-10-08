@@ -281,3 +281,162 @@ la taille réduite tombe sous le minimum viable de 15 €.
   depuis le dashboard) et complété (découvertes des explorateurs). Commitée
   avant toute lecture : le registre n'a fait l'objet que du contrôle technique
   de R2 (15 lignes, aucun rendement calculé).
+- v1.2, 08/10/2026 : ajout du §7 (observation Jev, TypeSafe) : hypothèse,
+  coûts par groupe, contrôle de lecture du régime, n = 40 unités, bootstrap par
+  grappes de semaine ISO, règles d'arrêt et d'interruption. Commitée avant le
+  premier `JEV_OBSERVE=1`, donc avant toute observation.
+
+---
+
+## 7. Observation Jev (TypeSafe) : ce que Jev doit prédire avant toute entrée dans le vote
+
+**Statut : v1.2 du 08/10/2026, commitée avant le premier `JEV_OBSERVE=1`.**
+
+**Ce qui est observé.** Chaque matin, au cycle quotidien de 07h30 (jamais le
+tactical ni un lancement manuel), Jev reçoit pour chacun des 23 actifs le state
+que reçoit le moteur : liste blanche de `agents/jev/state.py`, plus
+`position_paper_ouverte`. Le modèle est figé (`jev-1.13.0`), les questions aussi
+(v1, `agents/jev/questions.py`). La réponse de Jev n'entre dans aucune décision.
+La décision du moteur est enregistrée dans la même ligne, sans être envoyée.
+
+**Hypothèse testée.** Quand Jev répond « acheter » avec p(acheter) ≥ 0,6 sur un
+actif sans position paper ouverte, le rendement acheteur à J+5, net de coûts,
+est positif et supérieur à celui des actifs pour lesquels il ne le dit pas.
+
+### 7.1 Observations
+- Lignes `jev_observations` du cycle `quotidien`, statut `ok`, questions `v1`,
+  modèle `jev-1.13.0` ; la première du jour par actif.
+- Le critère ne porte que sur les observations **sans position paper ouverte**.
+  Les autres sont affichées à part, en descriptif.
+- Classes, sur ces mêmes observations :
+  - **Jev-acheter** : p(acheter) ≥ 0,6 ;
+  - **Jev-ne-rien-faire** : p(acheter) < 0,6 ;
+  - **Moteur BUY** : décision BUY du moteur (normal ou apprentissage).
+- Rendement : §0.2, orienté acheteur pour les trois classes (on compare
+  « acheter ces actifs-là »). p0 = prix de la ligne ; pJ+5 = clôture de la 5e
+  barre journalière datée du jour de l'observation ou après (la barre du jour
+  clôt après 07h30).
+- **Coûts aller-retour déduits, fixés ici :**
+
+  | Groupe | Coût aller-retour |
+  |---|---|
+  | `CRYPTO` | 1,0 % |
+  | `INDICES_US` | 0,2 % |
+  | `SEMIS_IA` | 0,2 % |
+  | Actifs seuls (AAPL, AMZN, MSFT, TSLA, GC=F, CL=F) | 0,2 % |
+
+  Origine : ce sont les hypothèses du §0.2, retenues en v1 (§5, ligne 0.2) le
+  06/10/2026. Ce sont des **hypothèses**, pas des frais Revolut mesurés : le
+  calcul du coût net réel n'existe pas encore. Ne sont pas comptés : l'écart
+  achat-vente réel, les frais de financement overnight (GC=F, CL=F et NQ=F
+  sont traités en CFD sur Revolut) et le change EUR/USD. Comme au §0.2, ces
+  valeurs ne peuvent être relevées que par un commit de ce paragraphe
+  **avant** la lecture.
+- **Unité indépendante** : §0.1, couple (groupe, semaine ISO) à J+5 ; les
+  observations d'un couple sont moyennées, séparément dans chaque classe.
+
+### 7.2 Calendrier, contrôle de lecture et lecture unique
+- Fenêtre de collecte : **12 semaines** à partir de la première observation
+  retenue. Les observations postérieures ne comptent pas.
+- **Lecture unique** : fin de fenêtre + 10 jours, pour que le J+5 de la
+  dernière observation existe.
+- Avant cette date, `scripts/jev_bilan.py` n'affiche que des compteurs (lignes,
+  erreurs par type, actifs écartés, observations, unités Jev-acheter) et le
+  contrôle de lecture du régime. Aucun rendement.
+- **Contrôle de lecture du régime** (affiché dès le départ, ce n'est pas un
+  critère) : taux d'accord entre le régime de Jev et `context.regime_marche`,
+  sur les observations dont le régime du moteur est l'un des quatre libellés.
+  - Il est jugé sur les **10 premiers jours de bourse** observés (lundi à
+    vendredi ; les observations crypto du week-end comptent, sans compter
+    comme jours).
+  - **Accord < 50 % : le test est arrêté.** On coupe `JEV_OBSERVE`, on corrige
+    les questions ou le state, et la fenêtre repart de zéro sous une nouvelle
+    version (questions v2), par un nouveau commit de ce paragraphe.
+  - **Aucune correction en cours de fenêtre**, que l'accord soit bon ou mauvais.
+
+### 7.3 Nombre minimal : 40 unités indépendantes Jev-acheter
+- **Groupes utilisés** (§0.1) :
+  - `CRYPTO` : BTC-USD, ETH-USD, SOL-USD, HBAR-USD, CRO-USD ;
+  - `INDICES_US` : SPY, QQQ, VOO, NQ=F ;
+  - `SEMIS_IA` : NVDA, AMD, MU, AMAT, LITE, VRT, VST, CEG ;
+  - comptés seuls : AAPL, AMZN, MSFT, TSLA, GC=F, CL=F.
+
+  Cela couvre les 23 actifs (5 + 4 + 8 + 6). Un actif ajouté plus tard compte
+  seul (§0.1).
+- **Maximum : 108 unités.** 3 groupes + 6 actifs seuls = 9 unités par semaine
+  ISO, et 9 × 12 semaines = 108. Ce maximum suppose que Jev dise « acheter »
+  chaque semaine dans chaque groupe. 40 demande donc qu'il le dise dans environ
+  un couple (groupe, semaine) sur trois.
+- **Puissance.** Avec σ ≈ 6 % à J+5, n ≈ (2,8 × σ / δ)² donne δ ≈ 2,7 % pour
+  n = 40. Avec 40 unités, seul un effet ≥ ~2,7 % à J+5 est détectable.
+  **Critère non atteint ≠ preuve d'absence d'effet** : on conclut seulement à
+  l'absence d'effet massif.
+- Sous 40 à la lecture : **non concluant**. Le seuil de 0,6 n'est pas baissé et
+  la fenêtre n'est pas prolongée. La question ne peut être reposée que par un
+  nouveau commit, avec une nouvelle fenêtre et de nouvelles observations.
+
+### 7.4 Règle de décision
+**Métrique primaire** : moyenne des unités Jev-acheter.
+
+**IC à 95 % par bootstrap par grappes de semaine ISO.** Les unités d'une même
+semaine ne sont pas indépendantes : le même marché les fait bouger ensemble.
+- On tire avec remise autant de semaines qu'il y en a, et on garde toutes les
+  unités de chaque semaine tirée. On fait **10 000 tirages** et on prend les
+  percentiles 2,5 et 97,5.
+- Graines fixes : 7001 (moyennes), 7002 (écart Jev-acheter − Jev-ne-rien-faire),
+  7003 (écart Jev-acheter − moteur BUY).
+- Pour un écart, les mêmes semaines sont tirées pour les deux classes
+  (appariement par semaine). Un tirage sans unité dans l'une des deux classes
+  est ignoré.
+- Avec moins de 2 semaines, il n'y a pas d'IC, et la condition correspondante
+  n'est pas remplie.
+
+Le critère est **atteint** si les trois conditions sont réunies :
+1. borne basse de l'IC à 95 % de la moyenne Jev-acheter > 0 ;
+2. borne basse de l'IC à 95 % de l'écart Jev-acheter − Jev-ne-rien-faire > 0 ;
+3. moins de 80 % des observations Jev-acheter sont aussi des BUY du moteur.
+   Sinon, Jev est **redondant** avec le moteur.
+
+Conséquences :
+- **Atteint** : autorise seulement à rédiger un second critère (comment Jev
+  entrerait dans le vote, avec quel poids, mesuré comment), par un nouveau
+  commit. Rien n'entre automatiquement dans le vote.
+- **Redondant, non atteint ou mitigé** : rien ne change. Jev reste hors du
+  vote ; l'observation peut être coupée.
+
+### 7.5 Descriptif, jamais un critère
+- Écart Jev-acheter − moteur BUY (IC affiché, sans règle) ;
+- résultats par groupe, et par actif et par jour (« descriptif, pas un
+  critère ») ;
+- observations avec position ouverte, par action de Jev ;
+- conviction et taille hypothétique (jamais exécutée), latence, erreurs,
+  actifs écartés, jetons.
+
+### 7.6 Gel pendant la fenêtre
+Sont figés pour toute la fenêtre :
+- les questions (textes, et ordre des options `ne_rien_faire`, `conserver`,
+  `acheter`) ;
+- le modèle `jev-1.13.0` ;
+- la liste blanche du state ;
+- le timeout de 3 s et le budget de 120 s ;
+- l'ordre des actifs, tiré au sort avec la date comme graine.
+
+Toute modification passe par un nouveau commit daté de ce paragraphe et ouvre
+une nouvelle fenêtre ; les observations de deux versions ne se mélangent pas.
+
+**Si `jev-1.13.0` n'est plus servi pendant la fenêtre**, le test est
+**interrompu**. Ce cas se voit dans les erreurs par type du bilan, et se
+confirme avec la liste des modèles de TypeSafe.
+- On coupe `JEV_OBSERVE` et **on ne change pas de version**.
+- Les observations déjà faites ne sont pas lues.
+- Une nouvelle fenêtre ne peut s'ouvrir que sous un **nouveau critère**, par un
+  nouveau commit.
+
+### 7.7 Ce que ce critère ne peut pas dire
+- Jev lit mal les nombres (documentation de jev-1.13), et le state est surtout
+  numérique : un échec peut venir du format du state, pas du modèle.
+- Jev favorise la première option ; ici, ce biais joue contre « acheter ».
+- Une seule période de 12 semaines ; actifs corrélés au-delà des groupes (§4).
+- Coûts supposés, pas mesurés (§7.1).
+- Les jours où le cycle quotidien échoue ne sont pas observés.
+- Paper ≠ réel : aucune conclusion ne s'applique au portefeuille réel.
