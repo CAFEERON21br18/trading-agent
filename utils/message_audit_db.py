@@ -1,9 +1,10 @@
 """
 utils/message_audit_db.py — Table message_audit : journal d'audit du chat (Phase 4).
 
-Migration additive : CREATE TABLE IF NOT EXISTS, aucune table existante
-modifiée. Indépendante de chat_history : le bouton « Effacer » du chat
-(DELETE /api/chat/history) n'y touche jamais.
+Migration additive : CREATE TABLE IF NOT EXISTS, puis ADD COLUMN des colonnes
+ajoutées depuis (verification_chiffres), seulement si elles manquent ; aucune
+autre table touchée. Indépendante de chat_history : le bouton « Effacer » du
+chat (DELETE /api/chat/history) n'y touche jamais.
 
 L'écriture se fait dans un thread séparé, sur sa propre connexion : elle
 ne retarde jamais la réponse du chat. Si la base est verrouillée (cycle en
@@ -11,6 +12,7 @@ cours d'écriture), elle attend au plus TIMEOUT_VERROU_SEC puis abandonne :
 l'échec est seulement loggé, la réponse est déjà partie.
 """
 
+import sqlite3
 import threading
 from datetime import datetime, timedelta, timezone
 
@@ -27,8 +29,10 @@ COLONNES = (
     "llm_utilise", "chaine_de_fallback", "prompt_envoye", "reponse_brute",
     "actions_declenchees", "decisions_trading_generees",
     "passe_par_decision_engine", "passe_par_budget_manager",
-    "latence_ms", "erreur", "origine_client",
+    "latence_ms", "erreur", "origine_client", "verification_chiffres",
 )
+# Colonnes ajoutées après la création de la table (migration additive, dans l'ordre)
+_COLONNES_AJOUTEES = (("verification_chiffres", "TEXT"),)
 
 _DDL_TABLE = """
     CREATE TABLE IF NOT EXISTS message_audit (
@@ -47,23 +51,38 @@ _DDL_TABLE = """
         passe_par_budget_manager    INTEGER,        -- 1/0 ; NULL = aucune écriture persistante
         latence_ms                  INTEGER,
         erreur                      TEXT,
-        origine_client              TEXT            -- JSON : route, referer, Tailscale, UA
+        origine_client              TEXT,           -- JSON : route, referer, Tailscale, UA
+        verification_chiffres       TEXT            -- JSON : chiffres de la réponse LLM absents du prompt
     )
 """
 _DDL_INDEX = "CREATE INDEX IF NOT EXISTS idx_message_audit_timestamp ON message_audit (timestamp)"
 
 
 def initialiser_audit_db(conn=None) -> None:
-    """Crée la table et son index si besoin (idempotent)."""
+    """Crée la table et son index si besoin, ajoute les colonnes manquantes (idempotent)."""
     propre = conn is None
     conn = conn or get_connection()
     try:
         conn.execute(_DDL_TABLE)
         conn.execute(_DDL_INDEX)
+        _ajouter_colonnes_manquantes(conn)
         conn.commit()
     finally:
         if propre:
             conn.close()
+
+
+def _ajouter_colonnes_manquantes(conn) -> None:
+    """ALTER TABLE … ADD COLUMN seulement si PRAGMA table_info montre la colonne absente."""
+    presentes = {r[1] for r in conn.execute("PRAGMA table_info(message_audit)")}
+    for nom, type_sql in _COLONNES_AJOUTEES:
+        if nom in presentes:
+            continue
+        try:
+            conn.execute(f"ALTER TABLE message_audit ADD COLUMN {nom} {type_sql}")
+        except sqlite3.OperationalError as e:
+            if "duplicate column" not in str(e).lower():  # sinon : ajoutée entre-temps par un autre processus
+                raise
 
 
 def inserer_audit(enregistrement: dict) -> int | None:

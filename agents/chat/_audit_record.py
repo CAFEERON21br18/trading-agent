@@ -10,6 +10,9 @@ Règle passe_par_* (Phase 4) : calculée sur les écritures persistantes
   - 1    : toutes ces écritures ont eu lieu dans le Decision Engine
            (resp. le Budget Manager)
   - 0    : au moins une écriture hors DE (resp. hors BM) → contournement
+
+verification_chiffres (réponses gemini ou groq) : chiffres de la réponse absents
+du prompt, mode avertissement (agents/chat/_verif_chiffres.py).
 """
 
 import json
@@ -17,7 +20,11 @@ import json
 import config
 from utils.audit_trace import TABLES_CACHE
 from utils.llm import MODEL_GEMINI, cle_groq, modele_groq
+from utils.logger import get_logger
 from utils.secret_mask import masquer_secrets, empreinte_secret
+from agents.chat._verif_chiffres import partie_prompt, references_du_prompt, verifier
+
+logger = get_logger(__name__)
 
 _SOURCES_LLM = ("gemini", "groq")
 # Bornes du contexte stocké (le texte réellement injecté est dans prompt_envoye).
@@ -126,6 +133,20 @@ def _actions(trace) -> tuple[dict, int | None, int | None]:
     return actions, par_de, par_bm
 
 
+def _verification_chiffres(enr: dict) -> str | None:
+    """Mode avertissement : chiffres de la réponse LLM absents du prompt (JSON), sinon NULL.
+    Calculé sur les champs stockés (masqués), comme scripts/rapport_verif_chiffres.py --passe.
+    Toute erreur donne NULL : l'audit ne doit jamais échouer à cause de ce contrôle."""
+    if enr.get("llm_utilise") not in _SOURCES_LLM or not enr.get("prompt_envoye"):
+        return None
+    try:
+        refs = references_du_prompt(partie_prompt(enr["prompt_envoye"]))
+        return _json(verifier(enr.get("reponse_brute") or "", refs))
+    except Exception as e:
+        logger.warning(f"Contrôle des chiffres non calculé : {e}")
+        return None
+
+
 def construire_enregistrement(type_message, args, kwargs, trace, resultat, exc,
                               horodatage: str, latence_ms: int, client: dict) -> dict:
     """Assemble l'enregistrement message_audit (tous champs texte masqués)."""
@@ -140,7 +161,7 @@ def construire_enregistrement(type_message, args, kwargs, trace, resultat, exc,
     else:
         erreur = llm["erreur"]
 
-    return {
+    enr = {
         "timestamp":                  horodatage,
         "source":                     _source(type_message, client),
         "message_utilisateur":        masquer_secrets(message),
@@ -157,3 +178,5 @@ def construire_enregistrement(type_message, args, kwargs, trace, resultat, exc,
         "erreur":                     masquer_secrets(erreur),
         "origine_client":             _json(client),
     }
+    enr["verification_chiffres"] = _verification_chiffres(enr)
+    return enr

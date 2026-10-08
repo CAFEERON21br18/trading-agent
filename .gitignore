@@ -23,6 +23,10 @@ data/lockin_assets.json
 data/database.db-shm
 data/database.db-wal
 
+# CSV d'étiquetage du contrôle des chiffres du chat (scripts/rapport_verif_chiffres.py --passe) :
+# extraits des réponses, issus de prompts qui contiennent le portefeuille réel
+data/verif_chiffres/
+
 # Emails fallback non envoyés
 reports/unsent/
 
