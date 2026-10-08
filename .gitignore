@@ -27,6 +27,10 @@ data/database.db-wal
 # extraits des réponses, issus de prompts qui contiennent le portefeuille réel
 data/verif_chiffres/
 
+# Banc de rejeu du chat (scripts/chat_cas_export.py, scripts/rejouer_chat.py) : cas, résultats,
+# copie jetable de la base ; prompts et réponses contiennent le portefeuille réel
+data/chat_cas/
+
 # Emails fallback non envoyés
 reports/unsent/
 
