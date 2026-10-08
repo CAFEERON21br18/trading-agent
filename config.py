@@ -110,6 +110,15 @@ try:
 except ValueError:
     CHAT_PRIX_AGE_MAX_MIN = 30
 
+# ── Mémoire des échanges du chat (agents/chat/_historique.py), désactivée par défaut ──
+# CHAT_HISTORIQUE=1 : les 3 derniers échanges de moins de CHAT_HISTORIQUE_MAX_MIN minutes
+# sont rappelés au LLM (jamais comme source de chiffres) et les tickers peuvent être repris
+CHAT_HISTORIQUE = _get_optional("CHAT_HISTORIQUE", "0").strip().lower() in ("1", "true", "oui", "yes")
+try:
+    CHAT_HISTORIQUE_MAX_MIN = max(1, int(_get_optional("CHAT_HISTORIQUE_MAX_MIN", "120")))
+except ValueError:
+    CHAT_HISTORIQUE_MAX_MIN = 120
+
 # ── Decision Engine : seuils du score composite ───────────────────────────────
 # BUY normal si score ≥ SEUIL_BUY, SELL normal si score ≤ SEUIL_SELL (négatif).
 # Valeur illisible, ou de mauvais signe : défaut (+2.0 / −2.0).
