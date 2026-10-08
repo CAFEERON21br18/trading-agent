@@ -10,7 +10,9 @@ Fonctions pures, testées sans réseau (tests/test_jev_bilan.py) :
   toutes les classes, afin de comparer « acheter ces actifs » entre classes ;
 - unité indépendante (§0.1) : couple (groupe, semaine ISO), moyenne des
   observations du couple ;
-- moyenne et IC à 95 % par bootstrap (10 000 tirages, graine fixe).
+- moyenne et IC à 95 % par bootstrap par grappes de semaines ISO
+  (10 000 tirages, graines fixes) ;
+- contrôle de lecture du régime sur les 10 premiers jours de bourse.
 """
 
 import random
@@ -19,6 +21,11 @@ from statistics import fmean
 
 HORIZON = 5
 SEUIL_ACHETER = 0.6
+TIRAGES = 10_000                    # bootstrap par grappes de semaines ISO (§7.4)
+GRAINE_MOYENNE, GRAINE_ECART, GRAINE_ECART_MOTEUR = 7001, 7002, 7003
+JOURS_CONTROLE, ACCORD_MIN = 10, 0.50   # contrôle de lecture du régime (§7.2)
+COUTS = {"CRYPTO": 0.010}           # aller-retour (§0.2, §7.1) ; 0,2 % pour tout le reste
+COUT_DEFAUT = 0.002
 GROUPES = {  # REGISTRE_CRITERES §0.1
     "CRYPTO":     ("BTC-USD", "ETH-USD", "SOL-USD", "HBAR-USD", "CRO-USD"),
     "INDICES_US": ("SPY", "QQQ", "VOO", "NQ=F"),
@@ -35,7 +42,7 @@ def groupe(ticker: str) -> str:
 
 
 def cout(ticker: str) -> float:
-    return 0.010 if ticker in GROUPES["CRYPTO"] else 0.002
+    return COUTS.get(groupe(ticker), COUT_DEFAUT)
 
 
 def premieres_du_jour(lignes: list[dict], version: str) -> list[dict]:
@@ -77,24 +84,53 @@ def unites(obs: list[dict]) -> dict:
     return {k: fmean(v) for k, v in paquets.items()}
 
 
-def bootstrap(valeurs: list[float], tirages: int = 10_000, graine: int = 0) -> tuple:
-    """(moyenne, borne basse, borne haute) de l'IC à 95 % ; Nones si < 2 valeurs."""
-    if len(valeurs) < 2:
-        return (fmean(valeurs) if valeurs else None), None, None
-    rng, n = random.Random(graine), len(valeurs)
-    moyennes = sorted(fmean(rng.choices(valeurs, k=n)) for _ in range(tirages))
-    return fmean(valeurs), moyennes[int(0.025 * tirages)], moyennes[int(0.975 * tirages) - 1]
+def _par_semaine(unites_: dict) -> dict:
+    """{semaine ISO: [valeurs des unités de cette semaine]} — une grappe par semaine."""
+    grappes = {}
+    for (_, semaine), v in unites_.items():
+        grappes.setdefault(semaine, []).append(v)
+    return grappes
 
 
-def bootstrap_difference(a: list[float], b: list[float], tirages: int = 10_000,
-                         graine: int = 1) -> tuple:
-    """Moyenne(a) − moyenne(b), IC à 95 % (rééchantillonnage indépendant des deux classes)."""
-    if len(a) < 2 or len(b) < 2:
+def bootstrap_grappes(unites_: dict, tirages: int = TIRAGES, graine: int = GRAINE_MOYENNE) -> tuple:
+    """(moyenne des unités, borne basse, borne haute) de l'IC à 95 %, en tirant des
+    SEMAINES ISO avec remise (les unités d'une même semaine ne sont pas indépendantes).
+    Bornes None si moins de 2 semaines."""
+    if not unites_:
         return None, None, None
+    grappes = _par_semaine(unites_)
+    semaines = sorted(grappes)
+    moyenne = fmean(unites_.values())
+    if len(semaines) < 2:
+        return moyenne, None, None
     rng = random.Random(graine)
-    diffs = sorted(fmean(rng.choices(a, k=len(a))) - fmean(rng.choices(b, k=len(b)))
+    stats = sorted(fmean([v for s in rng.choices(semaines, k=len(semaines)) for v in grappes[s]])
                    for _ in range(tirages))
-    return fmean(a) - fmean(b), diffs[int(0.025 * tirages)], diffs[int(0.975 * tirages) - 1]
+    return moyenne, stats[int(0.025 * tirages)], stats[int(0.975 * tirages) - 1]
+
+
+def bootstrap_grappes_difference(ua: dict, ub: dict, tirages: int = TIRAGES,
+                                 graine: int = GRAINE_ECART) -> tuple:
+    """Moyenne(ua) − moyenne(ub), IC à 95 % : les MÊMES semaines tirées pour les deux
+    classes (appariement par semaine). Tirage sans unité dans une classe : ignoré."""
+    if not ua or not ub:
+        return None, None, None
+    ga, gb = _par_semaine(ua), _par_semaine(ub)
+    semaines = sorted(set(ga) | set(gb))
+    ecart = fmean(ua.values()) - fmean(ub.values())
+    if len(semaines) < 2:
+        return ecart, None, None
+    rng, stats = random.Random(graine), []
+    for _ in range(tirages):
+        tirees = rng.choices(semaines, k=len(semaines))
+        a = [v for s in tirees for v in ga.get(s, [])]
+        b = [v for s in tirees for v in gb.get(s, [])]
+        if a and b:
+            stats.append(fmean(a) - fmean(b))
+    if len(stats) < 2:
+        return ecart, None, None
+    stats.sort()
+    return ecart, stats[int(0.025 * len(stats))], stats[int(0.975 * len(stats)) - 1]
 
 
 def classes(obs: list[dict]) -> dict:
@@ -112,3 +148,17 @@ def accord_regime(obs: list[dict]) -> tuple[int, int]:
     """(accords, comparables) entre regime_jev et context.regime_marche — contrôle de lecture."""
     comparables = [o for o in obs if o.get("regime_moteur") in ("haussier", "baissier", "range", "transition")]
     return sum(1 for o in comparables if o.get("regime_jev") == o["regime_moteur"]), len(comparables)
+
+
+def controle_regime(obs: list[dict]) -> dict:
+    """Accord régime Jev / moteur sur les 10 premiers jours de bourse (lun-ven) observés.
+    statut : en_cours (< 10 jours), ok, ou arret (accord < 50 % : test arrêté, §7.2)."""
+    jours = sorted({o["jour"] for o in obs if date.fromisoformat(o["jour"]).weekday() < 5})
+    if len(jours) < JOURS_CONTROLE:
+        return {"statut": "en_cours", "jours": len(jours), "accords": None, "comparables": None}
+    limite = jours[JOURS_CONTROLE - 1]
+    accords, comparables = accord_regime([o for o in obs if o["jour"] <= limite])
+    taux = accords / comparables if comparables else 0.0
+    return {"statut": "ok" if taux >= ACCORD_MIN else "arret", "jours": JOURS_CONTROLE,
+            "accords": accords, "comparables": comparables, "jusqu_au": limite}
+

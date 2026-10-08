@@ -78,6 +78,33 @@ class TestCalculs(unittest.TestCase):
         self.assertEqual([x["ticker"] for x in cl["moteur_buy"]], ["QQQ"])
         self.assertEqual([x["ticker"] for x in cl["jev_ne_rien_faire"]], ["VOO"])
 
+    def test_bootstrap_par_grappes_de_semaines(self):
+        une_semaine = {("CRYPTO", "2026-S42"): 0.01, ("SPY", "2026-S42"): 0.03}
+        self.assertEqual(calc.bootstrap_grappes(une_semaine)[1:], (None, None))  # 1 grappe : pas d'IC
+        u = {(g, f"2026-S{s}"): 0.01 * s for g in ("CRYPTO", "AAPL") for s in (42, 43, 44)}
+        m, bas, haut = calc.bootstrap_grappes(u)
+        self.assertAlmostEqual(m, 0.43)
+        self.assertTrue(0.42 <= bas <= m <= haut <= 0.44)
+        self.assertEqual(calc.bootstrap_grappes(u), calc.bootstrap_grappes(u))  # graine fixe
+        b = {k: v - 0.01 for k, v in u.items()}
+        ecart, bas, haut = calc.bootstrap_grappes_difference(u, b)
+        self.assertAlmostEqual(ecart, 0.01)
+        self.assertAlmostEqual(bas, 0.01)  # semaines appariées : l'écart est constant
+        self.assertAlmostEqual(haut, 0.01)
+
+    def test_couts_par_groupe(self):
+        self.assertEqual([calc.cout(t) for t in ("SOL-USD", "QQQ", "AMD", "GC=F")],
+                         [0.010, 0.002, 0.002, 0.002])
+
+    def test_controle_regime_dix_jours_de_bourse(self):
+        jours = [DEBUT + timedelta(days=i) for i in range(14)]  # 10 jours ouvrés + 2 week-ends
+        bons = [obs("SPY", j, 0.5) for j in jours]
+        self.assertEqual(calc.controle_regime(bons[:9])["statut"], "en_cours")
+        self.assertEqual(calc.controle_regime(bons)["statut"], "ok")
+        mauvais = [dict(o, regime_jev="range") for o in bons]
+        ctrl = calc.controle_regime(mauvais)
+        self.assertEqual((ctrl["statut"], ctrl["jusqu_au"]), ("arret", jours[11].isoformat()))
+
     def test_verdict_non_concluant_sous_le_minimum(self):
         self.assertTrue(jev_bilan.verdict(10, (0.05, 0.03, 0.07), (0.05, 0.02, 0.08), 0.1)
                         .startswith("NON CONCLUANT"))
