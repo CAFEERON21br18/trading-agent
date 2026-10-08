@@ -29,3 +29,6 @@ flask>=3.0.0              # Serveur web local (PWA + API JSON)
 # LLM (v5.3.3 + fallback v5.4.0)
 google-genai>=2.9.0       # Gemini 2.5 Flash primary (free tier : 20 req/jour)
 groq>=0.11.0              # Llama 3.3 70B en fallback automatique (quotas séparés)
+
+# Observation Jev (TypeSafe) — sans effet sur les décisions (agents/jev/)
+typesafe-sdk>=0.7.2       # Python ≥ 3.10 ; clé TYPESAFE_API_KEY dans .env

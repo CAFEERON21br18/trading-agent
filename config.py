@@ -134,6 +134,14 @@ SEUIL_CONFIANCE_PAPER          = int(_get_optional("SEUIL_CONFIANCE_PAPER", "8")
 SEUIL_CONFIANCE_PAPER_DEFENSIF = int(_get_optional("SEUIL_CONFIANCE_PAPER_DEFENSIF", "9"))
 SEUIL_CONFIANCE_LEARNING       = int(_get_optional("SEUIL_CONFIANCE_LEARNING", "4"))
 
+# ── Jev / TypeSafe : observation seule (agents/jev/, REGISTRE_CRITERES §7) ────
+# Cycle quotidien uniquement ; aucune sortie lue par le vote. Désactivé par
+# défaut : seul JEV_OBSERVE=1 (ou true/oui/yes) l'active. Clé : TYPESAFE_API_KEY.
+JEV_OBSERVE      = _get_optional("JEV_OBSERVE", "0").strip().lower() in ("1", "true", "oui", "yes")
+TYPESAFE_API_KEY = _get_optional("TYPESAFE_API_KEY")
+JEV_TIMEOUT_SEC  = 3.0    # par appel, sans nouvelle tentative
+JEV_BUDGET_SEC   = 120.0  # par cycle : au-delà, plus aucun appel (actifs écartés journalisés)
+
 # ── Chemins des fichiers ──────────────────────────────────────────────────────
 BASE_DIR          = os.path.dirname(os.path.abspath(__file__))
 WATCHLIST_FILE    = os.path.join(BASE_DIR, "data", "watchlist.json")
