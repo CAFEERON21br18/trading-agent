@@ -628,3 +628,20 @@ modification du code.
 - Banc de rejeu du chat : `scripts/chat_cas_export.py --nouveau` coupe Alpha
   Vantage (il n'existe aucun cache) ; le prompt d'un cas manuel a donc la même
   lacune que le chat réel presque toujours.
+
+## 28. Quatre suites de tests Jev écrivent dans `logs/` de production
+
+À corriger avec le chantier des logs Windows (§1). Relevé le 08/10/2026, non
+corrigé.
+
+- `tests/test_jev_observer.py`, `tests/test_jev_orchestrateur.py`,
+  `tests/test_jev_fantome_dashboard.py` et `tests/test_jev_fantome_isolation.py`
+  écrivent dans `logs/alphasignal.log` et `logs/errors.log`. Mesuré dans un
+  worktree propre : de 0,7 à 9,5 Ko par passage, selon la suite. Les modules
+  testés journalisent par `utils/logger.py`, dont les fichiers pointent toujours
+  vers `logs/`. Sur la tour, où la rotation échoue (§1), ces écritures ajoutent
+  aussi des traces « --- Logging error --- ».
+- Les suites du banc de rejeu et de l'historique du chat n'y écrivent pas : elles
+  redirigent les logs avec `scripts/_banc_fichiers.journaux_detaches`.
+- Pistes, à trancher avec §1 : un dossier de logs configurable, utilisé par les
+  tests, ou la même redirection dans ces quatre suites.
