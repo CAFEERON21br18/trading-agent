@@ -193,40 +193,7 @@ def ajouter_lecon(categorie: str, lecon: str):
 
 
 if __name__ == "__main__":
-    # Test : simuler 5 signaux + clôturer 3 + générer le rapport
-    from agents.trade_journalist.journalist import enregistrer_signal, cloturer_signal
-
-    print("\nAlphaSignal — Trade Journalist — Test\n")
-
-    # 5 signaux simulés
-    signaux_test = [
-        ("BTC-USD", "LONG",  8, 71349.71, 67743.60, 78561.93, 82168.04, "1d", "Market+Fundamental", "EMA bullish + BTC sous-évalué"),
-        ("ETH-USD", "LONG",  6, 3200.00,   3048.52,  3502.97,  3654.45, "1d", "Market",             "Double bottom daily"),
-        ("AAPL",    "LONG",  7, 260.48,    254.58,   272.28,   278.18, "1d", "Market+Fundamental", "Tendance EMA haussière"),
-        ("SOL-USD", "SHORT", 5, 210.00,    218.00,   194.00,   186.00, "1d", "Market",             "Double top 4H"),
-        ("SPY",     "LONG",  6, 679.46,    671.40,   695.58,   703.64, "1d", "Fundamental+Sentiment","Macro saine, courbe normale"),
-    ]
-    ids = []
-    for args in signaux_test:
-        sid = enregistrer_signal(*args)
-        if sid:
-            ids.append(sid)
-
-    # Clôturer 3 trades (2 gagnants, 1 perdant)
-    if len(ids) >= 3:
-        cloturer_signal(ids[0], 78561.93, "Target 1 BTC atteint, trade gagnant")       # +10%
-        cloturer_signal(ids[1], 3050.00,  "Stop-loss ETH touché, trend reversal")      # -4.6%
-        cloturer_signal(ids[2], 275.00,   "AAPL target 1 atteint")                     # +5.6%
-
-    mettre_a_jour_performance_md()
-
-    print("Stats globales :", calculer_stats_globales())
-    print("\nStats par actif :")
-    for s in stats_par_actif():
-        print(f"  {s['ticker']:10s} — {s['total']} trades, win rate {s['win_rate']:.1f}%, P&L moyen {s['avg_pnl']:+.2f}%")
-
-    alerte, msg = verifier_alerte_degradation()
-    if alerte:
-        print(f"\n{msg}")
-    else:
-        print(f"\nPas d'alerte dégradation (seuil {SEUIL_ALERTE_WINRATE}% sur 20 trades)")
+    # Démo dans une base et des fichiers mémoire temporaires : jusqu'au 08/10/2026, elle
+    # écrivait SIG-0001 à SIG-0005 dans data/database.db (docs/TODO.md, signal_results)
+    from agents.trade_journalist.demo_performance import lancer_demo
+    lancer_demo()

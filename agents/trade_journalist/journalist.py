@@ -19,12 +19,14 @@ JOURNAL_FILE    = os.path.join(BASE_DIR, "memory", "trade_journal.md")
 
 
 def generer_signal_id() -> str:
-    """Génère un ID auto-incrémenté pour chaque signal : SIG-001, SIG-002, etc."""
+    """Génère un ID auto-incrémenté pour chaque signal : SIG-0001, SIG-0002, etc.
+    Plus grand numéro existant + 1 : avec COUNT(*) + 1, une ligne supprimée
+    redonnait un numéro déjà pris (contrainte UNIQUE, signal jamais enregistré)."""
     try:
         conn = get_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT COUNT(*) AS n FROM signals")
-        n = cursor.fetchone()["n"]
+        cursor.execute("SELECT MAX(CAST(SUBSTR(signal_id, 5) AS INTEGER)) AS n FROM signals")
+        n = cursor.fetchone()["n"] or 0
         conn.close()
         return f"SIG-{n+1:04d}"
     except Exception as e:
