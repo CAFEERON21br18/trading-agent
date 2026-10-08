@@ -495,7 +495,7 @@ ils n'ont jamais été branchés. Ne rien supprimer avant décision.
   des données Q3 ; fixer d'abord la règle et sa date d'effet dans
   REGISTRE_CRITERES.
 
-## 23. Observation Jev (TypeSafe) : en place, coupée, en attente du critère
+## 23. Observation Jev (TypeSafe) : en place, coupée, critère commité (à activer sur la tour)
 
 - Code : `agents/jev/` (questions v1 figées, modèle figé `jev-1.13.0`, state
   par liste blanche), table `jev_observations` (`utils/jev_db.py`), branchement
