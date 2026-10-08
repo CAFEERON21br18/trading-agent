@@ -12,6 +12,7 @@ noter(cas, texte) mesure :
 - attendu : doit_contenir et ne_doit_pas_contenir du cas.
 Comparaisons insensibles à la casse et aux accents. Un cas sans attendu rempli
 est « non noté » (attendu_ok = None), jamais « OK ».
+- trois_blocs_ok : format en trois blocs de la consigne v2 (voir trois_blocs_ok).
 resumer() agrège par famille ; comparer() met deux résultats côte à côte.
 """
 
@@ -28,7 +29,12 @@ DISCLAIMER = "pas un conseil financier"
 _MOTS_DECISION = re.compile(r"\b(?:buy|sell|renforcer|alleger|acheter|achete|achetes|achetez"
                             r"|vendre|vends|vend|vendez)\b")
 METRIQUES = ("cas", "notes", "attendu_ok", "taux_non_soutenus_moyen", "echecs_disclaimer",
-             "disclaimer_requis", "nb_lignes_moyen")
+             "disclaimer_requis", "nb_lignes_moyen", "trois_blocs_requis", "trois_blocs_ok")
+INTENTIONS_TROIS_BLOCS = ("paper_status", "real_status", "advice_buy", "advice_sell")
+TITRES_BLOCS = ("les faits", "ma lecture", "ce qui manque")
+_INTENTION = re.compile(r"^INTENTION DÉTECTÉE : (\w+)", re.M)
+# Titre en début de ligne, mise en forme libre (**, ###, -, 1.), suivi de « : », d'un tiret ou de la fin de ligne
+_TITRE = re.compile(r"^[\s>#*_\-\d.)]*(les faits|ma lecture|ce qui manque)\s*(?:\*\*|__)?\s*(?::|-|–|—|$)", re.M)
 
 
 def normaliser(texte) -> str:
@@ -55,6 +61,33 @@ def famille(cas: dict) -> str:
     return str((cas.get("attendu") or {}).get("famille") or "").strip() or SANS_FAMILLE
 
 
+def intention_du_prompt(prompt: str | None) -> str | None:
+    """Intention écrite par le chat en tête du prompt (« INTENTION DÉTECTÉE : … »)."""
+    m = _INTENTION.search(prompt or "")
+    return m.group(1) if m else None
+
+
+def trois_blocs_requis(prompt: str | None) -> bool:
+    """La consigne v2 (règle 6) exige les trois blocs pour paper_status, real_status,
+    advice_buy, advice_sell, et general quand des tickers sont cités."""
+    intention = intention_du_prompt(prompt)
+    return intention in INTENTIONS_TROIS_BLOCS or (
+        intention == "general" and "== ANALYSE ACTIFS ==" in (prompt or ""))
+
+
+def trois_blocs_ok(prompt: str | None, texte: str) -> bool | None:
+    """None si l'intention n'exige pas les trois blocs ; sinon True si les titres « Les faits »,
+    « Ma lecture » et « Ce qui manque » figurent chacun en début de ligne (mise en forme libre :
+    **…**, ###, tiret, numéro), sans casse ni accents.
+    APPROXIMATION pour general : « des tickers sont cités » est lu comme « la section
+    == ANALYSE ACTIFS == est présente dans le prompt ». Un ticker cité dont l'analyse a échoué
+    n'y figure pas : la réponse n'est alors pas exigée en trois blocs."""
+    if not trois_blocs_requis(prompt):
+        return None
+    lignes = "\n".join(normaliser(l) for l in (texte or "").splitlines())
+    return set(TITRES_BLOCS) <= {m.group(1) for m in _TITRE.finditer(lignes)}
+
+
 def noter(cas: dict, texte_reponse: str) -> dict:
     """Note d'une réponse au regard du prompt du cas et de son « attendu »."""
     texte = texte_reponse or ""
@@ -75,6 +108,8 @@ def noter(cas: dict, texte_reponse: str) -> dict:
         "echec_disclaimer": requis and not present,
         "attendu_ok": (not manques) if (doit or interdits) else None,
         "attendu_manques": manques,
+        "trois_blocs_requis": trois_blocs_requis(cas.get("prompt")),
+        "trois_blocs_ok": trois_blocs_ok(cas.get("prompt"), texte),
     }
 
 
@@ -91,6 +126,8 @@ def _bloc(notes: list[dict]) -> dict:
         "echecs_disclaimer": sum(1 for n in notes if n["echec_disclaimer"]),
         "disclaimer_requis": sum(1 for n in notes if n["disclaimer_requis"]),
         "nb_lignes_moyen": round(fmean(n["nb_lignes"] for n in notes), 1) if notes else None,
+        "trois_blocs_requis": sum(1 for n in notes if n.get("trois_blocs_requis")),
+        "trois_blocs_ok": sum(1 for n in notes if n.get("trois_blocs_ok")),
     }
 
 
@@ -129,6 +166,8 @@ def comparer(a: dict, b: dict) -> dict:
         "cas_communs": len(communs),
         "ok_vers_ko": [c for c in communs if na[c]["attendu_ok"] is True and nb[c]["attendu_ok"] is False],
         "ko_vers_ok": [c for c in communs if na[c]["attendu_ok"] is False and nb[c]["attendu_ok"] is True],
+        "trois_blocs_perdus": [c for c in communs
+                               if na[c].get("trois_blocs_ok") is True and nb[c].get("trois_blocs_ok") is False],
         "nouveaux_echecs_disclaimer": [c for c in communs
                                        if not na[c]["echec_disclaimer"] and nb[c]["echec_disclaimer"]],
     }

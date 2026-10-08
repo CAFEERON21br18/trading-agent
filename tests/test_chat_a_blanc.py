@@ -108,8 +108,9 @@ class TestABlanc(BaseABlanc):
             self.assertIn("message du banc", f.read())
 
 
-class TestFidelite(BaseABlanc):
-    """Le prompt construit à blanc est celui que le vrai chat enverrait à ask_llm."""
+class BaseFidelite(BaseABlanc):
+    """Base hors ligne : le prompt construit à blanc est comparé à celui que le vrai chat
+    enverrait à ask_llm (réutilisée par tests/test_chat_a_blanc_historique.py)."""
 
     def setUp(self):
         super().setUp()
@@ -149,15 +150,20 @@ class TestFidelite(BaseABlanc):
             chat_engine.repondre.__wrapped__(question)
         return vu
 
+
+class TestFidelite(BaseFidelite):
+
     def test_meme_prompt_que_le_chat(self):
-        for question, coupees in (("Faut-il acheter NVDA ?", ["alpha_vantage"]),
-                                  ("Comment se porte le paper ?", [])):
-            with self.subTest(question=question):
-                cas = ab.construire_cas(question, self.cas)
-                chat = self._prompt_du_chat(question)
-                self.assertEqual((cas["system"], cas["prompt"]), (chat["system"], chat["prompt"]))
-                self.assertEqual(cas["sources_coupees"], coupees)
-                self.assertIn(question, cas["prompt"])
+        import config
+        with mock.patch.object(config, "CHAT_HISTORIQUE", False):  # interrupteur à 0 (défaut)
+            for question, coupees in (("Faut-il acheter NVDA ?", ["alpha_vantage"]),
+                                      ("Comment se porte le paper ?", [])):
+                with self.subTest(question=question):
+                    cas = ab.construire_cas(question, self.cas)
+                    chat = self._prompt_du_chat(question)
+                    self.assertEqual((cas["system"], cas["prompt"]), (chat["system"], chat["prompt"]))
+                    self.assertEqual(cas["sources_coupees"], coupees)
+                    self.assertIn(question, cas["prompt"])
         self.assertEqual(self.tmp(), [])
 
 

@@ -14,6 +14,8 @@ a_blanc() garantit, le temps de la construction :
    FRED, Fear & Greed et yfinance restent actifs ;
 5. logs de production redirigés vers data/chat_cas/banc.log ;
 6. filet : open() en écriture refusé dans le dépôt, hors de data/chat_cas/.
+Banc (--reconstruire) : historique_simule remplace la lecture de chat_history, et
+CHAT_HISTORIQUE peut être forcé à 0 ou 1 le temps de la construction.
 """
 
 import builtins
@@ -25,6 +27,7 @@ import os
 import sqlite3
 import time
 import uuid
+from datetime import timedelta
 from unittest import mock
 
 from scripts._banc_fichiers import DOSSIER_CAS, RACINE, journaux_detaches
@@ -141,12 +144,33 @@ def construire_prompt(question: str) -> dict:
     contexte = build_context(question)
     gabarit = formater_par_intention(intention, contexte)
     return {"intention": intention, "system": SYSTEM_PROMPT,
-            "prompt": _construire_prompt(question, intention, gabarit, contexte)}
+            "prompt": _construire_prompt(question, intention, gabarit, contexte),
+            "tickers_herites": bool(contexte.get("tickers_herites")),
+            "messages_historique": len(contexte.get("historique") or [])}
 
 
-def construire_cas(question: str, dossier_cas: str = DOSSIER_CAS) -> dict:
-    """Prompt construit à blanc ; lève si le chemin du chat a écrit dans la base (la copie)."""
-    with a_blanc(dossier_cas) as etat:
+def lignes_simulees(historique_simule: list, maintenant) -> list[dict]:
+    """historique_simule ({role, texte, il_y_a_min}, écrit à la main) → lignes au format de chat_history."""
+    return [{"id": i, "role": m["role"], "message": m.get("texte", ""),
+             "context_used": m.get("source", "groq") if m["role"] == "assistant" else None,
+             "timestamp": (maintenant - timedelta(minutes=float(m.get("il_y_a_min", 0))))
+             .strftime("%Y-%m-%d %H:%M:%S")}
+            for i, m in enumerate(historique_simule or [])]
+
+
+def construire_cas(question: str, dossier_cas: str = DOSSIER_CAS, historique_simule: list | None = None,
+                   chat_historique: bool | None = None) -> dict:
+    """Prompt construit à blanc ; lève si le chemin du chat a écrit dans la base (la copie).
+    historique_simule : lu à la place de chat_history ; chat_historique : CHAT_HISTORIQUE forcé."""
+    with a_blanc(dossier_cas) as etat, contextlib.ExitStack() as pile:
+        if chat_historique is not None:
+            import config
+            pile.enter_context(mock.patch.object(config, "CHAT_HISTORIQUE", bool(chat_historique)))
+        if historique_simule is not None:
+            from agents.chat import _historique
+            pile.enter_context(mock.patch.object(
+                _historique, "lignes_chat_history",
+                lambda *a, **k: lignes_simulees(historique_simule, _historique._maintenant())))
         p = construire_prompt(question)
     if etat["ecritures_sql"]:
         raise RuntimeError("à blanc : le chemin du chat a écrit dans la copie jetable de la base ("

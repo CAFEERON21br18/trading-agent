@@ -14,7 +14,8 @@ import unittest
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, RACINE)
 
-from agents.chat._banc_notation import comparer, est_note, noter, normaliser, resumer
+from agents.chat._banc_notation import (comparer, est_note, noter, normaliser, resumer, trois_blocs_ok,
+                                        trois_blocs_requis)
 
 PROMPT = ("== PAPER PORTFOLIO ==\nCapital : 1111.11€ | Investi : 222.22€ | Cash : 888.89€\n"
           "ACME [suivi] : décision HOLD (conf 6/10, score +0.42)\n\n"
@@ -112,6 +113,42 @@ class TestResumeEtComparaison(unittest.TestCase):
         c = comparer(a, b)
         self.assertEqual((c["ok_vers_ko"], c["ko_vers_ok"], c["cas_communs"]), (["1"], ["2"], 2))
         self.assertEqual(c["ecarts"]["global"]["attendu_ok"], {"avant": 1, "apres": 1, "ecart": 0})
+
+
+class TestTroisBlocs(unittest.TestCase):
+    BLOCS = "**Les faits** : ACME en HOLD.\n**Ma lecture** : attendre.\n**Ce qui manque** : rien"
+
+    def prompt(self, intention: str, actifs: bool = False) -> str:
+        return f"INTENTION DÉTECTÉE : {intention}\n\n" + ("== ANALYSE ACTIFS ==\nACME : HOLD\n\n" if actifs else "")
+
+    def test_exige_selon_l_intention(self):
+        for intention in ("paper_status", "real_status", "advice_buy", "advice_sell"):
+            self.assertTrue(trois_blocs_requis(self.prompt(intention)))
+        self.assertTrue(trois_blocs_requis(self.prompt("general", actifs=True)))  # approximation documentée
+        for intention in ("general", "theory_risk", "theory_macro", "explain", "strategy", "market_crypto"):
+            self.assertFalse(trois_blocs_requis(self.prompt(intention)))
+        self.assertIsNone(noter({"prompt": self.prompt("theory_risk")}, self.BLOCS)["trois_blocs_ok"])
+
+    def test_titres_reconnus_quelle_que_soit_la_mise_en_forme(self):
+        for texte in (self.BLOCS, "### LES FAITS\nx\n### Ma lecture\ny\n### Ce qui manque\nrien",
+                      "- Les faits :\n- Ma lecture —\n1. Ce qui manque : rien"):
+            with self.subTest(texte=texte[:12]):
+                self.assertIs(trois_blocs_ok(self.prompt("paper_status"), texte), True)
+
+    def test_titre_manquant_ou_dans_la_prose(self):
+        p = self.prompt("advice_buy")
+        self.assertIs(trois_blocs_ok(p, "**Les faits** : x\n**Ma lecture** : y"), False)
+        self.assertIs(trois_blocs_ok(p, "Les faits montrent que x.\n**Ma lecture** : y\n**Ce qui manque** : rien"),
+                      False)
+
+    def test_resume_et_comparaison(self):
+        p = self.prompt("paper_status")
+        avant = [{"cas": "1", "famille": "paper", "note": noter({"prompt": p}, self.BLOCS)}]
+        apres = [{"cas": "1", "famille": "paper", "note": noter({"prompt": p}, "Réponse libre.")}]
+        ra, rb = ({"resultats": r, "resume": resumer(r)} for r in (avant, apres))
+        self.assertEqual((ra["resume"]["global"]["trois_blocs_ok"], ra["resume"]["global"]["trois_blocs_requis"]),
+                         (1, 1))
+        self.assertEqual(comparer(ra, rb)["trois_blocs_perdus"], ["1"])
 
 
 class TestModulePur(unittest.TestCase):

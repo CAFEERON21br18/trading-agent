@@ -87,7 +87,8 @@ def nouveau(question: str, dossier: str = DOSSIER_CAS) -> tuple[str, dict]:
     cas = {"audit_id": None, "timestamp": maintenant_iso(), "question": question,
            "intention": p["intention"], "system": p["system"], "prompt": p["prompt"],
            "reponse_historique": "", "llm_historique": None, "origine": "manuel",
-           "sources_coupees": p["sources_coupees"], "attendu": attendu_vide()}
+           "sources_coupees": p["sources_coupees"], "attendu": attendu_vide(),
+           "historique_simule": []}  # cas « suivi » : à remplir à la main pour --reconstruire
     base = os.path.join(dossier, f"m_{horodatage()}")
     chemin, n = f"{base}.json", 2
     while not ecrire_exclusif(chemin, cas):
