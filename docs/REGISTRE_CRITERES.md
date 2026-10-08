@@ -254,6 +254,12 @@ la taille réduite tombe sous le minimum viable de 15 €.
   registre ne dit pas si les explorateurs trouvent de bonnes opportunités.
 - **Rupture de série du 06/10/2026** (TODO §11) : aucune donnée antérieure à P10
   n'est utilisée pour décider. Les volumes du §0.4 ne servent qu'à dimensionner.
+- **Statistiques de performance fictives du 06/10/2026 à la purge du
+  08/10/2026** (TODO §24) : les décisions enregistrées jusque-là ont lu les
+  winrates de la démo du 15/04 (`contexte.winrate_actif` = 100.0 sur BTC-USD
+  et AAPL, 0.0 sur ETH-USD ; prior 0,67 dans le pipeline). 0 décision et
+  0 allocation changées ; l'effet sur les verdicts du pipeline (§3) n'est pas
+  mesurable.
 - **Pas de lien de cause à effet sur les LLM.** Un verdict constant ne permet
   pas de dire si le LLM « a raison » : seulement qu'il ne trie pas.
 - **Paper ≠ réel.** Aucune conclusion ne s'applique automatiquement au
@@ -285,6 +291,8 @@ la taille réduite tombe sous le minimum viable de 15 €.
   coûts par groupe, contrôle de lecture du régime, n = 40 unités, bootstrap par
   grappes de semaine ISO, règles d'arrêt et d'interruption. Commitée avant le
   premier `JEV_OBSERVE=1`, donc avant toute observation.
+- v1.3, 08/10/2026 : §4 complété (statistiques de performance fictives jusqu'à
+  la purge des signaux de démo, TODO §24). Aucune règle de lecture modifiée.
 
 ---
 
