@@ -1,0 +1,30 @@
+INTENTION DÉTECTÉE : general
+
+== PAPER PORTFOLIO ==
+Capital : 1000.00€ | Investi : 123.45€ | Cash : 876.55€
+Positions : 2/20 | P&L latent : non disponible
+Mode : normal
+
+Performance (7 derniers trades avec résultat, 20 au plus) : winrate 57%, profit factor 1.23
+
+== PORTEFEUILLE RÉEL ==
+1 positions ouvertes, investi 55.50€, P&L réalisé +2.50€
+  ACME : qty 0.1111, entrée 101.25€, long_terme/action
+
+== ANALYSE ACTIFS ==
+ACME [suivi] : décision HOLD (conf 6/10, score +0.42) — Score composite +0.42 dans la zone neutre
+ZZZ [hors watchlist, yfinance] : prix 12.5, RSI 48.2, SMA20 12.1, SMA50 11.8, perf 1 mois 3.4%. ⚠️ Pas d'analyse Decision Engine — actif non suivi par l'agent.
+QQQX : données indisponibles
+
+Fear & Greed : 55 (Neutral)
+
+== CONCEPTS THÉORIQUES MOBILISÉS ==
+[risque] R:R : Rapport entre gain visé et perte acceptée.
+
+== BROUILLON STRUCTURÉ (résume les faits, à reformuler en mieux) ==
+Brouillon : capital 1000.00€, investi 123.45€.
+
+== QUESTION DE L'UTILISATEUR ==
+Comment va ACME ?
+
+Ta réponse (4-12 lignes, française, basée UNIQUEMENT sur les faits ci-dessus) :

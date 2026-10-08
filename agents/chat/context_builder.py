@@ -28,6 +28,25 @@ def _heure_locale() -> str:
         return datetime.now().strftime("%Hh%M")
 
 
+def _historique_et_reprise(context: dict, question: str, tickers: list) -> list:
+    """CHAT_HISTORIQUE=1 : derniers échanges dans context["historique"] ; une question courte
+    sans ticker reprend ceux du dernier message utilisateur (context["tickers_herites"]).
+    À 0 (défaut) : rien n'est lu, contexte et tickers inchangés."""
+    if not config.CHAT_HISTORIQUE:
+        return tickers
+    from agents.chat import _historique
+    try:
+        context["historique"] = _historique.lire(question)
+    except Exception as e:
+        logger.warning(f"Historique du chat : {e}")
+        context["historique"] = []
+    repris = _historique.tickers_a_reprendre(question, tickers, context["historique"], extraire_tickers)
+    if not repris:
+        return tickers
+    context["tickers_herites"] = True
+    return repris
+
+
 def build_context(question: str) -> dict:
     """Rassemble tout le contexte utile pour répondre."""
     context = {"question": question}
@@ -65,7 +84,7 @@ def build_context(question: str) -> dict:
     # 3. Actifs mentionnés — v5.4.2 : watchlist OU à la volée (yfinance)
     # Phase 4 / E2 : liste ordonnée (watchlist d'abord) → tickers[:3] déterministe ;
     # decider(origine="chat") : décision technique, sans LLM ni écriture mémoire.
-    tickers = extraire_tickers(question)
+    tickers = _historique_et_reprise(context, question, extraire_tickers(question))
     context["tickers_mentionnes"] = tickers
     context["asset_data"] = {}
     watchlist_set: set[str] = set()

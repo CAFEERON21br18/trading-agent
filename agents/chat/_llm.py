@@ -8,6 +8,7 @@ Phase 4 / Q4 : appelant « chat » (réserve Gemini) ; Groq tenté même sans cl
 
 from utils.llm    import ask_llm, llm_disponible
 from agents.chat._pnl_latent import nd, texte_pnl  # TODO §8 : inconnu → « non disponible »
+from agents.chat._historique import bloc_prompt, ligne_tickers_herites  # vides si CHAT_HISTORIQUE=0
 
 
 SYSTEM_PROMPT = """Tu es AlphaSignal, un analyste quantitatif senior et gestionnaire de portefeuille.
@@ -35,7 +36,7 @@ RÈGLES STRICTES :
 def _construire_prompt(question: str, intention: str,
                        template_reponse: str, contexte: dict) -> str:
     """Assemble le prompt utilisateur : contexte + question."""
-    sections = [f"INTENTION DÉTECTÉE : {intention}", ""]
+    sections = [f"INTENTION DÉTECTÉE : {intention}", *ligne_tickers_herites(contexte), ""]
 
     paper = contexte.get("paper_portfolio") or {}
     if paper:
@@ -122,6 +123,7 @@ def _construire_prompt(question: str, intention: str,
     sections.append(template_reponse)
     sections.append("")
 
+    sections += bloc_prompt(contexte.get("historique"))  # exclu des références (_verif_chiffres)
     sections.append(f"== QUESTION DE L'UTILISATEUR ==")
     sections.append(question)
     sections.append("")
