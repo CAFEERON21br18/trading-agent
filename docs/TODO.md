@@ -18,13 +18,15 @@ Non traités : chacun fera l'objet d'un travail séparé.
   décision à la volée (`decider(..., origine="chat")`). Relevé le 03/10/2026,
   volontairement non traité dans E2.
 
-## ⚠️ PRIORITÉ HAUTE — `signal_results` jamais alimentée en production
+## ⚠️ PRIORITÉ HAUTE — `signal_results` jamais alimentée en production (données de démo purgées le 08/10/2026)
 
-- Seul écrivain : `cloturer_signal()` (`agents/trade_journalist/journalist.py:97`),
-  appelé uniquement par le bloc de démonstration `__main__` de
-  `performance_tracker.py` (valeurs fictives BTC/ETH/AAPL). Les signaux de la
+- Seul écrivain : `cloturer_signal()` (`agents/trade_journalist/journalist.py:99`),
+  appelé uniquement par la démo du Trade Journalist (valeurs fictives
+  BTC/ETH/AAPL ; isolée depuis le 08/10, voir plus bas). Les signaux de la
   routine quotidienne (`orchestrator.py:229`, `enregistrer_signal`) ne sont
-  jamais clôturés. Relevé le 07/10/2026 (carte du code, Phase 3).
+  jamais clôturés. Relevé le 07/10/2026 (carte du code, Phase 3). **Reste
+  ouvert** : après la purge, la table est vide et aucun code de production ne
+  l'alimente.
 - Lecture statique : **des décisions lisent des statistiques issues de cette
   table** (jointure `INNER JOIN signal_results`) :
   - `utils/memory_lookups.py` (`winrate_par_actif`, `winrate_recent`,
@@ -40,19 +42,44 @@ Non traités : chacun fera l'objet d'un travail séparé.
     allocation) ;
   - `verifier_alerte_degradation` (email « dégradation perf ») et le contexte
     du chat (`calculer_stats_globales`).
-- **À vérifier demain sur la tour, avant tout autre travail sur ce point**
-  (lecture seule) :
-  - `SELECT COUNT(*) FROM signal_results` et le contenu : vide, ou seulement
-    les lignes de démonstration / de test (`scripts/nettoyer_signaux_test.py`) ?
-  - contenu de `memory/performance_tracker.md` (table « Performance par
-    actif ») : vide, données de démonstration, ou autre source ?
-  - dans le registre, des décisions dont l'override « track record » ou
-    l'intuition a joué, et le `winrate_historique` transmis au Budget Manager
-    (50 par défaut si inconnu).
-- Si la table est vide : ces décisions reposent sur une table vide (winrate
-  inconnu, overrides jamais déclenchés, 50 % par défaut). Si elle ne contient
-  que des lignes de démonstration : elles reposent sur des **données
-  fictives**, ce qui est pire. Ne rien corriger avant ce constat.
+- **Constat du 08/10/2026 (lecture seule)** : la table ne contenait que 3
+  lignes, toutes issues du bloc `__main__` de démonstration de
+  `performance_tracker.py`, lancé sur la vraie base le 15/04/2026 à 17:07:46
+  UTC : SIG-0001 BTC-USD +10.11 %, SIG-0002 ETH-USD −4.69 %, SIG-0003 AAPL
+  +5.57 %. SIG-0004 (SOL-USD) et SIG-0005 (SPY), du même bloc, sans clôture.
+  D'où `calculer_stats_globales` : winrate 66.7 %, profit factor 3.35 ; et
+  dans `memory/performance_tracker.md` : BTC-USD et AAPL 100 %, ETH-USD 0 %,
+  sur 1 trade chacun (fichier ainsi depuis son premier commit, ecc6e7e,
+  04/05/2026).
+- **Effet mesuré** (registre du 06/10 18:30 UTC au 08/10 13:16 UTC, 2 253
+  décisions) :
+  - jamais déclenchés, faute de trades (1 par ticker) : override « track
+    record » (≥ 5 trades), `_seuil_confiance_requis` (≥ 3), intuition (≥ 3).
+    0 décision et 0 confiance modifiées par l'intuition (reconstitution à
+    partir du score, des overrides et des confiances enregistrés) ;
+  - Budget Manager, sans minimum de trades (§26) : `winrate_actif` 100 sur
+    BTC-USD (35 lignes) et AAPL (13), 0 sur ETH-USD (2), 50 par défaut
+    ailleurs. 3 décisions soumises (AAPL le 07/10, ETH-USD les 07/10 et
+    08/10), toutes refusées, et elles l'auraient été avec 50 : 0 allocation
+    changée ;
+  - pipeline : prior bayésien de 0,67 pour tous les tickers (« Fallback
+    global : 67 % winrate sur 3 derniers trades ») ; effet sur les verdicts
+    non mesurable (§24) ; les taux de base, eux, ne trouvent jamais de setup
+    (§25) ;
+  - affichage seulement : chat (12 prompts dans `message_audit`), 44 rapports
+    quotidiens du 25/08 au 08/10 (« 🧠 Mémoire : winrate 100% sur 1
+    trade(s) »).
+- **Données de démo purgées le 08/10/2026** :
+  - démo isolée (base et fichiers mémoire temporaires) et `generer_signal_id`
+    par plus grand numéro + 1 au lieu de `COUNT(*) + 1`, qui aurait redonné
+    un numéro existant après la purge (commit ea842f6) ;
+  - `scripts/purger_signaux_demo.py --appliquer` (commit 769e4dd), lancé par
+    l'utilisateur : SIG-0001 à SIG-0005 supprimés de `signal_results` (3
+    lignes) et de `signals` (5 lignes), sauvegarde préalable
+    `data/sauvegardes/database_avant_purge_demo_20261008.db`,
+    `memory/performance_tracker.md` régénéré ;
+  - `memory/trade_journal.md` garde les 5 entrées du 15/04 (affichage du
+    dashboard seulement, aucune décision ne le lit).
 
 ## 1. Rotation des logs cassée (Windows)
 
@@ -518,3 +545,47 @@ ils n'ont jamais été branchés. Ne rien supprimer avant décision.
 - Hors sujet mais relevé : `agents/orchestrator.py` dépasse la limite de
   200 lignes (275 avant ce changement, 280 après) ; découpage à faire
   séparément.
+
+## 24. ⚠️ Rupture : statistiques de performance fictives jusqu'au 08/10/2026 (signaux de démo)
+
+- Jusqu'à la purge du 08/10/2026, `signal_results` ne contenait que les 3
+  trades fictifs de la démo du Trade Journalist (voir PRIORITÉ HAUTE
+  `signal_results`). **Les décisions antérieures ont pu lire des statistiques
+  fictives** : winrate par actif (BTC-USD et AAPL 100 %, ETH-USD 0 %, sur
+  1 trade), winrate global 66,7 %, profit factor 3,35.
+- Depuis R2 (registre, 06/10/2026) : **0 décision et 0 allocation changées**
+  (décisions reconstituées ; Budget Manager rejoué avec 50 %). Le prior
+  bayésien valait 0,67 dans les **74 analyses du pipeline exécutées depuis
+  R2** : son effet sur les verdicts (pré-mortem, métacognition, base rates),
+  qui réduisent la taille, **n'est pas mesurable**.
+- Du 04/05/2026 (premier commit de `memory/performance_tracker.md` et de la
+  ligne du Budget Manager) au 06/10/2026 : **non mesurable**, faute de
+  registre.
+- Trace dans le registre : `contenu.contexte.winrate_actif` vaut 100.0 ou 0.0
+  sur BTC-USD, AAPL et ETH-USD jusqu'à la purge (REGISTRE_CRITERES §4). Ne
+  pas comparer les allocations ni les verdicts du pipeline d'avant et d'après
+  la purge sans le signaler.
+
+## 25. Taux de base du pipeline : `setups_similaires` ne trouve jamais de setup
+
+- `agents/skills/pipeline_grouped.py:75-80` passe la décision (`BUY` ou
+  `SELL`) comme direction à `contexte_base_rates`, puis à `setups_similaires`
+  (`utils/memory_lookups.py:103`), qui la compare à `s.direction`. Or les
+  signaux sont enregistrés en `LONG` ou `SHORT` (`orchestrator.py:232` ; 613
+  LONG et 153 SHORT au 08/10). La requête ne renvoie jamais rien : le LLM
+  reçoit toujours « Aucun historique de trades BUY sur la classe … ».
+- Sans effet tant que `signal_results` est vide, mais le verdict « base
+  rates » (×0,7 sur la taille) restera aveugle une fois la table alimentée.
+  Relevé le 08/10/2026 (purge des signaux de démo), non corrigé.
+
+## 26. Budget Manager : winrate par actif utilisé sans minimum de trades
+
+- `agents/paper_trader/cycle.py:50` transmet `perf["winrate_pct"]` (lu dans
+  `memory/performance_tracker.md`) sans condition sur le nombre de trades, et
+  `agents/budget_manager/arbitrator.py:28` en fait le score d'allocation :
+  confiance × (1 + winrate/100) × urgence. **Un seul trade suffit** à doubler
+  ce facteur (100 % : ×2,0) ou à le réduire (0 % : ×1,0), contre ×1,5 par
+  défaut (50 %).
+- Les autres lecteurs du même winrate exigent 3 trades (intuition,
+  `_seuil_confiance_requis`) ou 5 (override « track record »). Relevé le
+  08/10/2026 (purge des signaux de démo), non corrigé.
