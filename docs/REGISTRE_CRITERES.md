@@ -293,6 +293,11 @@ la taille réduite tombe sous le minimum viable de 15 €.
   premier `JEV_OBSERVE=1`, donc avant toute observation.
 - v1.3, 08/10/2026 : §4 complété (statistiques de performance fictives jusqu'à
   la purge des signaux de démo, TODO §24). Aucune règle de lecture modifiée.
+- v1.4, 08/10/2026 : ajout du §8 (portefeuille fantôme Jev, descriptif) et de
+  sa seule exception à l'interdiction d'afficher un rendement avant la lecture
+  (§0.3, §7.2). Aucun critère ni aucune règle de lecture modifiés. Commitée
+  avant la première observation Jev, avant toute écriture du fantôme et avant
+  tout affichage de son P&L.
 
 ---
 
@@ -448,3 +453,121 @@ confirme avec la liste des modèles de TypeSafe.
 - Coûts supposés, pas mesurés (§7.1).
 - Les jours où le cycle quotidien échoue ne sont pas observés.
 - Paper ≠ réel : aucune conclusion ne s'applique au portefeuille réel.
+
+---
+
+## 8. Portefeuille fantôme Jev : descriptif, jamais un critère
+
+**Statut : v1.4 du 08/10/2026, commitée avant la première observation Jev,
+avant toute écriture dans les tables du fantôme et avant tout affichage de son
+P&L.**
+
+**Le portefeuille fantôme Jev est descriptif ; son P&L n'est ni un critère ni
+une raison de modifier le §7 ; aucune décision ne se prend sur sa base avant la
+lecture unique.** Ce n'est pas non plus une raison d'arrêter l'observation :
+avant la lecture, seuls le contrôle de lecture du régime (§7.2) et
+l'interruption du modèle (§7.6) l'arrêtent.
+
+But : voir en euros, à côté du paper actuel, ce qu'aurait donné le fait de
+suivre les « acheter » de Jev, sans rien changer au paper, au moteur ni au
+critère du §7.
+
+### 8.1 Isolation
+- Deux tables séparées, `jev_paper_positions` et `jev_paper_journal`. Elles ne
+  sont lues ni par le moteur, ni par le Budget Manager, ni par le Paper Trader,
+  ni par le registre, ni par les lectures des questions 1 à 3, ni par le bilan
+  du §7 (`scripts/jev_bilan.py`).
+- Le fantôme n'écrit dans aucune table du paper (`positions`, `transactions`,
+  `portfolio_snapshots`) ni dans `memory/`. Il ne les lit pas non plus : l'état
+  du paper qu'il utilise est celui figé dans l'observation (`position_ouverte`,
+  `mode_bm`).
+- Aucun nouvel appel à Jev ni à une source de prix : il réutilise les lignes
+  `jev_observations` et la table `prices`.
+
+### 8.2 Règles simulées
+- **Observations utilisées** : celles du §7.1 (cycle `quotidien`, statut `ok`,
+  questions `v1`, modèle `jev-1.13.0`, première du jour par actif). Le fantôme
+  continue après la fenêtre de 12 semaines tant que des observations arrivent ;
+  ces observations postérieures restent hors du critère du §7. Une autre version
+  des questions ou du modèle ne l'alimente qu'après un nouveau commit de ce
+  paragraphe.
+- **Capital de départ** : `CAPITAL` (1 000 €), comme le paper.
+- **Entrée** (achat seulement) si les trois conditions sont réunies :
+  1. p(acheter) ≥ 0,6 ;
+  2. pas de position paper ouverte sur l'actif, d'après `position_ouverte` figée
+     dans l'observation (même population que le critère du §7.1) ;
+  3. aucune position fantôme ouverte sur l'actif.
+- **Prix d'entrée** : le prix de la ligne (p0 du §7.1), sans nouvel appel.
+- **Taille** : facteur de conviction (0 ; 0,2 ; 0,5 ; 1,0, voir
+  `agents/jev/questions.py`) × `montant_risque` (montant du Risk Manager figé
+  dans l'observation), plafonnée comme le paper, sur l'état du fantôme :
+  - au plus le maximum par trade du mode du Budget Manager figé dans
+    l'observation (`mode_bm` ; 10 % en NORMAL), appliqué au cash libre du
+    fantôme ;
+  - au plus le cash libre du fantôme : capital investissable du mode (500 € en
+    NORMAL, soit 50 % de `CAPITAL`) moins le montant investi dans les positions
+    fantômes ouvertes ;
+  - au plus `MAX_POSITIONS_SIMULTANEES` positions fantômes ouvertes (20 dans
+    `.env`) ;
+  - pas d'achat sous 15 € (minimum viable du Budget Manager).
+
+  Dans une même journée, les candidats sont traités par p(acheter) décroissant,
+  puis par ticker.
+- **Journal** : chaque entrée, chaque sortie, et chaque observation avec
+  p(acheter) ≥ 0,6 non achetée, avec son motif :
+
+  | Motif | Cas |
+  |---|---|
+  | `conviction_nulle` | niveau de conviction 0 |
+  | `sans_montant_risque` | `montant_risque` vide (technique neutre : Risk Manager non appelé) |
+  | `montant_vente_a_decouvert` | montant calculé pour une vente à découvert (signal du Risk Manager en SHORT) |
+  | `sans_prix` | prix de la ligne absent |
+  | `sans_mode_bm` | mode du Budget Manager absent de l'observation |
+  | `position_paper_ouverte` | condition 2 non remplie |
+  | `position_fantome_ouverte` | condition 3 non remplie |
+  | `max_positions` | nombre maximal de positions fantômes atteint |
+  | `sous_minimum` | taille plafonnée inférieure à 15 € |
+
+- **Sortie** : à la clôture de la 5e barre journalière de `prices` datée du jour
+  de l'observation ou après, soit l'horizon J+5 du §7.1.
+  - Les week-ends et jours fériés suivent les barres : un jour férié US sans
+    barre ne compte pas ; une barre de future un jour férié US compte, comme au
+    §7.1 ; les cryptos sont en jours calendaires.
+  - La sortie est passée au premier cycle quotidien où cette barre est datée
+    d'avant le jour du cycle (barre close). Le prix de sortie ne dépend pas de
+    ce délai.
+  - Les sorties d'un jour sont passées avant ses entrées.
+  - Ni stop, ni objectif, ni vente décidée par Jev.
+- **Coûts aller-retour**, déduits à la sortie sur le montant investi : ceux du
+  §7.1 (1,0 % `CRYPTO`, 0,2 % pour le reste).
+
+### 8.3 Exception au §0.3 et au §7.2 : affichage avant la lecture
+Le §0.3 et le §7.2 interdisent de consulter un rendement avant la lecture
+unique. **Seule exception** : une ligne du dashboard, avec la mention
+« descriptif, pas un critère » :
+- valeur du fantôme et valeur du paper actuel, nombre de positions ouvertes de
+  chacun ;
+- même fenêtre des deux côtés : depuis la première entrée du fantôme (côté
+  paper : positions ouvertes à partir de ce jour) ;
+- valeur = 1 000 € + P&L réalisé + P&L latent à la dernière clôture de
+  `prices`, coûts du §7.1 déduits des deux côtés. Côté paper, ces coûts ne sont
+  appliqués que pour cette ligne : ses tables ne changent pas.
+
+L'exception s'arrête là : `scripts/jev_bilan.py` reste aux compteurs, et aucun
+rendement par actif, par groupe ou par classe du §7 n'est affiché avant la
+lecture.
+
+**Fuite acceptée.** Les achats du fantôme sont des observations Jev-acheter :
+cette ligne laisse voir, avant la lecture, une partie du signe de la métrique
+primaire du §7. C'est accepté en connaissance de cause ; la protection repose
+sur la règle en tête de ce paragraphe.
+
+### 8.4 Ce que le fantôme ne peut pas dire
+- Ce n'est pas le critère du §7 : la taille selon la conviction, les plafonds et
+  l'ordre de traitement font que tous les Jev-acheter ne sont pas achetés, ni
+  avec le même poids.
+- La comparaison avec le paper n'est pas à armes égales : le paper a des stops
+  et des objectifs, des ventes à découvert, des durées variables et les
+  décisions du moteur.
+- Peu de positions : au plus une par actif et par période de cinq barres.
+- Mêmes limites que le §4 et le §7.7. Paper ≠ réel.
