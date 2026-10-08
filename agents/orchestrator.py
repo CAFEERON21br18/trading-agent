@@ -25,6 +25,7 @@ from agents.paper_trader.monitor         import monitorer_positions
 from utils.registre_cycles                import ouvrir, clore, enregistrer_decisions
 from utils.registre_ancre                 import section_registre
 from agents.jev.observer                  import preparer_observations, observer as observer_jev
+from agents.jev.fantome                   import executer as executer_fantome_jev
 from agents.paper_trader.portfolio       import etat_portefeuille
 from agents.trade_journalist.journalist  import enregistrer_signal
 from agents.trade_journalist.performance_tracker import (
@@ -138,6 +139,7 @@ def generer_rapport_quotidien(declencheur: str | None = None) -> tuple[str, list
     enregistrer_decisions(passage, decisions, cycle_resume, "watchlist")
     clore(passage)
     observer_jev(jev_lot)  # après décisions et exécution ; sa sortie n'est lue par personne
+    executer_fantome_jev(cycle_registre)  # fantôme Jev (REGISTRE §8) : descriptif, ne lève jamais
 
     # ── 4. Snapshot quotidien du portefeuille ────────────────────────────────
     enregistrer_snapshot_quotidien()
