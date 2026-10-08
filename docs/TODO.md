@@ -589,3 +589,42 @@ ils n'ont jamais été branchés. Ne rien supprimer avant décision.
 - Les autres lecteurs du même winrate exigent 3 trades (intuition,
   `_seuil_confiance_requis`) ou 5 (override « track record »). Relevé le
   08/10/2026 (purge des signaux de démo), non corrigé.
+
+## 27. 11 actifs sur 23 sans fondamental ; quota Alpha Vantage épuisé par le tactical
+
+Constat du 08/10/2026, non corrigé. **Correction = changement de décision :
+critère pré-enregistré d'abord** (`docs/REGISTRE_CRITERES.md`), avant toute
+modification du code.
+
+- **11 actifs sur 23 sans fondamental** (registre, cycles quotidiens des 07 et
+  08/10 : confiance fondamentale nulle) :
+  - AMAT, AMD, CEG, LITE, MU, VRT, VST et CL=F : type « inconnu » pour
+    l'analyste fondamental, absents de `ACTIONS_US` et de `ETF_INDICES`
+    (`agents/analysts/fundamental_analyst/analyst.py:23-24`) : ni fondamental,
+    ni requête ;
+  - HBAR-USD et CRO-USD : absents de `TICKER_TO_COINGECKO` (`onchain.py:19`) ;
+  - SOL-USD : présent dans cette table ; cause à vérifier.
+- **Le tactical épuise le quota Alpha Vantage** (25 requêtes par jour). Il
+  appelle OVERVIEW pour les 5 actions de `ACTIONS_US` (AAPL, TSLA, NVDA, MSFT,
+  AMZN) à chaque passage, toutes les 15 min, sans cache :
+  `logs/task_tactical.log` contient 405 à 468 refus par jour du 25/09 au 08/10,
+  environ 20 par heure, à toute heure (vérifié les 06 et 07/10) ; le
+  stratégique en ajoute 6 par jour. Les appels qui aboutissent ne sont pas
+  journalisés : leur nombre exact est inconnu. Seules traces d'un OVERVIEW
+  abouti : 11 lignes « limite atteinte sur EARNINGS », une par jour entre
+  17h19 et 18h02, du 24/09 au 05/10.
+- **Le cycle de 07h30 n'a jamais reçu de donnée Alpha Vantage depuis le
+  24/09.** Dans `logs/task_daily.log`, les 5 OVERVIEW reçoivent la réponse
+  « limite atteinte » (`alphavantage.py:46-48`) chaque jour du 24/09 au 08/10
+  (2 sur 5 le 23/09). Le fondamental de ces 5 actions repose seulement sur la
+  position du prix dans sa fourchette de 52 semaines (`macro.py:109`) : ni P/E,
+  ni EPS, ni earnings. Il n'est pas nul, donc pas compté parmi les 11, mais il
+  est partiel.
+- Le cycle quotidien demande au plus 10 requêtes (OVERVIEW, puis EARNINGS si
+  OVERVIEW répond), et non ~26 comme estimé le 08/10 pour le banc de rejeu du
+  chat.
+- Les 7 autres actifs (BTC-USD, ETH-USD, SPY, QQQ, VOO, NQ=F, GC=F) ont une
+  confiance fondamentale non nulle ; leur source n'a pas été vérifiée ici.
+- Banc de rejeu du chat : `scripts/chat_cas_export.py --nouveau` coupe Alpha
+  Vantage (il n'existe aucun cache) ; le prompt d'un cas manuel a donc la même
+  lacune que le chat réel presque toujours.
