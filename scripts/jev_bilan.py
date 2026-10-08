@@ -30,9 +30,9 @@ def _pct(x) -> str:
     return "—" if x is None else f"{x * 100:+.2f} %"
 
 
-def _ligne_ic(nom: str, valeurs: list[float]) -> tuple:
-    m, bas, haut = calc.bootstrap(valeurs)
-    print(f"  {nom:22s} n = {len(valeurs):3d}  moyenne {_pct(m)}  IC95 [{_pct(bas)} ; {_pct(haut)}]")
+def _ligne_ic(nom: str, unites: dict) -> tuple:
+    m, bas, haut = calc.bootstrap_grappes(unites)
+    print(f"  {nom:22s} n = {len(unites):3d}  moyenne {_pct(m)}  IC95 [{_pct(bas)} ; {_pct(haut)}]")
     return m, bas, haut
 
 
@@ -41,13 +41,29 @@ def compteurs(lignes: list[dict], obs: list[dict], debut: date | None, lecture: 
     cl = calc.classes(obs)
     unites_acheter = {(calc.groupe(o["ticker"]), calc.semaine_iso(o["jour"])) for o in cl["jev_acheter"]}
     accords, comparables = calc.accord_regime(obs)
+    erreurs = {}
+    for l in lignes:
+        if l["statut"] == "erreur":
+            nom = (l.get("erreur") or "?").split(":")[0]
+            erreurs[nom] = erreurs.get(nom, 0) + 1
     print(f"Questions {QUESTIONS_VERSION} — lignes : {len(lignes)} (ok {statuts['ok']}, "
           f"erreurs {statuts['erreur']}, écartées {statuts['ecarte']})")
     print(f"Observations (1re du jour par actif) : {len(obs)}, dont sans position paper : {len(cl['toutes'])}")
     print(f"Unités indépendantes Jev-acheter (groupe × semaine ISO) : {len(unites_acheter)} / minimum {N_MIN}")
+    if erreurs:
+        print("Erreurs par type : " + ", ".join(f"{k} {v}" for k, v in sorted(erreurs.items()))
+              + " — si jev-1.13.0 n'est plus servi : test INTERROMPU (§7.6)")
     if comparables:
         print(f"Contrôle de lecture (pas un critère) : régime Jev = régime du moteur "
               f"dans {accords}/{comparables} cas ({accords / comparables:.0%})")
+    ctrl = calc.controle_regime(obs)
+    if ctrl["statut"] == "en_cours":
+        print(f"Contrôle des {calc.JOURS_CONTROLE} premiers jours de bourse : {ctrl['jours']} jour(s) observé(s)")
+    else:
+        taux = ctrl["accords"] / ctrl["comparables"] if ctrl["comparables"] else 0.0
+        print(f"Contrôle des {calc.JOURS_CONTROLE} premiers jours de bourse (jusqu'au {ctrl['jusqu_au']}) : "
+              f"accord {taux:.0%} — " + ("OK" if ctrl["statut"] == "ok" else
+              "ARRÊT : accord < 50 %, couper JEV_OBSERVE, corriger sous une version v2 (§7.2)"))
     if debut:
         print(f"Première observation : {debut} — fin de collecte : {debut + FENETRE} — lecture : {lecture}")
 
@@ -69,14 +85,15 @@ def resultats(conn, obs: list[dict]) -> None:
     for o in obs:
         o["rendement"] = calc.rendement(conn, o["ticker"], o["jour"], o.get("prix"))
     cl = calc.classes(obs)
-    u = {nom: list(calc.unites(v).values()) for nom, v in cl.items()}
+    u = {nom: calc.unites(v) for nom, v in cl.items()}
     print("\n== Critère principal (sans position paper, unités groupe × semaine ISO, J+5 net) ==")
     ic_a = _ligne_ic("Jev-acheter (p ≥ 0,6)", u["jev_acheter"])
     _ligne_ic("Jev-ne-rien-faire", u["jev_ne_rien_faire"])
     _ligne_ic("Moteur BUY", u["moteur_buy"])
-    ic_d = calc.bootstrap_difference(u["jev_acheter"], u["jev_ne_rien_faire"])
+    ic_d = calc.bootstrap_grappes_difference(u["jev_acheter"], u["jev_ne_rien_faire"])
     print(f"  Écart acheter − ne rien faire : {_pct(ic_d[0])}  IC95 [{_pct(ic_d[1])} ; {_pct(ic_d[2])}]")
-    ic_m = calc.bootstrap_difference(u["jev_acheter"], u["moteur_buy"], graine=2)
+    ic_m = calc.bootstrap_grappes_difference(u["jev_acheter"], u["moteur_buy"],
+                                             graine=calc.GRAINE_ECART_MOTEUR)
     print(f"  Écart Jev-acheter − moteur BUY : {_pct(ic_m[0])}  IC95 [{_pct(ic_m[1])} ; {_pct(ic_m[2])}]")
     ja = cl["jev_acheter"]
     rec = (sum(1 for o in ja if o.get("decision_moteur") == "BUY") / len(ja)) if ja else None
