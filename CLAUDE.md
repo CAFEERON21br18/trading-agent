@@ -142,6 +142,7 @@ Après : `mettre_a_jour_performance_md()` synchronise tout (intuition + learner)
 6. Try/except sur chaque appel API + log erreur
 7. Scheduler incassable : try/except global + heartbeat + retry email
 8. **Tester au fur et à mesure** — chaque module a son test
+9. Dépôt public : aucune donnée réelle (quantité, prix d'entrée, montant, texte de plan ou de conseil du portefeuille réel) dans un fichier commité, tests compris. Les données de test sont inventées. Avant chaque push, comparer le diff aux valeurs des tables real_*.
 
 ## Dashboard PWA (`dashboard/app.py` sur port 8080) — v5 : 10 pages
 Pages : Overview, Portfolio, **Réel** (v5), **Chat** (v5), Watchlist, Explorers, Journal, Budget, Memory, Settings.
