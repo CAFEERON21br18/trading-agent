@@ -503,18 +503,26 @@ ils n'ont jamais été branchés. Ne rien supprimer avant décision.
   l'exécution paper, appels après ; sortie lue par personne), bilan en lecture
   seule `scripts/jev_bilan.py`. Interrupteur `JEV_OBSERVE`, **coupé par
   défaut**. Ajouté le 08/10/2026.
-- **Avant d'activer** : valider et commiter REGISTRE_CRITERES §7 (brouillon).
-  Aucun `JEV_OBSERVE=1` avant ce commit.
-- Sur la tour, dans l'ordre : `git pull` ; `pip install -r requirements.txt`
-  (ajoute `typesafe-sdk`) ; lancer `python -m unittest tests.test_jev_observer
-  tests.test_jev_bilan tests.test_jev_orchestrateur -v` (le test de bout en
-  bout de l'orchestrateur est sauté sur le portable : pandas y est bloqué par
-  le Contrôle des applications Windows, il n'a donc **jamais tourné**) ;
-  puis `TYPESAFE_API_KEY=…` et `JEV_OBSERVE=1` dans `.env`.
-- Au premier cycle : vérifier dans les logs `Jev : N observation(s)` et
-  `python scripts/jev_bilan.py` (compteurs seulement). Si des actifs sont
-  écartés chaque jour, le budget de 120 s est trop court : à revoir par un
-  commit du registre, pas en cours de fenêtre sans le noter.
+- Critère : REGISTRE_CRITERES §7, commité en v1.2 (5ace555) le 08/10/2026.
+- **Activation sur la tour, dans l'ordre :**
+  1. `git pull`.
+  2. `pip install -r requirements.txt` (ajoute `typesafe-sdk`).
+  3. `python -m unittest tests.test_jev_observer tests.test_jev_bilan
+     tests.test_jev_orchestrateur -v` : les 2 tests de bout en bout doivent
+     **passer**, pas être sautés (sur le portable, pandas est bloqué par le
+     Contrôle des applications Windows : ils n'y ont **jamais tourné**).
+  4. `TYPESAFE_API_KEY=…` dans `.env` (laisser `JEV_OBSERVE` coupé).
+  5. Essai d'un appel réel, sans rien écrire en base :
+     `python scripts/jev_essai.py BTC-USD`. Code de sortie attendu : 0, avec
+     « Modèle renvoyé : jev-1.13.0 ». Code 1 (autre modèle) : ne pas activer
+     (§7.6). Code 2 : clé absente. Code 3 : appel en échec (réseau, clé
+     refusée, timeout de 3 s). Vérifier aussi la latence : bien au-dessus de
+     3 000 ms, l'appel aurait échoué au cycle.
+  6. `JEV_OBSERVE=1` dans `.env`.
+  7. Après le premier passage de 07h30 : `Jev : N observation(s)` dans les
+     logs, puis `python scripts/jev_bilan.py` (compteurs seulement). Si des
+     actifs sont écartés chaque jour, le budget de 120 s est trop court : à
+     revoir par un commit du registre, jamais en cours de fenêtre.
 - Hors sujet mais relevé : `agents/orchestrator.py` dépasse la limite de
   200 lignes (275 avant ce changement, 280 après) ; découpage à faire
   séparément.
