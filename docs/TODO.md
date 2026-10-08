@@ -436,3 +436,61 @@ ils n'ont jamais été branchés. Ne rien supprimer avant décision.
 - À décider : retirer les explorateurs du stratégique, ou les retirer du
   tactical et garder un rythme de 4 h (ce qui changerait la fraîcheur des
   découvertes).
+
+## 20. L'intuition force BUY après un veto, y compris sur un signal baissier
+
+- `agents/intuition.py:478-480` : si la décision provisoire est `NO_TRADE`
+  (donc après **n'importe quel** override de `_verifier_overrides` :
+  veto du Risk Manager, Fear & Greed extrême) et que `ajustement ≥ 2`,
+  l'intuition renvoie `override_decision = "BUY"`. `decider()` l'applique
+  (`agents/decision_engine.py:163-169`) en style `learning` (×0.2, seuil de
+  confiance 4). Le veto est levé **et la direction peut être inversée** :
+  un signal technique VENTE bloqué devient un achat. Relevé le 08/10/2026.
+- En pratique, `ajustement ≥ 2` demande un winrate ≥ 70 % sur ≥ 3 trades et
+  au moins un pattern trouvé dans `market_patterns.md` (le pilier
+  géopolitique ne contribue jamais, `actifs_a_surveiller` n'étant jamais
+  placé dans `context`). Le veto « track record » ne peut pas être levé
+  (winrate < 35 % donne déjà -2). Le veto Risk Manager est re-validé par le
+  Paper Trader (`agents/paper_trader/cycle.py:82`), mais en LONG avec le
+  budget alloué, donc sur une autre question que celle rejetée.
+- Note : la docstring `agents/intuition.py:425` est fausse. `ajustement` y est
+  décrit comme « à ajouter au score composite » ; `decider()` ne l'ajoute
+  jamais au score, il ne sert qu'au seuil d'override et au pressentiment.
+- **Critère à pré-enregistrer avant correction** (REGISTRE_CRITERES) : ce
+  qui serait mesuré (rendement des BUY issus d'un override intuitif après
+  `NO_TRADE`, comparés à leur absence), sur quel horizon, avec quel seuil.
+  Ne rien corriger avant.
+
+## 21. Veto Extreme Greed contournable (quotidien) et inactif (tactical)
+
+- Cycle quotidien : `_verifier_overrides` (`agents/decision_engine.py:88-96`)
+  bloque un achat si F&G ≥ 80. L'intuition (§20) peut lever ce `NO_TRADE` en
+  BUY, et **rien ne revérifie le F&G en aval** (le Paper Trader ne re-valide
+  que le risque) : on peut acheter exactement dans le cas que le veto devait
+  empêcher.
+- Tactical : `scripts/cycle_tactical.py:67` appelle
+  `analyser_actif_complet(t)` sans `sentiment_global`, donc `context` n'a pas
+  de `fg_valeur` : l'override F&G (Extreme Fear comme Extreme Greed) **ne
+  s'active jamais** dans le tactical, ni dans `reevaluer_position`. Les deux
+  cycles appliquent donc des règles différentes au même actif. Relevé le
+  08/10/2026.
+- **Critère à pré-enregistrer avant correction** : transmettre le F&G au
+  tactical ou fermer le contournement change des décisions ; décider d'abord
+  ce qui serait mesuré, sur quel horizon, avec quel seuil.
+
+## 22. Le tactical n'évalue que les 8 premiers actifs sans position
+
+- `scripts/cycle_tactical.py:158-159` : `[:8]` sur la watchlist hors
+  positions ouvertes. Dans l'ordre actuel du fichier, ce sont presque
+  toujours BTC, ETH, SOL, HBAR, CRO, AAPL, TSLA, NVDA. `INDICES_US` (SPY, QQQ,
+  VOO, NQ=F, rangs 18 à 22 sur 23) n'est atteint que si au moins 10 actifs
+  placés avant ont une position ouverte ; `SEMIS_IA` se réduit à NVDA.
+  Voir aussi §16 (la sélection dépend de l'ordre du fichier). Relevé le
+  08/10/2026.
+- Conséquence : les groupes de REGISTRE_CRITERES §0.1 sont très déséquilibrés
+  dans les décisions du tactical, ce qui biaise la lecture Q3.a (couples
+  examinés par le pipeline, majoritairement issus du tactical).
+- **Critère à pré-enregistrer avant correction** : changer la sélection
+  (rotation, tirage, tous les actifs) change les décisions et la composition
+  des données Q3 ; fixer d'abord la règle et sa date d'effet dans
+  REGISTRE_CRITERES.
