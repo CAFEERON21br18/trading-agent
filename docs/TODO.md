@@ -494,3 +494,27 @@ ils n'ont jamais été branchés. Ne rien supprimer avant décision.
   (rotation, tirage, tous les actifs) change les décisions et la composition
   des données Q3 ; fixer d'abord la règle et sa date d'effet dans
   REGISTRE_CRITERES.
+
+## 23. Observation Jev (TypeSafe) : en place, coupée, en attente du critère
+
+- Code : `agents/jev/` (questions v1 figées, modèle figé `jev-1.13.0`, state
+  par liste blanche), table `jev_observations` (`utils/jev_db.py`), branchement
+  dans `agents/orchestrator.py` (cycle quotidien seulement : state figé avant
+  l'exécution paper, appels après ; sortie lue par personne), bilan en lecture
+  seule `scripts/jev_bilan.py`. Interrupteur `JEV_OBSERVE`, **coupé par
+  défaut**. Ajouté le 08/10/2026.
+- **Avant d'activer** : valider et commiter REGISTRE_CRITERES §7 (brouillon).
+  Aucun `JEV_OBSERVE=1` avant ce commit.
+- Sur la tour, dans l'ordre : `git pull` ; `pip install -r requirements.txt`
+  (ajoute `typesafe-sdk`) ; lancer `python -m unittest tests.test_jev_observer
+  tests.test_jev_bilan tests.test_jev_orchestrateur -v` (le test de bout en
+  bout de l'orchestrateur est sauté sur le portable : pandas y est bloqué par
+  le Contrôle des applications Windows, il n'a donc **jamais tourné**) ;
+  puis `TYPESAFE_API_KEY=…` et `JEV_OBSERVE=1` dans `.env`.
+- Au premier cycle : vérifier dans les logs `Jev : N observation(s)` et
+  `python scripts/jev_bilan.py` (compteurs seulement). Si des actifs sont
+  écartés chaque jour, le budget de 120 s est trop court : à revoir par un
+  commit du registre, pas en cours de fenêtre sans le noter.
+- Hors sujet mais relevé : `agents/orchestrator.py` dépasse la limite de
+  200 lignes (275 avant ce changement, 280 après) ; découpage à faire
+  séparément.
