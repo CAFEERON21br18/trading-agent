@@ -23,6 +23,16 @@
     </div>
 </div>
 
+<!-- Fantôme Jev (REGISTRE_CRITERES §8.3) : seule exception à l'affichage avant la lecture du §7 -->
+<div class="card mb-4 text-sm">
+    <div class="flex justify-between items-baseline gap-2">
+        <span class="font-semibold">👻 Fantôme Jev / paper</span>
+        <span class="text-xs text-slate-400">descriptif, pas un critère</span>
+    </div>
+    <div id="jev-fantome" class="mt-1 text-slate-200">—</div>
+    <div id="jev-fantome-detail" class="text-xs text-slate-400 mt-1"></div>
+</div>
+
 <!-- Equity curve -->
 <div class="card mb-4">
     <h2 class="font-semibold mb-2">📈 Equity curve</h2>
@@ -105,6 +115,27 @@ async function loadOverview() {
     }
 }
 
+// Fantôme Jev (§8.3) : valeurs et positions ouvertes seulement, sans écart ni couleur
+// gain/perte ; une valeur inconnue s'affiche « non disponible », jamais 0
+async function loadFantome() {
+    const el = document.getElementById("jev-fantome");
+    const det = document.getElementById("jev-fantome-detail");
+    try {
+        const f = await (await fetch("/api/jev/fantome")).json();
+        if (f.error) { el.textContent = ND; return; }
+        if (!f.debut) { el.textContent = "aucune position fantôme pour l'instant"; return; }
+        const val = (c) => c.valeur === null ? ND : c.valeur.toFixed(2) + "€";
+        const pos = (c) => `${c.positions_ouvertes} position${c.positions_ouvertes > 1 ? "s" : ""} ouverte${c.positions_ouvertes > 1 ? "s" : ""}`;
+        el.textContent = `Fantôme ${val(f.fantome)} (${pos(f.fantome)}) · Paper ${val(f.paper)} (${pos(f.paper)})`;
+        const manquants = [...f.fantome.prix_manquants, ...f.paper.prix_manquants];
+        det.textContent = `Depuis le ${f.debut.split("-").reverse().join("/")}, même fenêtre des deux côtés : ` +
+            `${f.capital_depart.toFixed(0)}€ + réalisé + latent à la dernière clôture, coûts du §7.1 déduits` +
+            (manquants.length ? ` · prix manquant : ${manquants.join(", ")}` : "");
+    } catch (e) {
+        el.textContent = ND;
+    }
+}
+
 async function loadEquity() {
     const data = await (await fetch("/api/portfolio/history?limit=60")).json();
     const ctx = document.getElementById("equityChart").getContext("2d");
@@ -134,6 +165,7 @@ async function loadEquity() {
 }
 
 loadOverview();
+loadFantome();
 loadEquity();
 </script>
 {% endblock %}

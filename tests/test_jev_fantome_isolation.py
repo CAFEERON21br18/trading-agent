@@ -1,7 +1,7 @@
 """
 tests/test_jev_fantome_isolation.py — Fantôme Jev (REGISTRE_CRITERES §8.1) : le paper
 actuel et ses tables sont strictement identiques avec et sans le fantôme ; le fantôme
-ne lit aucune table du paper ; aucun autre module ne lit les tables du fantôme.
+ne lit aucune table du paper ; seuls le fantôme et la ligne du dashboard (§8.3) lisent ses tables.
 
 Lancement : .venv\\Scripts\\python.exe -m unittest tests.test_jev_fantome_isolation -v
 Bases SQLite temporaires, valeurs inventées, aucun réseau.
@@ -124,8 +124,11 @@ class TestLecturesDuFantome(BaseFantome):
         self.assertLessEqual(touchees, {"jev_observations", "prices", "jev_paper_positions",
                                         "jev_paper_journal", "sqlite_master", "sqlite_sequence"})
 
-    def test_seul_le_fantome_lit_ses_tables(self):
-        autorises = {os.path.join("utils", "jev_paper_db.py"), os.path.join("agents", "jev", "fantome.py")}
+    def test_seuls_le_fantome_et_la_ligne_du_dashboard_lisent_ses_tables(self):
+        autorises = {os.path.join("utils", "jev_paper_db.py"), os.path.join("agents", "jev", "fantome.py"),
+                     # §8.3 : ligne de comparaison du dashboard, en lecture seule
+                     os.path.join("utils", "jev_paper_comparaison.py"),
+                     os.path.join("dashboard", "api", "jev_fantome_routes.py")}
         trouves = set()
         for dossier, sous, fichiers in os.walk(RACINE):
             sous[:] = [d for d in sous if d not in (".git", ".venv", "venv", "__pycache__", "tests")]
