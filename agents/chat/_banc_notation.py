@@ -13,23 +13,21 @@ noter(cas, texte) mesure :
 Comparaisons insensibles à la casse et aux accents. Un cas sans attendu rempli
 est « non noté » (attendu_ok = None), jamais « OK ».
 - trois_blocs_ok : format en trois blocs de la consigne v2 (voir trois_blocs_ok).
-resumer() agrège par famille ; comparer() met deux résultats côte à côte.
+resumer() et comparer() (agents/chat/_banc_resume.py) agrègent par cas, famille et au global.
 """
 
 import re
 import unicodedata
-from statistics import fmean
 
 from agents.chat._verif_chiffres import partie_prompt, references_du_prompt, verifier
+# Agrégation par cas (--passes), résumés et comparaison : _banc_resume, réexportés ici
+from agents.chat._banc_resume import METRIQUES, SANS_FAMILLE, agreger, comparer, resumer  # noqa: F401
 
 FAMILLES = ("paper", "reel", "achat_vente", "hors_watchlist", "theorie", "suivi")
-SANS_FAMILLE = "sans_famille"
 DISCLAIMER = "pas un conseil financier"
 # Sur le texte normalisé (sans accents) ; les noms « achat » et « vente » ne comptent pas
 _MOTS_DECISION = re.compile(r"\b(?:buy|sell|renforcer|alleger|acheter|achete|achetes|achetez"
                             r"|vendre|vends|vend|vendez)\b")
-METRIQUES = ("cas", "notes", "attendu_ok", "taux_non_soutenus_moyen", "echecs_disclaimer",
-             "disclaimer_requis", "nb_lignes_moyen", "trois_blocs_requis", "trois_blocs_ok")
 INTENTIONS_TROIS_BLOCS = ("paper_status", "real_status", "advice_buy", "advice_sell")
 TITRES_BLOCS = ("les faits", "ma lecture", "ce qui manque")
 _INTENTION = re.compile(r"^INTENTION DÉTECTÉE : (\w+)", re.M)
@@ -112,62 +110,3 @@ def noter(cas: dict, texte_reponse: str) -> dict:
         "trois_blocs_ok": trois_blocs_ok(cas.get("prompt"), texte),
     }
 
-
-def _bloc(notes: list[dict]) -> dict:
-    taux = [n["taux_non_soutenus"] for n in notes if n["taux_non_soutenus"] is not None]
-    notees = [n for n in notes if n["attendu_ok"] is not None]
-    return {
-        "cas": len(notes),
-        "notes": len(notees),
-        "non_notes": len(notes) - len(notees),
-        "attendu_ok": sum(1 for n in notees if n["attendu_ok"]),
-        "taux_non_soutenus_moyen": round(fmean(taux), 4) if taux else None,
-        "cas_avec_chiffres": len(taux),
-        "echecs_disclaimer": sum(1 for n in notes if n["echec_disclaimer"]),
-        "disclaimer_requis": sum(1 for n in notes if n["disclaimer_requis"]),
-        "nb_lignes_moyen": round(fmean(n["nb_lignes"] for n in notes), 1) if notes else None,
-        "trois_blocs_requis": sum(1 for n in notes if n.get("trois_blocs_requis")),
-        "trois_blocs_ok": sum(1 for n in notes if n.get("trois_blocs_ok")),
-    }
-
-
-def resumer(resultats: list[dict]) -> dict:
-    """resultats : [{"cas", "famille", "note"}] ; les lignes sans note (rejeu en échec) sont ignorées."""
-    notes = [r for r in resultats if r.get("note")]
-    familles: dict[str, list] = {}
-    for r in notes:
-        familles.setdefault(r.get("famille") or SANS_FAMILLE, []).append(r["note"])
-    return {"global": _bloc([r["note"] for r in notes]),
-            "familles": {f: _bloc(n) for f, n in sorted(familles.items())}}
-
-
-def _ecart(avant: dict | None, apres: dict | None) -> dict:
-    avant, apres = avant or {}, apres or {}
-    out = {}
-    for m in METRIQUES:
-        a, b = avant.get(m), apres.get(m)
-        out[m] = {"avant": a, "apres": b,
-                  "ecart": round(b - a, 4) if isinstance(a, (int, float)) and isinstance(b, (int, float)) else None}
-    return out
-
-
-def comparer(a: dict, b: dict) -> dict:
-    """Écarts par métrique (global et par famille) entre deux fichiers de résultats, cas OK → KO."""
-    ra, rb = a.get("resume") or {}, b.get("resume") or {}
-    fa, fb = ra.get("familles") or {}, rb.get("familles") or {}
-    ecarts = {"global": _ecart(ra.get("global"), rb.get("global"))}
-    for f in sorted(set(fa) | set(fb)):
-        ecarts[f] = _ecart(fa.get(f), fb.get(f))
-    na = {r["cas"]: r["note"] for r in a.get("resultats") or [] if r.get("note")}
-    nb = {r["cas"]: r["note"] for r in b.get("resultats") or [] if r.get("note")}
-    communs = sorted(set(na) & set(nb), key=str)
-    return {
-        "ecarts": ecarts,
-        "cas_communs": len(communs),
-        "ok_vers_ko": [c for c in communs if na[c]["attendu_ok"] is True and nb[c]["attendu_ok"] is False],
-        "ko_vers_ok": [c for c in communs if na[c]["attendu_ok"] is False and nb[c]["attendu_ok"] is True],
-        "trois_blocs_perdus": [c for c in communs
-                               if na[c].get("trois_blocs_ok") is True and nb[c].get("trois_blocs_ok") is False],
-        "nouveaux_echecs_disclaimer": [c for c in communs
-                                       if not na[c]["echec_disclaimer"] and nb[c]["echec_disclaimer"]],
-    }
