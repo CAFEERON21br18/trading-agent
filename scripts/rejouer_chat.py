@@ -16,9 +16,10 @@ MODE D'EMPLOI (sur la tour, depuis la racine du dépôt)
 4. Ligne de base, sans appel réseau (réponses historiques ; les cas sans réponse,
    manuels ou audit_sans_llm, sont ignorés) :
      .venv\\Scripts\\python.exe scripts\\rejouer_chat.py --noter
-5. Changement de consigne : deux --rejouer (avant, après, même température), puis comparer :
-     .venv\\Scripts\\python.exe scripts\\rejouer_chat.py --rejouer --max 10
-     .venv\\Scripts\\python.exe scripts\\rejouer_chat.py --rejouer --system-fichier essai.txt
+5. Changement de consigne : deux --rejouer (avant, après, même température, mêmes cas,
+   mêmes passes), puis comparer :
+     .venv\\Scripts\\python.exe scripts\\rejouer_chat.py --rejouer --tous --passes 3
+     .venv\\Scripts\\python.exe scripts\\rejouer_chat.py --rejouer --tous --passes 3 --system-fichier essai.txt
      .venv\\Scripts\\python.exe scripts\\rejouer_chat.py --comparer A.json B.json
    --noter mélange l'effet du modèle (Gemini ou Groq) et celui de la consigne.
 6. Changement de la construction du prompt (ex. historique) : cas manuels seulement,
@@ -38,6 +39,10 @@ RÈGLES DU REJEU
   Groq sans toucher aux 20 requêtes Gemini du jour. max_tokens 900 ; --temperature 0,6 par
   défaut ; --max 10 par défaut, 30 au plus ; 3 s entre deux appels ; arrêt propre sur
   rate_limit_groq ou quota_groq (résultats partiels écrits).
+- --tous : tous les cas (30 au plus) au lieu de --max. --passes N (1 par défaut, 3 au plus) :
+  chaque cas envoyé N fois, passe par passe. --comparer compare les moyennes par cas (chaque
+  cas pèse 1 ; attendu, disclaimer et trois blocs à la majorité stricte des passes) et avertit
+  si les cas, les passes ou la température diffèrent, ou si un passage est incomplet.
 - Jetons estimés avant envoi (longueur ÷ 4, plus le budget de sortie) ; confirmation
   demandée au-delà de 60 000.
 - Rien n'est écrit dans message_audit ni chat_history ; le script refuse de tourner dans
@@ -53,8 +58,8 @@ sys.path.insert(0, RACINE)
 
 from agents.chat._banc_notation import comparer
 from scripts._banc_fichiers import DOSSIER_CAS, ecrire_resultats, journaux_detaches, lire_json
-from scripts._banc_rejeu import (MAX_DEFAUT, MAX_PLAFOND, avertissement_comparaison,  # noqa: F401
-                                 estimer_jetons, noter_historique, reconstruire, rejouer)
+from scripts._banc_rejeu import (MAX_DEFAUT, MAX_PASSES, MAX_PLAFOND, avertissement_comparaison,  # noqa: F401
+                                 avertissements, estimer_jetons, noter_historique, reconstruire, rejouer)
 
 
 def _fmt(v, pct: bool = False) -> str:
@@ -71,14 +76,30 @@ def _afficher_resume(res: dict) -> None:
               f"{_fmt(b['nb_lignes_moyen'])} lignes")
 
 
-def _afficher_comparaison(c: dict) -> None:
-    print(f"{c['cas_communs']} cas communs")
+def _stat(s: dict) -> str:
+    """Taux moyen d'un cas sur ses passes : « 12,0 % ± 3,1 pts (n = 3) »."""
+    if s["moyenne"] is None:
+        return "—"
+    ecart = "" if s["ecart_type"] is None else f" ± {s['ecart_type'] * 100:.1f} pts"
+    return f"{s['moyenne']:.1%}{ecart} (n = {s['n']})"
+
+
+def _afficher_comparaison(c: dict, alertes: list) -> None:
+    for alerte in alertes:
+        print(alerte)
+    print(f"{c['cas_communs']} cas communs ; passes : A {c['passes']['a']}, B {c['passes']['b']}")
     for groupe, metriques in c["ecarts"].items():
         print(f"  {groupe}")
         for m, v in metriques.items():
             pct = m == "taux_non_soutenus_moyen"
             ecart = "" if v["ecart"] is None else (f" ({v['ecart'] * 100:+.1f} pts)" if pct else f" ({v['ecart']:+g})")
             print(f"    {m:24s} {_fmt(v['avant'], pct)} -> {_fmt(v['apres'], pct)}{ecart}")
+    print("  chiffres non soutenus par cas (moyenne des passes ± écart-type) :")
+    for cas, v in c["par_cas"].items():
+        print(f"    {cas:>18s}  {_stat(v['avant'])} -> {_stat(v['apres'])}")
+    t = c["taux_apparie"]
+    print(f"  taux apparié ({t['cas']} cas avec chiffres des deux côtés) : {_fmt(t['avant'], True)} -> "
+          f"{_fmt(t['apres'], True)}")
     for titre, cle in (("OK -> KO", "ok_vers_ko"), ("KO -> OK", "ko_vers_ok"),
                        ("Trois blocs perdus", "trois_blocs_perdus"),
                        ("Nouveaux disclaimers manquants", "nouveaux_echecs_disclaimer")):
@@ -95,6 +116,8 @@ def main(argv=None) -> int:
     g.add_argument("--comparer", nargs=2, metavar=("A.json", "B.json"))
     p.add_argument("--historique", choices=("on", "off"), help="avec --reconstruire : CHAT_HISTORIQUE forcé")
     p.add_argument("--max", type=int, default=MAX_DEFAUT, help=f"cas envoyés ({MAX_PLAFOND} au plus)")
+    p.add_argument("--tous", action="store_true", help=f"tous les cas ({MAX_PLAFOND} au plus), au lieu de --max")
+    p.add_argument("--passes", type=int, default=1, help=f"envois par cas ({MAX_PASSES} au plus)")
     p.add_argument("--temperature", type=float, default=0.6)
     s = p.add_mutually_exclusive_group()
     s.add_argument("--system-fichier", help="consigne à tester, à la place de SYSTEM_PROMPT")
@@ -104,22 +127,24 @@ def main(argv=None) -> int:
         p.error("--reconstruire exige --historique on|off et n'accepte pas --system-historique")
     if a.historique and not a.reconstruire:
         p.error("--historique ne s'emploie qu'avec --reconstruire")
+    if (a.tous or a.passes != 1) and not (a.rejouer or a.reconstruire):
+        p.error("--tous et --passes s'emploient avec --rejouer ou --reconstruire")
     if a.comparer:
         donnees = [lire_json(f) for f in a.comparer]
-        avertissement = avertissement_comparaison(*donnees)
-        if avertissement:
-            print(avertissement)
-        _afficher_comparaison(comparer(*donnees))
+        comparaison = comparer(*donnees)
+        _afficher_comparaison(comparaison, avertissements(*donnees, comparaison))
         return 0
-    if (a.rejouer or a.reconstruire) and a.max > MAX_PLAFOND:
+    if (a.rejouer or a.reconstruire) and a.max > MAX_PLAFOND and not a.tous:
         print(f"--max ramené à {MAX_PLAFOND}.")
+    if a.passes > MAX_PASSES or a.passes < 1:
+        print(f"--passes ramené à {max(1, min(a.passes, MAX_PASSES))}.")
     with journaux_detaches(DOSSIER_CAS):
         if a.reconstruire:
             res = reconstruire(DOSSIER_CAS, a.historique == "on", n_max=a.max, temperature=a.temperature,
-                               system_fichier=a.system_fichier)
+                               system_fichier=a.system_fichier, passes=a.passes, tous=a.tous)
         elif a.rejouer:
             res = rejouer(DOSSIER_CAS, n_max=a.max, temperature=a.temperature, system_fichier=a.system_fichier,
-                          system_historique=a.system_historique)
+                          system_historique=a.system_historique, passes=a.passes, tous=a.tous)
         else:
             res = noter_historique(DOSSIER_CAS)
     if res is None:
@@ -127,7 +152,8 @@ def main(argv=None) -> int:
     chemin = ecrire_resultats(DOSSIER_CAS, res["mode"], res)
     _afficher_resume(res)
     if res.get("arret"):
-        print(f"Arrêt propre sur {res['arret']} : {res['envoyes']}/{res['prevus']} cas envoyés.")
+        print(f"Arrêt propre sur {res['arret']} : {res['envoyes']}/{res['prevus']} envois. Passage incomplet : "
+              "le refaire avant toute comparaison.")
     if res.get("rappel"):
         print(res["rappel"])
     print(f"Résultats : {os.path.relpath(chemin, RACINE)}")
