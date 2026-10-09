@@ -298,6 +298,12 @@ la taille réduite tombe sous le minimum viable de 15 €.
   (§0.3, §7.2). Aucun critère ni aucune règle de lecture modifiés. Commitée
   avant la première observation Jev, avant toute écriture du fantôme et avant
   tout affichage de son P&L.
+- v1.5, 09/10/2026 : exception du §8.3 remplacée : la ligne du dashboard devient
+  une page détaillée du fantôme (positions, P&L par position, historique,
+  observations du jour). Fuite élargie, acceptée en connaissance de cause.
+  Aucun critère ni aucune règle de lecture du §7 modifiés ; règles simulées du
+  §8.2 inchangées. Commitée après la première observation Jev (09/10/2026,
+  23 lignes) et les 6 premières entrées du fantôme, avant tout code de la page.
 
 ---
 
@@ -460,7 +466,9 @@ confirme avec la liste des modèles de TypeSafe.
 
 **Statut : v1.4 du 08/10/2026, commitée avant la première observation Jev,
 avant toute écriture dans les tables du fantôme et avant tout affichage de son
-P&L.**
+P&L. v1.5 du 09/10/2026 : §8.3 remplacé (page détaillée), commitée après la
+première observation Jev et les premières entrées du fantôme, avant tout code
+de cette page.**
 
 **Le portefeuille fantôme Jev est descriptif ; son P&L n'est ni un critère ni
 une raison de modifier le §7 ; aucune décision ne se prend sur sa base avant la
@@ -543,24 +551,48 @@ critère du §7.
 
 ### 8.3 Exception au §0.3 et au §7.2 : affichage avant la lecture
 Le §0.3 et le §7.2 interdisent de consulter un rendement avant la lecture
-unique. **Seule exception** : une ligne du dashboard, avec la mention
-« descriptif, pas un critère » :
-- valeur du fantôme et valeur du paper actuel, nombre de positions ouvertes de
-  chacun ;
-- même fenêtre des deux côtés : depuis la première entrée du fantôme (côté
-  paper : positions ouvertes à partir de ce jour) ;
-- valeur = 1 000 € + P&L réalisé + P&L latent à la dernière clôture de
+unique. **Seule exception** (v1.5, remplace celle de v1.4) : la ligne de
+comparaison de la page d'accueil du dashboard et une page détaillée « Fantôme
+Jev ». Les deux sont en lecture seule (base ouverte en `mode=ro`, aucune
+écriture) et portent la mention visible « descriptif, pas un critère — lecture
+le 11/01/2027 ». La page détaillée est autorisée à montrer :
+- **les positions** fantômes ouvertes : actif, groupe, date d'entrée,
+  p(acheter), niveau de conviction, montant investi, prix d'entrée, dernière
+  clôture de `prices`, P&L latent en € et en %, date de sortie prévue (5e barre,
+  §8.2) ;
+- **le P&L par position** et **l'historique** : les positions fermées, avec leur
+  P&L net des coûts du §7.1 (€ et %) et leur total cumulé ;
+- **les observations du jour** : pour chaque actif de la dernière observation,
+  la réponse de Jev (choix, p(acheter), conviction, régime), le régime et la
+  décision du moteur, et ce qu'a fait le fantôme (achat, ou refus avec son
+  motif du §8.2) ;
+- **la comparaison avec le paper** : valeur de chacun et nombre de positions
+  ouvertes, nombre de refus par motif. Même fenêtre des deux côtés : depuis la
+  première entrée du fantôme (côté paper : positions ouvertes à partir de ce
+  jour). Valeur = 1 000 € + P&L réalisé + P&L latent à la dernière clôture de
   `prices`, coûts du §7.1 déduits des deux côtés. Côté paper, ces coûts ne sont
-  appliqués que pour cette ligne : ses tables ne changent pas.
+  appliqués que pour cet affichage : ses tables ne changent pas.
 
-L'exception s'arrête là : `scripts/jev_bilan.py` reste aux compteurs, et aucun
-rendement par actif, par groupe ou par classe du §7 n'est affiché avant la
-lecture.
+Un prix manquant s'affiche « non disponible », jamais 0. Le P&L n'a pas de
+couleur de gain ou de perte.
 
-**Fuite acceptée.** Les achats du fantôme sont des observations Jev-acheter :
-cette ligne laisse voir, avant la lecture, une partie du signe de la métrique
-primaire du §7. C'est accepté en connaissance de cause ; la protection repose
-sur la règle en tête de ce paragraphe.
+L'exception s'arrête là : `scripts/jev_bilan.py` reste aux compteurs. Aucune
+métrique du §7 n'est affichée avant la lecture : ni rendement des observations
+non achetées (Jev-ne-rien-faire, refus du fantôme), ni rendement des BUY du
+moteur, ni moyenne par groupe, par classe ou par unité (groupe, semaine), ni
+intervalle de confiance. Les seuls rendements montrés sont ceux des positions
+du fantôme, une par une, et leur total.
+
+**Fuite élargie, acceptée en connaissance de cause.** Le critère du §7 reste
+figé ; rien de ce que montre cette page ne peut motiver avant la lecture du
+11/01/2027 : un changement du §7 ou du §8, l'arrêt de l'observation (seuls §7.2
+et §7.6 l'arrêtent), ni une intégration de Jev au vote.
+
+Ce qui fuit : les positions du fantôme sont des observations Jev-acheter tenues
+jusqu'au J+5 du §7.1. Leur P&L, position par position, laisse voir avant la
+lecture une grande partie de la métrique primaire du §7, à la taille et aux
+plafonds près. La date du 11/01/2027 est celle du §7.2 : première observation
+retenue le 09/10/2026, plus 12 semaines, plus 10 jours.
 
 ### 8.4 Ce que le fantôme ne peut pas dire
 - Ce n'est pas le critère du §7 : la taille selon la conviction, les plafonds et
