@@ -55,3 +55,9 @@
 `2026-09-01 — RISQUE — MSFT : 15 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-MSFT-2026-09)
 
 `2026-09-09 — RISQUE — AAPL : 3 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-AAPL-2026-09)
+
+`2026-10-01 — RISQUE — SOL-USD : 74 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-SOL-USD-2026-10)
+
+`2026-10-01 — RISQUE — AAPL : 3 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-AAPL-2026-10)
+
+`2026-10-08 — RISQUE — BTC-USD : 3 pertes récentes détectées sur cet actif. Augmenter la prudence (confiance min 8/10 ou éviter temporairement).` (LECON-PERTES-BTC-USD-2026-10)

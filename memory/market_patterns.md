@@ -88,3 +88,9 @@ Fiabilité estimée : [X%]
 - Win rate : 25%
 - P&L moyen : -0.97%
 - Fiabilité estimée : Faible
+
+2026-10-10 — AMZN — Pattern récurrent LONG  (PATTERN-AMZN-LONG)
+- Observé : 58 fois
+- Win rate : 98%
+- P&L moyen : +3.10%
+- Fiabilité estimée : Forte
