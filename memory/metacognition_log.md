@@ -10667,3 +10667,14012 @@ Auto-mis à jour à chaque décision auditée. Sert à identifier les biais réc
 **Verdict** : SOLIDE (solidité 7/10)
 **Biais détectés** :
 - biais de confirmation
+
+## 2026-09-21 21:22 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- Overconfidence
+
+## 2026-09-21 21:24 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais d'optimisme (confiance élevée malgré des lacunes dans les données de référence et une évaluation de risque ambiguë)
+
+## 2026-09-21 21:25 UTC — SOL-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- Biais d'excès de confiance
+
+## 2026-09-21 21:28 UTC — AMD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-21 21:29 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-21 21:30 UTC — VOO (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-21 21:31 UTC — NQ=F (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du score composite
+
+## 2026-09-21 21:32 UTC — CL=F (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-23 17:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de succès global comme substitut
+
+## 2026-09-23 17:47 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite ≥ 2.0
+
+## 2026-09-23 17:48 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 13:51 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-24 13:52 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global
+
+## 2026-09-24 13:56 UTC — ETH-USD (BUY)
+**Verdict** : FRAGILE (solidité 7/10)
+**Biais détectés** :
+- surconfiance due au score composite élevé et à la confiance exprimée
+
+## 2026-09-24 13:57 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé sans support fondamental.
+
+## 2026-09-24 13:58 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-09-24 13:58 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-24 13:59 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement pour le token spécifique
+
+## 2026-09-24 14:00 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite ≥ 2,0
+
+## 2026-09-24 14:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-09-24 14:02 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- surconfiance due au score composite élevé malgré l'absence de données concrètes
+
+## 2026-09-24 14:03 UTC — SPY (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 14:03 UTC — QQQ (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-24 14:04 UTC — VOO (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-24 14:16 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-09-24 14:17 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 14:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-24 14:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 14:32 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement sectoriel
+
+## 2026-09-24 14:33 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal.
+
+## 2026-09-24 14:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au seuil de score composite uniquement
+
+## 2026-09-24 14:47 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-24 14:48 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 15:01 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 15:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-09-24 15:02 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 15:03 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil (+2.0) sans corroboration supplémentaire
+
+## 2026-09-24 15:03 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-24 15:04 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du seuil de score composite
+
+## 2026-09-24 15:16 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 15:17 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-24 15:18 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 15:19 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance due à la règle de score composite > 2.0 malgré l'absence de corroboration fondamentale
+
+## 2026-09-24 15:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 15:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-24 15:33 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal.
+
+## 2026-09-24 15:34 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-24 15:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite positif et à l'absence de signaux contradictoires
+
+## 2026-09-24 15:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 15:48 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance dans le critère rule‑based
+
+## 2026-09-24 15:49 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-24 16:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-24 16:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- surpondération du critère rule‑based malgré l'absence de soutien fondamental
+
+## 2026-09-24 16:03 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-24 16:04 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-24 16:16 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- surconfiance
+
+## 2026-09-24 16:17 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-24 16:18 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite dépassant le seuil
+
+## 2026-09-24 16:19 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-24 16:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 16:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil de score composite
+
+## 2026-09-24 16:33 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global
+
+## 2026-09-24 16:34 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle "score ≥ 2.0"
+
+## 2026-09-24 16:46 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 16:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 16:48 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 16:49 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 17:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 17:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite ≥ 2,0
+
+## 2026-09-24 17:03 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au fallback global malgré l'absence de preuves spécifiques.
+
+## 2026-09-24 17:04 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 17:16 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 17:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-24 17:18 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite fixé à 2.0
+
+## 2026-09-24 17:19 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 17:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 17:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation (le score composite dépasse le seuil et pousse à valider le BUY malgré le manque de données)
+
+## 2026-09-24 17:33 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite
+
+## 2026-09-24 17:34 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-24 17:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 17:47 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de représentativité dû à l'utilisation du taux de réussite global comme substitut
+
+## 2026-09-24 17:48 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 17:48 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 18:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence de signaux contradictoires
+
+## 2026-09-24 18:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance due au score composite positif malgré l'absence de données spécifiques
+
+## 2026-09-24 18:03 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au fallback global sans données spécifiques
+
+## 2026-09-24 18:04 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de +2.0 du score composite
+
+## 2026-09-24 18:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite positif et à la confiance élevée
+
+## 2026-09-24 18:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation lié à la règle de score composite
+
+## 2026-09-24 18:18 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'atteinte du seuil de score composite
+
+## 2026-09-24 18:19 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de +2.0 du score composite
+
+## 2026-09-24 18:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 18:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de succès global comme unique référence
+
+## 2026-09-24 18:33 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation sur le critère de score composite
+
+## 2026-09-24 18:34 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au recours au fallback global sans données propres à NVDA
+
+## 2026-09-24 18:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 18:47 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil sans corroboration supplémentaire
+
+## 2026-09-24 18:48 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-24 18:49 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-24 19:02 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance due à la forte confiance (8/10) malgré l'absence de données spécifiques
+
+## 2026-09-24 19:03 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-24 19:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 19:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 19:17 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de score composite sans corroboration externe
+
+## 2026-09-24 19:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-24 19:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence de signaux contradictoires
+
+## 2026-09-24 19:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-09-24 19:33 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite ≥ 2.0
+
+## 2026-09-24 19:34 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite fixé à 2.0
+
+## 2026-09-24 19:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-24 19:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal technique sans corroboration externe
+
+## 2026-09-24 19:48 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-09-24 19:49 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-24 20:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation provenant du score composite et du prior global
+
+## 2026-09-24 20:02 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-24 20:03 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-24 20:04 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-24 20:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 20:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de représentativité du winrate global
+
+## 2026-09-24 20:18 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite dépassant le seuil
+
+## 2026-09-24 20:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- tendance à sur‑valoriser le score composite rule‑based malgré l'absence de confirmation fondamentale et sentimentale
+
+## 2026-09-24 20:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite positif et à l'absence de signaux contradictoires
+
+## 2026-09-24 20:32 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-24 20:33 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-24 20:34 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-24 20:46 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 20:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 20:48 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-24 20:49 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil sans corroboration fondamentale ou sentimentale
+
+## 2026-09-24 21:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 21:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 21:03 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-24 21:04 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère rule‑based qui favorise les signaux ≥ 2.0.
+
+## 2026-09-24 21:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 21:18 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 21:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-24 21:31 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-24 21:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le score technique
+
+## 2026-09-24 21:33 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite fixé à 2.0
+
+## 2026-09-24 21:34 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil.
+
+## 2026-09-24 21:45 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 21:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-24 21:47 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-24 21:48 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-24 22:01 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 22:02 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-09-24 22:03 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-24 22:03 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 22:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation provenant du score composite et du winrate global
+
+## 2026-09-24 22:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite juste au-dessus du seuil
+
+## 2026-09-24 22:18 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique justification
+
+## 2026-09-24 22:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-24 22:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- surconfiance due au score composite élevé et à l'absence de données historiques spécifiques
+
+## 2026-09-24 22:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 22:33 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-24 22:33 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-24 22:45 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé et au régime haussier.
+
+## 2026-09-24 22:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-24 22:47 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-24 22:48 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite juste au-dessus du critère.
+
+## 2026-09-24 23:02 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-24 23:03 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de score composite sans corroboration externe
+
+## 2026-09-24 23:15 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 23:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-09-24 23:17 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-24 23:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-24 23:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite élevé et à l'absence de données historiques
+
+## 2026-09-24 23:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite uniquement
+
+## 2026-09-24 23:33 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de seuil +2.0
+
+## 2026-09-24 23:33 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-24 23:46 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 23:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-24 23:48 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-24 23:48 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 00:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-09-25 00:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-09-25 00:02 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application du seuil de score composite
+
+## 2026-09-25 00:03 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du score composite comme critère décisif
+
+## 2026-09-25 00:15 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-09-25 00:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite dépassant le seuil
+
+## 2026-09-25 00:17 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 00:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 00:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence d'historique spécifique et à la règle de score > 2.0
+
+## 2026-09-25 00:32 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 00:33 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal
+
+## 2026-09-25 00:45 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance liée à la confiance 7/10 malgré l'absence de données historiques
+
+## 2026-09-25 00:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-25 00:47 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-25 00:48 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil (+2.0) sans validation sectorielle
+
+## 2026-09-25 01:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 01:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 01:02 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- surconfiance dans le taux de réussite global
+
+## 2026-09-25 01:03 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle "score composite ≥ 2.0"
+
+## 2026-09-25 01:15 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 01:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme substitut d'information spécifique
+
+## 2026-09-25 01:17 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au critère de score composite ≥ 2.0
+
+## 2026-09-25 01:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-25 01:30 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-09-25 01:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de succès global comme unique référence
+
+## 2026-09-25 01:32 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score technique
+
+## 2026-09-25 01:33 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 01:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 01:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques
+
+## 2026-09-25 01:48 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- overconfidence
+
+## 2026-09-25 01:48 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 02:00 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence d'analyses comportementales et à la forte confiance du sous‑agent technique
+
+## 2026-09-25 02:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de succès global comme unique référence
+
+## 2026-09-25 02:02 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 02:03 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-25 02:15 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation provenant du score composite et du fallback global
+
+## 2026-09-25 02:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-25 02:17 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite fixé à 2.0
+
+## 2026-09-25 02:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au seuil
+
+## 2026-09-25 02:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance due au score composite élevé malgré l'absence de données spécifiques à BTC‑USD.
+
+## 2026-09-25 02:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-25 02:33 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-25 02:33 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-25 02:45 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 02:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 02:47 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-25 02:48 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-25 03:02 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance due à la forte confiance (8/10) malgré l'absence de données historiques
+
+## 2026-09-25 03:03 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance lié au score technique isolé
+
+## 2026-09-25 03:15 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 03:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation lié au seuil de score composite (+2.0) sans corroboration supplémentaire.
+
+## 2026-09-25 03:17 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-25 03:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-25 03:30 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 03:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-25 03:32 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du score composite sans corroboration externe
+
+## 2026-09-25 03:33 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 03:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 03:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-25 03:48 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 03:48 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 04:00 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-25 04:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux global comme unique référence
+
+## 2026-09-25 04:02 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de surconfiance lié à la confiance de 6/10 malgré l'absence de données spécifiques
+
+## 2026-09-25 04:03 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite (+2.1 ≥ 2.0) qui pousse à valider l'achat malgré l'absence de corroboration sectorielle.
+
+## 2026-09-25 04:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence de données historiques spécifiques
+
+## 2026-09-25 04:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques
+
+## 2026-09-25 04:18 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 04:19 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal.
+
+## 2026-09-25 04:31 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 04:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite uniquement
+
+## 2026-09-25 04:33 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 04:33 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-25 04:45 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 04:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au recours au fallback global malgré l'absence de données propres à HBAR
+
+## 2026-09-25 04:47 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique référence
+
+## 2026-09-25 04:48 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global de 67 % utilisé comme justification principale
+
+## 2026-09-25 05:01 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 05:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de score composite
+
+## 2026-09-25 05:03 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le critère de score composite
+
+## 2026-09-25 05:03 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-09-25 05:15 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 05:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-25 05:17 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-25 05:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 05:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 05:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 05:33 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-25 05:34 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal
+
+## 2026-09-25 05:45 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 05:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence de signaux contradictoires
+
+## 2026-09-25 05:47 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-25 05:48 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle "score ≥ 2.0" qui domine l'évaluation malgré des signaux fondamentaux neutres
+
+## 2026-09-25 06:00 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 06:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-25 06:02 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global
+
+## 2026-09-25 06:03 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-25 06:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-25 06:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surpondération du taux de réussite global (bias de disponibilité)
+
+## 2026-09-25 06:17 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 06:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 06:30 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 06:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 06:31 UTC — ETH-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+
+## 2026-09-25 06:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- overconfidence
+
+## 2026-09-25 06:32 UTC — SOL-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 06:32 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de score composite ≥ 2.0
+
+## 2026-09-25 06:33 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du score composite comme critère décisif
+
+## 2026-09-25 06:33 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance dans le winrate global
+
+## 2026-09-25 06:34 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 06:35 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite qui déclenche automatiquement l'achat
+
+## 2026-09-25 06:36 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation (seulement le signal technique est considéré).
+
+## 2026-09-25 06:37 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance liée au score composite élevé
+
+## 2026-09-25 06:38 UTC — SPY (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 06:38 UTC — QQQ (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de score composite comme critère décisif
+
+## 2026-09-25 06:39 UTC — VOO (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-25 06:40 UTC — NQ=F (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite juste au-dessus du seuil
+
+## 2026-09-25 06:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 06:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance dans le critère rule‑based basé sur le score composite
+
+## 2026-09-25 06:48 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation provenant du critère de score composite uniquement
+
+## 2026-09-25 06:49 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle du score composite ≥ 2.0
+
+## 2026-09-25 07:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 07:03 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 07:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 07:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique référence
+
+## 2026-09-25 07:17 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 07:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 07:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence d'historique et à la confiance élevée du sous‑agent technique
+
+## 2026-09-25 07:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite juste au-dessus du seuil
+
+## 2026-09-25 07:32 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-09-25 07:33 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 07:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 07:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de disponibilité lié à l'utilisation du taux de réussite global comme substitut
+
+## 2026-09-25 07:48 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 07:48 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 08:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 08:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-25 08:03 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surpondération du winrate global (biais de disponibilité)
+
+## 2026-09-25 08:04 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil.
+
+## 2026-09-25 08:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 08:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 08:18 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-25 08:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation sur le critère de score composite
+
+## 2026-09-25 08:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 08:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité (reliance sur le taux de réussite global récent)
+
+## 2026-09-25 08:33 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-25 08:33 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil +2.0
+
+## 2026-09-25 08:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence de signaux contradictoires
+
+## 2026-09-25 08:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au winrate global utilisé comme substitut
+
+## 2026-09-25 08:48 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 08:48 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-25 09:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au poids excessif du signal rule‑based
+
+## 2026-09-25 09:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global
+
+## 2026-09-25 09:03 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 09:04 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-25 09:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 09:17 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-09-25 09:18 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- biais de représentativité
+
+## 2026-09-25 09:19 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil.
+
+## 2026-09-25 09:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé et à la règle simple ≥2.0
+
+## 2026-09-25 09:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans le taux de succès global (fallback) malgré l'absence de données spécifiques
+
+## 2026-09-25 09:33 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de score composite sans corroboration supplémentaire
+
+## 2026-09-25 09:33 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- confirmation
+
+## 2026-09-25 09:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation provenant du score composite et du winrate global
+
+## 2026-09-25 09:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite fixé à 2.0
+
+## 2026-09-25 09:48 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 09:49 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite dépassant le seuil minimal.
+
+## 2026-09-25 10:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 10:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-25 10:03 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 10:04 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite positif et à la règle de déclenchement automatique.
+
+## 2026-09-25 10:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-09-25 10:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 10:18 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de score composite
+
+## 2026-09-25 10:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-25 10:31 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-25 10:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite fixé à 2.0
+
+## 2026-09-25 10:33 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-25 10:34 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-25 10:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 10:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans le winrate global
+
+## 2026-09-25 10:48 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-25 10:48 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de score composite ≥ 2.0
+
+## 2026-09-25 11:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global sans données spécifiques à BTC-USD
+
+## 2026-09-25 11:02 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé malgré l'absence d'analyses fondamentales
+
+## 2026-09-25 11:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite juste au-dessus du seuil
+
+## 2026-09-25 11:03 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil sans corroboration fondamentale
+
+## 2026-09-25 11:03 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 11:04 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-25 11:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- surconfiance due au score composite élevé malgré le manque de données spécifiques
+
+## 2026-09-25 11:17 UTC — SOL-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 11:18 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation sur le critère de score composite
+
+## 2026-09-25 11:18 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global
+
+## 2026-09-25 11:19 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-25 11:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence d'historique et à la règle de score ≥ 2.0
+
+## 2026-09-25 11:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au recours au fallback global sans ajustement pour la spécificité de l'actif
+
+## 2026-09-25 11:33 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans le taux de succès global (fallback) malgré l'absence de données spécifiques
+
+## 2026-09-25 11:33 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance liée au score composite élevé malgré des indicateurs fondamentaux neutres.
+
+## 2026-09-25 11:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 11:47 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-25 11:48 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-09-25 11:49 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 12:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-25 12:02 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 12:03 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-25 12:03 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 12:16 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 12:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique support
+
+## 2026-09-25 12:18 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 12:19 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais d'optimisme lié à la règle de déclenchement du score composite
+
+## 2026-09-25 12:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-09-25 12:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-09-25 12:32 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-25 12:33 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surpondération du critère rule‑based au détriment des fondamentaux
+
+## 2026-09-25 12:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 12:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 12:47 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 12:48 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques à NVDA
+
+## 2026-09-25 13:01 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- surconfiance dans le critère rule‑based
+
+## 2026-09-25 13:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite fixé à 2.0
+
+## 2026-09-25 13:03 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-25 13:04 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-25 13:16 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 13:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-25 13:17 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de +2.0 comme critère décisif
+
+## 2026-09-25 13:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 13:31 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 13:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de représentativité du winrate global
+
+## 2026-09-25 13:34 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil
+
+## 2026-09-25 13:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-25 13:49 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-25 14:01 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 14:03 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-25 14:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 14:18 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de représentativité du winrate global
+
+## 2026-09-25 14:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 14:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation dû au score composite juste au-dessus du seuil.
+
+## 2026-09-25 14:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-09-25 14:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite
+
+## 2026-09-25 15:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-25 15:16 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 15:19 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-09-25 15:31 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 15:33 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 15:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 15:48 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 16:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-25 16:02 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique référence
+
+## 2026-09-25 16:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance lié à la confiance 7/10 malgré l'absence de données spécifiques
+
+## 2026-09-25 16:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de représentativité du winrate global
+
+## 2026-09-25 16:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 16:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique indicateur
+
+## 2026-09-25 16:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 16:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 17:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-25 17:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-25 17:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif et à l'absence de contre‑signaux
+
+## 2026-09-25 17:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques
+
+## 2026-09-25 17:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance due au score composite élevé et à la confiance 7/10
+
+## 2026-09-25 17:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global
+
+## 2026-09-25 17:46 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 17:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 17:49 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-25 18:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite et au régime haussier
+
+## 2026-09-25 18:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite dépassant le seuil
+
+## 2026-09-25 18:16 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 18:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-25 18:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite et à la règle de seuil
+
+## 2026-09-25 18:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 18:33 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-25 18:46 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 18:47 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-09-25 19:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 19:17 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite et à la règle de seuil
+
+## 2026-09-25 19:18 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de score composite
+
+## 2026-09-25 19:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 19:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de score composite
+
+## 2026-09-25 19:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 19:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite uniquement
+
+## 2026-09-25 20:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence de données spécifiques sur BTC-USD
+
+## 2026-09-25 20:02 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 20:16 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 20:17 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal.
+
+## 2026-09-25 20:19 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-25 20:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 20:33 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 20:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 20:47 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-25 21:01 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 21:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-25 21:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 21:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 21:19 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-25 21:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-25 21:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au fallback global sans validation spécifique.
+
+## 2026-09-25 21:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence d'analyses comportementales et à la forte confiance dans le score composite
+
+## 2026-09-25 21:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 22:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation lié à la confiance élevée (7/10) malgré l'absence de données comportementales
+
+## 2026-09-25 22:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 22:15 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- surconfiance due au score composite élevé malgré l'absence d'historique spécifique
+
+## 2026-09-25 22:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle qui déclenche l'achat dès que le score dépasse 2,0
+
+## 2026-09-25 22:30 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 22:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans validation spécifique
+
+## 2026-09-25 22:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-25 22:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif malgré l'absence de support fondamental
+
+## 2026-09-25 23:00 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-25 23:15 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance due au score composite élevé et à l'absence de données comportementales
+
+## 2026-09-25 23:17 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global
+
+## 2026-09-25 23:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 23:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le winrate global
+
+## 2026-09-25 23:45 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-25 23:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de surconfiance dans le winrate global
+
+## 2026-09-26 00:01 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 00:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au taux de réussite global comme unique justification
+
+## 2026-09-26 00:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 00:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 00:30 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 00:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de déclenchement du score composite ≥ 2,0
+
+## 2026-09-26 00:45 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence de signaux contradictoires
+
+## 2026-09-26 00:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-26 01:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 01:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 01:04 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 01:16 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- surconfiance due au score composite élevé
+
+## 2026-09-26 01:19 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-26 01:30 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 01:32 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de score composite sans validation supplémentaire
+
+## 2026-09-26 01:45 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance due au score composite élevé
+
+## 2026-09-26 01:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- surconfiance dans le winrate global
+
+## 2026-09-26 02:01 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 02:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global
+
+## 2026-09-26 02:15 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle "score ≥ 2.0"
+
+## 2026-09-26 02:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de +2.0
+
+## 2026-09-26 02:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 02:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-26 02:45 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 02:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 03:02 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 03:15 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 03:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 03:30 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-26 03:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based sur le score composite
+
+## 2026-09-26 03:45 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence d'historique spécifique et à la dépendance au fallback global
+
+## 2026-09-26 03:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère rule‑based
+
+## 2026-09-26 03:47 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- Biais de confirmation lié à la règle de score composite ≥ 2,0
+
+## 2026-09-26 04:00 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation provenant du score composite qui dépasse le seuil minimal
+
+## 2026-09-26 04:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global de 67 % sans ajustement sectoriel
+
+## 2026-09-26 04:15 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- surconfiance due à la confiance 7/10 malgré l'absence de données historiques spécifiques
+
+## 2026-09-26 04:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 04:30 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 04:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 04:45 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-26 04:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-26 05:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-26 05:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-26 05:02 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du critère de score composite
+
+## 2026-09-26 05:15 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 05:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-09-26 05:31 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+
+## 2026-09-26 05:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-26 05:45 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-26 05:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à l'utilisation du winrate global comme unique support bayésien
+
+## 2026-09-26 06:01 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-26 06:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au critère rule‑based qui favorise les signaux techniques positifs
+
+## 2026-09-26 06:04 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite fixé à 2.0
+
+## 2026-09-26 06:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-09-26 06:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques à HBAR
+
+## 2026-09-26 06:30 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- sur‑confiance
+
+## 2026-09-26 06:31 UTC — ETH-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- sur‑confiance
+
+## 2026-09-26 06:36 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil fixe de +2.0
+
+## 2026-09-26 06:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de score composite uniquement
+
+## 2026-09-26 07:02 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confiance excessive
+
+## 2026-09-26 07:16 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle "score composite ≥ 2.0"
+
+## 2026-09-26 07:17 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 07:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite uniquement
+
+## 2026-09-26 07:32 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 07:33 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de +2.0 du score composite
+
+## 2026-09-26 07:34 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 07:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 07:47 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-26 07:48 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-26 08:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal
+
+## 2026-09-26 08:03 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 08:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance dans le winrate global
+
+## 2026-09-26 08:17 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de score composite sans validation supplémentaire
+
+## 2026-09-26 08:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans le taux de réussite global (fallback) malgré l'absence de données spécifiques
+
+## 2026-09-26 08:32 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite atteint
+
+## 2026-09-26 08:34 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 08:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique justification
+
+## 2026-09-26 08:49 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte du seuil de score composite
+
+## 2026-09-26 09:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-26 09:03 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 09:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-09-26 09:18 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au recours au fallback global sans données propres à NVDA
+
+## 2026-09-26 09:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation basé sur le winrate global sans prise en compte du contexte spécifique de HBAR
+
+## 2026-09-26 09:32 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global
+
+## 2026-09-26 09:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais d'ancrage sur le winrate global
+
+## 2026-09-26 09:47 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-26 10:01 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 10:02 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l’utilisation du fallback global sans validation spécifique
+
+## 2026-09-26 10:03 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 10:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-09-26 10:17 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global
+
+## 2026-09-26 10:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de succès global comme unique support
+
+## 2026-09-26 10:32 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-26 10:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification.
+
+## 2026-09-26 10:47 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global
+
+## 2026-09-26 11:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse légèrement le seuil
+
+## 2026-09-26 11:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement sectoriel
+
+## 2026-09-26 11:18 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-26 11:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans validation spécifique
+
+## 2026-09-26 11:32 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de disponibilité du winrate global au détriment d'une analyse spécifique à l'actif
+
+## 2026-09-26 11:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance dans le critère de score composite sans corroboration externe
+
+## 2026-09-26 11:47 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global
+
+## 2026-09-26 12:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 12:02 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite fixé à 2.0
+
+## 2026-09-26 12:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-26 12:16 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 12:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-09-26 12:32 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-26 12:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le seuil de score composite
+
+## 2026-09-26 12:47 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l’utilisation du seuil de score composite comme critère décisif
+
+## 2026-09-26 12:49 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-26 13:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite sans corroboration externe
+
+## 2026-09-26 13:04 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 13:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de score composite ≥ 2.0
+
+## 2026-09-26 13:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 13:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-26 13:32 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation (le score composite dépasse le seuil et justifie l'achat malgré l'absence de support supplémentaire)
+
+## 2026-09-26 13:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-26 13:46 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- surconfiance due au taux de succès global appliqué sans ajustement spécifique
+
+## 2026-09-26 13:48 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation lié à la règle de score composite
+
+## 2026-09-26 14:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le score composite
+
+## 2026-09-26 14:03 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 14:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de succès global comme unique justification
+
+## 2026-09-26 14:16 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite fixé à 2.0
+
+## 2026-09-26 14:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance dans le critère de score composite
+
+## 2026-09-26 14:31 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte du seuil de score composite
+
+## 2026-09-26 14:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-26 14:47 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite fixé à 2.0
+
+## 2026-09-26 14:48 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 15:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite uniquement
+
+## 2026-09-26 15:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de disponibilité du winrate global, surpondération du critère technique sans support fondamental
+
+## 2026-09-26 15:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite fixé à 2.0
+
+## 2026-09-26 15:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite uniquement
+
+## 2026-09-26 15:32 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation lié à la règle de score composite
+
+## 2026-09-26 15:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-26 15:47 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global de 67 % sans validation sectorielle
+
+## 2026-09-26 16:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil de score composite
+
+## 2026-09-26 16:02 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-26 16:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 16:16 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-26 16:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation dû au déclenchement automatique du rule‑based dès que le score dépasse 2.0
+
+## 2026-09-26 16:31 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-26 16:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation basé sur le winrate global sans prise en compte du contexte spécifique de HBAR
+
+## 2026-09-26 16:47 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 17:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans le taux de réussite global (fallback) malgré l'absence d'information spécifique
+
+## 2026-09-26 17:02 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-26 17:03 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-26 17:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal
+
+## 2026-09-26 17:16 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans validation spécifique
+
+## 2026-09-26 17:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-09-26 17:32 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-26 17:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite ≥ 2.0
+
+## 2026-09-26 17:46 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-26 18:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-26 18:02 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au déclenchement automatique du rule‑based sur le seuil de +2,0
+
+## 2026-09-26 18:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques
+
+## 2026-09-26 18:17 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte du seuil de score composite
+
+## 2026-09-26 18:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-26 18:32 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global
+
+## 2026-09-26 18:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-26 18:46 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite élevé et au sentiment positif
+
+## 2026-09-26 19:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-26 19:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global de winrate
+
+## 2026-09-26 19:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite
+
+## 2026-09-26 19:32 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 19:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de score composite ≥ 2,0
+
+## 2026-09-26 19:46 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite élevé et aux signaux positifs du sentiment
+
+## 2026-09-26 19:48 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-26 20:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité – le système s'appuie fortement sur le winrate global récent malgré l'absence de données spécifiques à HBAR.
+
+## 2026-09-26 20:03 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-26 20:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global
+
+## 2026-09-26 20:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle « score composite ≥ 2.0 »
+
+## 2026-09-26 20:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-26 20:32 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 20:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil (+2.0) malgré l'absence de soutien fondamental
+
+## 2026-09-26 20:46 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé et au sentiment positif
+
+## 2026-09-26 20:49 UTC — AMAT (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-26 21:01 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-09-26 21:02 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite positif et à la confiance élevée
+
+## 2026-09-26 21:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-26 21:17 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 21:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du score composite comme critère unique
+
+## 2026-09-26 21:31 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du score composite comme critère unique
+
+## 2026-09-26 21:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-26 21:46 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global de 67 % utilisé malgré l'absence de données spécifiques
+
+## 2026-09-26 22:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-26 22:02 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 22:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 22:16 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans le taux de réussite global
+
+## 2026-09-26 22:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback du winrate global
+
+## 2026-09-26 22:31 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de score composite comme critère décisif
+
+## 2026-09-26 22:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-26 22:46 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- Biais de confirmation lié à l'application stricte du seuil de score composite sans validation supplémentaire.
+
+## 2026-09-26 23:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans le taux de réussite global
+
+## 2026-09-26 23:01 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de sur‑confiance dans le winrate global
+
+## 2026-09-26 23:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du taux de réussite global
+
+## 2026-09-26 23:19 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-09-26 23:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-26 23:33 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-09-26 23:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-26 23:49 UTC — AMAT (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-27 00:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application du critère de score composite ≥ 2.0 sans validation supplémentaire.
+
+## 2026-09-27 00:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-27 00:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite fixé à 2.0
+
+## 2026-09-27 00:16 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-27 00:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-09-27 00:32 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation provenant du sentiment positif
+
+## 2026-09-27 00:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite uniquement
+
+## 2026-09-27 00:46 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif et au signal de sentiment
+
+## 2026-09-27 00:49 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-09-27 01:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de seuil +2.0 qui pousse à valider le trade malgré le manque d'analyses fondamentales
+
+## 2026-09-27 01:03 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 01:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme seul repère
+
+## 2026-09-27 01:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite dépassant le seuil
+
+## 2026-09-27 01:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-27 01:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-09-27 01:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite qui dépasse le seuil minimal
+
+## 2026-09-27 01:47 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l’utilisation du fallback global sans données spécifiques
+
+## 2026-09-27 02:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-09-27 02:02 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-27 02:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-27 02:16 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-27 02:18 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-27 02:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de représentativité du winrate global appliqué à un actif sans historique propre
+
+## 2026-09-27 02:33 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule-based
+
+## 2026-09-27 02:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-27 02:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite ≥ 2.0
+
+## 2026-09-27 03:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation lié à la règle de seuil (+2.0) qui domine l'évaluation malgré l'absence de corroboration fondamentale
+
+## 2026-09-27 03:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques
+
+## 2026-09-27 03:17 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du score composite
+
+## 2026-09-27 03:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité – le système s’appuie fortement sur le winrate global récent faute de données spécifiques à HBAR.
+
+## 2026-09-27 03:31 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de score composite ≥ 2.0
+
+## 2026-09-27 03:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme substitut à des données propres
+
+## 2026-09-27 03:46 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- surpondération du winrate global au détriment de l'absence d'information spécifique à CRO-USD
+
+## 2026-09-27 04:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-27 04:01 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-27 04:05 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-27 04:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance dans le taux de réussite global (biais de disponibilité)
+
+## 2026-09-27 04:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 04:32 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-27 04:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme substitut
+
+## 2026-09-27 04:46 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application du seuil de score composite
+
+## 2026-09-27 05:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global de 67 % utilisé comme prior
+
+## 2026-09-27 05:01 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 05:04 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-09-27 05:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement sectoriel
+
+## 2026-09-27 05:18 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil.
+
+## 2026-09-27 05:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite uniquement
+
+## 2026-09-27 05:31 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite sans corroboration externe
+
+## 2026-09-27 05:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite > 2.0
+
+## 2026-09-27 05:47 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application du seuil de score composite sans contexte spécifique
+
+## 2026-09-27 06:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation (le score composite dépasse le seuil et justifie la décision sans autres validations)
+
+## 2026-09-27 06:01 UTC — CRO-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-27 06:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de seuil +2.0
+
+## 2026-09-27 06:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil sans corroboration fondamentale
+
+## 2026-09-27 06:30 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- sur‑confiance
+
+## 2026-09-27 06:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil sans corroboration fondamentale
+
+## 2026-09-27 06:37 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 06:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal.
+
+## 2026-09-27 07:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 07:02 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-09-27 07:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-27 07:17 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-27 07:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surpondération du winrate global (biais de disponibilité)
+
+## 2026-09-27 07:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte du seuil de score composite
+
+## 2026-09-27 07:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-27 07:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 08:01 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de disponibilité du taux de réussite global
+
+## 2026-09-27 08:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil.
+
+## 2026-09-27 08:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-09-27 08:16 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-27 08:17 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-09-27 08:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique justification
+
+## 2026-09-27 08:31 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-27 08:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-27 08:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal.
+
+## 2026-09-27 09:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 09:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal
+
+## 2026-09-27 09:02 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-27 09:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-27 09:16 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite ≥ 2,0
+
+## 2026-09-27 09:19 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-27 09:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-09-27 09:33 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-27 09:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-09-27 09:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil sans corroboration sectorielle
+
+## 2026-09-27 10:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite uniquement
+
+## 2026-09-27 10:01 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 10:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application du critère de score composite sans corroboration externe
+
+## 2026-09-27 10:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-27 10:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle "score ≥ 2.0" sans corroboration fondamentale
+
+## 2026-09-27 10:31 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-27 10:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-27 10:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil de 2,0
+
+## 2026-09-27 11:02 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-09-27 11:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-09-27 11:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-27 11:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 11:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle du score composite sans corroboration externe
+
+## 2026-09-27 11:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse légèrement le seuil
+
+## 2026-09-27 12:01 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-27 12:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-27 12:03 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-27 12:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-27 12:16 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au critère de score composite ≥ 2.0 qui a déclenché l'achat sans autre validation.
+
+## 2026-09-27 12:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique justification
+
+## 2026-09-27 12:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-09-27 12:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au fallback global sans validation spécifique
+
+## 2026-09-27 12:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-27 13:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-27 13:01 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-09-27 13:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du score composite
+
+## 2026-09-27 13:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au recours au fallback global sans données propres à NVDA
+
+## 2026-09-27 13:30 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-27 13:31 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 13:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- surpondération du winrate global au détriment de l'absence de données spécifiques
+
+## 2026-09-27 13:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global
+
+## 2026-09-27 13:47 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-09-27 14:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique support
+
+## 2026-09-27 14:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-27 14:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-09-27 14:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil sans justification sectorielle
+
+## 2026-09-27 14:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement spécifique
+
+## 2026-09-27 14:31 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite ≥ 2.0
+
+## 2026-09-27 14:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- tendance à sur‑pondérer le taux de réussite global (bias de disponibilité) au détriment de l'absence d'information spécifique sur HBAR
+
+## 2026-09-27 14:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 15:02 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-27 15:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil (+2.0) qui peut surévaluer le signal
+
+## 2026-09-27 15:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle basée uniquement sur le score composite
+
+## 2026-09-27 15:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-27 15:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global
+
+## 2026-09-27 15:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-27 15:47 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation technique
+
+## 2026-09-27 16:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le score composite
+
+## 2026-09-27 16:02 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-09-27 16:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite uniquement
+
+## 2026-09-27 16:16 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-09-27 16:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 16:31 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- surconfiance due au score composite positif malgré l'absence de support fondamental
+
+## 2026-09-27 16:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle "score ≥ 2.0"
+
+## 2026-09-27 16:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le critère de score composite
+
+## 2026-09-27 16:47 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-27 17:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-27 17:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-09-27 17:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 17:16 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-09-27 17:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique indicateur
+
+## 2026-09-27 17:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil.
+
+## 2026-09-27 17:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 17:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 18:01 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-27 18:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite dépassant le seuil
+
+## 2026-09-27 18:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-27 18:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- overconfidence lié au score composite positif malgré l'absence de données spécifiques
+
+## 2026-09-27 18:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-09-27 18:31 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-27 18:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global
+
+## 2026-09-27 18:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite ≥ 2.0 sans validation sectorielle.
+
+## 2026-09-27 19:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-27 19:16 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-09-27 19:17 UTC — AMAT (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-27 19:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 19:31 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le critère rule‑based
+
+## 2026-09-27 19:32 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil (+2.0) qui pousse à valider le trade malgré l'absence d'autres signaux
+
+## 2026-09-27 19:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite
+
+## 2026-09-27 19:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-27 20:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 20:01 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 20:02 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil technique
+
+## 2026-09-27 20:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence.
+
+## 2026-09-27 20:17 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-27 20:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-27 20:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 20:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-27 20:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 21:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-27 21:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de score composite ≥ 2.0
+
+## 2026-09-27 21:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques
+
+## 2026-09-27 21:16 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-09-27 21:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à l'utilisation du taux de succès global comme unique justification
+
+## 2026-09-27 21:31 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-27 21:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-27 21:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-27 22:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-27 22:01 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- Biais de confirmation lié à la règle de seuil (+2.0) sans prise en compte du contexte de marché
+
+## 2026-09-27 22:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil (+2.0) malgré l'absence d'analyses fondamentales
+
+## 2026-09-27 22:16 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 22:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-09-27 22:31 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de score composite
+
+## 2026-09-27 22:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-27 22:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 23:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal
+
+## 2026-09-27 23:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite uniquement
+
+## 2026-09-27 23:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance due au score composite élevé malgré l'absence de données spécifiques
+
+## 2026-09-27 23:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de déclenchement du score composite.
+
+## 2026-09-27 23:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 23:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-27 23:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-28 00:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-09-28 00:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 00:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-28 00:16 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil +2,0
+
+## 2026-09-28 00:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de succès global comme unique justification
+
+## 2026-09-28 00:31 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 00:32 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation (reliance sur le score composite et le fallback global)
+
+## 2026-09-28 00:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite
+
+## 2026-09-28 00:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de +2.0 comme critère décisif
+
+## 2026-09-28 01:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de surconfiance lié à l'utilisation du taux de réussite global sans ajustement suffisant pour le manque de données spécifiques.
+
+## 2026-09-28 01:01 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-28 01:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux global de 67 % comme substitut d'information spécifique
+
+## 2026-09-28 01:16 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 01:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite fixé à 2.0
+
+## 2026-09-28 01:31 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 01:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite fixé à 2.0
+
+## 2026-09-28 01:46 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-28 01:47 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif et à la règle de déclenchement.
+
+## 2026-09-28 02:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-28 02:01 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de score composite
+
+## 2026-09-28 02:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite sans corroboration supplémentaire
+
+## 2026-09-28 02:16 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-28 02:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation lié à la règle de seuil +2.0
+
+## 2026-09-28 02:31 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le critère de score composite
+
+## 2026-09-28 02:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de surconfiance dans le taux de réussite global
+
+## 2026-09-28 02:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-28 02:49 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 03:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-28 03:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 03:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance due au fallback du taux global de 67 % malgré l'absence de données propres
+
+## 2026-09-28 03:32 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-28 03:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite uniquement
+
+## 2026-09-28 03:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle composite qui domine l'évaluation
+
+## 2026-09-28 04:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans validation spécifique
+
+## 2026-09-28 04:01 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au critère rule‑based (score ≥ 2.0)
+
+## 2026-09-28 04:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global au détriment d'une analyse spécifique à HBAR
+
+## 2026-09-28 04:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de score composite comme critère décisif
+
+## 2026-09-28 04:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- overconfidence
+
+## 2026-09-28 04:31 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite ≥ 2.0
+
+## 2026-09-28 04:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite dépassant le seuil
+
+## 2026-09-28 04:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2,0
+
+## 2026-09-28 05:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite ≥ 2.0 sans validation supplémentaire
+
+## 2026-09-28 05:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-28 05:02 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation provenant du score composite et du fallback global.
+
+## 2026-09-28 05:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-09-28 05:16 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation lié à la règle du score composite ≥ 2.0.
+
+## 2026-09-28 05:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du score composite comme critère décisif
+
+## 2026-09-28 05:31 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation du signal technique
+
+## 2026-09-28 05:32 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite comme seul déclencheur
+
+## 2026-09-28 05:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite juste au-dessus du seuil
+
+## 2026-09-28 05:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-28 06:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-28 06:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans validation sectorielle
+
+## 2026-09-28 06:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-28 06:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-28 06:30 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+**Biais détectés** :
+- sur‑confiance
+
+## 2026-09-28 06:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 06:37 UTC — AMAT (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 06:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-09-28 07:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au recours au winrate global comme unique référence
+
+## 2026-09-28 07:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-28 07:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite fixé à 2.0
+
+## 2026-09-28 07:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite ≥ 2.0
+
+## 2026-09-28 07:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based sur le score composite
+
+## 2026-09-28 07:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-28 07:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback du win‑rate global
+
+## 2026-09-28 07:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-28 08:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance dans le score rule‑based sans corroboration fondamentale
+
+## 2026-09-28 08:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-28 08:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de succès global comme substitut à des données spécifiques
+
+## 2026-09-28 08:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance du critère rule‑based
+
+## 2026-09-28 08:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence de signaux contradictoires
+
+## 2026-09-28 08:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-28 08:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux global comme unique justification
+
+## 2026-09-28 08:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite ≥ 2.0
+
+## 2026-09-28 09:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 09:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite juste au-dessus du seuil.
+
+## 2026-09-28 09:16 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-09-28 09:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-28 09:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le critère de score composite
+
+## 2026-09-28 09:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 09:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite uniquement
+
+## 2026-09-28 09:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 10:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au critère de score composite uniquement
+
+## 2026-09-28 10:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle basée sur le score composite uniquement
+
+## 2026-09-28 10:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-28 10:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite atteint.
+
+## 2026-09-28 10:18 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-28 10:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle "score ≥ 2,0"
+
+## 2026-09-28 10:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance liée au score composite positif malgré l'absence de données spécifiques
+
+## 2026-09-28 10:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global, absence de données spécifiques à HBAR-USD
+
+## 2026-09-28 10:48 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global comme principal support
+
+## 2026-09-28 11:01 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- surpondération du winrate global (biais de disponibilité)
+
+## 2026-09-28 11:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite > 2.0
+
+## 2026-09-28 11:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite dépassant le seuil
+
+## 2026-09-28 11:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de +2.0 comme critère décisif
+
+## 2026-09-28 11:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-28 11:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au déclenchement automatique du rule‑based dès que le score dépasse 2,0
+
+## 2026-09-28 11:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement spécifique à NVDA
+
+## 2026-09-28 12:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-28 12:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance dans le critère rule‑based basé sur le score composite
+
+## 2026-09-28 12:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-09-28 12:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-28 12:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans le winrate global
+
+## 2026-09-28 12:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil sans corroboration fondamentale
+
+## 2026-09-28 12:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du score composite comme critère décisif malgré l'absence de données de fondement.
+
+## 2026-09-28 12:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-28 13:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 13:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le critère rule‑based
+
+## 2026-09-28 13:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité – la décision s'appuie fortement sur le win‑rate global récent, malgré l'absence de données spécifiques à HBAR.
+
+## 2026-09-28 13:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-28 13:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-09-28 13:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 13:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de représentativité du winrate global
+
+## 2026-09-28 13:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-28 14:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite uniquement
+
+## 2026-09-28 14:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-09-28 14:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-28 14:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du score composite
+
+## 2026-09-28 14:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 5/10)
+**Biais détectés** :
+- biais de surconfiance dans le winrate global
+
+## 2026-09-28 14:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au déclencheur rule‑based basé uniquement sur le score composite
+
+## 2026-09-28 14:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 14:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique justification du BUY
+
+## 2026-09-28 15:01 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au taux de succès global comme unique justification.
+
+## 2026-09-28 15:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based (seulement le score composite considéré)
+
+## 2026-09-28 15:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-28 15:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du taux de réussite global
+
+## 2026-09-28 15:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 15:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite uniquement
+
+## 2026-09-28 15:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-28 15:48 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 16:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques
+
+## 2026-09-28 16:03 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-28 16:16 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 16:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement sectoriel
+
+## 2026-09-28 16:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global
+
+## 2026-09-28 16:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 16:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû à l'utilisation du winrate global comme unique justification
+
+## 2026-09-28 16:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle « score ≥ 2.0 »
+
+## 2026-09-28 17:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité
+
+## 2026-09-28 17:02 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement sectoriel
+
+## 2026-09-28 17:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le critère technique
+
+## 2026-09-28 17:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le critère rule‑based
+
+## 2026-09-28 17:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥2,0
+
+## 2026-09-28 17:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du score composite comme critère principal
+
+## 2026-09-28 17:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal
+
+## 2026-09-28 17:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû au déclenchement du critère de score composite ≥ 2.0
+
+## 2026-09-28 17:48 UTC — AMAT (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal.
+
+## 2026-09-28 18:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-28 18:02 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-28 18:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-28 18:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance lié au score composite élevé malgré l'absence de données spécifiques à NVDA
+
+## 2026-09-28 18:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 18:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil
+
+## 2026-09-28 18:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de disponibilité – utilisation du winrate global comme substitut à des données propres à l'actif.
+
+## 2026-09-28 18:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 19:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 19:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement suffisant
+
+## 2026-09-28 19:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-28 19:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence.
+
+## 2026-09-28 19:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-28 19:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation dû à la règle du score composite sans corroboration externe.
+
+## 2026-09-28 19:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- overconfidence lié au score composite positif malgré l'absence de confirmation fondamentale et sentimentale
+
+## 2026-09-28 20:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global de 67 % utilisé malgré l'absence de données propres
+
+## 2026-09-28 20:03 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global comme principal argument
+
+## 2026-09-28 20:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global
+
+## 2026-09-28 20:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-28 20:18 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-28 20:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à l'utilisation du taux de succès global comme unique justification
+
+## 2026-09-28 20:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 20:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 20:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au dépassement du seuil de score composite
+
+## 2026-09-28 21:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global de 67 % qui pousse à valider la décision malgré le manque de données spécifiques
+
+## 2026-09-28 21:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance dans la règle de score composite
+
+## 2026-09-28 21:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite > 2.0
+
+## 2026-09-28 21:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite fixé à 2.0
+
+## 2026-09-28 21:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 21:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil de score
+
+## 2026-09-28 21:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans validation spécifique
+
+## 2026-09-28 21:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite positif et à l'absence d'analyse fondamentale
+
+## 2026-09-28 22:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application du critère de score composite sans validation sectorielle
+
+## 2026-09-28 22:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 22:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au winrate global comme unique justification
+
+## 2026-09-28 22:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 22:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- sur‑confiance au score rule‑based sans corroboration fondamentale
+
+## 2026-09-28 22:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques
+
+## 2026-09-28 22:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation lié à la règle de seuil (+2.0) sans validation supplémentaire
+
+## 2026-09-28 22:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte de la règle de score ≥ 2.0
+
+## 2026-09-28 23:02 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confiance élevée dû au score composite positif malgré l'absence de données fondamentales
+
+## 2026-09-28 23:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global
+
+## 2026-09-28 23:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-28 23:30 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- surconfiance dans le winrate global
+
+## 2026-09-28 23:31 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite qui déclenche automatiquement l'achat
+
+## 2026-09-28 23:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-09-28 23:48 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-09-29 00:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement sectoriel
+
+## 2026-09-29 00:02 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques à NVDA
+
+## 2026-09-29 00:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au taux de succès global malgré l'absence de données spécifiques
+
+## 2026-09-29 00:16 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 00:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-29 00:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-29 00:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance dans le winrate global (biais de disponibilité)
+
+## 2026-09-29 00:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 01:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback du winrate global
+
+## 2026-09-29 01:02 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 01:03 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 01:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de surconfiance dans le winrate global, malgré l'absence d'information spécifique à HBAR-USD
+
+## 2026-09-29 01:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le score composite (+2.1) malgré l'absence de soutien fondamental.
+
+## 2026-09-29 01:30 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- surpondération du winrate global (biais de disponibilité)
+
+## 2026-09-29 01:31 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-29 01:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique référence
+
+## 2026-09-29 01:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 02:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique justification
+
+## 2026-09-29 02:01 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-29 02:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de seuil (+2.0) qui domine l'évaluation malgré l'absence de support fondamental
+
+## 2026-09-29 02:16 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite fixé à 2.0
+
+## 2026-09-29 02:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte du seuil de score composite
+
+## 2026-09-29 02:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite de 2.0
+
+## 2026-09-29 02:32 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation dû à la règle de seuil (+2.0) appliquée sans corroboration supplémentaire
+
+## 2026-09-29 02:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement sectoriel
+
+## 2026-09-29 02:47 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-29 03:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification.
+
+## 2026-09-29 03:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-29 03:16 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 03:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 03:31 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal.
+
+## 2026-09-29 03:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 03:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-29 04:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-29 04:01 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques à NVDA
+
+## 2026-09-29 04:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 04:17 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-09-29 04:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-29 04:32 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de +2.0 du score composite
+
+## 2026-09-29 04:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 04:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite fixé à +2.0
+
+## 2026-09-29 05:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-29 05:02 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil sans validation sectorielle
+
+## 2026-09-29 05:02 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite qui pousse à valider le BUY dès que le seuil est franchi.
+
+## 2026-09-29 05:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-29 05:16 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 05:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle « score ≥ 2.0 »
+
+## 2026-09-29 05:31 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-29 05:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 05:46 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 06:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-29 06:01 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-29 06:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal
+
+## 2026-09-29 06:16 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite
+
+## 2026-09-29 06:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 06:30 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de sur‑confiance
+
+## 2026-09-29 06:34 UTC — CRO-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-29 06:39 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite ≥ 2.0 comme déclencheur unique.
+
+## 2026-09-29 07:03 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-29 07:03 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 07:04 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-09-29 07:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-29 07:17 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-09-29 07:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de succès global comme unique justification
+
+## 2026-09-29 07:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-09-29 07:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite qui déclenche automatiquement l'achat
+
+## 2026-09-29 07:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 08:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 08:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-29 08:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-29 08:16 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 08:18 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-29 08:30 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-29 08:32 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-29 08:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 08:48 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif
+
+## 2026-09-29 09:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans le winrate global
+
+## 2026-09-29 09:01 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-09-29 09:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de +2.0 comme critère décisif
+
+## 2026-09-29 09:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-09-29 09:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-29 09:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 09:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-09-29 09:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-29 10:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation lié à la règle de score composite ≥ 2,0
+
+## 2026-09-29 10:02 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-29 10:06 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-09-29 10:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite uniquement
+
+## 2026-09-29 10:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques
+
+## 2026-09-29 10:32 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 10:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence.
+
+## 2026-09-29 10:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-29 11:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique indicateur
+
+## 2026-09-29 11:02 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de règle (reliance excessive au score composite sans validation croisée).
+
+## 2026-09-29 11:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-29 11:18 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confiance excessive basé sur le winrate global
+
+## 2026-09-29 11:30 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-29 11:33 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 11:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global
+
+## 2026-09-29 11:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-09-29 12:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-29 12:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-09-29 12:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le score composite
+
+## 2026-09-29 12:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-09-29 12:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 12:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 12:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 12:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le score composite
+
+## 2026-09-29 13:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-09-29 13:01 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-29 13:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de +2.0 comme critère décisif
+
+## 2026-09-29 13:16 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-29 13:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation dû à la règle "score ≥ 2.0" qui domine l’évaluation malgré l’absence de données fondamentales.
+
+## 2026-09-29 13:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-09-29 13:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-29 13:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 13:50 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-29 14:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de disponibilité (reliance sur le winrate global sans données spécifiques)
+
+## 2026-09-29 14:05 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte du seuil -2.0
+
+## 2026-09-29 14:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 14:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique baissier
+
+## 2026-09-29 14:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 14:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au signal rule‑based négatif
+
+## 2026-09-29 14:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 14:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-09-29 15:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 15:01 UTC — CEG (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-09-29 15:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global
+
+## 2026-09-29 15:18 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 15:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-29 15:32 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-09-29 15:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global
+
+## 2026-09-29 15:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 16:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global
+
+## 2026-09-29 16:02 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-29 16:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 16:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-29 16:20 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite uniquement
+
+## 2026-09-29 16:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-29 16:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-09-29 16:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance dans le winrate global (biais de disponibilité)
+
+## 2026-09-29 16:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-29 17:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au critère de score composite uniquement
+
+## 2026-09-29 17:02 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-29 17:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite fixé à 2.0
+
+## 2026-09-29 17:17 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 17:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-09-29 17:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based basé uniquement sur le score composite
+
+## 2026-09-29 17:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 17:47 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 18:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique justification
+
+## 2026-09-29 18:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de -2.0 du rule‑based
+
+## 2026-09-29 18:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement suffisant
+
+## 2026-09-29 18:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-09-29 18:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global utilisé comme prior
+
+## 2026-09-29 18:32 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-09-29 18:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux global comme unique justification
+
+## 2026-09-29 18:47 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-09-29 19:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement suffisant
+
+## 2026-09-29 19:01 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 19:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de disponibilité – la décision s’appuie fortement sur le winrate global récent, malgré l’absence de données spécifiques à HBAR.
+
+## 2026-09-29 19:18 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 19:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-09-29 19:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-29 19:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-09-29 19:46 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 20:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence.
+
+## 2026-09-29 20:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 20:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-29 20:16 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 20:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-29 20:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 20:33 UTC — AMAT (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite
+
+## 2026-09-29 20:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du score composite comme critère principal
+
+## 2026-09-29 20:47 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 21:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global
+
+## 2026-09-29 21:02 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 21:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application du critère de score composite sans validation indépendante
+
+## 2026-09-29 21:17 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-29 21:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-29 21:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-09-29 21:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-29 21:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-09-29 22:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans le taux de réussite global (fallback) malgré l'absence de données spécifiques
+
+## 2026-09-29 22:01 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de -2.0 du score composite
+
+## 2026-09-29 22:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global sans données spécifiques à HBAR
+
+## 2026-09-29 22:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-09-29 22:30 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-09-29 22:31 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 22:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de déclenchement du score composite ≥ 2,0
+
+## 2026-09-29 22:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-29 22:49 UTC — CEG (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 23:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-29 23:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique référence
+
+## 2026-09-29 23:30 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-29 23:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-29 23:33 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-29 23:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global
+
+## 2026-09-29 23:47 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur les signaux techniques
+
+## 2026-09-30 00:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite ≥ 2.0
+
+## 2026-09-30 00:02 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 00:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global
+
+## 2026-09-30 00:16 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 00:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-30 00:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 00:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de représentativité du winrate global
+
+## 2026-09-30 00:46 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif
+
+## 2026-09-30 01:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-09-30 01:01 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 01:04 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-30 01:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans le winrate global
+
+## 2026-09-30 01:17 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-30 01:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique justification
+
+## 2026-09-30 01:32 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 01:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 01:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation sur le signal baissier
+
+## 2026-09-30 02:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de score composite
+
+## 2026-09-30 02:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-09-30 02:03 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-09-30 02:04 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- Biais d'ancrage sur le score composite, ignorant la faiblesse des autres signaux (fondamental, sentiment) et l'absence de base rates.
+
+## 2026-09-30 02:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au recours au fallback global sans données spécifiques
+
+## 2026-09-30 02:16 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 02:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique justification
+
+## 2026-09-30 02:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte du seuil -2.0 sans prise en compte d'autres facteurs
+
+## 2026-09-30 02:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal
+
+## 2026-09-30 02:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-30 02:48 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 03:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-09-30 03:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-30 03:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 03:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-09-30 03:35 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques à AMD
+
+## 2026-09-30 03:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-09-30 03:48 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 04:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-30 04:01 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-30 04:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 04:16 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 04:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de représentativité du taux de réussite global appliqué à un actif sans historique
+
+## 2026-09-30 04:32 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 04:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based qui privilégie le seuil de +2.0 malgré l'absence de soutien fondamental
+
+## 2026-09-30 04:46 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 05:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-30 05:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-09-30 05:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- biais de représentativité lié à l'utilisation du winrate global comme proxy
+
+## 2026-09-30 05:16 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation sur le signal rule‑based
+
+## 2026-09-30 05:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 05:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-09-30 05:33 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-30 05:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 05:47 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- ancrage sur le score composite négatif
+
+## 2026-09-30 06:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 06:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-09-30 06:05 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based basé uniquement sur le score composite négatif
+
+## 2026-09-30 06:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global
+
+## 2026-09-30 06:18 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 06:30 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-09-30 06:32 UTC — ETH-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 06:38 UTC — AMD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 06:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-09-30 07:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l’utilisation du win‑rate global comme unique référence
+
+## 2026-09-30 07:01 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du modèle rule‑based sur le seuil -2.0
+
+## 2026-09-30 07:16 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 07:18 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-09-30 07:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 07:32 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 07:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-30 07:47 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-30 08:01 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 08:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 08:04 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 08:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-30 08:18 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-30 08:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 08:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais d'ancrage sur le score composite négatif
+
+## 2026-09-30 08:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au taux global de succès
+
+## 2026-09-30 08:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 09:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement spécifique
+
+## 2026-09-30 09:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique négatif
+
+## 2026-09-30 09:16 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 09:17 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 09:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 09:32 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite
+
+## 2026-09-30 09:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-30 09:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite uniquement
+
+## 2026-09-30 09:48 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 10:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 10:02 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 10:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de seuil +2.0 qui domine l'évaluation malgré l'absence de données fondamentales
+
+## 2026-09-30 10:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 10:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au taux de réussite global comme unique justification
+
+## 2026-09-30 10:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique négatif
+
+## 2026-09-30 10:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au winrate global comme unique justification
+
+## 2026-09-30 10:47 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 10:50 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-09-30 11:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique référence
+
+## 2026-09-30 11:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans le winrate global malgré l'absence de données spécifiques à HBAR-USD
+
+## 2026-09-30 11:17 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 11:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-30 11:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-30 11:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-30 11:47 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 12:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-30 12:02 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 12:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-30 12:17 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-09-30 12:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global
+
+## 2026-09-30 12:32 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 12:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 12:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-09-30 12:49 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-30 13:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- Biais de confirmation du rule‑based qui privilégie le score composite sans prise en compte du manque de données fondamentales.
+
+## 2026-09-30 13:04 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du taux de réussite global
+
+## 2026-09-30 13:16 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- surconfiance dans le winrate global
+
+## 2026-09-30 13:17 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 13:32 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 13:33 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 13:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 13:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global
+
+## 2026-09-30 14:01 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de surreliance sur le winrate global
+
+## 2026-09-30 14:02 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 14:16 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 14:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation provenant du score composite négatif et du fallback global.
+
+## 2026-09-30 14:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-30 14:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 14:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 14:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-30 14:48 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-30 15:01 UTC — CEG (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 15:17 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 15:18 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif.
+
+## 2026-09-30 15:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 15:32 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 15:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 15:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-09-30 15:48 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-30 16:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based qui privilégie le critère de score composite sans prise en compte des signaux neutres
+
+## 2026-09-30 16:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais d'ancrage sur la règle du score composite négatif
+
+## 2026-09-30 16:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l’utilisation du taux de réussite global comme unique référence
+
+## 2026-09-30 16:17 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 16:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-09-30 16:32 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 16:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-30 16:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-09-30 16:48 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 17:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-09-30 17:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-30 17:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 17:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-09-30 17:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- surconfiance dans le critère de score composite
+
+## 2026-09-30 17:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 17:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement sectoriel
+
+## 2026-09-30 17:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte du seuil de score sans analyse contextuelle
+
+## 2026-09-30 18:02 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte du seuil -2.0 sans prise en compte d'autres indicateurs.
+
+## 2026-09-30 18:03 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 18:16 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 18:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-09-30 18:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global
+
+## 2026-09-30 18:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-30 18:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-30 18:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based sur le score composite
+
+## 2026-09-30 19:01 UTC — CEG (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation (le score rule‑based domine l'évaluation malgré l'absence d'autres signaux)
+
+## 2026-09-30 19:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- surconfiance dans le taux de réussite global (biais de disponibilité)
+
+## 2026-09-30 19:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 19:32 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 19:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais d'ancrage sur le taux de réussite global
+
+## 2026-09-30 19:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-09-30 20:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-09-30 20:02 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-09-30 20:16 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 20:17 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 20:19 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil sans corroboration fondamentale
+
+## 2026-09-30 20:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance dans le critère rule‑based basé sur le score composite
+
+## 2026-09-30 20:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-09-30 20:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-09-30 20:47 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 21:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite > 2.0
+
+## 2026-09-30 21:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-30 21:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score technique positif malgré l'absence d'autres signaux
+
+## 2026-09-30 21:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-30 21:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-30 21:32 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 21:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans validation spécifique
+
+## 2026-09-30 21:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 22:01 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-09-30 22:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-30 22:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-30 22:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-30 22:20 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 22:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite
+
+## 2026-09-30 22:34 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-09-30 22:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-09-30 22:49 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 23:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques
+
+## 2026-09-30 23:16 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-09-30 23:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-09-30 23:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de +2.0
+
+## 2026-09-30 23:32 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif
+
+## 2026-09-30 23:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based qui privilégie le score technique sans validation fondamentale
+
+## 2026-09-30 23:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-09-30 23:48 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 00:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement sectoriel
+
+## 2026-10-01 00:02 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 00:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-10-01 00:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-01 00:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 00:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 00:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques
+
+## 2026-10-01 00:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif
+
+## 2026-10-01 01:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-01 01:01 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 01:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 01:17 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite uniquement.
+
+## 2026-10-01 01:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans le winrate global
+
+## 2026-10-01 01:32 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-10-01 01:34 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 01:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-01 01:48 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-01 02:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-10-01 02:03 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 02:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-01 02:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 6/10)
+
+## 2026-10-01 02:17 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 02:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-10-01 02:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif
+
+## 2026-10-01 02:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite
+
+## 2026-10-01 02:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-01 02:50 UTC — CEG (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-01 03:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique indicateur
+
+## 2026-10-01 03:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 03:19 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-01 03:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique référence
+
+## 2026-10-01 03:34 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 03:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-01 03:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 04:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- sur‑confiance dans la règle de score composite
+
+## 2026-10-01 04:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≤ -2.0
+
+## 2026-10-01 04:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-10-01 04:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 04:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- Biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-01 04:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal rule‑based
+
+## 2026-10-01 04:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global de 67 % utilisé malgré l'absence de données propres
+
+## 2026-10-01 04:46 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 05:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de disponibilité du taux de réussite global, au détriment d'une analyse spécifique à HBAR
+
+## 2026-10-01 05:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-01 05:16 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence de signaux contradictoires.
+
+## 2026-10-01 05:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-01 05:19 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de règle basée sur seuil unique
+
+## 2026-10-01 05:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de score composite ≥ 2.0
+
+## 2026-10-01 05:32 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 05:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte du seuil de score composite
+
+## 2026-10-01 05:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-01 06:01 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- tendance à sur‑pondérer le winrate global malgré l'absence de données spécifiques à HBAR
+
+## 2026-10-01 06:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de -2.0 du rule‑based
+
+## 2026-10-01 06:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de représentativité du taux de succès global
+
+## 2026-10-01 06:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 06:18 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-01 06:30 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-10-01 06:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 06:36 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-01 06:41 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 06:47 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-01 07:02 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance lié au score composite élevé
+
+## 2026-10-01 07:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil de score composite
+
+## 2026-10-01 07:17 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au rule‑based score négatif
+
+## 2026-10-01 07:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 07:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 07:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score ≥ 2.0 sans corroboration fondamentale.
+
+## 2026-10-01 07:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif
+
+## 2026-10-01 08:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2,0
+
+## 2026-10-01 08:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-01 08:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le score composite
+
+## 2026-10-01 08:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite baissier
+
+## 2026-10-01 08:19 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite qui privilégie les signaux cohérents sans prise en compte suffisante du contexte macro.
+
+## 2026-10-01 08:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de représentativité du winrate global appliqué à un actif sans historique propre.
+
+## 2026-10-01 08:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de représentativité en se basant sur le winrate global plutôt que sur des données propres à HBAR
+
+## 2026-10-01 08:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 08:49 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-01 09:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite
+
+## 2026-10-01 09:03 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-01 09:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal.
+
+## 2026-10-01 09:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-01 09:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 09:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-01 09:33 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 09:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite
+
+## 2026-10-01 09:47 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-01 10:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au winrate global comme unique support
+
+## 2026-10-01 10:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-10-01 10:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-10-01 10:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 10:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global
+
+## 2026-10-01 10:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation sur le score composite négatif
+
+## 2026-10-01 10:35 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle basée uniquement sur le score composite
+
+## 2026-10-01 10:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique justification
+
+## 2026-10-01 11:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans le taux de réussite global (fallback) malgré l'absence de données spécifiques
+
+## 2026-10-01 11:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du prior global sans ajustement spécifique
+
+## 2026-10-01 11:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-10-01 11:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite fixé à 2.0
+
+## 2026-10-01 11:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal rule‑based
+
+## 2026-10-01 11:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 11:47 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-01 12:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de représentativité du winrate global appliqué à un actif sans historique
+
+## 2026-10-01 12:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de -2.0 du score composite
+
+## 2026-10-01 12:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 12:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≤ -2,0
+
+## 2026-10-01 12:19 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 12:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-10-01 12:33 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 12:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-01 12:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du score composite
+
+## 2026-10-01 13:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 13:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 13:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 13:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-01 13:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil +2.0
+
+## 2026-10-01 13:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 13:34 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais d'ancrage sur la règle du score composite négatif
+
+## 2026-10-01 13:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-01 13:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-01 14:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé et au fallback global
+
+## 2026-10-01 14:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-01 14:03 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 14:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-10-01 14:17 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 14:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 14:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-01 14:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique support
+
+## 2026-10-01 14:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique baissier
+
+## 2026-10-01 15:02 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-10-01 15:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- Biais de confirmation lié à l'application stricte de la règle de score composite sans prise en compte suffisante des facteurs fondamentaux.
+
+## 2026-10-01 15:18 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-10-01 15:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 15:33 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-01 15:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 15:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-01 16:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 16:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 16:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme seul indicateur
+
+## 2026-10-01 16:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 16:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 16:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-01 16:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite juste au-dessus du seuil
+
+## 2026-10-01 16:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 17:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite juste au-dessus du seuil
+
+## 2026-10-01 17:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-01 17:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-10-01 17:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-10-01 17:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-10-01 17:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 17:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-10-01 17:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite uniquement
+
+## 2026-10-01 17:48 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-01 18:01 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 18:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 18:16 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 18:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 18:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-01 18:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-01 18:34 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-10-01 18:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 18:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based sur le score composite
+
+## 2026-10-01 19:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 19:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-01 19:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au taux de réussite global comme unique référence.
+
+## 2026-10-01 19:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-01 19:34 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 19:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif malgré le manque de données
+
+## 2026-10-01 19:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte de la règle de score composite
+
+## 2026-10-01 20:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de représentativité du winrate global sur un actif non étudié
+
+## 2026-10-01 20:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-01 20:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global
+
+## 2026-10-01 20:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-01 20:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-10-01 20:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de -2.0 du score composite
+
+## 2026-10-01 20:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 20:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 21:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au winrate global comme unique référence
+
+## 2026-10-01 21:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 21:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence.
+
+## 2026-10-01 21:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-01 21:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal
+
+## 2026-10-01 21:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 21:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 21:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-01 22:00 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-10-01 22:07 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification.
+
+## 2026-10-01 22:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 22:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-01 22:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-01 22:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 22:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-10-01 22:48 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite
+
+## 2026-10-01 23:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 23:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil de +2.0
+
+## 2026-10-01 23:19 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-01 23:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans le taux de réussite global
+
+## 2026-10-01 23:33 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-01 23:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-01 23:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal rule‑based
+
+## 2026-10-02 00:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score technique
+
+## 2026-10-02 00:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-02 00:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-10-02 00:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 00:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de score composite uniquement
+
+## 2026-10-02 00:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au signal rule‑based négatif
+
+## 2026-10-02 00:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback de winrate global
+
+## 2026-10-02 00:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite uniquement
+
+## 2026-10-02 01:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence de signaux contradictoires
+
+## 2026-10-02 01:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-02 01:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil global de 2.0 sans validation supplémentaire
+
+## 2026-10-02 01:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 01:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 01:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-02 01:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de succès global comme unique référence
+
+## 2026-10-02 01:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-10-02 02:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- surconfiance dans le taux de réussite global (biais de disponibilité)
+
+## 2026-10-02 02:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 02:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du score composite comme critère unique
+
+## 2026-10-02 02:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 02:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-02 02:32 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based basé sur le score composite uniquement
+
+## 2026-10-02 02:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-02 02:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 03:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-02 03:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte du seuil de score composite
+
+## 2026-10-02 03:19 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 03:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil sans corroboration indépendante
+
+## 2026-10-02 03:35 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 03:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-02 03:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 04:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil (+2.0) appliquée sans validation supplémentaire
+
+## 2026-10-02 04:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 04:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-10-02 04:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 04:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 04:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-02 04:45 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence de données historiques spécifiques
+
+## 2026-10-02 04:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-10-02 05:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-02 05:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux global comme unique justification
+
+## 2026-10-02 05:15 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 05:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le critère de score composite
+
+## 2026-10-02 05:19 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 05:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de surconfiance lié à la confiance élevée (7/10) malgré l'absence de données historiques
+
+## 2026-10-02 05:34 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 05:45 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 05:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite uniquement
+
+## 2026-10-02 06:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 06:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de score composite sans corroboration externe
+
+## 2026-10-02 06:15 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 06:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite uniquement
+
+## 2026-10-02 06:30 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 06:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 06:35 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de -2.0 du score composite
+
+## 2026-10-02 06:40 UTC — QQQ (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 06:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données propres
+
+## 2026-10-02 07:00 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 07:00 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 07:16 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-02 07:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-10-02 07:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 07:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance dans le critère rule‑based sans corroboration fondamentale
+
+## 2026-10-02 07:46 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-10-02 07:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 08:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 08:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-02 08:16 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global sans données spécifiques à BTC-USD
+
+## 2026-10-02 08:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 08:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 08:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-02 08:46 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 08:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-02 09:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-02 09:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- sur‑confiance au taux de réussite global (67 %) malgré l'absence de données spécifiques
+
+## 2026-10-02 09:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence de signaux contradictoires
+
+## 2026-10-02 09:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite
+
+## 2026-10-02 09:18 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 09:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la forte confiance basée sur le score composite seul
+
+## 2026-10-02 09:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-02 09:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 09:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de succès global comme unique justification
+
+## 2026-10-02 09:49 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 10:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 10:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite sans corroboration externe
+
+## 2026-10-02 10:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance due au score composite élevé
+
+## 2026-10-02 10:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global
+
+## 2026-10-02 10:31 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-10-02 10:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-10-02 10:35 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation (reliance sur le critère technique et le fallback global)
+
+## 2026-10-02 10:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence d'analyses fondamentales contradictoires
+
+## 2026-10-02 10:48 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-02 11:00 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite dépassant le seuil
+
+## 2026-10-02 11:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur les signaux techniques
+
+## 2026-10-02 11:18 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif
+
+## 2026-10-02 11:31 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-02 11:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique justification
+
+## 2026-10-02 11:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-10-02 11:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite marginalement supérieur au seuil
+
+## 2026-10-02 12:01 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-02 12:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-02 12:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif et à l'absence de signaux contradictoires
+
+## 2026-10-02 12:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de +2.0 comme critère décisif
+
+## 2026-10-02 12:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 12:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-02 12:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 12:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique référence
+
+## 2026-10-02 13:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé et à l'absence de contre‑signaux
+
+## 2026-10-02 13:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au taux de réussite global comme unique justification
+
+## 2026-10-02 13:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 13:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 13:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 13:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 13:46 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-02 13:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 14:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-10-02 14:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif sans support fondamental ni sentiment.
+
+## 2026-10-02 14:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 14:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-02 14:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 14:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 14:34 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 14:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-10-02 14:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de disponibilité – le modèle s'appuie fortement sur le winrate global récent malgré l'absence de données propres à HBAR-USD.
+
+## 2026-10-02 15:01 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-02 15:03 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 15:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 15:18 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 15:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 15:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-02 15:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 15:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-02 16:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-02 16:03 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite uniquement
+
+## 2026-10-02 16:16 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 16:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global
+
+## 2026-10-02 16:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 16:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 16:46 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-02 16:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite dépassant le seuil minimal
+
+## 2026-10-02 17:01 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 17:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 17:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- surconfiance due au score composite élevé et à la confiance 7/10
+
+## 2026-10-02 17:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au poids du fallback global sur le prior
+
+## 2026-10-02 17:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-10-02 17:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- surpondération du taux de réussite global (bias de disponibilité)
+
+## 2026-10-02 17:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation provenant du score composite et du fallback global
+
+## 2026-10-02 17:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite ≥ 2.0
+
+## 2026-10-02 18:01 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+
+## 2026-10-02 18:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-02 18:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 18:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de score composite ≥ 2,0
+
+## 2026-10-02 18:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 18:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 18:34 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal rule‑based
+
+## 2026-10-02 18:46 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+
+## 2026-10-02 18:48 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 19:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif et au fallback global
+
+## 2026-10-02 19:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation provenant du score composite et de la confiance élevée
+
+## 2026-10-02 19:19 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-02 19:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-10-02 19:33 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-02 19:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence de données historiques spécifiques
+
+## 2026-10-02 19:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de succès global comme unique référence.
+
+## 2026-10-02 20:01 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 20:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-02 20:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite positif et à l'absence de signaux contradictoires
+
+## 2026-10-02 20:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global
+
+## 2026-10-02 20:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de -2.0 du score composite
+
+## 2026-10-02 20:31 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 20:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 20:46 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-10-02 20:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 21:00 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 21:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite uniquement
+
+## 2026-10-02 21:05 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte du seuil -2.0
+
+## 2026-10-02 21:15 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- surconfiance due au score composite élevé et à la confiance 7/10 malgré l'absence de données spécifiques à BTC-USD
+
+## 2026-10-02 21:19 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 21:31 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite positif et à l'absence de données historiques
+
+## 2026-10-02 21:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 21:45 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 21:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation provenant du fallback global sans données spécifiques à HBAR
+
+## 2026-10-02 22:00 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence d'historique spécifique et à la confiance élevée
+
+## 2026-10-02 22:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-02 22:15 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 22:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- surpondération du winrate global au détriment de l'absence de données spécifiques à HBAR
+
+## 2026-10-02 22:30 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- Excès de confiance dû au score composite élevé et à l'absence de données historiques
+
+## 2026-10-02 22:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite
+
+## 2026-10-02 22:45 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite élevé malgré l'absence de données fondamentales
+
+## 2026-10-02 22:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-02 23:01 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 23:15 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-02 23:18 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-02 23:30 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-02 23:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de score composite ≥ 2.0
+
+## 2026-10-02 23:45 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance due au score composite élevé malgré l'absence de données spécifiques
+
+## 2026-10-02 23:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 00:00 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'alignement des signaux techniques avec le seuil de score
+
+## 2026-10-03 00:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 00:15 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 00:16 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme substitut.
+
+## 2026-10-03 00:30 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 00:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-03 00:45 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 00:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-03 01:01 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 01:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement sectoriel
+
+## 2026-10-03 01:15 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 01:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-10-03 01:30 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 01:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-10-03 01:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-03 01:45 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-03 01:47 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme seul indicateur
+
+## 2026-10-03 02:00 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 02:01 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement sectoriel
+
+## 2026-10-03 02:15 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 02:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite
+
+## 2026-10-03 02:30 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-10-03 02:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- surreliance sur le taux de succès global (biais de disponibilité)
+
+## 2026-10-03 02:45 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation basé sur le score composite et le prior global
+
+## 2026-10-03 02:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2,0
+
+## 2026-10-03 02:50 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-03 03:02 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif
+
+## 2026-10-03 03:15 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 03:19 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-03 03:30 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 03:35 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au déclencheur rule‑based basé uniquement sur le score composite négatif.
+
+## 2026-10-03 03:45 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 03:48 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-03 04:00 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 8/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 04:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de règle basée sur le score composite uniquement
+
+## 2026-10-03 04:16 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite et au fallback global
+
+## 2026-10-03 04:17 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-10-03 04:30 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-10-03 04:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance due au score composite juste au-dessus du seuil
+
+## 2026-10-03 04:45 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence de signaux fondamentaux et sentimentaux
+
+## 2026-10-03 04:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-03 05:00 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 05:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement sectoriel
+
+## 2026-10-03 05:15 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence de signaux contradictoires
+
+## 2026-10-03 05:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte de la règle de score composite
+
+## 2026-10-03 05:31 UTC — BTC-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de surconfiance lié à la forte confiance (7/10) malgré l'absence d'historique spécifique
+
+## 2026-10-03 05:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global
+
+## 2026-10-03 05:45 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 05:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-03 06:01 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-10-03 06:02 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû à l'utilisation exclusive du winrate global comme indicateur principal
+
+## 2026-10-03 06:15 UTC — BTC-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 06:17 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de surconfiance dans le winrate global
+
+## 2026-10-03 06:20 UTC — CEG (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-03 06:30 UTC — ETH-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-03 06:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite ≥ 2.0
+
+## 2026-10-03 06:38 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- sur‑confiance
+
+## 2026-10-03 06:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-10-03 07:02 UTC — CEG (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 07:05 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de surconfiance lié à la forte confiance (7/10) malgré l'absence de confirmation fondamentale
+
+## 2026-10-03 07:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais d'ancrage sur le winrate global
+
+## 2026-10-03 07:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de -2.0 du score composite
+
+## 2026-10-03 07:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance lié à l'utilisation du taux de réussite global comme unique référence
+
+## 2026-10-03 07:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-03 07:33 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 07:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-10-03 07:48 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-10-03 08:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-10-03 08:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-03 08:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 08:17 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-03 08:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux global comme unique justification
+
+## 2026-10-03 08:31 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-03 08:34 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-03 08:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement sectoriel
+
+## 2026-10-03 08:49 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance liée au score composite
+
+## 2026-10-03 09:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 09:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais d'ancrage sur la règle du score composite
+
+## 2026-10-03 09:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil sans soutien supplémentaire
+
+## 2026-10-03 09:16 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-03 09:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2,0
+
+## 2026-10-03 09:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-03 09:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au taux de réussite global utilisé comme substitut
+
+## 2026-10-03 09:46 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 10:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-03 10:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de -2.0 du score composite
+
+## 2026-10-03 10:03 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du score composite
+
+## 2026-10-03 10:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de score composite sans corroboration externe
+
+## 2026-10-03 10:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-03 10:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-10-03 10:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais d'ancrage sur le score composite négatif
+
+## 2026-10-03 10:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité – la décision s'appuie fortement sur le winrate global récent, malgré l'absence de données propres à HBAR‑USD
+
+## 2026-10-03 10:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-03 10:48 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 11:02 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 11:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global de 67 % utilisé malgré l'absence de données spécifiques
+
+## 2026-10-03 11:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du critère de score composite
+
+## 2026-10-03 11:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-03 11:33 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 11:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-03 11:47 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-03 12:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au taux de réussite global comme unique justification.
+
+## 2026-10-03 12:03 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 12:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite juste au-dessus du seuil
+
+## 2026-10-03 12:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal rule‑based
+
+## 2026-10-03 12:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-03 12:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique baissier
+
+## 2026-10-03 12:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite seuil
+
+## 2026-10-03 12:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-03 13:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique justification.
+
+## 2026-10-03 13:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-03 13:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 13:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 13:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score technique dépassant le seuil
+
+## 2026-10-03 13:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-03 13:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de représentativité (utilisation du winrate global comme proxy pour un actif non étudié)
+
+## 2026-10-03 13:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation provenant du score composite négatif
+
+## 2026-10-03 14:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 14:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-03 14:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 14:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de -2.0 du score composite
+
+## 2026-10-03 14:19 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-10-03 14:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans le taux de réussite global (fallback) malgré l'absence de données spécifiques
+
+## 2026-10-03 14:34 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 14:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de disponibilité du winrate global
+
+## 2026-10-03 14:49 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans validation sectorielle
+
+## 2026-10-03 15:01 UTC — CEG (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 15:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 15:18 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle "score ≥ 2.0"
+
+## 2026-10-03 15:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global
+
+## 2026-10-03 15:32 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-03 15:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-10-03 15:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 16:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de disponibilité lié à l'utilisation du taux de réussite global comme unique référence
+
+## 2026-10-03 16:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-03 16:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 16:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au déclenchement de la règle de score composite
+
+## 2026-10-03 16:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 16:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-03 16:34 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-03 16:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle "score composite ≥ 2.0" sans corroboration externe
+
+## 2026-10-03 16:48 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 16:57 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans validation spécifique
+
+## 2026-10-03 17:00 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-03 17:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation provenant du critère de score composite uniquement
+
+## 2026-10-03 17:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte du seuil -2.0
+
+## 2026-10-03 17:18 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation sur le score composite
+
+## 2026-10-03 17:30 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-03 17:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur les signaux baissiers techniques
+
+## 2026-10-03 17:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence.
+
+## 2026-10-03 17:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-03 17:48 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de surconfiance lié au score composite élevé
+
+## 2026-10-03 18:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global de 67 %
+
+## 2026-10-03 18:03 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 18:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based score sans corroboration fondamentale ou sentimentale
+
+## 2026-10-03 18:17 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-03 18:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 18:33 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur les signaux techniques
+
+## 2026-10-03 18:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-10-03 18:47 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 19:01 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-03 19:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 19:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application du critère de score composite ≥ 2.0
+
+## 2026-10-03 19:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 19:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-03 19:47 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- ancrage sur le score composite négatif
+
+## 2026-10-03 20:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques
+
+## 2026-10-03 20:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif
+
+## 2026-10-03 20:04 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-03 20:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de succès global comme substitut
+
+## 2026-10-03 20:18 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-03 20:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-03 20:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 20:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité lié à l'utilisation du taux de réussite global comme unique référence
+
+## 2026-10-03 20:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 21:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global
+
+## 2026-10-03 21:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite strict
+
+## 2026-10-03 21:02 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 21:16 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-03 21:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif
+
+## 2026-10-03 21:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de succès global comme justification principale
+
+## 2026-10-03 21:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal rule‑based
+
+## 2026-10-03 21:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-03 21:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais d'ancrage sur la règle du score composite
+
+## 2026-10-03 22:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 22:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-03 22:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au recours au taux de réussite global malgré l'absence de données spécifiques
+
+## 2026-10-03 22:16 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-03 22:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance due à l'utilisation du taux de réussite global comme unique justification
+
+## 2026-10-03 22:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif.
+
+## 2026-10-03 22:34 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif
+
+## 2026-10-03 22:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-03 22:48 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-10-03 23:01 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 23:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-03 23:16 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-03 23:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-03 23:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≤ -2.0
+
+## 2026-10-03 23:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-03 23:46 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- ancrage sur le score composite négatif
+
+## 2026-10-04 00:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 00:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil du score composite
+
+## 2026-10-04 00:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de succès global comme unique référence
+
+## 2026-10-04 00:16 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-04 00:17 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle rule‑based qui privilégie les signaux baissiers sans contre‑poids fondamentaux.
+
+## 2026-10-04 00:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au critère rule‑based qui favorise les signaux techniques positifs malgré l'absence de soutien fondamental
+
+## 2026-10-04 00:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 00:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 00:47 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-04 00:50 UTC — CEG (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 01:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-04 01:02 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 01:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-04 01:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 01:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 01:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-04 01:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 01:46 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-04 01:50 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-10-04 02:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite ≥ 2.0 sans validation supplémentaire
+
+## 2026-10-04 02:16 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-04 02:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-04 02:17 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 02:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global de 67 % utilisé malgré l'absence de données spécifiques
+
+## 2026-10-04 02:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-04 02:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 02:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 03:01 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de règle (overreliance sur le critère du score composite)
+
+## 2026-10-04 03:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-10-04 03:18 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 03:30 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-04 03:33 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation sur le signal rule‑based
+
+## 2026-10-04 03:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-04 03:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-04 04:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 04:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 04:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite juste au-dessus du seuil
+
+## 2026-10-04 04:16 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 04:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au winrate global comme unique source de probabilité
+
+## 2026-10-04 04:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de règle basé uniquement sur le score composite
+
+## 2026-10-04 04:34 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-10-04 04:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil
+
+## 2026-10-04 04:48 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 05:01 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 05:03 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-04 05:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-10-04 05:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-04 05:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance lié à la confiance moyenne (6/10) malgré l'absence de données spécifiques.
+
+## 2026-10-04 05:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-04 05:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-10-04 05:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-04 06:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite sans corroboration externe
+
+## 2026-10-04 06:02 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 06:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance dans la règle de score composite
+
+## 2026-10-04 06:17 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-04 06:31 UTC — ETH-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-04 06:32 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de succès global comme unique référence
+
+## 2026-10-04 06:37 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-04 06:42 UTC — NQ=F (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-10-04 06:49 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 07:05 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- surconfiance due au score composite élevé malgré l'absence de support fondamental
+
+## 2026-10-04 07:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au winrate global comme unique justification.
+
+## 2026-10-04 07:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 07:18 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais d'ancrage
+
+## 2026-10-04 07:19 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal rule‑based
+
+## 2026-10-04 07:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-04 07:33 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-04 07:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global
+
+## 2026-10-04 07:47 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-04 08:01 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-04 08:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-04 08:04 UTC — CEG (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-04 08:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 08:18 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 08:30 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- overconfidence
+
+## 2026-10-04 08:33 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-04 08:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au déclenchement de la règle basée uniquement sur le score composite
+
+## 2026-10-04 08:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-04 09:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique support
+
+## 2026-10-04 09:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-10-04 09:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-10-04 09:16 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 09:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil (+2.0) malgré l'absence de corroboration fondamentale
+
+## 2026-10-04 09:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 09:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- Biais de confirmation dû au fallback global qui peut surévaluer la probabilité de succès sans prise en compte du contexte spécifique de HBAR.
+
+## 2026-10-04 09:47 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-04 10:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au winrate global comme unique support
+
+## 2026-10-04 10:01 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif
+
+## 2026-10-04 10:02 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-04 10:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil
+
+## 2026-10-04 10:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 10:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au taux de réussite global comme unique justification
+
+## 2026-10-04 10:31 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-04 10:32 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 10:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-10-04 10:49 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-04 11:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au taux de succès global comme unique justification.
+
+## 2026-10-04 11:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-04 11:16 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-04 11:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-04 11:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-04 11:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 11:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Ancrage sur le critère de score composite sans prise en compte suffisante du contexte fondamental.
+
+## 2026-10-04 12:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique justification
+
+## 2026-10-04 12:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 12:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite uniquement
+
+## 2026-10-04 12:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif
+
+## 2026-10-04 12:20 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-04 12:30 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-10-04 12:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-04 12:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 12:46 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 13:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de score composite ≥ 2.0
+
+## 2026-10-04 13:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 13:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite uniquement
+
+## 2026-10-04 13:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-10-04 13:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du winrate global
+
+## 2026-10-04 13:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-04 13:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique justification
+
+## 2026-10-04 13:47 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-04 14:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-04 14:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-04 14:05 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère technique uniquement
+
+## 2026-10-04 14:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-04 14:19 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score technique positif
+
+## 2026-10-04 14:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique justification
+
+## 2026-10-04 14:33 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-04 14:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation dû à l'utilisation du taux de réussite global comme unique référence bayésienne
+
+## 2026-10-04 14:46 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 15:01 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-10-04 15:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite sans corroboration externe
+
+## 2026-10-04 15:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule-based
+
+## 2026-10-04 15:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil de score composite
+
+## 2026-10-04 15:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 15:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global
+
+## 2026-10-04 15:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 15:47 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 16:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil sans corroboration externe
+
+## 2026-10-04 16:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le critère de score composite
+
+## 2026-10-04 16:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based sur le score composite
+
+## 2026-10-04 16:17 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-04 16:30 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- sur‑reliance sur le taux de réussite global (biais de représentativité)
+
+## 2026-10-04 16:31 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-04 16:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite fixé à 2.0
+
+## 2026-10-04 16:46 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 17:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite fixé à 2.0
+
+## 2026-10-04 17:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 17:05 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-04 17:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-10-04 17:30 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du critère de score composite uniquement
+
+## 2026-10-04 17:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-04 17:32 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-04 17:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-10-04 17:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-10-04 18:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au taux de succès global comme unique justification
+
+## 2026-10-04 18:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 18:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-04 18:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based (seulement le score composite négatif a guidé la décision)
+
+## 2026-10-04 18:30 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal
+
+## 2026-10-04 18:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 18:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation du score composite sans corroboration externe
+
+## 2026-10-04 18:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal rule‑based
+
+## 2026-10-04 19:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-04 19:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif
+
+## 2026-10-04 19:17 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-04 19:18 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation lié à la règle du score composite
+
+## 2026-10-04 19:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du score composite comme critère dominant
+
+## 2026-10-04 19:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 19:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux global comme unique support
+
+## 2026-10-04 19:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- surpondération du signal rule‑based sans confirmation fondamentale
+
+## 2026-10-04 20:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite uniquement
+
+## 2026-10-04 20:01 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-10-04 20:02 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-04 20:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-04 20:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-04 20:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 20:31 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 20:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation dû à la règle de score composite ≥ 2.0
+
+## 2026-10-04 20:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-04 21:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 21:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-04 21:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au fallback global
+
+## 2026-10-04 21:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-04 21:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite dépassant le seuil minimal
+
+## 2026-10-04 21:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte du seuil de -2.0 sans prise en compte d'autres facteurs.
+
+## 2026-10-04 21:33 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-04 21:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-04 21:47 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-04 22:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surpondération du winrate global (biais de disponibilité)
+
+## 2026-10-04 22:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-04 22:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au taux de réussite global comme unique référence
+
+## 2026-10-04 22:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-04 22:30 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-04 22:31 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 8/10)
+
+## 2026-10-04 22:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2,0
+
+## 2026-10-04 22:46 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-04 23:01 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique baissier
+
+## 2026-10-04 23:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-04 23:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique justification
+
+## 2026-10-04 23:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-04 23:35 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite uniquement
+
+## 2026-10-04 23:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le score composite négatif
+
+## 2026-10-04 23:48 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 00:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au critère de score composite uniquement
+
+## 2026-10-05 00:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 00:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-05 00:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule-based
+
+## 2026-10-05 00:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-05 00:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 00:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 00:47 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 01:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 01:01 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 01:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-10-05 01:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 01:30 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- overconfidence
+
+## 2026-10-05 01:31 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 01:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-05 01:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 02:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-05 02:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 02:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance dans le winrate global
+
+## 2026-10-05 02:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 02:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 02:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique baissier
+
+## 2026-10-05 02:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-05 02:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 03:01 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal rule‑based
+
+## 2026-10-05 03:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite dépassant le seuil sans corroboration externe
+
+## 2026-10-05 03:18 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-05 03:30 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-05 03:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 03:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-05 03:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-05 04:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-05 04:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 04:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-05 04:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite négatif
+
+## 2026-10-05 04:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-05 04:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-05 04:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle « score ≥ 2.0 » qui domine l'évaluation malgré l'absence de données fondamentales.
+
+## 2026-10-05 04:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 05:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement sectoriel
+
+## 2026-10-05 05:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 05:05 UTC — CEG (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-05 05:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global
+
+## 2026-10-05 05:18 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-05 05:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme seul indicateur
+
+## 2026-10-05 05:33 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 05:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-10-05 05:47 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 06:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global comme unique justification
+
+## 2026-10-05 06:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de -2.0 du score composite
+
+## 2026-10-05 06:31 UTC — ETH-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 06:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme seul indicateur
+
+## 2026-10-05 06:37 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 06:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques
+
+## 2026-10-05 07:01 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais d'automatisation (sur-dépendance au score composite et aux règles)
+
+## 2026-10-05 07:03 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de sur-confiance
+
+## 2026-10-05 07:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 07:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 07:17 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif
+
+## 2026-10-05 07:18 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-05 07:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 07:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 07:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement suffisant
+
+## 2026-10-05 07:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 08:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil de score composite
+
+## 2026-10-05 08:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 08:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 08:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation basé sur le score composite uniquement
+
+## 2026-10-05 08:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 08:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 08:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-10-05 08:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 08:48 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 09:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques
+
+## 2026-10-05 09:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 09:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 09:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-05 09:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite fixé à 2.0
+
+## 2026-10-05 09:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 09:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans validation spécifique
+
+## 2026-10-05 09:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 10:01 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-05 10:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 10:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif et à l'absence d'analyses contradictoires
+
+## 2026-10-05 10:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au signal rule‑based négatif.
+
+## 2026-10-05 10:18 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 10:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-10-05 10:32 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 10:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 10:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 11:01 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-10-05 11:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans validation spécifique
+
+## 2026-10-05 11:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de disponibilité – reliance sur le winrate global malgré l'absence de données spécifiques
+
+## 2026-10-05 11:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 11:35 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 11:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au recours au taux de réussite global comme unique justification
+
+## 2026-10-05 11:49 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 12:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle basée sur le score composite uniquement
+
+## 2026-10-05 12:04 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la forte confiance dans le signal technique
+
+## 2026-10-05 12:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation lié à la règle de seuil (+2.0) malgré l'absence de support supplémentaire
+
+## 2026-10-05 12:19 UTC — AMZN (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 12:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-05 12:33 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif
+
+## 2026-10-05 12:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du fallback global
+
+## 2026-10-05 12:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal rule‑based
+
+## 2026-10-05 13:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-05 13:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 13:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 13:19 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-05 13:31 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-05 13:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 13:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données propres
+
+## 2026-10-05 13:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-05 14:01 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-05 14:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 14:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement sectoriel
+
+## 2026-10-05 14:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 14:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 14:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-10-05 14:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de score composite comme critère décisif
+
+## 2026-10-05 14:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-05 14:48 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 15:02 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 15:16 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 15:19 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 15:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 15:33 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 15:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte de la règle de score composite
+
+## 2026-10-05 15:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique négatif
+
+## 2026-10-05 16:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme substitut d'information spécifique
+
+## 2026-10-05 16:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 16:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au critère de score composite qui dépasse le seuil minimal
+
+## 2026-10-05 16:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-05 16:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques
+
+## 2026-10-05 16:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 16:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du win‑rate global comme unique justification
+
+## 2026-10-05 16:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 17:01 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 17:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-10-05 17:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'application stricte du seuil de score composite
+
+## 2026-10-05 17:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 17:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-05 17:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-10-05 17:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le winrate global
+
+## 2026-10-05 17:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-05 17:48 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais d'ancrage sur la règle du score composite négatif
+
+## 2026-10-05 18:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation technique
+
+## 2026-10-05 18:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique baissier
+
+## 2026-10-05 18:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique support
+
+## 2026-10-05 18:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 18:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du taux de réussite global
+
+## 2026-10-05 18:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 18:34 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-10-05 18:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- biais de représentativité du winrate global
+
+## 2026-10-05 18:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation technique
+
+## 2026-10-05 19:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du seuil de score composite comme principal déclencheur
+
+## 2026-10-05 19:03 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de sur‑confiance
+
+## 2026-10-05 19:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-05 19:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-10-05 19:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite seuil
+
+## 2026-10-05 19:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 19:46 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-05 19:47 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-05 20:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l’utilisation du winrate global comme unique justification
+
+## 2026-10-05 20:02 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 20:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-05 20:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-05 20:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-05 20:32 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le critère de score composite
+
+## 2026-10-05 20:46 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 20:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite négatif
+
+## 2026-10-05 20:50 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 21:01 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au recours au winrate global comme unique indicateur
+
+## 2026-10-05 21:03 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 21:16 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans le winrate global en l'absence de données spécifiques à HBAR
+
+## 2026-10-05 21:18 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 21:31 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 21:33 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 21:47 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au poids excessif du signal technique négatif.
+
+## 2026-10-05 21:47 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 21:56 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'absence de signaux fondamentaux
+
+## 2026-10-05 22:02 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 22:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-05 22:17 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-05 22:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-10-05 22:31 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-05 22:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques
+
+## 2026-10-05 22:45 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 23:00 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-10-05 23:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 23:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 23:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 23:30 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-05 23:45 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-10-05 23:45 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-10-06 00:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-06 00:00 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 00:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 00:15 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-06 00:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil sans corroboration indépendante
+
+## 2026-10-06 00:30 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique baissier
+
+## 2026-10-06 00:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le winrate global
+
+## 2026-10-06 00:45 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-06 01:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite > 2.0
+
+## 2026-10-06 01:00 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de -2.0
+
+## 2026-10-06 01:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite qui déclenche automatiquement l’achat
+
+## 2026-10-06 01:15 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-10-06 01:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-06 01:30 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-06 01:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement spécifique à HBAR
+
+## 2026-10-06 01:45 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation sur le signal rule‑based
+
+## 2026-10-06 02:00 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du taux de réussite global
+
+## 2026-10-06 02:00 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 02:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de règle (reliance excessive sur le seuil de score composite)
+
+## 2026-10-06 02:15 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-06 02:15 UTC — AMZN (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 02:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans analyse spécifique
+
+## 2026-10-06 02:30 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-06 02:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 02:45 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 03:00 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-06 03:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique justification
+
+## 2026-10-06 03:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-06 03:30 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-06 03:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l’utilisation du seuil de score sans validation supplémentaire
+
+## 2026-10-06 03:45 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 04:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 04:00 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de -2.0 du score composite
+
+## 2026-10-06 04:15 UTC — HBAR-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de surconfiance lié au score composite élevé malgré l'absence de données spécifiques
+
+## 2026-10-06 04:15 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif
+
+## 2026-10-06 04:17 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-06 04:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme substitut
+
+## 2026-10-06 04:30 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 04:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite atteint
+
+## 2026-10-06 04:45 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-06 05:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-06 05:00 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-06 05:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- Biais de confirmation du signal technique malgré l'absence de soutien fondamental et sentiment
+
+## 2026-10-06 05:15 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 05:30 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-06 05:30 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-06 05:45 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans le winrate global
+
+## 2026-10-06 05:45 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-06 06:00 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au fallback global sans validation spécifique
+
+## 2026-10-06 06:00 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le score composite négatif
+
+## 2026-10-06 06:15 UTC — HBAR-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 06:16 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-06 06:30 UTC — ETH-USD (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite élevé
+
+## 2026-10-06 06:30 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 06:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 06:45 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 06:45 UTC — AMAT (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-06 07:04 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation (le score technique élevé est privilégié malgré l'absence de soutien fondamental et sentimentale)
+
+## 2026-10-06 07:05 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 07:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 07:30 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-06 07:31 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-10-06 07:33 UTC — VOO (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-06 07:45 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 07:47 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation (reliance sur le rule‑based sans corroboration indépendante).
+
+## 2026-10-06 08:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-10-06 08:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-06 08:15 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-06 08:16 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-06 08:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-06 08:31 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≥ 2.0
+
+## 2026-10-06 08:45 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 08:45 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation sur le critère de score composite
+
+## 2026-10-06 09:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-06 09:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au recours au fallback global sans données spécifiques à AMAT
+
+## 2026-10-06 09:16 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-06 09:16 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le seuil de score technique
+
+## 2026-10-06 09:30 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite négatif
+
+## 2026-10-06 09:30 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 09:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-06 09:46 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 10:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-06 10:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 10:15 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-06 10:15 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le critère rule‑based
+
+## 2026-10-06 10:30 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 10:31 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans validation sectorielle
+
+## 2026-10-06 10:31 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans validation sectorielle
+
+## 2026-10-06 10:45 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 10:45 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance lié au score composite élevé malgré l'absence de support fondamental
+
+## 2026-10-06 11:00 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 11:15 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 11:17 UTC — VOO (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 11:30 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-06 11:31 UTC — AMAT (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de surreliance sur le winrate global
+
+## 2026-10-06 11:45 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 11:45 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-06 12:01 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de -2.0 du score composite
+
+## 2026-10-06 12:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-10-06 12:15 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-06 12:15 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-06 12:31 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite négatif
+
+## 2026-10-06 12:31 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-06 12:46 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-10-06 12:46 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite juste au-dessus du seuil
+
+## 2026-10-06 13:01 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite ≤ -2.0
+
+## 2026-10-06 13:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-06 13:06 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au dépassement du seuil de score composite
+
+## 2026-10-06 13:15 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-06 13:16 UTC — VOO (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 15:01 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-06 15:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-06 15:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 15:01 UTC — AMD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-06 15:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 16:46 UTC — AMZN (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite ≥ 2.0
+
+## 2026-10-06 16:46 UTC — SPY (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 19:01 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 19:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du winrate global comme unique référence
+
+## 2026-10-06 19:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surestimation due à la forte confiance (8/10) malgré l'absence de données fondamentales
+
+## 2026-10-06 19:01 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-06 19:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle basée sur le score composite
+
+## 2026-10-06 23:00 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based basé uniquement sur le seuil du score composite
+
+## 2026-10-06 23:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite qui domine l'évaluation.
+
+## 2026-10-06 23:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de surconfiance lié à la forte confiance (8/10) malgré l'absence de données fondamentales
+
+## 2026-10-06 23:01 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du score composite comme critère principal
+
+## 2026-10-06 23:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-06 23:15 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-06 23:15 UTC — AMZN (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-06 23:15 UTC — AMAT (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de surconfiance dans le taux de succès global
+
+## 2026-10-06 23:16 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle basée uniquement sur le score composite
+
+## 2026-10-06 23:16 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-06 23:16 UTC — SPY (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-07 03:00 UTC — CEG (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-07 03:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-07 03:00 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score technique élevé
+
+## 2026-10-07 03:00 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-07 03:00 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-07 06:30 UTC — SOL-USD (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-07 06:30 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-07 06:30 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le critère de score composite
+
+## 2026-10-07 06:31 UTC — QQQ (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance due à la forte confiance (8/10) malgré l'absence d'historique spécifique
+
+## 2026-10-07 06:31 UTC — VOO (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-07 06:31 UTC — NQ=F (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-07 07:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au déclenchement du rule‑based sur le seul critère du score composite
+
+## 2026-10-07 07:00 UTC — MU (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation (le score composite dépasse le seuil et justifie l'achat malgré l'absence de soutien des autres sous‑agents)
+
+## 2026-10-07 07:01 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au recours au fallback global sans données spécifiques à AMD.
+
+## 2026-10-07 07:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de disponibilité du fallback global
+
+## 2026-10-07 11:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil minimal
+
+## 2026-10-07 11:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-07 11:01 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-07 11:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-07 15:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-07 15:01 UTC — MU (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation (le score composite dépasse le seuil et pousse à valider la décision malgré le manque d'autres supports)
+
+## 2026-10-07 15:01 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-07 15:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-07 19:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du score composite
+
+## 2026-10-07 19:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-07 19:01 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-07 19:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-07 23:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-07 23:00 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil de 2.0.
+
+## 2026-10-07 23:01 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation (le score composite dépasse le seuil et pousse à accepter le trade malgré le manque d'informations)
+
+## 2026-10-07 23:01 UTC — AMAT (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-07 23:15 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite négatif
+
+## 2026-10-07 23:15 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-07 23:15 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation (le score composite dépasse le seuil et pousse à valider la décision malgré l'absence de données complémentaires)
+
+## 2026-10-07 23:16 UTC — VOO (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-08 03:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance lié à la confiance 6/10 malgré l'absence de données fondamentales
+
+## 2026-10-08 03:00 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au critère de score composite uniquement
+
+## 2026-10-08 03:00 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-10-08 03:00 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-08 06:30 UTC — ETH-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-08 06:30 UTC — SOL-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-08 06:30 UTC — AMZN (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- sur‑confiance
+
+## 2026-10-08 06:31 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans données spécifiques à AMD
+
+## 2026-10-08 06:31 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-08 06:31 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-10-08 06:31 UTC — SPY (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-10-08 06:31 UTC — QQQ (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-08 06:31 UTC — NQ=F (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-08 07:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite
+
+## 2026-10-08 07:01 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-08 07:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-10-08 07:01 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-08 07:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à l'utilisation du fallback global sans ajustement sectoriel
+
+## 2026-10-08 11:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-08 11:01 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-08 11:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite positif
+
+## 2026-10-08 11:01 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-08 11:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-08 15:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-08 15:01 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation technique
+
+## 2026-10-08 15:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance due au score technique isolé
+
+## 2026-10-08 15:01 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-08 15:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-08 19:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-08 19:01 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-08 19:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle basée uniquement sur le seuil de score
+
+## 2026-10-08 19:01 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation technique
+
+## 2026-10-08 19:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- optimisme excessif dû au score composite légèrement au-dessus du seuil
+
+## 2026-10-08 23:00 UTC — VST (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-08 23:00 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-08 23:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-10-08 23:01 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-08 23:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-08 23:15 UTC — ETH-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- surconfiance liée à la règle de score composite
+
+## 2026-10-08 23:15 UTC — SOL-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite élevé
+
+## 2026-10-08 23:16 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-08 23:16 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite qui dépasse le seuil
+
+## 2026-10-09 03:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-09 03:00 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-09 03:00 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based sur le score composite
+
+## 2026-10-09 03:00 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-09 03:00 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite fixé à 2.0
+
+## 2026-10-09 06:30 UTC — CRO-USD (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-09 06:30 UTC — CRO-USD (SELL)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 06:31 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 06:31 UTC — AMZN (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance lié à la forte confiance (8/10) malgré des signaux fondamentaux neutres
+
+## 2026-10-09 06:31 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 06:31 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 06:31 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance dans la règle de score composite
+
+## 2026-10-09 06:31 UTC — CEG (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite uniquement
+
+## 2026-10-09 06:31 UTC — SPY (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 06:31 UTC — QQQ (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 06:31 UTC — VOO (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 06:31 UTC — NQ=F (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 07:00 UTC — CEG (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-09 07:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 07:01 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-09 07:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation sur le critère de score composite
+
+## 2026-10-09 07:01 UTC — AMD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- confirmation
+
+## 2026-10-09 07:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 11:00 UTC — CEG (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 11:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-09 11:01 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-09 11:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite élevé
+
+## 2026-10-09 11:01 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 11:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-09 15:01 UTC — CEG (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 15:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-09 15:01 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du score composite
+
+## 2026-10-09 15:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 15:01 UTC — AMD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 15:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais d'optimisme lié au score technique uniquement
+
+## 2026-10-09 19:00 UTC — CEG (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du signal technique sans corroboration fondamentale
+
+## 2026-10-09 19:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation sur le critère de score composite
+
+## 2026-10-09 19:00 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 19:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 19:01 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-10-09 19:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-09 23:00 UTC — CEG (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle basée uniquement sur le score composite
+
+## 2026-10-09 23:00 UTC — CRO-USD (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 23:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-09 23:00 UTC — AMZN (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-10-09 23:00 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-09 23:00 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 23:00 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 23:00 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 23:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 23:01 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-09 23:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 03:00 UTC — CEG (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 03:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au respect du seuil de score composite
+
+## 2026-10-10 03:01 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du score composite
+
+## 2026-10-10 03:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 03:01 UTC — AMD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 03:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 06:30 UTC — SOL-USD (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 06:30 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-10 06:30 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 06:30 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 06:31 UTC — SPY (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite dépassant le seuil
+
+## 2026-10-10 06:31 UTC — QQQ (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite élevé et à la règle simple
+
+## 2026-10-10 06:31 UTC — VOO (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 06:31 UTC — NQ=F (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 07:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-10-10 07:00 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite qui déclenche automatiquement l'achat
+
+## 2026-10-10 07:00 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite
+
+## 2026-10-10 07:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-10 11:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 11:00 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 11:00 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 11:00 UTC — AMAT (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 15:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-10-10 15:01 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation dû à la règle de seuil de score composite
+
+## 2026-10-10 15:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation sur le score composite
+
+## 2026-10-10 15:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 19:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au respect du seuil de score
+
+## 2026-10-10 19:00 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-10-10 19:00 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 19:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 23:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 23:00 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 23:00 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 23:00 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-10-10 23:15 UTC — CRO-USD (SELL)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-10 23:15 UTC — TSLA (SELL)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-10-10 23:15 UTC — AMZN (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation lié au score technique élevé
+
+## 2026-10-10 23:15 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-10-10 23:15 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-10 23:15 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-11 03:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation sur le critère technique
+
+## 2026-10-11 03:00 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite uniquement
+
+## 2026-10-11 03:00 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-11 03:00 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-11 06:30 UTC — SOL-USD (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-11 06:30 UTC — NVDA (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-11 06:30 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite uniquement
+
+## 2026-10-11 06:31 UTC — SPY (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-11 06:31 UTC — QQQ (BUY)
+**Verdict** : FRAGILE (solidité 6/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-11 06:31 UTC — VOO (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-11 06:31 UTC — NQ=F (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-11 07:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de seuil de score composite
+
+## 2026-10-11 07:00 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-11 07:00 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation sur le score composite
+
+## 2026-10-11 07:00 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-11 11:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-11 11:00 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-11 11:00 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au respect du seuil de score composite sans corroboration externe
+
+## 2026-10-11 11:00 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-11 15:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-10-11 15:00 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-11 15:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance lié à l'absence de corroboration fondamentale
+
+## 2026-10-11 15:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation dû au critère de score composite uniquement
+
+## 2026-10-11 23:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-11 23:00 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au respect du seuil de score composite
+
+## 2026-10-11 23:00 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-11 23:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-10-11 23:15 UTC — CRO-USD (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal rule‑based
+
+## 2026-10-11 23:15 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-11 23:15 UTC — AMZN (BUY)
+**Verdict** : SOLIDE (solidité 7/10)
+
+## 2026-10-11 23:15 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-11 23:16 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-11 23:16 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-12 03:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au respect du seuil de score composite
+
+## 2026-10-12 03:00 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-12 03:00 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-12 03:00 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au score composite
+
+## 2026-10-12 06:30 UTC — SOL-USD (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite élevé sans corroboration externe
+
+## 2026-10-12 06:30 UTC — NVDA (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-12 06:30 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-12 06:30 UTC — SPY (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-12 06:31 UTC — QQQ (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au score composite élevé et à la règle simple de seuil
+
+## 2026-10-12 06:31 UTC — VOO (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-12 06:31 UTC — NQ=F (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-12 07:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-12 07:01 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-12 07:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-12 07:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-12 11:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-12 11:00 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-12 11:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite ≥ 2.0
+
+## 2026-10-12 11:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite fixé à 2.0.
+
+## 2026-10-12 15:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au seuil de score composite
+
+## 2026-10-12 15:01 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du rule‑based
+
+## 2026-10-12 15:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de surconfiance lié à la règle de score composite sans corroboration supplémentaire
+
+## 2026-10-12 15:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-12 19:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-12 19:01 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation dû au seuil de score composite uniquement
+
+## 2026-10-12 19:01 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le critère rule‑based
+
+## 2026-10-12 19:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-12 23:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-12 23:00 UTC — TSLA (SELL)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-12 23:00 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-12 23:00 UTC — AMZN (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-10-12 23:00 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-12 23:00 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-12 23:00 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-12 23:01 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- surconfiance due à la règle de score composite
+
+## 2026-10-12 23:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score
+
+## 2026-10-13 00:30 UTC — SOL-USD (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- Biais de surconfiance lié à la forte note de confiance malgré l'absence de données historiques
+
+## 2026-10-13 03:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle du score composite
+
+## 2026-10-13 03:00 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-13 03:00 UTC — MU (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-13 03:00 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-13 06:30 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié à la règle de score composite
+
+## 2026-10-13 06:30 UTC — CEG (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-13 06:31 UTC — SPY (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation dû au critère de score composite uniquement
+
+## 2026-10-13 06:31 UTC — QQQ (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-13 06:31 UTC — VOO (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite
+
+## 2026-10-13 07:01 UTC — CEG (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-13 07:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-13 07:01 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-13 07:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 5/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-10-13 11:00 UTC — CEG (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-13 11:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-13 11:01 UTC — LITE (BUY)
+**Verdict** : SOLIDE (solidité 6/10)
+
+## 2026-10-13 11:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite
+
+## 2026-10-13 15:00 UTC — CEG (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation lié au critère de score composite
+
+## 2026-10-13 15:00 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-13 15:01 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-13 15:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation sur le signal technique
+
+## 2026-10-13 19:00 UTC — CEG (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-13 19:01 UTC — VST (BUY)
+**Verdict** : FRAGILE (solidité 3/10)
+**Biais détectés** :
+- biais de confirmation du signal technique
+
+## 2026-10-13 19:01 UTC — LITE (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
+
+## 2026-10-13 19:01 UTC — AMAT (BUY)
+**Verdict** : FRAGILE (solidité 4/10)
+**Biais détectés** :
+- biais de confirmation
