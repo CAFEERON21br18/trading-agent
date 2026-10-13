@@ -11,7 +11,7 @@ Un jour = une transaction : relancer ne crée jamais de doublon.
 
 Garanties : aucune table du paper lue ni écrite, aucun appel à Jev ni à une
 source de prix, aucune exception vers le cycle. Le log ne contient que des
-compteurs : le P&L n'est affiché que par la ligne du dashboard (§8.3).
+compteurs : le P&L n'est affiché que par le dashboard (§8.3).
 """
 
 from datetime import datetime
@@ -36,8 +36,9 @@ def observations_retenues(conn) -> list[dict]:
                              QUESTIONS_VERSION)
 
 
-def _barres(conn, ticker: str, jour: str) -> list:
-    """Les HORIZON premières barres journalières datées du jour ou après (requête du §7.1)."""
+def barres_horizon(conn, ticker: str, jour: str) -> list:
+    """Les HORIZON premières barres journalières datées du jour ou après (requête du §7.1) ;
+    aussi lue par la page du dashboard pour la date de sortie prévue."""
     return [(r[0], r[1]) for r in conn.execute(
         "SELECT substr(timestamp, 1, 10), close FROM prices WHERE ticker = ? AND timeframe = '1d' "
         "AND substr(timestamp, 1, 10) >= ? AND close IS NOT NULL ORDER BY timestamp LIMIT ?",
@@ -47,7 +48,7 @@ def _barres(conn, ticker: str, jour: str) -> list:
 def _sorties(conn, jour: str) -> int:
     n = 0
     for p in jev_paper_db.positions_ouvertes(conn):
-        barre = regles.barre_sortie(_barres(conn, p["ticker"], p["jour_entree"]), jour)
+        barre = regles.barre_sortie(barres_horizon(conn, p["ticker"], p["jour_entree"]), jour)
         if barre:
             jev_paper_db.fermer(conn, p, jour, barre[0], barre[1], regles.resultat(p, barre[1]))
             n += 1

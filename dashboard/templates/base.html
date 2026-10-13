@@ -62,21 +62,24 @@
 
     <!-- Bottom navigation (mobile-first) -->
     <nav class="fixed bottom-0 left-0 right-0 bg-slate-800 border-t border-slate-700 z-10">
-        <div class="grid grid-cols-12 max-w-4xl mx-auto">
-            {% set nav_items = [
-              ('overview', '/', '🏠', 'Home'),
-              ('portfolio', '/portfolio', '💼', 'Pf'),
-              ('real', '/real', '💰', 'Réel'),
-              ('plans', '/plans', '🎯', 'Plan'),
-              ('chat', '/chat', '💬', 'Chat'),
-              ('watchlist', '/watchlist', '📡', 'Wat'),
-              ('explorers', '/explorers', '🔍', 'Expl'),
-              ('journal', '/journal', '📔', 'Jrnl'),
-              ('budget', '/budget', '💵', 'Bud'),
-              ('memory', '/memory', '🧠', 'Mem'),
-              ('architecture', '/architecture', '🗺️', 'Arch'),
-              ('settings', '/settings', '⚙️', 'Set'),
-            ] %}
+        {% set nav_items = [
+          ('overview', '/', '🏠', 'Home'),
+          ('portfolio', '/portfolio', '💼', 'Pf'),
+          ('fantome_jev', '/fantome-jev', '👻', 'Jev'),
+          ('real', '/real', '💰', 'Réel'),
+          ('plans', '/plans', '🎯', 'Plan'),
+          ('chat', '/chat', '💬', 'Chat'),
+          ('watchlist', '/watchlist', '📡', 'Wat'),
+          ('explorers', '/explorers', '🔍', 'Expl'),
+          ('journal', '/journal', '📔', 'Jrnl'),
+          ('budget', '/budget', '💵', 'Bud'),
+          ('memory', '/memory', '🧠', 'Mem'),
+          ('architecture', '/architecture', '🗺️', 'Arch'),
+          ('settings', '/settings', '⚙️', 'Set'),
+        ] %}
+        <!-- Une colonne par entrée (13 depuis la page Fantôme Jev) -->
+        <div class="grid max-w-4xl mx-auto"
+             style="grid-template-columns: repeat({{ nav_items|length }}, minmax(0, 1fr));">
             {% for slug, href, emoji, label in nav_items %}
               <a href="{{ href }}"
                  class="flex flex-col items-center py-2 text-xs

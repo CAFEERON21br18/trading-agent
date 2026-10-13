@@ -2,35 +2,52 @@
 utils/jev_paper_comparaison.py — Ligne de comparaison du dashboard : fantôme Jev et
 paper actuel (REGISTRE_CRITERES §8.3). LECTURE SEULE, descriptif, pas un critère.
 
-C'est la seule exception à l'interdiction d'afficher un rendement avant la lecture
-du §7 : la valeur de chacun et son nombre de positions ouvertes, rien d'autre (ni
-P&L par position, par actif ou par groupe, ni réalisé et latent séparés).
+Ligne de la page d'accueil, reprise en en-tête de la page « Fantôme Jev »
+(utils/jev_fantome_page.py) : la valeur de chacun et son nombre de positions ouvertes.
 - Même fenêtre des deux côtés : depuis la première entrée du fantôme ; côté paper,
   les positions ouvertes ce jour-là ou après (jour de Lisbonne).
 - Valeur = CAPITAL + P&L réalisé + P&L latent à la dernière clôture de `prices`,
   coûts aller-retour du §7.1 déduits des deux côtés. Côté paper, ces coûts ne
-  servent qu'à cette ligne : ses tables ne changent pas.
+  servent qu'à cet affichage : ses tables ne changent pas.
 - Une valeur inconnue (prix ou P&L manquant) vaut None, jamais 0.
 """
 
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from zoneinfo import ZoneInfo
 
 import config
+from agents.jev.fantome import observations_retenues
+from scripts.jev_bilan import FENETRE, MATURATION
 from scripts.jev_bilan_calc import cout
 
 MENTION = "descriptif, pas un critère"
 
 
-def _table_existe(conn, nom: str) -> bool:
+def mention_datee(conn) -> str:
+    """MENTION et date de lecture du §7.2, calculée comme scripts/jev_bilan.py : première
+    observation retenue + 12 semaines + 10 jours. MENTION seule tant qu'il n'y a pas d'observation."""
+    obs = observations_retenues(conn)
+    if not obs:
+        return MENTION
+    lecture = date.fromisoformat(obs[0]["jour"]) + FENETRE + MATURATION
+    return f"{MENTION} — lecture le {lecture:%d/%m/%Y}"
+
+
+def table_existe(conn, nom: str) -> bool:
     return conn.execute("SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = ?",
                         (nom,)).fetchone() is not None
 
 
+def derniere_cloture_datee(conn, ticker: str) -> tuple[str, float] | None:
+    """(jour, clôture) de la dernière barre journalière de `prices` ; None si aucune."""
+    r = conn.execute("SELECT substr(timestamp, 1, 10), close FROM prices WHERE ticker = ? AND timeframe = '1d' "
+                     "AND close IS NOT NULL ORDER BY timestamp DESC LIMIT 1", (ticker,)).fetchone()
+    return (r[0], float(r[1])) if r else None
+
+
 def _derniere_cloture(conn, ticker: str) -> float | None:
-    r = conn.execute("SELECT close FROM prices WHERE ticker = ? AND timeframe = '1d' AND close IS NOT NULL "
-                     "ORDER BY timestamp DESC LIMIT 1", (ticker,)).fetchone()
-    return float(r[0]) if r else None
+    derniere = derniere_cloture_datee(conn, ticker)
+    return derniere[1] if derniere else None
 
 
 def _jour_lisbonne(horodatage: str) -> str:
@@ -74,7 +91,7 @@ def _fantome(conn) -> list[dict]:
 
 
 def _paper(conn, debut: str) -> list[dict]:
-    if not _table_existe(conn, "positions"):
+    if not table_existe(conn, "positions"):
         return []
     rows = conn.execute("SELECT ticker, direction, status, entry_price, quantity, invested_amount, pnl_euros, "
                         "entry_date FROM positions").fetchall()
@@ -87,8 +104,8 @@ def _paper(conn, debut: str) -> list[dict]:
 
 def comparaison(conn) -> dict:
     """Ligne du §8.3. debut None tant que le fantôme n'a acheté aucune position."""
-    vide = {"mention": MENTION, "debut": None, "capital_depart": None, "fantome": None, "paper": None}
-    if not _table_existe(conn, "jev_paper_positions"):
+    vide = {"mention": mention_datee(conn), "debut": None, "capital_depart": None, "fantome": None, "paper": None}
+    if not table_existe(conn, "jev_paper_positions"):
         return vide
     debut = conn.execute("SELECT MIN(jour_entree) FROM jev_paper_positions").fetchone()[0]
     if debut is None:
