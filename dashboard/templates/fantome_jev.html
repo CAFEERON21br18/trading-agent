@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block title %}Fantôme Jev — AlphaSignal{% endblock %}
+
+{% block content %}
+<!-- Fantôme Jev (REGISTRE_CRITERES §8.3, v1.5) : page détaillée, LECTURE SEULE, descriptif.
+     P&L sans couleur de gain ou de perte ; prix manquant « non disponible », jamais 0. -->
+<div id="fj-mention" class="text-xs text-slate-300 border border-slate-600 rounded-lg px-3 py-2 mb-3">
+    descriptif, pas un critère
+</div>
+
+<div class="card mb-4 text-sm">
+    <h2 class="font-semibold">👻 Fantôme Jev / paper</h2>
+    <div id="fj-entete" class="mt-1 text-slate-200">—</div>
+    <div id="fj-entete-detail" class="text-xs text-slate-400 mt-1"></div>
+    <div id="fj-refus" class="text-xs text-slate-400 mt-1"></div>
+</div>
+
+<div class="card mb-4 text-sm">
+    <h2 class="font-semibold mb-2">Positions ouvertes</h2>
+    <div id="fj-ouvertes"><div class="skeleton h-16"></div></div>
+    <p class="text-xs text-slate-400 mt-2">
+        P&L latent à la dernière clôture de <code>prices</code>, coûts du §7.1 déduits (comme l'en-tête).
+        Sortie à la clôture de la 5e barre, passée au cycle quotidien suivant ;
+        « estimée » : barres pas encore en base, jours fériés non connus.
+    </p>
+</div>
+
+<div class="card mb-4 text-sm">
+    <h2 class="font-semibold mb-2">Positions fermées</h2>
+    <div id="fj-fermees"><div class="skeleton h-16"></div></div>
+    <p class="text-xs text-slate-400 mt-2">P&L net des coûts aller-retour du §7.1 (1,0 % crypto, 0,2 % sinon).</p>
+</div>
+
+<div class="card mb-4 text-sm">
+    <h2 class="font-semibold mb-2">Ce que Jev a dit ce matin <span id="fj-jour" class="font-normal text-slate-400"></span></h2>
+    <div id="fj-observations"><div class="skeleton h-16"></div></div>
+    <p class="text-xs text-slate-400 mt-2">
+        Trié par p(acheter) décroissant. Aucun prix ni rendement pour ces observations (§8.3).
+    </p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const ND = "non disponible";
+const STICKY = "sticky left-0 bg-slate-800";
+const fmt = (v, d) => v.toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const signe = (v) => (v > 0 ? "+" : "");
+const eur = (v) => (v == null ? ND : fmt(v, 2) + " €");
+const pnlEur = (v) => (v == null ? ND : signe(v) + fmt(v, 2) + " €");
+const pnlPct = (v) => (v == null ? ND : signe(v) + fmt(v, 2) + " %");
+const prix = (v) => (v == null ? ND : fmt(v, v >= 100 ? 2 : v >= 1 ? 4 : 6));
+const proba = (v) => (v == null ? "—" : fmt(v, 2));
+const jourFr = (j) => (j ? j.split("-").reverse().join("/") : "—");
+const court = (j) => (j ? j.slice(8, 10) + "/" + j.slice(5, 7) : "");
+const texte = (v) => (v == null || v === "" ? "—" : escHtml(v));
+const discret = (t) => ` <span class="text-slate-500">${t}</span>`;
+const pluriel = (n, mot) => `${n} ${mot}${n > 1 ? "s" : ""}`;
+
+// entetes : [libellé, nombre aligné à droite ?] ; cellules déjà échappées ou formatées
+function tableau(entetes, lignes, pied) {
+    const cls = (i) => (entetes[i][1] ? "text-right tabular-nums " : "") + (i === 0 ? STICKY : "");
+    const th = entetes.map(([l], i) =>
+        `<th class="px-2 py-1 font-normal text-slate-400 text-left ${cls(i)}">${l}</th>`).join("");
+    const tr = (cellules, plus = "") => `<tr class="border-t border-slate-700 ${plus}">` +
+        cellules.map((c, i) => `<td class="px-2 py-1 ${cls(i)}">${c}</td>`).join("") + "</tr>";
+    return `<div class="overflow-x-auto"><table class="min-w-full text-xs whitespace-nowrap">` +
+        `<thead><tr>${th}</tr></thead><tbody>${lignes.map((l) => tr(l)).join("")}</tbody>` +
+        (pied ? `<tfoot>${tr(pied, "font-semibold")}</tfoot>` : "") + `</table></div>`;
+}
+const vide = (t) => `<div class="text-xs text-slate-400">${t}</div>`;
+
+function entete(d) {
+    const e = d.entete;
+    if (!e.debut) {
+        document.getElementById("fj-entete").textContent = "aucune position fantôme pour l'instant";
+    } else {
+        const val = (c) => (c.valeur === null ? ND : fmt(c.valeur, 2) + " €");
+        const ouv = (n) => `${pluriel(n, "position")} ouverte${n > 1 ? "s" : ""}`;
+        document.getElementById("fj-entete").textContent =
+            `Fantôme ${val(e.fantome)} (${ouv(e.fantome.positions_ouvertes)}, ${pluriel(e.positions_fermees, "fermée")})` +
+            ` · Paper ${val(e.paper)} (${ouv(e.paper.positions_ouvertes)})`;
+        const manquants = [...e.fantome.prix_manquants, ...e.paper.prix_manquants];
+        document.getElementById("fj-entete-detail").textContent =
+            `Depuis le ${jourFr(e.debut)}, même fenêtre des deux côtés : ${fmt(e.capital_depart, 0)} € + réalisé ` +
+            `+ latent à la dernière clôture, coûts du §7.1 déduits` +
+            (manquants.length ? ` · prix manquant : ${manquants.join(", ")}` : "");
+    }
+    const motifs = Object.entries(e.refus_par_motif).map(([m, n]) => `${m} ×${n}`).join(" · ");
+    document.getElementById("fj-refus").textContent =
+        `Refus : ${e.refus_total}` + (motifs ? ` — ${motifs}` : "");
+}
+
+function ouvertes(o) {
+    const el = document.getElementById("fj-ouvertes");
+    if (!o.positions.length) { el.innerHTML = vide("aucune position ouverte"); return; }
+    const conv = (p) => (p.conviction_niveau == null ? "—" :
+        `${p.conviction_niveau}` + (p.facteur != null ? discret(`×${fmt(p.facteur, 1)}`) : ""));
+    el.innerHTML = tableau(
+        [["Actif"], ["Groupe"], ["Entrée"], ["p(acheter)", 1], ["Conviction", 1], ["Investi", 1],
+         ["Prix d'entrée", 1], ["Dernier prix", 1], ["P&L latent", 1], ["%", 1], ["Sortie prévue"]],
+        o.positions.map((p) => [
+            escHtml(p.ticker), texte(p.groupe || "seul"), jourFr(p.jour_entree), proba(p.p_acheter), conv(p),
+            eur(p.montant_investi), prix(p.prix_entree),
+            prix(p.dernier_prix) + (p.jour_dernier_prix ? discret(court(p.jour_dernier_prix)) : ""),
+            pnlEur(p.pnl_latent), pnlPct(p.pnl_latent_pct),
+            jourFr(p.sortie.barre) + (p.sortie.estimee ? discret("estimée") : "")]),
+        ["Total", "", "", "", "", eur(o.total.montant_investi), "", "",
+         pnlEur(o.total.pnl), pnlPct(o.total.pnl_pct), ""]);
+}
+
+function fermees(f) {
+    const el = document.getElementById("fj-fermees");
+    if (!f.positions.length) { el.innerHTML = vide("aucune position fermée pour l'instant"); return; }
+    el.innerHTML = tableau(
+        [["Actif"], ["Entrée"], ["Prix d'entrée", 1], ["Sortie (5e barre)"], ["Prix de sortie", 1],
+         ["Investi", 1], ["P&L net", 1], ["%", 1]],
+        f.positions.map((p) => [
+            escHtml(p.ticker), jourFr(p.jour_entree), prix(p.prix_entree), jourFr(p.barre_sortie),
+            prix(p.prix_sortie), eur(p.montant_investi), pnlEur(p.pnl_net), pnlPct(p.pnl_pct)]),
+        [`Total cumulé (${f.total.positions})`, "", "", "", "", eur(f.total.montant_investi),
+         pnlEur(f.total.pnl), pnlPct(f.total.pnl_pct)]);
+}
+
+const CHOIX = { acheter: "acheter", conserver: "conserver", ne_rien_faire: "ne rien faire" };
+function actionFantome(f) {
+    if (f.action === "achat") return "acheté";
+    if (f.action === "refus") return "refus : " + texte(f.motif);
+    if (f.action === "pas_candidat") return "— (p &lt; 0,6)";
+    if (f.action === "en_attente") return "pas encore traité";
+    return "hors observation : " + texte(f.motif);
+}
+
+function observations(j) {
+    const el = document.getElementById("fj-observations");
+    if (!j.jour) { el.innerHTML = vide("aucune observation pour l'instant"); return; }
+    document.getElementById("fj-jour").textContent = `(${jourFr(j.jour)}, ${pluriel(j.actifs.length, "actif")})`;
+    el.innerHTML = tableau(
+        [["Actif"], ["p(acheter)", 1], ["Choix"], ["Conviction", 1], ["Régime Jev"], ["Régime moteur"],
+         ["Décision moteur"], ["Fantôme"]],
+        j.actifs.map((a) => [
+            escHtml(a.ticker), proba(a.p_acheter), a.choix ? texte(CHOIX[a.choix] || a.choix) : texte(a.statut),
+            texte(a.conviction_niveau), texte(a.regime_jev), texte(a.regime_moteur), texte(a.decision_moteur),
+            actionFantome(a.fantome)]));
+}
+
+async function load() {
+    try {
+        const d = await (await fetch("/api/jev/fantome/detail")).json();
+        if (d.mention) document.getElementById("fj-mention").textContent = d.mention;
+        if (d.error) throw new Error(d.error);
+        entete(d);
+        ouvertes(d.ouvertes);
+        fermees(d.fermees);
+        observations(d.jour);
+    } catch (e) {
+        document.getElementById("fj-entete").textContent = ND;
+        for (const id of ["fj-ouvertes", "fj-fermees", "fj-observations"]) {
+            document.getElementById(id).innerHTML = vide(ND);
+        }
+    }
+}
+load();
+</script>
+{% endblock %}

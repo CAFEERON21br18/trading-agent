@@ -23,11 +23,11 @@
     </div>
 </div>
 
-<!-- Fantôme Jev (REGISTRE_CRITERES §8.3) : seule exception à l'affichage avant la lecture du §7 -->
+<!-- Fantôme Jev (REGISTRE_CRITERES §8.3) : exception à l'affichage avant la lecture du §7, détail sur /fantome-jev -->
 <div class="card mb-4 text-sm">
     <div class="flex justify-between items-baseline gap-2">
-        <span class="font-semibold">👻 Fantôme Jev / paper</span>
-        <span class="text-xs text-slate-400">descriptif, pas un critère</span>
+        <a href="/fantome-jev" class="font-semibold">👻 Fantôme Jev / paper ›</a>
+        <span id="jev-fantome-mention" class="text-xs text-slate-400 text-right">descriptif, pas un critère</span>
     </div>
     <div id="jev-fantome" class="mt-1 text-slate-200">—</div>
     <div id="jev-fantome-detail" class="text-xs text-slate-400 mt-1"></div>
@@ -122,6 +122,7 @@ async function loadFantome() {
     const det = document.getElementById("jev-fantome-detail");
     try {
         const f = await (await fetch("/api/jev/fantome")).json();
+        if (f.mention) document.getElementById("jev-fantome-mention").textContent = f.mention;
         if (f.error) { el.textContent = ND; return; }
         if (!f.debut) { el.textContent = "aucune position fantôme pour l'instant"; return; }
         const val = (c) => c.valeur === null ? ND : c.valeur.toFixed(2) + "€";
