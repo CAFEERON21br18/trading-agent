@@ -262,6 +262,13 @@ la taille réduite tombe sous le minimum viable de 15 €.
   mesurable.
 - **Pas de lien de cause à effet sur les LLM.** Un verdict constant ne permet
   pas de dire si le LLM « a raison » : seulement qu'il ne trie pas.
+- **Unité de fait des montants paper et du fantôme** (note de fait du
+  14/10/2026, v1.6) : USD pour les actifs cotés en dollars, libellés « € ». Le
+  dimensionnement divise un budget en euros par un prix en dollars
+  (`position_sizer.py:110-114`, `fantome_regles.py:65`, TODO §29) : capital,
+  montants investis et P&L en valeur sont de fait en dollars. Les rendements
+  (§0.2, §7) et les P&L en pourcentage (§8) sont des rapports, que l'unité ne
+  change pas. Aucune correction avant la fin des fenêtres de mesure.
 - **Paper ≠ réel.** Aucune conclusion ne s'applique automatiquement au
   portefeuille réel.
 
@@ -304,6 +311,9 @@ la taille réduite tombe sous le minimum viable de 15 €.
   Aucun critère ni aucune règle de lecture du §7 modifiés ; règles simulées du
   §8.2 inchangées. Commitée après la première observation Jev (09/10/2026,
   23 lignes) et les 6 premières entrées du fantôme, avant tout code de la page.
+- v1.6, 14/10/2026 : note de fait au §4 (unité de fait des montants paper et
+  du fantôme : USD pour les actifs cotés en dollars, libellés « € »). Aucun
+  critère, aucune règle de lecture ni aucune règle simulée modifiés.
 
 ---
 

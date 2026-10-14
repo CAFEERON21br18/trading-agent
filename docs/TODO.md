@@ -645,3 +645,99 @@ corrigé.
   redirigent les logs avec `scripts/_banc_fichiers.journaux_detaches`.
 - Pistes, à trancher avec §1 : un dossier de logs configurable, utilisé par les
   tests, ou la même redirection dans ces quatre suites.
+
+## 29. Paper trader et fantôme Jev : 1 € = 1 $ sur les actifs cotés en dollars
+
+Relevé le 13/10/2026 (audit D1, lecture seule). **Ne pas corriger avant la fin
+des fenêtres de mesure du registre (`docs/REGISTRE_CRITERES.md`) et de son §7
+(observation Jev)** : une correction serait une rupture de série.
+
+- `agents/analysts/risk_manager/position_sizer.py:110-114` divise des euros par
+  un prix yfinance en dollars : `taille_par_risque = risque_max_eur /
+  distance_stop` et `taille_par_budget = budget_par_pos / prix_entree`. Ensuite,
+  `montant_investi = taille_unites × prix_entree` est un montant en dollars,
+  affiché « € ».
+- Même calcul dans le fantôme Jev : `agents/jev/fantome_regles.py:65`
+  (`quantite = montant / prix`).
+- De fait, le capital, les montants investis, le P&L paper et le P&L du fantôme
+  sont en USD libellés « € » sur les actifs cotés en dollars (actions US,
+  cryptos `-USD`, contrats `=F`). Les rendements du registre sont des rapports
+  de prix : l'unité ne les change pas. Note de fait dans le registre, v1.6 (§4).
+
+## 30. Les contrôles des plans réels ne tournent jamais dans un cycle
+
+Relevé le 13/10/2026, non corrigé.
+
+- `agents/plan_advisor.verifier_tous_les_plans` n'est appelé que par
+  `POST /api/plans/check-deviations` (`dashboard/api/routes.py:395-399`),
+  c'est-à-dire par le bouton de la page Plans (`plans.html:239`). Aucun cycle ne
+  l'appelle : le stratégique n'appelle que le conseiller des positions
+  (`scripts/cycle_strategic.py:75-76`).
+- `plan_alerts` n'a jamais reçu de ligne : la table est vide dans la base et dans
+  la sauvegarde du 08/10, sans entrée dans `sqlite_sequence`, et les logs ne
+  contiennent aucun « Alerte plan » depuis le 21/09.
+- Question : brancher les contrôles dans un cycle (lequel, à quelle fréquence)
+  ou retirer de la page Plans la promesse « l'agent compare ton réel et
+  t'alerte » ?
+
+## 31. `plan_advisor` lit une clé « allocation » qu'aucun plan n'a
+
+Relevé le 13/10/2026, non corrigé.
+
+- `agents/plan_advisor.py:55-63` (`verifier_deviation_allocation`) lit
+  `rules["allocation"]`, une répartition par ticker. Les 4 plans existants
+  (créés par `scripts/seed_plans.py`) ont `repartition` (plan Global) ou
+  `sous_repartition` (sous-plans), dont les clés sont des catégories
+  (`long_terme`, `crypto_socle`…), pas des tickers. Le contrôle ne produit donc
+  jamais d'alerte.
+- Même situation pour `verifier_taille_position` : `max_position_size` est vide
+  dans les 4 plans.
+- Question : lire `repartition` et `sous_repartition` (il faudrait alors classer
+  chaque position dans une catégorie) ou supprimer ce contrôle ?
+
+## 32. `utils/real_portfolio_db.py` : 707 lignes (règle 5)
+
+Relevé le 13/10/2026. Le fichier dépasse de loin la limite de 200 lignes
+(CLAUDE.md, règle 5). Il mélange schéma et migrations, budget, positions,
+conseils, plans, progression et alertes.
+
+- En attendant le découpage, n'y ajouter aucune ligne nette : le nouveau code va
+  dans de nouveaux modules (c'est le cas de D1 : devise et conversion).
+- Dépassent aussi la limite : `utils/real_price.py` (285 lignes) et
+  `dashboard/api/routes.py` (616).
+
+## 33. D1, partie chat : reportée après le suivi de la consigne v2
+
+Relevé le 13/10/2026 ; report décidé le 14/10/2026. Les montants des 8 positions
+réelles sont en dollars (constat du 08/10) ; le capital total réel est en euros
+(confirmé le 14/10). La partie hors chat est corrigée par les commits D1 du
+14/10. Pendant la fenêtre de suivi de la consigne v2 (jusqu'au 27/10, peut-être
+jusqu'au 10/11), il est interdit de toucher au prompt du chat et au contrôle des
+chiffres. Restent donc à faire après la fenêtre :
+
+- la section « PORTEFEUILLE RÉEL » du prompt : `agents/chat/_llm.py:43-44`
+  (investi et P&L réalisé libellés « € ») et `:62` (prix d'entrée libellé
+  « € ») ;
+- `agents/chat/_plan_budget.py:46-90` : le plafond d'un nouveau plan soustrait
+  du capital (€) l'investi ($), et le budget restant soustrait de l'€ et du $.
+  Affichage et refus sont libellés « € ». Au 13/10, le mélange ne change pas le
+  refus : le Plan Global à 100 % réserve tout le capital, et le plafond est ≤ 0
+  avec ou sans conversion ;
+- `agents/chat/_formatters.py:46-53` : total investi et P&L réalisé libellés
+  « € », prix d'entrée sans unité ;
+- `agents/chat/_verif_chiffres.py` : ajouter `$` et `USD` aux unités reconnues,
+  avec une nouvelle `VERSION`.
+
+## 34. Dashboard arrêté le 13/10 au soir, sans alerte
+
+Constaté le 13/10/2026 au soir : le dashboard ne répondait plus, et aucune alerte
+n'a été émise. Cause inconnue.
+
+- `logs/task_dashboard.log` ne suffit pas : trois démarrages le 13/10 (18h51,
+  22h26, 22h33), dernière requête servie à 22h56. Les seules traces d'erreur
+  sont les échecs de rotation des logs (§1).
+- Pistes : l'historique de la tâche planifiée `\AlphaSignal\dashboard` et le
+  journal des événements Windows.
+- Aucun cycle ne vérifie le dashboard : `scripts/check_health.py` et
+  `scripts/check_status.py` lisent l'état de la tâche
+  (`utils/scheduler_check.py`), mais ils se lancent à la main.
