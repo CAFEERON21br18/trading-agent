@@ -741,3 +741,40 @@ n'a été émise. Cause inconnue.
 - Aucun cycle ne vérifie le dashboard : `scripts/check_health.py` et
   `scripts/check_status.py` lisent l'état de la tâche
   (`utils/scheduler_check.py`), mais ils se lancent à la main.
+
+## 35. Portefeuille réel : une position sans prix comptée comme une perte totale
+
+Relevé le 14/10/2026 (D1), non corrigé. Même famille que le §8 : une valeur
+inconnue doit rester « non disponible », jamais devenir un chiffre.
+
+- `utils/real_portfolio_db.py:220-224` (`get_real_budget_summary`) n'ajoute à
+  `current_value` que les positions qui ont un prix, puis calcule
+  `unrealized_pnl = current_value − invested` sur l'investi de **toutes** les
+  positions ouvertes. Une position sans prix compte donc pour 0 : son P&L vaut
+  −investi.
+- Même calcul dans `progression_plan` (`:637-647`) : `pnl_latent`, `pnl_total`,
+  `progression_pct` et `avancement_objectif` en héritent.
+- Où cela se voit :
+  - la page Réel (« Valeur actuelle », « Plus-value latente »), via
+    `utils/real_vue.budget_reel_vue` ;
+  - la page Plans (P&L total, progression, avancement), via
+    `real_vue.progression_plan_vue` ;
+  - `plan_advisor.verifier_progression_objectif`, via
+    `utils/real_conversion.progression_plan_eur` : la progression est sous-estimée,
+    donc les seuils 70 et 90 se déclenchent trop tard ou pas du tout.
+- Constaté le 14/10 sur une copie de la base, réseau coupé (aucun prix) : la vue
+  des 4 plans rendait quand même une progression chiffrée (commit 7b2acce).
+- Non concerné : le conseiller des positions. `calculate_position_pnl` rend
+  None sans prix, et aucun conseil n'est produit.
+- **Le prompt du chat n'utilise aucune des deux fonctions** (vérifié le 14/10).
+  Le chat lit `resume_portefeuille`, `lire_investissements`,
+  `lire_conseils_actifs`, `lire_plan`, `lire_plans` et `get_budget_capital`, et
+  aucune ne lit de prix. La correction n'attend donc pas la fin du suivi de la
+  consigne v2.
+- Piste : corriger dans les modules D1 (`utils/real_vue.py`,
+  `utils/real_conversion.py`), pas dans `real_portfolio_db.py` (§32). Valeur,
+  plus-value et progression passent à None (« non disponible ») dès qu'une
+  position ouverte n'a pas de prix, avec la liste des actifs manquants, comme
+  `agents/chat/_pnl_latent.py` : une somme partielle n'est jamais présentée comme
+  un total. `plan_advisor` n'émet alors aucune alerte de progression, comme
+  sans taux de change.
