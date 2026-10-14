@@ -2,8 +2,8 @@
 tests/test_real_devise.py — D1 : devise des montants du portefeuille réel (utils/real_devise.py,
 utils/real_vue.py) et libellés dans la devise de la position (« $ ») : textes et prompt LLM du
 conseiller, note de calibration, messages des plans (gabarits : test_real_devise_gabarits.py).
-Le capital et les budgets des plans restent en « € » ; les chiffres qui mélangent les deux sont
-marqués « non converti ». Les fonctions qui alimentent le prompt du chat ne changent pas.
+Le capital et les budgets des plans restent en « € » (conversion aux points de rencontre :
+tests/test_real_conversion.py). Les fonctions qui alimentent le prompt du chat ne changent pas.
 
 Lancement : .venv\\Scripts\\python.exe -m unittest tests.test_real_devise -v
 Base temporaire, prix simulés, valeurs inventées (règle 9) ; logs redirigés hors de logs/.
@@ -28,9 +28,10 @@ _LOGS = tempfile.mkdtemp()
 _JOURNAUX = journaux_detaches(_LOGS)
 _JOURNAUX.__enter__()  # tout le module : aucun message dans logs/ (production)
 
-from agents import plan_advisor, real_advisor
+from agents import real_advisor
 from agents.real_advisor_rules import regles_position
 from scripts import migrer_devise_reelle as migration
+from tests.fx_fixtures import faux_yfinance
 from utils import database, real_price, real_vue
 from utils import real_portfolio_db as db
 from utils.real_devise import DEVISE_DEFAUT, devise_commune, devise_de, symbole
@@ -115,21 +116,6 @@ class TestConseiller(unittest.TestCase):
                 self.assertEqual(real_advisor._enrichir(position())["devise"], "USD")
 
 
-class TestPlans(unittest.TestCase):
-    def test_taille_max_investi_en_devise_et_plafond_en_euros(self):
-        with mock.patch.object(plan_advisor, "positions_du_plan", return_value=[position(invested_amount=400.0)]):
-            a = plan_advisor.verifier_taille_position({"id": 1, "max_position_size": 300.0})
-        self.assertEqual(len(a), 1)
-        self.assertIn("AAA (400$, non converti) dépasse la taille max du plan (300€)", a[0]["message"])
-
-    def test_progression_non_convertie(self):
-        with mock.patch.object(plan_advisor, "progression_plan",
-                               return_value={"progression_pct": 19.0, "avancement_objectif": 95.0}):
-            a = plan_advisor.verifier_progression_objectif({"id": 1, "target_return_percent": 20})
-        self.assertEqual([x["alert_type"] for x in a], ["objectif_proche"])
-        self.assertIn("19.0% (non converti) vs cible 20%", a[0]["message"])
-
-
 class TestBaseTemporaire(unittest.TestCase):
     def setUp(self):
         self.dossier = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
@@ -159,18 +145,24 @@ class TestBaseTemporaire(unittest.TestCase):
         conn.close()
 
     def test_vues_avec_la_devise_des_positions(self):
-        b, r = real_vue.budget_reel_vue(), real_vue.resume_portefeuille_vue()
+        with faux_yfinance(1.25):
+            b, r = real_vue.budget_reel_vue(), real_vue.resume_portefeuille_vue()
         for vue in (b, r):
             self.assertEqual((vue["devise_positions"], vue["symbole_positions"]), ("USD", "$"))
         self.assertEqual(b["invested"], 125.0)
         self.assertEqual(r["total_invested"], 125.0)
         self.migrer_puis_une_position_en_euros()
-        for vue in (real_vue.budget_reel_vue(), real_vue.resume_portefeuille_vue()):
+        with faux_yfinance(1.25):
+            vues = (real_vue.budget_reel_vue(), real_vue.resume_portefeuille_vue())
+        for vue in vues:
             self.assertEqual((vue["devise_positions"], vue["symbole_positions"]), (None, real_vue.MIXTE))
 
-    def test_progression_vue_identique_a_progression_plan(self):
-        v, p = real_vue.progression_plan_vue(self.plan), db.progression_plan(self.plan)
-        self.assertEqual({k: v[k] for k in p}, p)
+    def test_progression_vue_montants_identiques_a_progression_plan(self):
+        with faux_yfinance(1.25):
+            v = real_vue.progression_plan_vue(self.plan)
+        p = db.progression_plan(self.plan)
+        for cle in ("invested", "current_value", "pnl_realise", "pnl_latent", "pnl_total", "positions_count"):
+            self.assertEqual(v[cle], p[cle], cle)  # montants des positions : jamais convertis
         self.assertEqual(v["symbole_positions"], "$")
         self.assertEqual(real_vue.progression_plan_vue(999), {"error": "plan introuvable"})
 

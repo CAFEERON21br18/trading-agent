@@ -173,14 +173,16 @@ async function loadBudget() {
         el.innerHTML = `<div class="text-slate-400 text-xs">Définis ton capital total réel pour activer le suivi.</div>`;
         return;
     }
-    const pctInv = b.invested_percent || 0;
+    const pctInv = b.invested_percent;  // null : taux de change indisponible (jamais 0)
     const s = escHtml(b.symbole_positions);
+    const enEur = (v) => (v == null) ? "non disponible" : v.toFixed(2) + "€";
     const html = [];
     html.push(`
         <div class="flex justify-between mb-1"><span>Capital total</span><span class="font-bold">${b.total_capital.toFixed(2)}€</span></div>
-        <div class="flex justify-between mb-1"><span>Investi</span><span class="font-bold">${b.invested.toFixed(2)}${s} (${pctInv}%, non converti)</span></div>
-        ${barre(pctInv, "bg-emerald-500")}
-        <div class="flex justify-between mt-2 mb-1"><span>Disponible</span><span class="font-bold text-emerald-300">${b.available.toFixed(2)} (non converti)</span></div>
+        <div class="flex justify-between mb-1"><span>Investi</span><span class="font-bold">${b.invested.toFixed(2)}${s} ≈ ${enEur(b.invested_eur)} (${pctInv == null ? "non disponible" : pctInv + "%"})</span></div>
+        ${barre(pctInv || 0, "bg-emerald-500")}
+        <div class="flex justify-between mt-2 mb-1"><span>Disponible</span><span class="font-bold text-emerald-300">${enEur(b.available)}</span></div>
+        <div class="text-xs text-slate-400 text-right">${escHtml(b.taux_libelle || "")}</div>
         <div class="border-t border-slate-700 my-3"></div>
         <div class="flex justify-between"><span>Valeur actuelle</span><span class="font-bold">${b.current_value.toFixed(2)}${s}</span></div>
         <div class="flex justify-between"><span>Plus-value latente</span><span class="font-bold ${colorPnl(b.unrealized_pnl)}">${signe(b.unrealized_pnl, s)} (${pct(b.unrealized_pnl_percent || 0)})</span></div>

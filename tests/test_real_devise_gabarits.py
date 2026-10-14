@@ -1,7 +1,7 @@
 """
 tests/test_real_devise_gabarits.py — D1 : gabarits real.html et plans.html. Montants des positions
-dans leur devise (« $ »), « € » seulement pour le capital et les budgets des plans ; chiffres qui
-mélangent les deux marqués « non converti » ; saisie dans la devise de cotation.
+dans leur devise (« $ »), « € » seulement pour le capital, les budgets des plans et les valeurs
+converties (taux affiché à côté, « non disponible » sans taux) ; saisie dans la devise de cotation.
 
 Lancement : .venv\\Scripts\\python.exe -m unittest tests.test_real_devise_gabarits -v
 Lecture des gabarits seulement : ni base, ni réseau, ni logs.
@@ -25,18 +25,22 @@ def lignes_en_euros(nom: str) -> list[str]:
 
 
 class TestGabarits(unittest.TestCase):
-    def test_euros_seulement_sur_le_capital_et_les_budgets(self):
+    def test_euros_seulement_sur_le_capital_les_budgets_et_les_valeurs_converties(self):
         self.assertTrue(lignes_en_euros("real.html"))
         for l in lignes_en_euros("real.html"):
-            self.assertIn("apital", l)
+            self.assertTrue("apital" in l or "enEur" in l, l)
         for l in lignes_en_euros("plans.html"):
-            self.assertTrue("Budget" in l or "Montant cible" in l, l)
+            self.assertTrue("Budget" in l or "Montant cible" in l or "pnl_total_eur" in l, l)
 
-    def test_chiffres_mixtes_marques_non_convertis(self):
+    def test_resultats_convertis_avec_le_taux_affiche(self):
         real, plans = lire("real.html"), lire("plans.html")
-        self.assertIn("${b.available.toFixed(2)} (non converti)", real)
-        self.assertIn("(${pctInv}%, non converti)", real)
-        self.assertEqual(plans.count("non converti"), 4)  # carte (2) et détail (2) d'un plan
+        for t in (real, plans):
+            self.assertNotIn("non converti", t)
+        self.assertIn("${enEur(b.available)}", real)
+        self.assertIn("${escHtml(b.taux_libelle", real)
+        self.assertIn('(v == null) ? "non disponible"', real)  # jamais 0 sans taux
+        self.assertEqual(plans.count("${escHtml(prog.taux_libelle"), 2)  # carte et détail d'un plan
+        self.assertIn("prog.pnl_total_eur", plans)
 
     def test_saisie_dans_la_devise_de_cotation(self):
         real = lire("real.html")
