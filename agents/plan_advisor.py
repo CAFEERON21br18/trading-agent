@@ -17,6 +17,7 @@ from utils.real_portfolio_db import (
 )
 # v5.3.1 : ratio sur prix BRUTS — entry_price stocké est brut, donc current doit l'être aussi
 from utils.real_price import prix_actuel_brut as prix_actuel
+from utils.real_devise import devise_de, symbole
 
 logger = get_logger(__name__)
 
@@ -95,7 +96,7 @@ def verifier_progression_objectif(plan: dict) -> list[dict]:
             "plan_id":    plan["id"],
             "alert_type": "objectif_proche",
             "severity":   "important",
-            "message":    f"🎯 Objectif quasi atteint : {pct_actuel:.1f}% vs cible {target:.0f}% "
+            "message":    f"🎯 Objectif quasi atteint : {pct_actuel:.1f}% (non converti) vs cible {target:.0f}% "
                           f"({avancement:.0f}% du chemin). Envisage la stratégie de sortie.",
         })
     # 2. Progression bien en avance (> 70% et durée pas écoulée)
@@ -104,7 +105,7 @@ def verifier_progression_objectif(plan: dict) -> list[dict]:
             "plan_id":    plan["id"],
             "alert_type": "progression_avance",
             "severity":   "info",
-            "message":    f"📊 Plan en avance : {pct_actuel:.1f}% vs cible {target:.0f}%. Bonne dynamique.",
+            "message":    f"📊 Plan en avance : {pct_actuel:.1f}% (non converti) vs cible {target:.0f}%. Bonne dynamique.",
         })
     return alertes
 
@@ -147,7 +148,7 @@ def verifier_taille_position(plan: dict) -> list[dict]:
                 "plan_id":    plan["id"],
                 "alert_type": "taille_position",
                 "severity":   "attention",
-                "message":    f"⚠️ {p['asset']} ({p['invested_amount']:.0f}€) dépasse la taille max "
+                "message":    f"⚠️ {p['asset']} ({p['invested_amount']:.0f}{symbole(devise_de(p))}, non converti) dépasse la taille max "
                               f"du plan ({max_size:.0f}€). Concentration excessive ?",
             })
     return alertes

@@ -156,8 +156,8 @@ def get_current_price(ticker: str) -> dict:
         return {"price": None, "error": str(e)}
 
 
-def calibrate_to_revolut(ticker: str, revolut_price: float) -> dict:
-    """Calibre le prix de l'agent sur celui affiché par Revolut."""
+def calibrate_to_revolut(ticker: str, revolut_price: float, symbole: str = "$") -> dict:
+    """Calibre le prix de l'agent sur celui affiché par Revolut ; symbole : devise de cotation."""
     base = get_current_price(ticker)
     agent_price = base.get("price")
     if not agent_price:
@@ -183,7 +183,7 @@ def calibrate_to_revolut(ticker: str, revolut_price: float) -> dict:
         "agent_price":       round(agent_price, 4),
         "revolut_price":     revolut_price,
         "adjustment_factor": round(factor, 5),
-        "note":              f"Écart de {abs(ecart):.2f}€ ({(factor-1)*100:+.2f}%) corrigé",
+        "note":              f"Écart de {abs(ecart):.2f}{symbole} ({(factor-1)*100:+.2f}%) corrigé",
     }
 
 
