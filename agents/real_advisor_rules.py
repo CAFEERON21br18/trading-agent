@@ -5,6 +5,8 @@ fonctionnent SANS LLM (le LLM ne fait qu'enrichir le wording après).
 Le real_advisor orchestre + appelle l'analyse technique + le LLM.
 """
 
+from utils.real_devise import devise_de, symbole
+
 
 def regles_position(inv: dict, inv_e: dict, plan: dict | None) -> list[dict]:
     """Génère les conseils par règles pures. Retourne une liste de dicts."""
@@ -14,6 +16,7 @@ def regles_position(inv: dict, inv_e: dict, plan: dict | None) -> list[dict]:
     pnl_eur = inv_e["pnl_eur"]
     target  = inv["target_price"]
     sl      = inv["stop_loss_mental"]
+    s       = symbole(devise_de(inv))  # montants et prix dans la devise de la position
 
     plan_type      = (plan or {}).get("plan_type", "")
     plan_name      = (plan or {}).get("name", "")
@@ -27,8 +30,8 @@ def regles_position(inv: dict, inv_e: dict, plan: dict | None) -> list[dict]:
         conseils.append({
             "advice_type": "ALERTE", "urgency": "haute",
             "recommendation": "prendre profit partiel",
-            "reasoning": (f"{inv['asset']} approche ta cible {target:.2f} "
-                          f"(actuel {prix:.2f}, +{pnl_pct:.1f}%). Envisage de prendre 50% "
+            "reasoning": (f"{inv['asset']} approche ta cible {target:.2f}{s} "
+                          f"(actuel {prix:.2f}{s}, +{pnl_pct:.1f}%). Envisage de prendre 50% "
                           f"de profit, laisser courir le reste."),
         })
 
@@ -37,8 +40,8 @@ def regles_position(inv: dict, inv_e: dict, plan: dict | None) -> list[dict]:
         conseils.append({
             "advice_type": "ALERTE", "urgency": "haute",
             "recommendation": "vendre / couper",
-            "reasoning": (f"{inv['asset']} a passé ton stop mental {sl:.2f} "
-                          f"(actuel {prix:.2f}, {pnl_pct:.1f}%). Ta thèse est-elle "
+            "reasoning": (f"{inv['asset']} a passé ton stop mental {sl:.2f}{s} "
+                          f"(actuel {prix:.2f}{s}, {pnl_pct:.1f}%). Ta thèse est-elle "
                           f"invalidée ? Si oui, couper proprement."),
         })
 
@@ -46,7 +49,7 @@ def regles_position(inv: dict, inv_e: dict, plan: dict | None) -> list[dict]:
     if pnl_pct < -15:
         if is_long_terme and pnl_pct > -25:
             reco = "garder & vérifier la thèse"
-            rsn  = (f"{inv['asset']} à {pnl_pct:.1f}% ({pnl_eur:+.2f}€). Plan "
+            rsn  = (f"{inv['asset']} à {pnl_pct:.1f}% ({pnl_eur:+.2f}{s}). Plan "
                      f"« {plan_name} » : "
                      f"{plan_vision[:120] if plan_vision else plan_objective[:120]}. "
                      f"Pas de panique sur la volatilité — vérifier si la thèse de fond tient.")
@@ -58,7 +61,7 @@ def regles_position(inv: dict, inv_e: dict, plan: dict | None) -> list[dict]:
             urg = "haute"
         else:
             reco = "réévaluer la thèse"
-            rsn  = (f"{inv['asset']} en perte de {pnl_pct:.1f}% ({pnl_eur:+.2f}€). "
+            rsn  = (f"{inv['asset']} en perte de {pnl_pct:.1f}% ({pnl_eur:+.2f}{s}). "
                      f"Thèse initiale : '{inv.get('investment_thesis') or 'non documentée'}'. "
                      f"Reste-t-elle valable ? Sinon, coupe et redéploie.")
             urg = "moyenne"
@@ -69,12 +72,12 @@ def regles_position(inv: dict, inv_e: dict, plan: dict | None) -> list[dict]:
     elif pnl_pct >= 30 and not target:
         if is_long_terme:
             reco = "garder — laisser courir"
-            rsn  = (f"{inv['asset']} à +{pnl_pct:.1f}% ({pnl_eur:+.2f}€). "
+            rsn  = (f"{inv['asset']} à +{pnl_pct:.1f}% ({pnl_eur:+.2f}{s}). "
                      f"Plan « {plan_name} » : laisser courir les gagnants. "
                      f"Penser à définir une cible chiffrée pour l'étape suivante.")
         else:
             reco = "sécuriser une partie"
-            rsn  = (f"{inv['asset']} à +{pnl_pct:.1f}% ({pnl_eur:+.2f}€). Penser à "
+            rsn  = (f"{inv['asset']} à +{pnl_pct:.1f}% ({pnl_eur:+.2f}{s}). Penser à "
                      f"prendre 30-50% de profit pour sécuriser ; laisser le reste courir.")
         conseils.append({"advice_type": "CONSEIL", "recommendation": reco,
                           "reasoning": rsn, "urgency": "moyenne"})
@@ -84,7 +87,7 @@ def regles_position(inv: dict, inv_e: dict, plan: dict | None) -> list[dict]:
         plan_ctx = (f" Aligné avec « {plan_name} » : {plan_objective[:80]}." if plan else "")
         conseils.append({
             "advice_type": "INFO", "recommendation": "garder",
-            "reasoning": (f"{inv['asset']} à +{pnl_pct:.1f}% ({pnl_eur:+.2f}€). "
+            "reasoning": (f"{inv['asset']} à +{pnl_pct:.1f}% ({pnl_eur:+.2f}{s}). "
                           f"Tendance positive, pas d'action requise.{plan_ctx}"),
             "urgency": "basse",
         })
@@ -95,7 +98,7 @@ def regles_position(inv: dict, inv_e: dict, plan: dict | None) -> list[dict]:
         conseils.append({
             "advice_type": "INFO", "recommendation": "garder",
             "reasoning": (f"{inv['asset']} stable ({pnl_pct:+.1f}%, "
-                          f"{pnl_eur:+.2f}€).{plan_ctx}"),
+                          f"{pnl_eur:+.2f}{s}).{plan_ctx}"),
             "urgency": "basse",
         })
 

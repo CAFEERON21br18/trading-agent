@@ -12,6 +12,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.logger import get_logger
 from utils.real_portfolio_db import lire_investissements, ajouter_conseil, lire_plan
 from utils.real_price import calculate_position_pnl
+from utils.real_devise import devise_de, symbole
 from agents.asset_analyzer import analyser_actif_complet
 from agents.decision_engine import decider
 from agents.real_advisor_rules import regles_position, regle_signal_technique
@@ -29,7 +30,7 @@ def _enrichir(inv: dict) -> dict:
         pnl = None
     if not pnl:
         return {**inv, "prix_actuel": None, "pnl_pct": None, "pnl_eur": None,
-                "prix_calibre": False, "entry_price_display": inv["entry_price"]}
+                "prix_calibre": False, "entry_price_display": inv["entry_price"], "devise": devise_de(inv)}
     return {
         **inv,
         "prix_actuel":          pnl["current_price_display"],
@@ -40,6 +41,7 @@ def _enrichir(inv: dict) -> dict:
         "current_value":        pnl["current_value"],
         "prix_calibre":         pnl["calibrated"],
         "prix_source":          pnl["source"],
+        "devise":               devise_de(inv),  # libellé des montants (D1)
     }
 
 
@@ -58,6 +60,7 @@ def _enrichir_llm(conseils: list[dict], inv: dict, inv_e: dict, plan: dict) -> N
     from utils.llm import ask_llm
     pnl_pct = inv_e["pnl_pct"]
     pnl_eur = inv_e["pnl_eur"]
+    s = symbole(devise_de(inv))  # devise de la position (D1)
     plan_name = plan.get("name", "")
     plan_type = plan.get("plan_type", "")
     plan_obj  = (plan.get("objective") or "")[:200]
@@ -66,7 +69,7 @@ def _enrichir_llm(conseils: list[dict], inv: dict, inv_e: dict, plan: dict) -> N
     plan_not  = (plan.get("personal_notes") or "")[:200]      # v5.4.3 : notes user
     for c in conseils:
         try:
-            prompt = (f"Position : {inv['asset']} à {pnl_pct:+.1f}% ({pnl_eur:+.2f}€).\n"
+            prompt = (f"Position : {inv['asset']} à {pnl_pct:+.1f}% ({pnl_eur:+.2f}{s}).\n"
                       f"Plan associé : {plan_name} ({plan_type})\n"
                       f"  Objectif : {plan_obj}\n"
                       f"  Vision   : {plan_vis}\n"

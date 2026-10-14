@@ -233,9 +233,9 @@ def get_regime():
 
 @api.route("/real/portfolio")
 def get_real_portfolio():
-    """Résumé du portefeuille réel."""
-    from utils.real_portfolio_db import resume_portefeuille
-    return jsonify(resume_portefeuille())
+    """Résumé du portefeuille réel, avec la devise des positions (D1)."""
+    from utils.real_vue import resume_portefeuille_vue
+    return jsonify(resume_portefeuille_vue())
 
 
 @api.route("/real/investments")
@@ -315,9 +315,10 @@ def post_refresh_advice():
 @api.route("/real/budget")
 def get_real_budget():
     """Résumé complet du budget réel + répartition par catégorie."""
-    from utils.real_portfolio_db import get_real_budget_summary, initialiser_real_db
+    from utils.real_portfolio_db import initialiser_real_db
+    from utils.real_vue import budget_reel_vue
     initialiser_real_db()
-    return jsonify(get_real_budget_summary())
+    return jsonify(budget_reel_vue())
 
 
 @api.route("/real/budget", methods=["PUT"])
@@ -375,8 +376,8 @@ def delete_plan(plan_id):
 
 @api.route("/plans/<int:plan_id>/progress")
 def get_plan_progress(plan_id):
-    from utils.real_portfolio_db import progression_plan
-    return jsonify(progression_plan(plan_id))
+    from utils.real_vue import progression_plan_vue
+    return jsonify(progression_plan_vue(plan_id))
 
 
 @api.route("/plans/alerts")
@@ -484,13 +485,13 @@ def post_real_fix_entry(inv_id):
 @api.route("/real/calibrate", methods=["POST"])
 def post_real_calibrate():
     """Calibre le prix d'un ticker sur celui affiché par Revolut."""
-    from utils.real_price import calibrate_to_revolut
+    from utils.real_vue import calibrer_vue
     data = request.get_json() or {}
     ticker = (data.get("ticker") or "").strip().upper()
     revolut_price = data.get("revolut_price")
     if not ticker or revolut_price is None:
         return jsonify({"error": "ticker et revolut_price requis"}), 400
-    return jsonify(calibrate_to_revolut(ticker, float(revolut_price)))
+    return jsonify(calibrer_vue(ticker, float(revolut_price), data.get("devise")))
 
 
 @api.route("/real/calibrate/<ticker>")

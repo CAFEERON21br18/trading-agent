@@ -66,7 +66,7 @@
             <div class="text-xs text-slate-400 mb-1">📋 Recopie depuis ta position Revolut :</div>
             <div class="grid grid-cols-3 gap-2">
                 <input id="f-date" type="date" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
-                <input id="f-amount-exact" type="number" step="0.01" placeholder="Montant investi €" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+                <input id="f-amount-exact" type="number" step="0.01" placeholder="Montant (devise de cotation, $ pour les actions US)" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
                 <input id="f-qty" type="number" step="0.00000001" placeholder="Quantité (ex 0.108…)" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
             </div>
             <div class="text-xs text-slate-500 mt-0.5">💡 Sur l'app Revolut, ouvre ta position : montant et quantité y sont affichés.</div>
@@ -78,7 +78,7 @@
             <div class="grid grid-cols-3 gap-2">
                 <input id="f-date-r" type="date" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
                 <input id="f-time" type="time" placeholder="Heure (opt.)" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
-                <input id="f-amount" type="number" step="0.01" placeholder="Montant €" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
+                <input id="f-amount" type="number" step="0.01" placeholder="Montant (devise de cotation, $ pour les actions US)" class="bg-slate-800 border border-slate-700 rounded px-2 py-1.5">
             </div>
             <div class="text-xs text-amber-300/80 mt-0.5">⚠️ Le prix d'entrée peut différer un peu de Revolut (spread, moment exact).</div>
         </div>
@@ -137,7 +137,11 @@
 <script>
 // Phase 4 / E1b : tout texte venant de l'API passe par escHtml() (base.html) —
 // noms de plans (saisis via le chat), actif, thèse, conseils (texte LLM)…
-const eur = (v) => (v == null) ? "—" : (v >= 0 ? "+" : "") + v.toFixed(2) + "€";
+// D1 : montants d'une position dans sa devise (« $ » pour les actions US) ; capital en « € »
+const SYMBOLES = {USD: "$", EUR: "€"};
+const sym = (d) => SYMBOLES[(d || "USD").toUpperCase()] || d;
+const DEVISE_SAISIE = "USD";  // colonne devise, défaut 'USD' ; sélecteur de devise : plus tard
+const signe = (v, s) => (v == null) ? "—" : (v >= 0 ? "+" : "") + v.toFixed(2) + s;
 const pct = (v) => (v == null) ? "—" : (v >= 0 ? "+" : "") + v.toFixed(2) + "%";
 const colorPnl = (v) => v == null ? "text-slate-400" : v >= 0 ? "text-emerald-400" : "text-red-400";
 
@@ -149,8 +153,8 @@ async function loadResume() {
     const r = await (await fetch("/api/real/portfolio")).json();
     document.getElementById("real-resume").innerHTML = `
         <div><div class="text-xs text-slate-400">Positions ouvertes</div><div class="font-bold text-lg">${r.open_count}</div></div>
-        <div><div class="text-xs text-slate-400">Investi total</div><div class="font-bold text-lg">${r.total_invested.toFixed(2)}€</div></div>
-        <div><div class="text-xs text-slate-400">P&L réalisé (clos)</div><div class="font-bold text-lg ${colorPnl(r.realized_pnl)}">${eur(r.realized_pnl)}</div></div>
+        <div><div class="text-xs text-slate-400">Investi total</div><div class="font-bold text-lg">${r.total_invested.toFixed(2)}${escHtml(r.symbole_positions)}</div></div>
+        <div><div class="text-xs text-slate-400">P&L réalisé (clos)</div><div class="font-bold text-lg ${colorPnl(r.realized_pnl)}">${signe(r.realized_pnl, escHtml(r.symbole_positions))}</div></div>
     `;
 }
 
@@ -170,15 +174,16 @@ async function loadBudget() {
         return;
     }
     const pctInv = b.invested_percent || 0;
+    const s = escHtml(b.symbole_positions);
     const html = [];
     html.push(`
         <div class="flex justify-between mb-1"><span>Capital total</span><span class="font-bold">${b.total_capital.toFixed(2)}€</span></div>
-        <div class="flex justify-between mb-1"><span>Investi</span><span class="font-bold">${b.invested.toFixed(2)}€ (${pctInv}%)</span></div>
+        <div class="flex justify-between mb-1"><span>Investi</span><span class="font-bold">${b.invested.toFixed(2)}${s} (${pctInv}%, non converti)</span></div>
         ${barre(pctInv, "bg-emerald-500")}
-        <div class="flex justify-between mt-2 mb-1"><span>Disponible</span><span class="font-bold text-emerald-300">${b.available.toFixed(2)}€</span></div>
+        <div class="flex justify-between mt-2 mb-1"><span>Disponible</span><span class="font-bold text-emerald-300">${b.available.toFixed(2)} (non converti)</span></div>
         <div class="border-t border-slate-700 my-3"></div>
-        <div class="flex justify-between"><span>Valeur actuelle</span><span class="font-bold">${b.current_value.toFixed(2)}€</span></div>
-        <div class="flex justify-between"><span>Plus-value latente</span><span class="font-bold ${colorPnl(b.unrealized_pnl)}">${eur(b.unrealized_pnl)} (${pct(b.unrealized_pnl_percent || 0)})</span></div>
+        <div class="flex justify-between"><span>Valeur actuelle</span><span class="font-bold">${b.current_value.toFixed(2)}${s}</span></div>
+        <div class="flex justify-between"><span>Plus-value latente</span><span class="font-bold ${colorPnl(b.unrealized_pnl)}">${signe(b.unrealized_pnl, s)} (${pct(b.unrealized_pnl_percent || 0)})</span></div>
     `);
 
     // Répartition par holding_type
@@ -188,7 +193,7 @@ async function loadBudget() {
             const p = v / b.invested * 100;
             html.push(`
                 <div class="text-xs flex justify-between mb-0.5">
-                    <span>${EMOJI_HOLD[k] || ''} ${escHtml(k)}</span><span>${v.toFixed(0)}€ (${p.toFixed(0)}%)</span>
+                    <span>${EMOJI_HOLD[k] || ''} ${escHtml(k)}</span><span>${v.toFixed(0)}${s} (${p.toFixed(0)}%)</span>
                 </div>
                 ${barre(p, "bg-blue-500")}
             `);
@@ -198,7 +203,7 @@ async function loadBudget() {
             const p = v / b.invested * 100;
             html.push(`
                 <div class="text-xs flex justify-between mb-0.5">
-                    <span>${EMOJI_INST[k] || ''} ${escHtml(k)}</span><span>${v.toFixed(0)}€ (${p.toFixed(0)}%)</span>
+                    <span>${EMOJI_INST[k] || ''} ${escHtml(k)}</span><span>${v.toFixed(0)}${s} (${p.toFixed(0)}%)</span>
                 </div>
                 ${barre(p, "bg-purple-500")}
             `);
@@ -262,7 +267,7 @@ async function loadPositions() {
         el.innerHTML = `<div class="card text-center text-slate-400 py-6">Aucune position. Ajoute ton 1er investissement ↑</div>`;
         return;
     }
-    el.innerHTML = list.map(i => `
+    el.innerHTML = list.map(i => { const s = sym(i.devise); return `
         <div class="card">
             <div class="flex justify-between items-start mb-2">
                 <div>
@@ -273,17 +278,17 @@ async function loadPositions() {
                     ${planLabel(i.plan_id)}
                 </div>
                 <div class="text-right">
-                    <div class="${colorPnl(i.pnl_eur)} font-bold">${eur(i.pnl_eur)}</div>
+                    <div class="${colorPnl(i.pnl_eur)} font-bold">${signe(i.pnl_eur, s)}</div>
                     <div class="text-xs ${colorPnl(i.pnl_pct)}">${pct(i.pnl_pct)}</div>
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-x-3 text-xs text-slate-300">
-                <div>Entrée : <span class="text-slate-100">${(i.entry_price_display ?? i.entry_price).toFixed(4)}</span>${i.prix_calibre ? ' <span class="text-emerald-300/70" title="Calibré Revolut">🎯</span>' : ''}</div>
-                <div>Actuel : <span class="text-slate-100">${i.prix_actuel ? i.prix_actuel.toFixed(4) : '—'}</span>${i.prix_calibre ? ' <span class="text-emerald-300" title="Prix calibré sur Revolut">🎯</span>' : ''}</div>
+                <div>Entrée : <span class="text-slate-100">${(i.entry_price_display ?? i.entry_price).toFixed(4)}${s}</span>${i.prix_calibre ? ' <span class="text-emerald-300/70" title="Calibré Revolut">🎯</span>' : ''}</div>
+                <div>Actuel : <span class="text-slate-100">${i.prix_actuel ? i.prix_actuel.toFixed(4) + s : '—'}</span>${i.prix_calibre ? ' <span class="text-emerald-300" title="Prix calibré sur Revolut">🎯</span>' : ''}</div>
                 <div>Quantité : <span class="text-slate-100">${i.quantity.toFixed(6)}</span></div>
-                <div>Investi : <span class="text-slate-100">${i.invested_amount.toFixed(2)}€</span></div>
-                ${i.target_price ? `<div>Cible : <span class="text-amber-300">${i.target_price.toFixed(4)}</span></div>` : ''}
-                ${i.stop_loss_mental ? `<div>Stop : <span class="text-red-300">${i.stop_loss_mental.toFixed(4)}</span></div>` : ''}
+                <div>Investi : <span class="text-slate-100">${i.invested_amount.toFixed(2)}${s}</span></div>
+                ${i.target_price ? `<div>Cible : <span class="text-amber-300">${i.target_price.toFixed(4)}${s}</span></div>` : ''}
+                ${i.stop_loss_mental ? `<div>Stop : <span class="text-red-300">${i.stop_loss_mental.toFixed(4)}${s}</span></div>` : ''}
             </div>
             ${i.investment_thesis ? `<div class="mt-2 text-xs text-slate-400 italic">${escHtml(i.investment_thesis)}</div>` : ''}
             <!-- Rattachement à un plan (v5.2) -->
@@ -299,13 +304,13 @@ async function loadPositions() {
             </div>` : ''}
             <div class="mt-2 grid grid-cols-2 gap-2">
                 <!-- Ticker dans du JavaScript en attribut : escHtml(JSON.stringify(…)), jamais entre apostrophes -->
-                <button onclick="fixEntry(${i.id}, ${escHtml(JSON.stringify(i.asset))}, ${i.quantity})" class="text-xs bg-violet-700/40 text-violet-200 py-1 rounded" title="Recalcul du prix d'entrée via la quantité Revolut">🛠️ Corriger entrée</button>
-                <button onclick="calibratePos(${escHtml(JSON.stringify(i.asset))})" class="text-xs bg-blue-700/40 text-blue-200 py-1 rounded" title="Aligner le prix actuel sur Revolut">📐 Calibrer actuel</button>
-                <button onclick="closePos(${i.id})" class="text-xs bg-amber-700/40 text-amber-200 py-1 rounded">Fermer</button>
+                <button onclick="fixEntry(${i.id}, ${escHtml(JSON.stringify(i.asset))}, ${i.quantity}, ${escHtml(JSON.stringify(s))})" class="text-xs bg-violet-700/40 text-violet-200 py-1 rounded" title="Recalcul du prix d'entrée via la quantité Revolut">🛠️ Corriger entrée</button>
+                <button onclick="calibratePos(${escHtml(JSON.stringify(i.asset))}, ${escHtml(JSON.stringify(i.devise || DEVISE_SAISIE))})" class="text-xs bg-blue-700/40 text-blue-200 py-1 rounded" title="Aligner le prix actuel sur Revolut">📐 Calibrer actuel</button>
+                <button onclick="closePos(${i.id}, ${escHtml(JSON.stringify(s))})" class="text-xs bg-amber-700/40 text-amber-200 py-1 rounded">Fermer</button>
                 <button onclick="deletePos(${i.id})" class="text-xs bg-red-700/40 text-red-200 py-1 rounded">🗑️ Supprimer</button>
             </div>
         </div>
-    `).join("");
+    `; }).join("");
 }
 
 async function attachPlan(invId, planId) {
@@ -378,9 +383,9 @@ async function previewInvestment() {
         box.innerHTML = `
             <div class="font-semibold text-emerald-300 mb-1">✅ Aperçu EXACT — ${escHtml(ticker)}</div>
             <div class="grid grid-cols-2 gap-x-3">
-                <div>Prix d'entrée : <span class="text-slate-100 font-bold">${entry.toFixed(4)}€</span></div>
+                <div>Prix d'entrée : <span class="text-slate-100 font-bold">${entry.toFixed(4)}${sym(DEVISE_SAISIE)}</span></div>
                 <div>Quantité : <span class="text-slate-100 font-bold">${qty}</span></div>
-                <div>Montant investi : <span class="text-slate-100">${amount.toFixed(2)}€</span></div>
+                <div>Montant investi : <span class="text-slate-100">${amount.toFixed(2)}${sym(DEVISE_SAISIE)}</span></div>
                 <div>Méthode : <span class="text-emerald-300">exact_revolut</span></div>
             </div>
             <div class="text-slate-400 mt-1 text-xs">📅 ${escHtml(date_)}</div>
@@ -403,9 +408,9 @@ async function previewInvestment() {
         box.innerHTML = `
             <div class="font-semibold text-amber-300 mb-1">⚡ Aperçu RAPIDE — ${escHtml(ticker)}</div>
             <div class="grid grid-cols-2 gap-x-3">
-                <div>Prix d'entrée : <span class="text-slate-100 font-bold">${j.price.toFixed(4)}€</span></div>
+                <div>Prix d'entrée : <span class="text-slate-100 font-bold">${j.price.toFixed(4)}${sym(DEVISE_SAISIE)}</span></div>
                 <div>Quantité : <span class="text-slate-100 font-bold">${j.quantity.toFixed(6)}</span></div>
-                <div>Montant : <span class="text-slate-100">${amount.toFixed(2)}€</span></div>
+                <div>Montant : <span class="text-slate-100">${amount.toFixed(2)}${sym(DEVISE_SAISIE)}</span></div>
                 <div>Méthode : <span class="text-slate-400">${escHtml(j.method)}</span></div>
             </div>
             <div class="text-slate-400 mt-1 text-xs">📅 ${escHtml(j.actual_time)}</div>
@@ -464,7 +469,7 @@ async function confirmInvestment() {
 }
 
 // v5.3.2 — Corriger le prix d'entrée d'une position existante via la quantité Revolut
-async function fixEntry(invId, ticker, currentQty) {
+async function fixEntry(invId, ticker, currentQty, s) {
     const v = prompt(
         `Quelle quantité Revolut affiche pour ${ticker} ?\n(Actuel en BDD : ${currentQty})`,
         currentQty,
@@ -476,7 +481,7 @@ async function fixEntry(invId, ticker, currentQty) {
     });
     const j = await r.json();
     if (j.success) {
-        alert(`✅ Prix d'entrée corrigé\n${j.old_entry_price}€ → ${j.new_entry_price}€\n(quantité : ${j.quantity}, investi : ${j.invested}€)`);
+        alert(`✅ Prix d'entrée corrigé\n${j.old_entry_price}${s} → ${j.new_entry_price}${s}\n(quantité : ${j.quantity}, investi : ${j.invested}${s})`);
         loadResume(); loadPositions();
     } else {
         alert("Erreur : " + (j.error || "inconnue"));
@@ -484,31 +489,31 @@ async function fixEntry(invId, ticker, currentQty) {
 }
 
 // v5.3 — Calibrer un ticker sur le prix Revolut
-async function calibratePos(ticker) {
-    const v = prompt(`Prix Revolut pour ${ticker} (€) :`);
+async function calibratePos(ticker, devise) {
+    const v = prompt(`Prix Revolut pour ${ticker} (${sym(devise)}, devise de cotation) :`);
     if (!v) return;
     const r = await fetch("/api/real/calibrate", {
         method: "POST", headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ticker, revolut_price: parseFloat(v)}),
+        body: JSON.stringify({ticker, devise, revolut_price: parseFloat(v)}),
     });
     const j = await r.json();
     if (j.success) {
-        alert(`✅ ${ticker} calibré.\nAgent: ${j.agent_price}€ → Revolut: ${j.revolut_price}€\nFacteur: ${j.adjustment_factor}\n${j.note}`);
+        alert(`✅ ${ticker} calibré.\nAgent: ${j.agent_price}${sym(devise)} → Revolut: ${j.revolut_price}${sym(devise)}\nFacteur: ${j.adjustment_factor}\n${j.note}`);
         loadBudget(); loadPositions();
     } else {
         alert("Erreur : " + (j.error || "inconnue"));
     }
 }
 
-async function closePos(id) {
-    const exitPrice = prompt("Prix de sortie ?");
+async function closePos(id, s) {
+    const exitPrice = prompt(`Prix de sortie (${s}, devise de la position) ?`);
     if (!exitPrice) return;
     const r = await fetch(`/api/real/investments/${id}`, {
         method: "PUT", headers: {"Content-Type": "application/json"},
         body: JSON.stringify({exit_price: parseFloat(exitPrice)}),
     });
     const j = await r.json();
-    alert(`Position fermée. P&L réalisé : ${j.realized_pnl?.toFixed(2)}€`);
+    alert(`Position fermée. P&L réalisé : ${j.realized_pnl?.toFixed(2)}${s}`);
     loadResume(); loadPositions();
 }
 
