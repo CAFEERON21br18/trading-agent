@@ -12,9 +12,11 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.logger import get_logger
 from utils.real_portfolio_db import (
-    lire_plans, positions_du_plan, progression_plan,
+    lire_plans, positions_du_plan,
     ajouter_alerte_plan, lire_alertes_plans_actives,
 )
+from utils.real_conversion import progression_plan_eur
+from utils.fx import en_eur, libelle_taux
 # v5.3.1 : ratio sur prix BRUTS — entry_price stocké est brut, donc current doit l'être aussi
 from utils.real_price import prix_actuel_brut as prix_actuel
 from utils.real_devise import devise_de, symbole
@@ -86,9 +88,11 @@ def verifier_progression_objectif(plan: dict) -> list[dict]:
     if target <= 0:
         return alertes
 
-    prog = progression_plan(plan["id"])
-    pct_actuel = prog.get("progression_pct", 0)
+    prog = progression_plan_eur(plan["id"])  # D1 : P&L converti en € avant la division par le budget
+    pct_actuel = prog.get("progression_pct")
     avancement = prog.get("avancement_objectif")
+    if pct_actuel is None:
+        logger.warning(f"Plan #{plan['id']} : progression {prog.get('taux_libelle', 'non disponible')}")
 
     # 1. Objectif atteint à 90%+
     if avancement is not None and avancement >= 90:
@@ -96,8 +100,9 @@ def verifier_progression_objectif(plan: dict) -> list[dict]:
             "plan_id":    plan["id"],
             "alert_type": "objectif_proche",
             "severity":   "important",
-            "message":    f"🎯 Objectif quasi atteint : {pct_actuel:.1f}% (non converti) vs cible {target:.0f}% "
-                          f"({avancement:.0f}% du chemin). Envisage la stratégie de sortie.",
+            "message":    f"🎯 Objectif quasi atteint : {pct_actuel:.1f}% vs cible {target:.0f}% "
+                          f"({avancement:.0f}% du chemin ; {prog.get('taux_libelle')}). "
+                          f"Envisage la stratégie de sortie.",
         })
     # 2. Progression bien en avance (> 70% et durée pas écoulée)
     elif avancement is not None and avancement >= 70:
@@ -105,7 +110,8 @@ def verifier_progression_objectif(plan: dict) -> list[dict]:
             "plan_id":    plan["id"],
             "alert_type": "progression_avance",
             "severity":   "info",
-            "message":    f"📊 Plan en avance : {pct_actuel:.1f}% (non converti) vs cible {target:.0f}%. Bonne dynamique.",
+            "message":    f"📊 Plan en avance : {pct_actuel:.1f}% vs cible {target:.0f}% "
+                          f"({prog.get('taux_libelle')}). Bonne dynamique.",
         })
     return alertes
 
@@ -143,12 +149,18 @@ def verifier_taille_position(plan: dict) -> list[dict]:
 
     positions = [p for p in positions_du_plan(plan["id"]) if p["status"] == "OPEN"]
     for p in positions:
-        if p["invested_amount"] > max_size * 1.05:  # 5% tolérance
+        devise = devise_de(p)
+        investi_eur, taux = en_eur(p["invested_amount"], devise)  # D1 : plafond en €, investi en devise
+        if investi_eur is None:
+            logger.warning(f"Plan #{plan['id']} : {p['asset']} non vérifié, taux {devise}→€ non disponible")
+            continue
+        if investi_eur > max_size * 1.05:  # 5% tolérance
+            conv = "" if devise == "EUR" else f" ≈ {investi_eur:.0f}€ au taux {libelle_taux(taux)}"
             alertes.append({
                 "plan_id":    plan["id"],
                 "alert_type": "taille_position",
                 "severity":   "attention",
-                "message":    f"⚠️ {p['asset']} ({p['invested_amount']:.0f}{symbole(devise_de(p))}, non converti) dépasse la taille max "
+                "message":    f"⚠️ {p['asset']} ({p['invested_amount']:.0f}{symbole(devise)}{conv}) dépasse la taille max "
                               f"du plan ({max_size:.0f}€). Concentration excessive ?",
             })
     return alertes
