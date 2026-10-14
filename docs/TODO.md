@@ -742,10 +742,19 @@ n'a été émise. Cause inconnue.
   `scripts/check_status.py` lisent l'état de la tâche
   (`utils/scheduler_check.py`), mais ils se lancent à la main.
 
-## 35. Portefeuille réel : une position sans prix comptée comme une perte totale
+## 35. ~~Portefeuille réel : une position sans prix comptée comme une perte totale~~
 
-Relevé le 14/10/2026 (D1), non corrigé. Même famille que le §8 : une valeur
-inconnue doit rester « non disponible », jamais devenir un chiffre.
+Relevé le 14/10/2026 (D1). Même famille que le §8 : une valeur inconnue doit
+rester « non disponible », jamais devenir un chiffre.
+
+**Corrigé le 14/10/2026 (406ce66).** Dès qu'une position ouverte n'a pas de
+prix, la valeur actuelle, la plus-value latente, le P&L, la progression et
+l'avancement s'affichent « non disponible », avec la liste des actifs sans
+prix ; l'investi et le disponible restent affichés. `plan_advisor` n'émet alors
+aucune alerte de progression et le journalise une fois par plan, sans montant.
+Le calcul est dans `utils/real_vue.py` et `utils/real_conversion.py`.
+`get_real_budget_summary` et `progression_plan` ne sont plus appelées en
+production : à supprimer au découpage (§32). Constat d'origine ci-dessous.
 
 - `utils/real_portfolio_db.py:220-224` (`get_real_budget_summary`) n'ajoute à
   `current_value` que les positions qui ont un prix, puis calcule
