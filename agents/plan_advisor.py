@@ -91,7 +91,11 @@ def verifier_progression_objectif(plan: dict) -> list[dict]:
     prog = progression_plan_eur(plan["id"])  # D1 : P&L converti en € avant la division par le budget
     pct_actuel = prog.get("progression_pct")
     avancement = prog.get("avancement_objectif")
-    if pct_actuel is None:
+    manquants = prog.get("actifs_sans_prix") or []
+    if manquants:  # TODO §35 : progression inconnue → aucune alerte ; ni montant ni actif dans le log
+        logger.warning(f"Plan « {plan.get('name') or plan['id']} » : progression non disponible, "
+                       f"{len(manquants)} actif(s) sans prix")
+    elif pct_actuel is None:
         logger.warning(f"Plan #{plan['id']} : progression {prog.get('taux_libelle', 'non disponible')}")
 
     # 1. Objectif atteint à 90%+

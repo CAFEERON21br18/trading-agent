@@ -184,8 +184,9 @@ async function loadBudget() {
         <div class="flex justify-between mt-2 mb-1"><span>Disponible</span><span class="font-bold text-emerald-300">${enEur(b.available)}</span></div>
         <div class="text-xs text-slate-400 text-right">${escHtml(b.taux_libelle || "")}</div>
         <div class="border-t border-slate-700 my-3"></div>
-        <div class="flex justify-between"><span>Valeur actuelle</span><span class="font-bold">${b.current_value.toFixed(2)}${s}</span></div>
-        <div class="flex justify-between"><span>Plus-value latente</span><span class="font-bold ${colorPnl(b.unrealized_pnl)}">${signe(b.unrealized_pnl, s)} (${pct(b.unrealized_pnl_percent || 0)})</span></div>
+        <div class="flex justify-between"><span>Valeur actuelle</span><span class="font-bold">${b.current_value == null ? "non disponible" : b.current_value.toFixed(2) + s}</span></div>
+        <div class="flex justify-between"><span>Plus-value latente</span><span class="font-bold ${colorPnl(b.unrealized_pnl)}">${b.unrealized_pnl == null ? "non disponible" : signe(b.unrealized_pnl, s) + " (" + pct(b.unrealized_pnl_percent) + ")"}</span></div>
+        ${(b.actifs_sans_prix || []).length ? `<div class="text-xs text-amber-300/80 text-right">sans prix : ${escHtml(b.actifs_sans_prix.join(", "))}</div>` : ""}
     `);
 
     // Répartition par holding_type
