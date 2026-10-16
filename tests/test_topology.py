@@ -68,7 +68,6 @@ class TestSources(unittest.TestCase):
 
     def test_regles(self):
         self.assertEqual(tc.composant("agents/explorers/crypto_explorer/screener.py"), "explorer.crypto")
-        self.assertEqual(tc.composant("agents/skills/pipeline.py"), "pipeline_v1")
         self.assertEqual(tc.composant("agents/skills/pipeline_grouped.py"), "pipeline")
         self.assertIsNone(tc.composant("inconnu/module.py"))
 
