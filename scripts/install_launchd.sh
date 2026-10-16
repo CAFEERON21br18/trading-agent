@@ -35,7 +35,7 @@ if launchctl list | grep -q "$PLIST_NAME"; then
     echo "  • Déclencher manuellement : launchctl start $PLIST_NAME"
     echo "  • Voir le statut          : launchctl list | grep alphasignal"
     echo "  • Désinstaller            : bash scripts/uninstall_launchd.sh"
-    echo "  • Logs                    : tail -f ~/trading-agent/logs/alphasignal.log"
+    echo "  • Logs                    : tail -f ~/trading-agent/logs/daily.log"
 else
     echo "✗ Erreur : le scheduler n'est pas chargé correctement"
     exit 1

@@ -81,7 +81,19 @@ Non traités : chacun fera l'objet d'un travail séparé.
   - `memory/trade_journal.md` garde les 5 entrées du 15/04 (affichage du
     dashboard seulement, aucune décision ne le lit).
 
-## 1. Rotation des logs cassée (Windows)
+## 1. ~~Rotation des logs cassée (Windows)~~
+
+**Corrigé le 16/10/2026.** Un fichier par tâche (`utils/logger.py`) :
+`logs/<tâche>.log` et `logs/<tâche>_errors.log`, la tâche étant tirée du script
+lancé (`cycle_tactical.py` → `tactical`, `dashboard/app.py` → `dashboard`,
+`cleanup.py` → `cleanup`, autre script → son nom). Ni les cycles ni les tâches
+planifiées ne changent. Rotation par `utils/journal_rotation.RotationTolerante` :
+le fichier courant est renommé en premier ; s'il est ouvert ailleurs (même tâche
+lancée deux fois, éditeur), rien n'est déplacé, la ligne est écrite et la rotation
+est retentée 60 s plus tard, sans trace « Logging error ». Les anciens
+`alphasignal.log` et `errors.log` ne sont plus écrits ; `logs/task_*.log`
+(redirection des tâches planifiées) continue de grossir. Constat d'origine
+ci-dessous.
 
 - Les cycles et le dashboard écrivent tous dans `logs/alphasignal.log` et
   `logs/errors.log` via `RotatingFileHandler` (`utils/logger.py`). La
