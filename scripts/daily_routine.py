@@ -40,7 +40,7 @@ def _alerter_panne_si_critique(tentatives: int) -> None:
         envoyer_email(
             sujet=f"⚠️ [AlphaSignal] PANNE — {tentatives} échecs consécutifs",
             corps_texte=(f"AlphaSignal a échoué {tentatives} fois consécutivement.\n\n"
-                         f"Vérifie les logs dans ~/trading-agent/logs/daily_routine_errors.log\n"
+                         f"Vérifie les logs dans logs\\daily_routine_errors.log (à la racine du dépôt)\n"
                          f"Lance le diagnostic : python scripts/check_health.py"),
         )
     except Exception as e:
