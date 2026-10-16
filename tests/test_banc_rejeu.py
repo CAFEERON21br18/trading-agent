@@ -20,8 +20,10 @@ sys.path.insert(0, RACINE)
 for _cle in ("EMAIL_SENDER", "EMAIL_APP_PASSWORD", "EMAIL_RECIPIENT"):
     os.environ.setdefault(_cle, "test")  # config.py exige ces variables
 
+from tests.journaux_isoles import isoler_journaux
+isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
+
 from scripts import rejouer_chat as rc
-from scripts._banc_fichiers import journaux_detaches
 
 LIMITE = {"text": None, "source": None, "error": "groq_ko:rate_limit_groq, gemini réservé",
           "tentatives": [{"fournisseur": "gemini", "statut": "réservé"},
@@ -37,11 +39,8 @@ class BaseBanc(unittest.TestCase):
         self.dossier = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
         self.cas = os.path.join(self.dossier.name, "chat_cas")
         os.makedirs(self.cas)
-        self.logs = journaux_detaches(self.cas)  # rien dans logs/ (production)
-        self.logs.__enter__()
 
     def tearDown(self):
-        self.logs.__exit__(None, None, None)
         self.dossier.cleanup()
 
     def ecrire(self, nom: str, origine="audit", reponse="ACME tient.", system="Consigne du cas.", prompt="P"):

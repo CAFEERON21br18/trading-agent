@@ -9,7 +9,6 @@ Bases temporaires, valeurs inventées (règle 9) ; logs redirigés hors de logs/
 
 import hashlib
 import os
-import shutil
 import sqlite3
 import sys
 import tempfile
@@ -21,10 +20,8 @@ sys.path.insert(0, RACINE)
 for _cle in ("EMAIL_SENDER", "EMAIL_APP_PASSWORD", "EMAIL_RECIPIENT"):
     os.environ.setdefault(_cle, "test")  # config.py exige ces variables (pas de .env)
 
-from scripts._banc_fichiers import journaux_detaches
-_LOGS = tempfile.mkdtemp()
-_JOURNAUX = journaux_detaches(_LOGS)
-_JOURNAUX.__enter__()  # tout le module : aucun message dans logs/ (production)
+from tests.journaux_isoles import isoler_journaux
+isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
 
 from scripts import migrer_devise_reelle as m
 from utils import database
@@ -34,11 +31,6 @@ SCHEMA = ("CREATE TABLE real_investments (id INTEGER PRIMARY KEY AUTOINCREMENT, 
           "entry_price REAL NOT NULL, quantity REAL NOT NULL, invested_amount REAL NOT NULL, "
           "status TEXT DEFAULT 'OPEN')")
 LIGNES = [("AAA", 50.0, 2.0, 100.0), ("BBB", 12.5, 10.0, 125.0)]
-
-
-def tearDownModule():
-    _JOURNAUX.__exit__(None, None, None)
-    shutil.rmtree(_LOGS, ignore_errors=True)
 
 
 def octets(chemin: str) -> str:

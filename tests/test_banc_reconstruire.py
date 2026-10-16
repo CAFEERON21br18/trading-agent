@@ -21,8 +21,10 @@ sys.path.insert(0, RACINE)
 for _cle in ("EMAIL_SENDER", "EMAIL_APP_PASSWORD", "EMAIL_RECIPIENT"):
     os.environ.setdefault(_cle, "test")  # config.py exige ces variables
 
+from tests.journaux_isoles import isoler_journaux
+isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
+
 from scripts import _banc_rejeu as br, rejouer_chat as rc
-from scripts._banc_fichiers import journaux_detaches
 
 HISTO = [{"role": "user", "texte": "Que penses-tu de ACME ?", "il_y_a_min": 5},
          {"role": "assistant", "texte": "ACME : HOLD.", "il_y_a_min": 5}]
@@ -34,8 +36,6 @@ class TestReconstruire(unittest.TestCase):
     def setUp(self):
         self.dossier = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
         self.cas = self.dossier.name
-        self.logs = journaux_detaches(self.cas)  # rien dans logs/ (production)
-        self.logs.__enter__()
         for nom, cas in (("1", {"origine": "audit", "question": "Q audit ?", "prompt": "P"}),
                          ("m_1", {"origine": "manuel", "question": "Et lui ?", "historique_simule": HISTO}),
                          ("m_2", {"origine": "manuel", "question": "Comment va le paper ?"})):
@@ -44,7 +44,6 @@ class TestReconstruire(unittest.TestCase):
         self.appels_construire = []
 
     def tearDown(self):
-        self.logs.__exit__(None, None, None)
         self.dossier.cleanup()
 
     def construire(self, question, dossier, historique_simule=None, chat_historique=None):

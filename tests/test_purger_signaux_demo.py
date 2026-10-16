@@ -21,6 +21,8 @@ sys.path.insert(0, RACINE)
 for _cle in ("EMAIL_SENDER", "EMAIL_APP_PASSWORD", "EMAIL_RECIPIENT"):
     os.environ.setdefault(_cle, "test")  # config.py exige ces variables
 
+from tests.journaux_isoles import isoler_journaux
+isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
 from utils import database
 from agents.trade_journalist import journalist, performance_tracker
 from agents.trade_journalist.demo_performance import SIGNAUX_DEMO, environnement_isole, inserer_donnees_demo

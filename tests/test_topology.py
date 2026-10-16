@@ -15,6 +15,8 @@ from unittest import mock
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, RACINE)
 
+from tests.journaux_isoles import isoler_journaux
+isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
 from dashboard.api import topology_sources as ts
 from dashboard.api import topology_composants as tc
 

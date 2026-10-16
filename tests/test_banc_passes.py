@@ -21,9 +21,11 @@ sys.path.insert(0, RACINE)
 for _cle in ("EMAIL_SENDER", "EMAIL_APP_PASSWORD", "EMAIL_RECIPIENT"):
     os.environ.setdefault(_cle, "test")  # config.py exige ces variables
 
+from tests.journaux_isoles import isoler_journaux
+isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
+
 from agents.chat._banc_resume import agreger, avertissements, comparer, resumer
 from scripts import _banc_rejeu as br, rejouer_chat as rc
-from scripts._banc_fichiers import journaux_detaches
 
 OK = {"text": "ACME tient.\n⚠️ Pas un conseil financier — paper trading.", "source": "groq", "tentatives": []}
 LIMITE = {"text": None, "source": None, "error": "groq_ko:rate_limit_groq, gemini réservé",
@@ -96,14 +98,11 @@ class TestRejouerPasses(unittest.TestCase):
     def setUp(self):
         self.dossier = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
         self.cas = self.dossier.name
-        self.logs = journaux_detaches(self.cas)  # rien dans logs/ (production)
-        self.logs.__enter__()
         for i in range(1, 13):
             with open(os.path.join(self.cas, f"{i}.json"), "w", encoding="utf-8") as f:
                 json.dump({"origine": "audit", "prompt": f"Prompt inventé {i}", "attendu": {}}, f)
 
     def tearDown(self):
-        self.logs.__exit__(None, None, None)
         self.dossier.cleanup()
 
     def lancer(self, reponses, **kw) -> tuple:
