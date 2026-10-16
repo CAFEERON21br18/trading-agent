@@ -44,6 +44,13 @@ class TestNomTache(unittest.TestCase):
         self.assertEqual((os.path.basename(principal), os.path.basename(erreurs)), ("tactical.log", "tactical_errors.log"))
         self.assertEqual(os.path.dirname(principal), journal.LOGS_DIR)
 
+    def test_alerte_de_daily_routine_cite_son_fichier(self):
+        _, erreurs = journal.fichiers_de(journal.nom_tache(r"scripts\daily_routine.py"))
+        with open(os.path.join(RACINE, "scripts", "daily_routine.py"), encoding="utf-8") as f:
+            source = f.read()
+        self.assertIn("logs\\\\" + os.path.basename(erreurs), source)  # chemin Windows relatif au dépôt
+        self.assertNotIn("~/trading-agent", source)
+
     def test_handlers_de_rotation_tolerante(self):
         lg = journal.get_logger("tests.logs_rotation.temoin")
         fichiers = [h for h in lg.handlers if isinstance(h, logging.FileHandler)]
