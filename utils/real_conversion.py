@@ -6,17 +6,20 @@ d'une position restent dans sa devise et ne sont jamais convertis pour eux-même
 
 Taux indisponible (utils/fx.py) → None, affiché « non disponible » : jamais un
 résultat calculé au taux 1. Prix manquant (TODO §35) → None aussi : une position
-sans prix n'est jamais comptée pour 0. Plan sans aucune position rattachée (TODO §36) :
-sans_position, P&L et progression à None, « aucune position rattachée », jamais un P&L
-de 0. Le prompt du chat n'utilise aucune de ces fonctions.
+sans prix n'est jamais comptée pour 0. Plan sans position directe (TODO §36) : P&L et
+progression sur les positions de ses sous-plans (tous niveaux), rapportés à son propre
+budget ; sans position ni directe ni dans un sous-plan : sans_position, P&L et progression
+à None, « aucune position rattachée », jamais un P&L de 0. Le prompt du chat n'utilise
+aucune de ces fonctions.
 """
 
 from utils import real_price  # prix_actuel_brut lu à chaque appel
 from utils.fx import en_eur, libelle_taux
 from utils.real_devise import devise_commune, devise_de
-from utils.real_portfolio_db import lire_plan, positions_du_plan
+from utils.real_portfolio_db import lire_plan, lire_plans, positions_du_plan
 
 AUCUNE_POSITION = "aucune position rattachée"
+SOUS_PLANS = "positions de ses sous-plans"
 
 
 def prix_par_actif(positions: list[dict]) -> dict:
@@ -60,23 +63,44 @@ def texte_taux(taux: dict | None, manque: bool = False) -> str:
     return "converti en € au taux " + " ; ".join(libelle_taux(i) for i in convertis)
 
 
+def positions_comptees(plan_id: int) -> tuple[list[dict], list[int]]:
+    """(positions, sous-plans comptés) : celles du plan ; s'il n'en a aucune directement, celles
+    de ses sous-plans à tous les niveaux, avec leurs identifiants (TODO §36). ([], []) : aucune
+    position, ni directe ni dans un sous-plan."""
+    directes = positions_du_plan(plan_id)
+    if directes:
+        return directes, []
+    enfants: dict = {}
+    for p in lire_plans():
+        enfants.setdefault(p.get("parent_plan_id"), []).append(p["id"])
+    sous_plans, a_voir = [], list(enfants.get(plan_id, []))
+    while a_voir:
+        i = a_voir.pop(0)
+        if i != plan_id and i not in sous_plans:  # garde contre une boucle de parents
+            sous_plans.append(i)
+            a_voir += enfants.get(i, [])
+    positions = [p for i in sous_plans for p in positions_du_plan(i)]
+    return positions, sous_plans if positions else []
+
+
 def progression_plan_connue(plan_id: int) -> dict:
     """Mêmes clés et même calcul que progression_plan() (real_portfolio_db.py), un prix
-    par actif, plus actifs_sans_prix. Si une position ouverte du plan n'a pas de prix,
+    par actif, plus actifs_sans_prix et sous_plans_comptes ; sans position directe, sur les
+    positions de ses sous-plans (positions_comptees). Si une position ouverte n'a pas de prix,
     current_value, pnl_latent, pnl_total, progression_pct et avancement_objectif valent
     None (TODO §35) ; investi et P&L réalisé restent donnés. Sans aucune position
     rattachée, ouverte ou close : sans_position et les mêmes None (TODO §36)."""
     plan = lire_plan(plan_id)
     if not plan:
         return {"error": "plan introuvable"}
-    positions = positions_du_plan(plan_id)
+    positions, sous_plans = positions_comptees(plan_id)
     ouvertes = [p for p in positions if p["status"] == "OPEN"]
     invested = sum(p["invested_amount"] for p in ouvertes)
     prix = prix_par_actif(ouvertes)
     prog = {"plan_id": plan_id, "invested": invested, "target_pct": plan.get("target_return_percent") or 0,
             "pnl_realise": sum((p.get("realized_pnl") or 0) for p in positions if p["status"] == "CLOSED"),
             "positions_count": len(ouvertes), "actifs_sans_prix": sans_prix(prix),
-            "sans_position": not positions}
+            "sans_position": not positions, "sous_plans_comptes": sous_plans}
     if prog["actifs_sans_prix"] or prog["sans_position"]:
         return {**prog, "current_value": None, "pnl_latent": None, "pnl_total": None,
                 "progression_pct": None, "avancement_objectif": None}
@@ -97,12 +121,19 @@ def progression_plan_eur(plan_id: int) -> dict:
     """progression_plan_connue() avec le P&L converti en € AVANT la division par le budget (€).
     progression_pct et avancement_objectif valent None si un prix ou le taux manque, ou si
     les positions du plan ont plusieurs devises. Montants des positions inchangés.
-    Sans budget en €, progression_plan divise par l'investi : rapport homogène, inchangé."""
+    Sans budget en €, progression_plan divise par l'investi : rapport homogène, inchangé.
+    Positions des sous-plans : taux_libelle commence par « positions de ses sous-plans »."""
     prog = progression_plan_connue(plan_id)
     if "error" in prog:
         return prog
-    positions = positions_du_plan(plan_id)
-    devise = devise_commune(positions)
+    r = _en_eur(plan_id, prog)
+    if prog["sous_plans_comptes"]:
+        r["taux_libelle"] = f"{SOUS_PLANS} ; {r['taux_libelle']}"
+    return r
+
+
+def _en_eur(plan_id: int, prog: dict) -> dict:
+    devise = devise_commune(positions_comptees(plan_id)[0])
     if prog["sans_position"]:  # TODO §36 : rien à convertir, aucun taux demandé
         return {**prog, "devise_positions": devise, "pnl_total_eur": None, "taux_change": None,
                 "taux_libelle": AUCUNE_POSITION}

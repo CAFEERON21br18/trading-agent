@@ -840,6 +840,13 @@ une progression de 0 %, un résultat calculé sur rien et présenté comme un ch
 P&L, progression et avancement à None avec le libellé « aucune position rattachée »,
 sans demander ni prix ni taux ; la page Plans affiche « aucune position ».
 `plan_advisor` n'émet aucune alerte pour ce plan (il journalise « progression aucune
-position rattachée » quand le contrôle tourne). Seules comptent les positions
-rattachées au plan lui-même (`positions_du_plan`) : un plan dont les positions sont
-rattachées à ses sous-plans est donc concerné (1 des 4 plans au 16/10).
+position rattachée » quand le contrôle tourne).
+
+**Complément du 16/10/2026** (branche auto/2026-10-17) : un plan sans position
+directe additionne les positions de ses sous-plans, à tous les niveaux
+(`real_conversion.positions_comptees`), pour le P&L et la progression, rapportés à
+son propre budget ; le libellé commence par « positions de ses sous-plans », et
+`plan_advisor` peut alors émettre une alerte de progression pour lui. Un prix manquant
+donne « non disponible » (§35). « Aucune position » ne reste que pour un plan sans
+position, ni directe ni dans un sous-plan. Un plan qui a des positions directes ne
+compte que celles-ci.
