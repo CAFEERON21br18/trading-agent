@@ -245,7 +245,14 @@ Constat d'origine :
   ligne avec », n°2515 « Maintenez la position MU, ». Ces textes sont
   affichés tels quels dans « Conseils en attente » (page Réel).
 
-## 10. Code mort à supprimer : anciens skills et visualizer (commit de nettoyage séparé)
+## 10. ~~Code mort à supprimer : anciens skills et visualizer~~
+
+**Corrigé le 16/10/2026** (branche auto/2026-10-17) : les 7 modules sont supprimés,
+avec leurs mentions dans `agents/skills/__init__.py` (import, `__all__`, docstring),
+l'ensemble `CODE_MORT` de `scripts/graphify_modules.py` (vidé, le marquage reste),
+le composant `pipeline_v1` et ses 6 règles dans `dashboard/api/topology_composants.py`
+et l'assertion sur `pipeline.py` de `tests/test_topology.py`. `_json_helper.py` et
+`_log.py` restent : `pipeline_grouped.py` les importe. Constat d'origine ci-dessous.
 
 - `agents/skills/pipeline.py` n'est importé par aucun module (remplacé par
   `pipeline_grouped.py`). Il est le seul à importer `bayesien.py`,

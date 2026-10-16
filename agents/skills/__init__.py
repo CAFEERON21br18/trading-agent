@@ -1,24 +1,9 @@
 """
-agents/skills/ — 5 skills de raisonnement réutilisables (v5.3.8).
+agents/skills/ — Pipeline de raisonnement du Decision Engine (v5.4.0, Phase 4 / Q2).
 
-Ces fonctions sont des outils mentaux que tout module peut invoquer
-(decision_engine, chat, plan_advisor, etc.). Chacune retourne un dict
-structuré. Toutes ont un fallback gracieux : champ "disponible": False
-si Gemini est KO.
-
-Skills :
-  bayesien        : révision bayésienne d'une hypothèse (prior → posterior)
-  pre_mortem      : "Si ça a échoué dans 6 mois, pourquoi ?"
-  second_ordre    : effets de 2e ordre / boucles / conséquences cachées
-  base_rates      : taux de base de la classe de référence vs cas particulier
-  metacognition   : audit du raisonnement lui-même
-
-Usage :
-    from agents.skills import pre_mortem
-    r = pre_mortem.executer(decision="BUY NVDA 50€", contexte="...")
-    for s in r["scenarios_echec"]: print(s)
+pipeline_grouped : un seul appel LLM groupé produit les cinq analyses (bayésienne,
+pré-mortem, second ordre, base rates, métacognition) ; pipeline_cache : une analyse
+par actif, action et jour, sinon mode Prudent. Les anciens skills séparés (un appel
+Gemini chacun) et pipeline.py ont été supprimés (TODO §10) : aucun module ne les
+appelait. Le paquet n'importe rien : importer un module ne charge que lui.
 """
-
-from agents.skills import bayesien, pre_mortem, second_ordre, base_rates, metacognition
-
-__all__ = ["bayesien", "pre_mortem", "second_ordre", "base_rates", "metacognition"]
