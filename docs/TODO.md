@@ -822,3 +822,17 @@ production : à supprimer au découpage (§32). Constat d'origine ci-dessous.
   `agents/chat/_pnl_latent.py` : une somme partielle n'est jamais présentée comme
   un total. `plan_advisor` n'émet alors aucune alerte de progression, comme
   sans taux de change.
+
+## 36. ~~Plan sans position : un P&L de 0 affiché~~
+
+Relevé le 14/10/2026 (D1). Même famille que les §8 et §35 : un plan sans aucune
+position rattachée, ouverte ou close, affichait sur la page Plans un P&L de +0,00 et
+une progression de 0 %, un résultat calculé sur rien et présenté comme un chiffre.
+
+**Corrigé le 16/10/2026.** `utils/real_conversion.py` rend alors `sans_position`, et
+P&L, progression et avancement à None avec le libellé « aucune position rattachée »,
+sans demander ni prix ni taux ; la page Plans affiche « aucune position ».
+`plan_advisor` n'émet aucune alerte pour ce plan (il journalise « progression aucune
+position rattachée » quand le contrôle tourne). Seules comptent les positions
+rattachées au plan lui-même (`positions_du_plan`) : un plan dont les positions sont
+rattachées à ses sous-plans est donc concerné (1 des 4 plans au 16/10).

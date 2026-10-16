@@ -6,14 +6,17 @@ d'une position restent dans sa devise et ne sont jamais convertis pour eux-même
 
 Taux indisponible (utils/fx.py) → None, affiché « non disponible » : jamais un
 résultat calculé au taux 1. Prix manquant (TODO §35) → None aussi : une position
-sans prix n'est jamais comptée pour 0. Le prompt du chat n'utilise aucune de ces
-fonctions.
+sans prix n'est jamais comptée pour 0. Plan sans aucune position rattachée (TODO §36) :
+sans_position, P&L et progression à None, « aucune position rattachée », jamais un P&L
+de 0. Le prompt du chat n'utilise aucune de ces fonctions.
 """
 
 from utils import real_price  # prix_actuel_brut lu à chaque appel
 from utils.fx import en_eur, libelle_taux
 from utils.real_devise import devise_commune, devise_de
 from utils.real_portfolio_db import lire_plan, positions_du_plan
+
+AUCUNE_POSITION = "aucune position rattachée"
 
 
 def prix_par_actif(positions: list[dict]) -> dict:
@@ -61,7 +64,8 @@ def progression_plan_connue(plan_id: int) -> dict:
     """Mêmes clés et même calcul que progression_plan() (real_portfolio_db.py), un prix
     par actif, plus actifs_sans_prix. Si une position ouverte du plan n'a pas de prix,
     current_value, pnl_latent, pnl_total, progression_pct et avancement_objectif valent
-    None (TODO §35) ; investi et P&L réalisé restent donnés."""
+    None (TODO §35) ; investi et P&L réalisé restent donnés. Sans aucune position
+    rattachée, ouverte ou close : sans_position et les mêmes None (TODO §36)."""
     plan = lire_plan(plan_id)
     if not plan:
         return {"error": "plan introuvable"}
@@ -71,8 +75,9 @@ def progression_plan_connue(plan_id: int) -> dict:
     prix = prix_par_actif(ouvertes)
     prog = {"plan_id": plan_id, "invested": invested, "target_pct": plan.get("target_return_percent") or 0,
             "pnl_realise": sum((p.get("realized_pnl") or 0) for p in positions if p["status"] == "CLOSED"),
-            "positions_count": len(ouvertes), "actifs_sans_prix": sans_prix(prix)}
-    if prog["actifs_sans_prix"]:
+            "positions_count": len(ouvertes), "actifs_sans_prix": sans_prix(prix),
+            "sans_position": not positions}
+    if prog["actifs_sans_prix"] or prog["sans_position"]:
         return {**prog, "current_value": None, "pnl_latent": None, "pnl_total": None,
                 "progression_pct": None, "avancement_objectif": None}
     valeur = 0.0
@@ -98,6 +103,9 @@ def progression_plan_eur(plan_id: int) -> dict:
         return prog
     positions = positions_du_plan(plan_id)
     devise = devise_commune(positions)
+    if prog["sans_position"]:  # TODO §36 : rien à convertir, aucun taux demandé
+        return {**prog, "devise_positions": devise, "pnl_total_eur": None, "taux_change": None,
+                "taux_libelle": AUCUNE_POSITION}
     if prog["actifs_sans_prix"]:  # TODO §35 : rien à convertir, aucun taux demandé
         return {**prog, "devise_positions": devise, "pnl_total_eur": None, "taux_change": None,
                 "taux_libelle": "non disponible : aucun prix pour " + ", ".join(prog["actifs_sans_prix"])}
