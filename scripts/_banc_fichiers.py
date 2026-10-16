@@ -74,7 +74,7 @@ def _loggers() -> list[logging.Logger]:
 
 @contextlib.contextmanager
 def journaux_detaches(dossier: str = DOSSIER_CAS):
-    """Le temps du bloc, les logs de production (logs/alphasignal.log, logs/errors.log) vont
+    """Le temps du bloc, les logs de production (logs/<tâche>.log, logs/<tâche>_errors.log) vont
     dans <dossier>/banc.log, y compris ceux des loggers créés pendant le bloc (imports tardifs :
     utils.logger lit LOG_FILE_MAIN et LOG_FILE_ERROR à chaque get_logger)."""
     from utils import logger as journal

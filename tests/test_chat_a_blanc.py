@@ -100,9 +100,8 @@ class TestABlanc(BaseABlanc):
                 f.write("ok")
             journal = get_logger("tests.banc.a_blanc")
             journal.warning("message du banc")
-            prod = {os.path.normcase(p) for p in (os.path.join(RACINE, "logs", "alphasignal.log"),
-                                                  os.path.join(RACINE, "logs", "errors.log"))}
-            self.assertFalse(any(os.path.normcase(getattr(h, "baseFilename", "")) in prod
+            prod = os.path.normcase(os.path.join(RACINE, "logs")) + os.sep
+            self.assertFalse(any(os.path.normcase(getattr(h, "baseFilename", "")).startswith(prod)
                                  for h in journal.handlers))
         self.assertEqual(etat["sources_coupees"], {"alpha_vantage"})
         self.assertFalse(os.path.exists(os.path.join(self.dossier.name, "cache", "news")))

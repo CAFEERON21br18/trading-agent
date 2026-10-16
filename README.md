@@ -98,7 +98,7 @@ python scripts/check_status.py
 launchctl list | grep alphasignal
 
 # Voir les logs
-tail -f logs/alphasignal.log
+tail -f logs/tactical.log   # un fichier par tâche : critical, tactical, daily, dashboard…
 tail -f logs/launchd_critical.log
 ```
 
@@ -200,7 +200,7 @@ dashboard (et donc le portefeuille paper/réel) publiquement sur Internet.
 | Problème | Solution |
 |---|---|
 | `check_status.py` ⚠️ partout | Vérifier `.env` (clés API + Gmail app password) |
-| Pas d'emails reçus | `tail logs/launchd_daily.log` puis `cat logs/errors.log` |
+| Pas d'emails reçus | `tail logs/launchd_daily.log` puis `cat logs/daily_errors.log` |
 | Mac dort à 7h30 | `RunAtLoad: true` dans le plist daily rattrape au réveil |
 | Port 8080 occupé | `pkill -f dashboard/app.py` ou changer `DASHBOARD_PORT` |
 | Téléphone : `http://<IP>:8080` ne répond plus | Normal (bind 127.0.0.1) → passer par `https://<nom-machine>.<tailnet>.ts.net/` |
