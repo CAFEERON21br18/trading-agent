@@ -202,6 +202,33 @@ simplement plus demandé au LLM.
 - **Changer le niveau de risque global**, par exemple supprimer la réduction
   moyenne, reste une décision séparée, hors de ce critère.
 
+**Couple examiné (v1.7, 16/10/2026)**, fixé avant toute lecture de 3.a. Le §0.1
+comptait par (actif, jour, action), le §0.4 et le constat ci-dessus par (actif,
+jour) ; cette définition remplace les deux pour 3.a :
+- un couple est (actif, jour de Lisbonne, action). Le jour est la date de
+  l'horodatage de la décision en heure de Lisbonne (Europe/Lisbon), comme la clé du
+  cache du pipeline (Q2) ; l'action est BUY ou SELL ;
+- décisions retenues : lignes `decision` du registre, BUY ou SELL de style normal,
+  d'origine « cycle », quel que soit le cycle. Les décisions du conseiller réel
+  (origine « conseiller ») sont exclues : leur pipeline tourne à chaque appel, sans
+  cache ni repli, et ne dimensionne aucune position paper. Les décisions sans
+  données (§0.1) sont exclues ;
+- le couple est **examiné** si au moins une de ces décisions a eu un pipeline
+  exécuté ou servi par le cache (`pipeline.statut` = `execute` ou `cache`) ;
+- un couple dont les décisions n'ont eu que des replis Prudent (`pipeline.statut` =
+  `prudent`) est compté à part : il n'est pas examiné et n'entre pas dans le
+  minimum de 40 ;
+- les couples sont comptés par actif (les groupes du §0.1 servent aux
+  rendements), depuis la mise en service de R2 (06/10/2026), et affichés par
+  semaine ISO du jour de Lisbonne. Lecture le 03/11/2026 (4 semaines), échéance
+  le 01/12/2026 (8 semaines) ;
+- avant la lecture, seul ce compteur est consulté (§0.3) : ni rendement, ni
+  moyenne, ni fréquence de verdict, ni verdict.
+
+Le constat ci-dessus (72 couples) a été compté dans les logs du tactical, qui
+n'enregistrent pas l'action d'une décision examinée : sur ces données, le
+comptage par action n'est pas vérifiable.
+
 ### 3.b — Critère de rendement, lu avec la question 1
 Métrique : rendement orienté moyen à J+5, net de coûts, des décisions examinées
 par le pipeline (observations indépendantes (groupe, semaine)), avec n = 125,
@@ -314,6 +341,14 @@ la taille réduite tombe sous le minimum viable de 15 €.
 - v1.6, 14/10/2026 : note de fait au §4 (unité de fait des montants paper et
   du fantôme : USD pour les actifs cotés en dollars, libellés « € »). Aucun
   critère, aucune règle de lecture ni aucune règle simulée modifiés.
+- v1.7, 16/10/2026 : définition du « couple examiné » de 3.a (§3.a), décidée le
+  16/10 : (actif, jour de Lisbonne, action), BUY ou SELL normaux, pipeline
+  exécuté ou servi par le cache ; replis Prudent comptés à part, hors du minimum
+  de 40. Précisions ajoutées pour qu'elle soit univoque : origine « cycle »
+  seulement, un couple qui a aussi un repli Prudent reste examiné, comptage par
+  actif. Aucun critère, aucun seuil ni aucune règle de lecture modifiés.
+  Commitée avant le script de comptage et avant toute lecture de 3.a ; comme la
+  v1.1, elle s'applique à toutes les lignes depuis R2.
 
 ---
 
