@@ -352,20 +352,7 @@ def get_plan_detail(plan_id):
     return jsonify(p)
 
 
-@api.route("/plans", methods=["POST"])
-def post_plan():
-    from utils.real_portfolio_db import creer_plan
-    data = request.get_json() or {}
-    if not data.get("name") or not data.get("plan_type"):
-        return jsonify({"error": "name et plan_type requis"}), 400
-    return jsonify({"id": creer_plan(data), "saved": True})
-
-
-@api.route("/plans/<int:plan_id>", methods=["PUT"])
-def put_plan(plan_id):
-    from utils.real_portfolio_db import modifier_plan
-    data = request.get_json() or {}
-    return jsonify({"updated": modifier_plan(plan_id, data)})
+# POST et PUT /api/plans : dashboard/api/plans_routes.py (validés, TODO §7)
 
 
 @api.route("/plans/<int:plan_id>", methods=["DELETE"])
