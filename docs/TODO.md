@@ -629,10 +629,16 @@ modification du code.
   Vantage (il n'existe aucun cache) ; le prompt d'un cas manuel a donc la même
   lacune que le chat réel presque toujours.
 
-## 28. Quatre suites de tests Jev écrivent dans `logs/` de production
+## 28. ~~Quatre suites de tests Jev écrivent dans `logs/` de production~~
 
-À corriger avec le chantier des logs Windows (§1). Relevé le 08/10/2026, non
-corrigé.
+Relevé le 08/10/2026. **Corrigé le 16/10/2026**, avec la fragilité relevée le
+14/10 (un `tearDownModule` rendait le chemin de log d'un module déjà supprimé,
+selon l'ordre alphabétique des fichiers). Un seul mécanisme pour toute la suite :
+chaque module de test appelle `tests/journaux_isoles.isoler_journaux()` avant
+d'importer le code du dépôt ; la redirection, faite au premier appel du
+processus, n'est jamais défaite pendant les tests. `tests/test_journaux_isoles.py`
+vérifie l'appel dans chaque module et qu'aucun handler ne vise `logs/`. Constat
+d'origine ci-dessous.
 
 - `tests/test_jev_observer.py`, `tests/test_jev_orchestrateur.py`,
   `tests/test_jev_fantome_dashboard.py` et `tests/test_jev_fantome_isolation.py`

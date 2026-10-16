@@ -8,9 +8,7 @@ Sans base ni .env : chat_history simulé, fixtures inventées ; logs redirigés 
 """
 
 import os
-import shutil
 import sys
-import tempfile
 import unittest
 from datetime import datetime, timedelta, timezone
 from unittest import mock
@@ -20,10 +18,8 @@ sys.path.insert(0, RACINE)
 for _cle in ("EMAIL_SENDER", "EMAIL_APP_PASSWORD", "EMAIL_RECIPIENT"):
     os.environ.setdefault(_cle, "test")  # config.py exige ces variables (pas de .env)
 
-from scripts._banc_fichiers import journaux_detaches
-_LOGS = tempfile.mkdtemp()
-_JOURNAUX = journaux_detaches(_LOGS)
-_JOURNAUX.__enter__()  # tout le module : aucun message dans logs/ (production)
+from tests.journaux_isoles import isoler_journaux
+isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
 
 import config
 from agents.chat import _historique as h
@@ -51,11 +47,6 @@ CONTEXTE = {  # même contexte inventé que celui qui a produit la référence (
     "knowledge": [{"domaine": "risque", "concept": "R:R", "definition": "Rapport entre gain visé et perte acceptée."}],
 }
 ARGS = ("Comment va ACME ?", "general", "Brouillon : capital 1000.00€, investi 123.45€.")
-
-
-def tearDownModule():
-    _JOURNAUX.__exit__(None, None, None)
-    shutil.rmtree(_LOGS, ignore_errors=True)
 
 
 def echange(i: int, question: str, reponse: str, il_y_a_min: int, source="groq") -> list[dict]:

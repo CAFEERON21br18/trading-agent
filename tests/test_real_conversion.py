@@ -10,7 +10,6 @@ Base temporaire, yfinance simulé (taux inventé 1,25), valeurs inventées (règ
 """
 
 import os
-import shutil
 import sys
 import tempfile
 import unittest
@@ -21,10 +20,8 @@ sys.path.insert(0, RACINE)
 for _cle in ("EMAIL_SENDER", "EMAIL_APP_PASSWORD", "EMAIL_RECIPIENT"):
     os.environ.setdefault(_cle, "test")  # config.py exige ces variables (pas de .env)
 
-from scripts._banc_fichiers import journaux_detaches
-_LOGS = tempfile.mkdtemp()
-_JOURNAUX = journaux_detaches(_LOGS)
-_JOURNAUX.__enter__()  # tout le module : aucun message dans logs/ (production)
+from tests.journaux_isoles import isoler_journaux
+isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
 
 from agents import plan_advisor
 from tests.fx_fixtures import faux_yfinance
@@ -35,11 +32,6 @@ from utils.real_conversion import investi_en_eur, progression_plan_eur, texte_ta
 MONTANTS = ("plan_id", "invested", "current_value", "pnl_realise", "pnl_latent", "pnl_total",
             "target_pct", "positions_count")  # jamais convertis
 PANNE = OSError("réseau coupé")
-
-
-def tearDownModule():
-    _JOURNAUX.__exit__(None, None, None)
-    shutil.rmtree(_LOGS, ignore_errors=True)
 
 
 def position(**kw) -> dict:

@@ -18,6 +18,8 @@ sys.path.insert(0, RACINE)
 for _cle in ("EMAIL_SENDER", "EMAIL_APP_PASSWORD", "EMAIL_RECIPIENT"):
     os.environ.setdefault(_cle, "test")
 
+from tests.journaux_isoles import isoler_journaux
+isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
 from utils import jev_db
 from scripts import jev_bilan, jev_bilan_calc as calc
 

@@ -18,6 +18,8 @@ from unittest import mock
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, RACINE)
 
+from tests.journaux_isoles import isoler_journaux
+isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
 from scripts import chat_cas_export as ex
 from scripts._banc_fichiers import ecrire_resultats, lister_cas
 

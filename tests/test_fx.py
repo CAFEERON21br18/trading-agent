@@ -8,9 +8,7 @@ Sans réseau ni base ; taux inventé de 1,25 ; logs redirigés hors de logs/.
 
 import os
 import re
-import shutil
 import sys
-import tempfile
 import unittest
 
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -18,18 +16,11 @@ sys.path.insert(0, RACINE)
 for _cle in ("EMAIL_SENDER", "EMAIL_APP_PASSWORD", "EMAIL_RECIPIENT"):
     os.environ.setdefault(_cle, "test")  # config.py exige ces variables (pas de .env)
 
-from scripts._banc_fichiers import journaux_detaches
-_LOGS = tempfile.mkdtemp()
-_JOURNAUX = journaux_detaches(_LOGS)
-_JOURNAUX.__enter__()  # tout le module : aucun message dans logs/ (production)
+from tests.journaux_isoles import isoler_journaux
+isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
 
 from tests.fx_fixtures import HEURE, faux_yfinance
 from utils.fx import NON_DISPO, en_eur, libelle_taux, taux_eur
-
-
-def tearDownModule():
-    _JOURNAUX.__exit__(None, None, None)
-    shutil.rmtree(_LOGS, ignore_errors=True)
 
 
 class TestTauxEur(unittest.TestCase):

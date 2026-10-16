@@ -11,7 +11,6 @@ Base temporaire, prix et taux simulés (1,25), valeurs inventées (règle 9) ; l
 
 import os
 import re
-import shutil
 import sys
 import tempfile
 import unittest
@@ -22,19 +21,14 @@ sys.path.insert(0, RACINE)
 for _cle in ("EMAIL_SENDER", "EMAIL_APP_PASSWORD", "EMAIL_RECIPIENT"):
     os.environ.setdefault(_cle, "test")  # config.py exige ces variables (pas de .env)
 
-from scripts._banc_fichiers import journaux_detaches
+from tests.journaux_isoles import isoler_journaux
+isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
 
-# Logs : un bloc pour les imports, puis un par test (setUp/tearDown). Pas de contexte ouvert
-# jusqu'à tearDownModule : en suite complète, sa sortie rendrait le chemin de log d'un autre
-# module, déjà supprimé (vu le 14/10 sur test_trade_journalist).
-_LOGS = tempfile.mkdtemp()
-with journaux_detaches(_LOGS):  # loggers créés à l'import : jamais vers logs/ (production)
-    from agents import plan_advisor
-    from tests.fx_fixtures import faux_yfinance
-    from utils import database, real_price, real_vue
-    from utils import real_portfolio_db as db
-    from utils.real_conversion import progression_plan_connue, progression_plan_eur
-shutil.rmtree(_LOGS, ignore_errors=True)
+from agents import plan_advisor
+from tests.fx_fixtures import faux_yfinance
+from utils import database, real_price, real_vue
+from utils import real_portfolio_db as db
+from utils.real_conversion import progression_plan_connue, progression_plan_eur
 
 PANNE = OSError("réseau coupé")
 VALEURS = ("current_value", "unrealized_pnl", "unrealized_pnl_percent")
@@ -44,8 +38,6 @@ P_VALEURS = ("current_value", "pnl_latent", "pnl_total", "progression_pct", "ava
 class Base(unittest.TestCase):
     def setUp(self):
         self.dossier = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
-        self.journaux = journaux_detaches(self.dossier.name)
-        self.journaux.__enter__()
         self.prix = {"AAA": 60.0, "BBB": 25.0}  # prix inventés ; None ou absent = pas de prix
         cours = lambda a: {"price": self.prix.get(a), "source": "test"}
         self.patchs = [mock.patch.object(database, "DB_PATH", os.path.join(self.dossier.name, "database.db")),
@@ -65,7 +57,6 @@ class Base(unittest.TestCase):
     def tearDown(self):
         for p in reversed(self.patchs):
             p.stop()
-        self.journaux.__exit__(None, None, None)
         self.dossier.cleanup()
 
 

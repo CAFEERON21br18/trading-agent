@@ -14,6 +14,8 @@ import unittest
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, RACINE)
 
+from tests.journaux_isoles import isoler_journaux
+isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
 from agents.chat._banc_notation import (comparer, est_note, noter, normaliser, resumer, trois_blocs_ok,
                                         trois_blocs_requis)
 

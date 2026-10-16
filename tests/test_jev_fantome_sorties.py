@@ -9,6 +9,8 @@ Base SQLite temporaire, valeurs inventées, aucun réseau.
 import sqlite3
 import unittest
 
+from tests.journaux_isoles import isoler_journaux
+isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
 from tests.jev_fantome_fixtures import BaseFantome, observation  # en premier : variables de config.py
 from utils import database
 from scripts import jev_bilan_calc as calc

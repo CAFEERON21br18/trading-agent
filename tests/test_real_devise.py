@@ -11,7 +11,6 @@ Base temporaire, prix simulés, valeurs inventées (règle 9) ; logs redirigés 
 
 import os
 import re
-import shutil
 import sqlite3
 import sys
 import tempfile
@@ -23,10 +22,8 @@ sys.path.insert(0, RACINE)
 for _cle in ("EMAIL_SENDER", "EMAIL_APP_PASSWORD", "EMAIL_RECIPIENT"):
     os.environ.setdefault(_cle, "test")  # config.py exige ces variables (pas de .env)
 
-from scripts._banc_fichiers import journaux_detaches
-_LOGS = tempfile.mkdtemp()
-_JOURNAUX = journaux_detaches(_LOGS)
-_JOURNAUX.__enter__()  # tout le module : aucun message dans logs/ (production)
+from tests.journaux_isoles import isoler_journaux
+isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
 
 from agents import real_advisor
 from agents.real_advisor_rules import regles_position
@@ -40,11 +37,6 @@ PLANS = [None,
          {"plan_type": "long_terme", "name": "Plan inventé", "objective": "objectif inventé", "vision": ""},
          {"plan_type": "court_terme", "name": "Plan court", "objective": "", "vision": ""}]
 PNL_PCT = (-20.0, -10.0, 0.0, 10.0, 40.0)  # une valeur par branche des règles
-
-
-def tearDownModule():
-    _JOURNAUX.__exit__(None, None, None)
-    shutil.rmtree(_LOGS, ignore_errors=True)
 
 
 def position(**kw) -> dict:

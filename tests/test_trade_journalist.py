@@ -26,6 +26,8 @@ sys.path.insert(0, RACINE)
 for _cle in ("EMAIL_SENDER", "EMAIL_APP_PASSWORD", "EMAIL_RECIPIENT"):
     os.environ.setdefault(_cle, "test")  # config.py exige ces variables
 
+from tests.journaux_isoles import isoler_journaux
+isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
 from utils import database
 from utils.portfolio_db import initialiser_paper_db
 from agents.trade_journalist import journalist
@@ -45,7 +47,7 @@ class TestDemoIsolee(unittest.TestCase):
     """La démo de performance_tracker ne modifie ni DB_PATH ni les fichiers mémoire."""
 
     def setUp(self):
-        logging.disable(logging.CRITICAL)  # pas de « SIG-0001 enregistré » dans logs/ de production
+        logging.disable(logging.CRITICAL)  # silence en console (logs/ : tests/journaux_isoles.py)
         self.dossier = tempfile.TemporaryDirectory()
         self.patchs, chemins = [], set()
         for module, attribut, nom in _CHEMINS:

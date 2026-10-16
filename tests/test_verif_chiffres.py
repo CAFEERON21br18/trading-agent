@@ -1,9 +1,7 @@
-"""
-tests/test_verif_chiffres.py — Contrôle des chiffres de la réponse du chat (mode avertissement).
+"""tests/test_verif_chiffres.py — Contrôle des chiffres de la réponse du chat (mode avertissement).
 
 Lancement : .venv\\Scripts\\python.exe -m unittest tests.test_verif_chiffres -v
-Sans base ni .env (la migration est testée sur une base SQLite en mémoire).
-"""
+Sans base ni .env (la migration est testée sur une base SQLite en mémoire)."""
 
 import json
 import os
@@ -17,6 +15,8 @@ sys.path.insert(0, RACINE)
 for _cle in ("EMAIL_SENDER", "EMAIL_APP_PASSWORD", "EMAIL_RECIPIENT"):
     os.environ.setdefault(_cle, "test")  # config.py (importé par _audit_record) exige ces variables
 
+from tests.journaux_isoles import isoler_journaux
+isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
 from agents.chat._verif_chiffres import extraire_nombres, partie_prompt, references_du_prompt, verifier
 from agents.chat import _audit_record
 from utils import message_audit_db

@@ -19,10 +19,12 @@ sys.path.insert(0, RACINE)
 for _cle in ("EMAIL_SENDER", "EMAIL_APP_PASSWORD", "EMAIL_RECIPIENT"):
     os.environ.setdefault(_cle, "test")  # config.py exige ces variables
 
+from tests.journaux_isoles import isoler_journaux
+isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
+
 from utils import cache, database
 from utils.logger import get_logger
 from scripts import _chat_a_blanc as ab
-from scripts._banc_fichiers import journaux_detaches
 
 
 class BaseABlanc(unittest.TestCase):
@@ -115,9 +117,8 @@ class BaseFidelite(BaseABlanc):
     def setUp(self):
         super().setUp()
         from utils.portfolio_db import initialiser_paper_db
-        with journaux_detaches(self.cas):  # rien dans logs/ (production)
-            database.initialiser_base()
-            initialiser_paper_db()
+        database.initialiser_base()
+        initialiser_paper_db()
         from agents import asset_analyzer
         from agents.analysts.sentiment_analyst import analyst
         from agents.chat import context_builder
@@ -143,8 +144,7 @@ class BaseFidelite(BaseABlanc):
             vu.update(prompt=prompt, system=system)
             return {"text": "réponse simulée suffisamment longue pour être gardée", "source": "groq"}
         coupe = ab._alpha_vantage_coupe({"sources_coupees": set()})
-        with journaux_detaches(self.cas), \
-             mock.patch.object(alphavantage, "_appel_av", coupe), \
+        with mock.patch.object(alphavantage, "_appel_av", coupe), \
              mock.patch.object(_llm, "llm_disponible", return_value={"gemini": True, "groq": True}), \
              mock.patch.object(_llm, "ask_llm", ask_llm):
             chat_engine.repondre.__wrapped__(question)
