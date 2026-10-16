@@ -42,6 +42,26 @@
           .replace(/'/g, "&#39;");
       }
     </script>
+    <script>
+      // Routes modifiantes : le serveur exige l'en-tête X-AlphaSignal: 1 sur POST, PUT, PATCH et
+      // DELETE (dashboard/api/garde_ecriture.py). Ajouté ici à tout fetch modifiant vers le
+      // dashboard lui-même, pour toutes les pages ; les GET et les autres sites ne changent pas.
+      (function () {
+        const fetchNatif = window.fetch.bind(window);
+        window.fetch = function (cible, options) {
+          options = options || {};
+          const requete = cible instanceof Request ? cible : null;
+          const methode = (options.method || (requete ? requete.method : "GET")).toUpperCase();
+          const url = new URL(requete ? requete.url : String(cible), location.href);
+          if (!["GET", "HEAD", "OPTIONS"].includes(methode) && url.origin === location.origin) {
+            const entetes = new Headers(options.headers || (requete ? requete.headers : undefined));
+            entetes.set("X-AlphaSignal", "1");
+            options = Object.assign({}, options, {headers: entetes});
+          }
+          return fetchNatif(cible, options);
+        };
+      })();
+    </script>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen pb-20">
     <!-- Header -->

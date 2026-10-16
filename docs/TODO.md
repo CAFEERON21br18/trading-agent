@@ -178,7 +178,24 @@ ci-dessous.
 - Mesuré le 05/10 : ≈ 565 appels/jour, tous en échec hors de la fenêtre de
   08h00. **Désactivé par défaut depuis Q1** (`METACOG_AUDIT_ENABLED=false`).
 
-## 7. `POST` et `PUT /api/plans` ne sont pas plafonnés
+## 7. ~~`POST` et `PUT /api/plans` ne sont pas plafonnés~~ (corrigé en partie)
+
+**Corrigé en partie le 16/10/2026** (`dashboard/api/plans_routes.py`,
+`plans_validation.py`) :
+- `POST /api/plans` applique le plafond du mode plan du chat, règle importée telle
+  quelle de `agents/chat/_plan_budget.py`, à un nouveau plan qui réserve du budget
+  (actif, racine ou sous-plan d'un plan inactif) : 400 au-delà. Il hérite du mélange
+  € et $ du §33 ;
+- `PUT /api/plans/<id>` : types et bornes seulement (montants ≥ 0, pourcentage du
+  budget entre 0 et 100, statut dans `STATUTS`). La règle du chat ne donne que le
+  plafond d'un nouveau plan ; pour une modification, il faudrait retirer la
+  réservation actuelle du plan, calcul interne à `_plan_budget.py`, gelé pendant le
+  suivi de la consigne v2. **Reste ouvert** ;
+- toutes les routes POST, PUT, PATCH et DELETE du dashboard exigent l'en-tête
+  `X-AlphaSignal: 1` (403 sinon, `dashboard/api/garde_ecriture.py`) : une autre page
+  web ouverte dans le navigateur ne peut plus les déclencher.
+
+Constat d'origine :
 
 - E4 plafonne uniquement le mode plan du chat (`agents/chat/plan_builder.py`,
   règle dans `agents/chat/_plan_budget.py`).

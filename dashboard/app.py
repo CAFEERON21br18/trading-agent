@@ -15,6 +15,8 @@ from dashboard.api.routes import api
 from dashboard.api.audit_routes import audit_api
 from dashboard.api.topology_routes import topology_api
 from dashboard.api.jev_fantome_routes import jev_fantome_api, jev_fantome_page
+from dashboard.api.plans_routes import plans_api
+from dashboard.api.garde_ecriture import exiger_en_tete
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -22,7 +24,9 @@ logger = get_logger(__name__)
 app = Flask(__name__,
             template_folder="templates",
             static_folder="static")
+app.before_request(exiger_en_tete)  # POST, PUT, PATCH, DELETE : en-tête X-AlphaSignal: 1, sinon 403
 app.register_blueprint(api)
+app.register_blueprint(plans_api)  # TODO §7 : POST et PUT /api/plans validés
 app.register_blueprint(audit_api)  # Phase 4 / C : consultation de message_audit (GET seulement)
 app.register_blueprint(topology_api)  # Phase 3 : carte de l'agent (GET seulement, sans base)
 app.register_blueprint(jev_fantome_api)  # REGISTRE §8.3 : fantôme Jev, ligne et détail (GET seulement, mode=ro)
