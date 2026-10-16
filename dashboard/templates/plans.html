@@ -69,7 +69,7 @@ async function loadPlans() {
     }
     const htmls = await Promise.all(plans.map(async p => {
         const prog = await (await fetch(`/api/plans/${p.id}/progress`)).json();
-        const pctProg = prog.progression_pct;  // null : prix ou taux de change indisponible (jamais 0)
+        const pctProg = prog.progression_pct;  // null : prix ou taux indisponible, ou aucune position (jamais 0)
         const target = p.target_return_percent || 0;
         const avancement = prog.avancement_objectif;
         const s = escHtml(prog.symbole_positions || "");
@@ -81,7 +81,7 @@ async function loadPlans() {
                 <div class="bg-slate-700 rounded-full h-1.5 mt-2 overflow-hidden">
                     <div class="${color} h-1.5" style="width:${w}%"></div>
                 </div>
-                <div class="text-xs text-slate-400 mt-1">${avancement == null ? "avancement non disponible" : avancement.toFixed(0) + "% de l'objectif"} (${pctProg == null ? "—" : pctProg.toFixed(1) + "%"} / ${target.toFixed(0)}%)</div>`;
+                <div class="text-xs text-slate-400 mt-1">${prog.sans_position ? "aucune position" : avancement == null ? "avancement non disponible" : avancement.toFixed(0) + "% de l'objectif"} (${pctProg == null ? "—" : pctProg.toFixed(1) + "%"} / ${target.toFixed(0)}%)</div>`;
         }
         return `
             <div class="card cursor-pointer" onclick="openPlan(${p.id})">
@@ -92,8 +92,8 @@ async function loadPlans() {
                         <span class="pill pill-neutral ml-2">${escHtml(p.plan_type)}</span>
                     </div>
                     <div class="text-right ${colorPnl(prog.pnl_total)}">
-                        <div class="font-bold">${prog.pnl_total == null ? "non disponible" : signe(prog.pnl_total, s)}</div>
-                        <div class="text-xs">${pctProg == null ? "non disponible" : pct(pctProg)}</div>
+                        <div class="font-bold">${prog.sans_position ? "aucune position" : prog.pnl_total == null ? "non disponible" : signe(prog.pnl_total, s)}</div>
+                        <div class="text-xs">${prog.sans_position ? "" : pctProg == null ? "non disponible" : pct(pctProg)}</div>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-xs text-slate-300 mt-2">
@@ -149,10 +149,10 @@ async function openPlan(id) {
             <div><span class="text-slate-400">Notes perso :</span> <span class="italic">${escHtml(p.personal_notes || '—')}</span></div>
             <div class="border-t border-slate-700 my-2"></div>
             <div><strong>Progression actuelle</strong></div>
-            <div>P&L total : <span class="${colorPnl(prog.pnl_total)}">${prog.pnl_total == null ? "non disponible" : signe(prog.pnl_total, s)}${prog.pnl_total_eur == null ? "" : " ≈ " + signe(prog.pnl_total_eur, "€")} (${prog.progression_pct == null ? "progression non disponible" : pct(prog.progression_pct)})</span></div>
+            <div>P&L total : <span class="${colorPnl(prog.pnl_total)}">${prog.sans_position ? "aucune position" : (prog.pnl_total == null ? "non disponible" : signe(prog.pnl_total, s)) + (prog.pnl_total_eur == null ? "" : " ≈ " + signe(prog.pnl_total_eur, "€")) + " (" + (prog.progression_pct == null ? "progression non disponible" : pct(prog.progression_pct)) + ")"}</span></div>
             <div class="text-xs text-slate-400">${escHtml(prog.taux_libelle || "")}</div>
             <div>Investi : ${prog.invested?.toFixed(2) || 0}${s} | Valeur : ${prog.current_value == null ? "non disponible" : prog.current_value.toFixed(2) + s}</div>
-            <div>Avancement : ${prog.avancement_objectif != null ? prog.avancement_objectif.toFixed(0) + "% de l'objectif" : (prog.target_pct > 0 ? "non disponible" : "pas d'objectif chiffré")}</div>
+            <div>Avancement : ${prog.sans_position ? "aucune position" : prog.avancement_objectif != null ? prog.avancement_objectif.toFixed(0) + "% de l'objectif" : (prog.target_pct > 0 ? "non disponible" : "pas d'objectif chiffré")}</div>
             <div class="border-t border-slate-700 my-2"></div>
             <div><strong>Positions liées (${positions.length})</strong></div>
             ${positions.length === 0 ? '<div class="text-xs text-slate-400">Aucune position rattachée. Va sur la page Réel pour rattacher.</div>'
