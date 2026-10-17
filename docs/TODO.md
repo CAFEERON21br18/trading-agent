@@ -494,7 +494,11 @@ ils n'ont jamais été branchés. Ne rien supprimer avant décision.
   - Question : brancher (coût NewsAPI : 1 requête par signal actif) ou
     supprimer ?
 
-## 18. Le cycle stratégique ne traite pas la queue
+## 18. ~~Le cycle stratégique ne traite pas la queue~~
+
+**Corrigé le 17/10/2026** : docstring de `scripts/cycle_strategic.py` et CLAUDE.md
+alignés sur le code, le stratégique ne traite pas la queue (seul le tactical
+l'analyse) et ne lit même plus sa longueur. Constat d'origine ci-dessous.
 
 - `scripts/cycle_strategic.py` : sa docstring annonce « Lance les 7
   explorateurs + traite la queue (analyses complètes) ». En réalité il lit la
@@ -506,7 +510,12 @@ ils n'ont jamais été branchés. Ne rien supprimer avant décision.
   analyser la queue (sans effet tant que §14 n'est pas réglé : les tickers de
   la queue n'ont pas de prix).
 
-## 19. Les explorateurs tournent deux fois
+## 19. ~~Les explorateurs tournent deux fois~~
+
+**Corrigé le 17/10/2026** : les 7 explorateurs sont retirés du stratégique ; le
+tactical continue de les lancer à chaque passage (15 min). Le
+`CryptoExplorer(nb_max=50)` propre au stratégique disparaît avec lui. Constat
+d'origine ci-dessous.
 
 - Le tactical (toutes les 15 min, `_lancer_explorateurs`, import dynamique
   par nom de module) **et** le stratégique (toutes les 4 h) lancent les mêmes

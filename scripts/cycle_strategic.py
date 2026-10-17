@@ -1,6 +1,8 @@
 """
 scripts/cycle_strategic.py — Cycle STRATÉGIQUE (toutes les 4h)
-Lance les 7 explorateurs + traite la queue (analyses complètes).
+Monitor SL/TP, conseils sur le portefeuille réel, régime de marché.
+Ne lance pas les explorateurs : le tactical le fait toutes les 15 min (TODO §19).
+Ne traite pas la queue : seul le tactical l'analyse (TODO §18).
 Skip si QUOTIDIEN tourne.
 """
 
@@ -35,39 +37,10 @@ def main() -> int:
     try:
         from utils.portfolio_db import initialiser_paper_db
         from agents.paper_trader.monitor import monitorer_positions
-        from agents.explorers.crypto_explorer.explorer    import CryptoExplorer
-        from agents.explorers.stock_explorer.explorer     import StockExplorer
-        from agents.explorers.index_explorer.explorer     import IndexExplorer
-        from agents.explorers.etf_explorer.explorer       import ETFExplorer
-        from agents.explorers.commodity_explorer.explorer import CommodityExplorer
-        from agents.explorers.forex_explorer.explorer     import ForexExplorer
-        from agents.explorers.cfd_index_explorer.explorer import CFDIndexExplorer
-        from agents.explorers.queue_manager import lire_queue
 
         initialiser_paper_db()
-        # 1. Monitor positions
+        # 1. Monitor positions (les explorateurs et la queue sont au tactical, TODO §18-§19)
         monitorer_positions(passage)
-
-        # 2. Lancer les 7 explorateurs
-        explorateurs = [
-            ("crypto",    CryptoExplorer(nb_max=50)),
-            ("stock",     StockExplorer()),
-            ("index",     IndexExplorer()),
-            ("etf",       ETFExplorer()),
-            ("commodity", CommodityExplorer()),
-            ("forex",     ForexExplorer()),
-            ("cfd_index", CFDIndexExplorer()),
-        ]
-        total_decouvertes = 0
-        for nom, exp in explorateurs:
-            try:
-                res = exp.scanner()
-                total_decouvertes += len(res["decouvertes"])
-            except Exception as e:
-                logger.error(f"Explorer {nom} échoué : {e}")
-
-        queue = lire_queue()
-        logger.info(f"Stratégique : {total_decouvertes} découverte(s), queue à {len(queue)} actifs")
 
         # v5.4.1 — Conseils sur le portefeuille réel (toutes les 4h)
         nb_conseils = 0
@@ -99,9 +72,7 @@ def main() -> int:
             logger.error(f"Régime marché échoué : {e}")
 
         update_heartbeat(CYCLE, status="healthy", duration_sec=_t.time() - t0,
-                         extra={"decouvertes": total_decouvertes,
-                                "queue_len": len(queue),
-                                "conseils_reels": nb_conseils,
+                         extra={"conseils_reels": nb_conseils,
                                 "regime_global": regime_global_str})
         return 0
     except Exception as e:
