@@ -44,8 +44,10 @@ Les indicateurs sont des **GUIDES, pas des lois**. L'agent peut s'écarter s'il 
 
 ## Modules v5.0 ajoutés
 - **Knowledge Base** → `agents/knowledge/` (savoir théorique : technique avancée, fondamental, macro, risk, psycho)
-- **Pre-trade Analysis** → `agents/knowledge/pretrade_analysis.py` (analyse en 8 sections, mode complet/condensé)
-- **Chart Reading** → `agents/knowledge/chart_reading.py` (lecture multi-timeframe en 5 couches)
+- **Pre-trade Analysis** → `agents/knowledge/pretrade_analysis.py` (analyse en 8 sections, mode complet/condensé) :
+  version condensée dans le rapport quotidien et son email, pour les BUY/SELL du cycle
+  (`agents/rapport_pretrade.py`) — AFFICHAGE seulement, lue par aucune décision ; catalyseurs « non disponible »
+- **Chart Reading** → `agents/knowledge/chart_reading.py` (lecture multi-timeframe en 5 couches, section 1 de l'analyse pré-trade)
 - **Real Portfolio** → `utils/real_portfolio_db.py` + `agents/real_advisor.py` (suivi positions Revolut RÉELLES, séparé du paper)
 - **Chat stratégique** → `agents/chat/` (réponses contextuelles basées sur paper + réel + mémoire + knowledge)
 

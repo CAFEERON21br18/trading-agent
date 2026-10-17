@@ -16,6 +16,7 @@ from agents.knowledge.chart_reading import analyser_graphique
 from agents.knowledge.knowledge_base import concepts_pour_decision
 
 logger = get_logger(__name__)
+CATALYSEURS = "non disponible"  # section 3 non implémentée : jamais un contenu inventé (TODO §17)
 
 
 def analyse_pretrade(ticker: str, analyses: dict, decision: dict,
@@ -58,10 +59,8 @@ def analyse_pretrade(ticker: str, analyses: dict, decision: dict,
         "confiance":   fondamental.get("confiance", 0),
     }
 
-    # 3. Catalyseurs (V1 : on n'a pas encore les earnings/guidance — placeholder)
-    section3 = {
-        "prochains_catalyseurs": "Earnings/guidance non implémentés (V2 Alpha Vantage)",
-    }
+    # 3. Catalyseurs : earnings/guidance non implémentés
+    section3 = {"prochains_catalyseurs": CATALYSEURS}
 
     # 4. Contexte média/spéculatif
     section4 = {
@@ -143,6 +142,7 @@ def _analyse_condensee(ticker: str, analyses: dict, decision: dict) -> dict:
             "confiance": technique.get("confiance"),
             "tendance":  technique.get("tendance"),
         },
+        "3_catalyseurs": {"prochains_catalyseurs": CATALYSEURS},
         "7_gestion_risque": {
             "entree":    risque_sig.get("prix_entree") if risque_sig else None,
             "stop_loss": risque_sig.get("stop_loss") if risque_sig else None,
@@ -182,8 +182,10 @@ def formater_markdown(analyse: dict) -> str:
     s6 = analyse["6_psychologie"]
     lignes.append(f"**6. Psycho** : {s6['signal_contrarian']}")
     s7 = analyse["7_gestion_risque"]
-    if s7.get("entree"):
-        lignes.append(f"**7. Risque** : entrée {s7['entree']:.2f} | SL {s7['stop_loss']:.2f} | TP1 {s7['target_1']:.2f} | R:R {s7['rr_1']:.1f}")
+    if s7.get("entree"):  # une valeur absente donne « — » au lieu d'une erreur de format
+        f = lambda v, d=2: "—" if v is None else f"{v:.{d}f}"
+        lignes.append(f"**7. Risque** : entrée {f(s7['entree'])} | SL {f(s7['stop_loss'])} | "
+                      f"TP1 {f(s7['target_1'])} | R:R {f(s7['rr_1'], 1)}")
     s8 = analyse["8_synthese_conviction"]
     lignes.append(f"**8. Décision** : **{s8['decision']}** ({s8['conviction']}/10) [{s8['style']}]")
     lignes.append(f"   Thèse : {s8['thèse']}")

@@ -23,7 +23,7 @@ from agents.paper_trader.cycle           import (
 )
 from agents.paper_trader.monitor         import monitorer_positions
 from utils.registre_cycles                import ouvrir, clore, enregistrer_decisions
-from utils.registre_ancre                 import section_registre
+from agents.rapport_annexes              import annexes
 from agents.jev.observer                  import preparer_observations, observer as observer_jev
 from agents.jev.fantome                   import executer as executer_fantome_jev
 from agents.paper_trader.portfolio       import etat_portefeuille
@@ -159,13 +159,7 @@ def generer_rapport_quotidien(declencheur: str | None = None) -> tuple[str, list
         logger.warning(f"Narratif quotidien : {e}")
         narratif = ""
     bloc_narratif = f"\n## 📖 Synthèse exécutive\n\n{narratif}\n" if narratif else ""
-    try:  # Phase 4 / Q2 : alerte si trop de fallbacks du pipeline (mode Prudent)
-        from agents.skills.pipeline_cache import section_rapport
-        bloc_pipeline = section_rapport()
-    except Exception as e:
-        logger.warning(f"Section pipeline du rapport : {e}")
-        bloc_pipeline = ""
-    bloc_registre = section_registre(cycle_registre)  # R3 : vérification + ancre de la veille ; ne lève jamais
+    bloc_annexes = annexes(decisions, cycle_registre)  # pré-trade §17, pipeline Q2, registre R3 ; ne lève jamais
 
     rapport = f"""# AlphaSignal — Rapport Quotidien — {date_str}
 
@@ -192,7 +186,7 @@ Capital total : {config.CAPITAL:.0f}€ | Investissable : {config.CAPITAL_INVEST
 ## 🧠 Décisions par actif
 
 {section_decisions}
-{bloc_pipeline}{bloc_registre}
+{bloc_annexes}
 ## ⚠️ Disclaimer
 
 Les analyses fournies sont à titre informatif uniquement. Toutes les décisions de trading

@@ -464,6 +464,11 @@ confirmé par grep et par `git log -S` sur tout l'historique : **aucun de ces
 modules n'a jamais été importé** depuis son ajout. Ce n'est pas une régression,
 ils n'ont jamais été branchés. Ne rien supprimer avant décision.
 
+- ~~**`agents/knowledge/pretrade_analysis.py`**~~ **branché le 17/10/2026**, avec
+  `chart_reading.py`, dans le rapport quotidien et son email : analyse condensée des
+  seuls BUY et SELL du cycle (`agents/rapport_pretrade.py`, via
+  `agents/rapport_annexes.py`), affichage seulement, bornée à 60 s. Aucun des deux
+  modules n'appelle un LLM. Section 3 : « non disponible ». Constat d'origine :
 - **`agents/knowledge/pretrade_analysis.py`** (ajouté le 19/06/2026, a404ac6, v5.0)
   - Censé faire : l'« analyse pré-trade en 8 sections » de CLAUDE.md (modules
     v5.0), en mode complet (cycles quotidien et stratégique, décisions
