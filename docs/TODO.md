@@ -856,6 +856,17 @@ chiffres. Restent donc à faire après la fenêtre :
 
 ## 34. Dashboard arrêté le 13/10 au soir, sans alerte
 
+**Surveillance prête le 17/10/2026, à installer** : `scripts/surveiller_dashboard.py`
+interroge `GET /api/health` (délai 5 s) ; après 2 échecs consécutifs, UN email par
+incident puis un email de retour à la normale ; rien n'écoute sur le port : relance de
+`\AlphaSignal\dashboard` (au plus une fois par 15 min) ; le port écoute sans répondre :
+alerte seulement. État dans `data/surveillance_dashboard.json`. La tâche
+`\AlphaSignal\surveillance` (5 min) se crée avec `scripts/installer_surveillance.ps1`,
+en PowerShell administrateur. Diagnostic du 16/10 (lecture seule) : cause non établie.
+Aucun plantage de Python n'est journalisé et la machine est restée éveillée. L'arrêt
+coïncide avec l'installation de la mise à jour Windows KB5127648 (22h55), et
+l'historique du Planificateur est désactivé. Reste ouvert jusqu'à l'installation.
+
 Constaté le 13/10/2026 au soir : le dashboard ne répondait plus, et aucune alerte
 n'a été émise. Cause inconnue.
 
