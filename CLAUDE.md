@@ -127,6 +127,9 @@ Après : `mettre_a_jour_performance_md()` synchronise tout (intuition + learner)
 ## 💼 Portefeuille Paper Trading
 ## 🌐 Sentiment & Contexte (incluant géopolitique)
 ## 🧠 Décisions par actif (avec intuition)
+## 🔎 Analyse pré-trade condensée (BUY et SELL du cycle)  ← affichage seulement
+## 📰 News (NewsAPI, BUY et SELL du cycle, 10 requêtes/jour au plus)  ← affichage seulement
+## 🏢 Fondamentaux (analyse du cycle, sans appel Alpha Vantage)  ← affichage seulement
 ## ⚠️ Disclaimer paper trading
 ```
 

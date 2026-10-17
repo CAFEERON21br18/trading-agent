@@ -492,6 +492,13 @@ ils n'ont jamais été branchés. Ne rien supprimer avant décision.
   - Question : brancher (changerait des décisions : fermetures anticipées,
     à évaluer avec REGISTRE_CRITERES, et à enregistrer dans le registre) ou
     supprimer et retirer « rotation v5 » de CLAUDE.md ?
+- ~~**`agents/report_sections.py`**~~ **branché le 17/10/2026** dans le rapport
+  quotidien et son email (via `agents/rapport_annexes.py`), réécrit pour les
+  décisions actuelles (BUY/SELL, `{ticker, decision, analyses}`) : News par NewsAPI
+  seulement, 1 requête par actif BUY ou SELL et 10 au plus par jour (compteur
+  `data/rapport_newsapi.json`), « non disponible » sans clé, au plafond ou en erreur ;
+  Fondamentaux tirés de l'analyse du cycle, sans nouvel appel Alpha Vantage.
+  Affichage seulement. Constat d'origine :
 - **`agents/report_sections.py`** (présent dès le commit initial v4.1 du
   04/05/2026, ecc6e7e)
   - Censé faire : deux sections du rapport quotidien pour les signaux

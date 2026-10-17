@@ -7,7 +7,9 @@ Lancement : .venv\\Scripts\\python.exe -m unittest tests.test_rapport_annexes -v
 Barres inventées dans une base temporaire ; LLM et réseau piégés (aucun appel) ; routine simulée.
 """
 
+import contextlib
 import glob
+import importlib
 import math
 import os
 import sys
@@ -101,25 +103,33 @@ class TestAnnexes(unittest.TestCase):
         for p in reversed(self.patchs):
             p.stop()
 
-    def test_section_en_echec_ou_trop_longue(self):
-        for effet in (RuntimeError("panne simulée"), lambda d: time.sleep(3)):
-            with self.subTest(effet=effet), mock.patch.object(rapport_annexes, "BUDGET_PRETRADE_S", 0.2), \
-                 mock.patch.object(rapport_pretrade, "section_pretrade", side_effect=effet):
-                t0 = time.monotonic()
-                self.assertEqual(rapport_annexes.annexes([decision("AAA", "BUY")], "quotidien"),
-                                 "\n## Pipeline\n\n## Registre\n")
-                self.assertLess(time.monotonic() - t0, 2.0)
+    def test_chaque_section_en_echec_ou_trop_longue(self):
+        rapides = [(n, m, f, 0.2) for n, m, f, _ in rapport_annexes.SECTIONS]
+        textes = {f: f"[{f}]" for _, _, f, _ in rapides}
+        with mock.patch.object(rapport_annexes, "SECTIONS", rapides), contextlib.ExitStack() as pile:
+            for _, m, f, _ in rapides:
+                pile.enter_context(mock.patch(f"{m}.{f}", return_value=textes[f]))
+            complet = rapport_annexes.annexes([decision("AAA", "BUY")], "quotidien")
+            self.assertEqual(complet, "".join(textes.values()) + "\n## Pipeline\n\n## Registre\n")
+            for _, m, f, _ in rapides:
+                for effet in (RuntimeError("panne simulée"), lambda d: time.sleep(3)):
+                    with self.subTest(section=f, effet=effet), mock.patch(f"{m}.{f}", side_effect=effet):
+                        t0 = time.monotonic()
+                        self.assertEqual(rapport_annexes.annexes([decision("AAA", "BUY")], "quotidien"),
+                                         complet.replace(textes[f], ""))
+                        self.assertLess(time.monotonic() - t0, 2.0)
 
     def test_affichage_seulement(self):
         """Seuls l'orchestrateur (rapport et email) et les tests importent ces sections."""
         lecteurs = set()
         for chemin in glob.glob(os.path.join(RACINE, "**", "*.py"), recursive=True):
             rel = os.path.relpath(chemin, RACINE).replace(os.sep, "/")
-            if rel.startswith(("tests/", ".venv/")) or rel in ("agents/rapport_annexes.py", "agents/rapport_pretrade.py"):
+            if rel.startswith(("tests/", ".venv/")) or rel in ("agents/rapport_annexes.py", "agents/rapport_pretrade.py",
+                                                               "agents/report_sections.py"):
                 continue
             with open(chemin, encoding="utf-8", errors="replace") as f:
                 if any(m in f.read() for m in ("rapport_annexes", "rapport_pretrade", "pretrade_analysis",
-                                                 "chart_reading")):
+                                                 "chart_reading", "report_sections")):
                     lecteurs.add(rel)
         self.assertEqual(lecteurs, {"agents/orchestrator.py"})
 
@@ -144,7 +154,8 @@ class TestRoutine(BaseBarres):
                    mock.patch("agents.orchestrator_llm.narratif_quotidien", return_value=""),
                    mock.patch("agents.skills.pipeline_cache.section_rapport", return_value=""),
                    mock.patch.object(rapport_annexes, "section_registre", return_value="\n## Registre simulé\n"),
-                   mock.patch.object(rapport_annexes, "BUDGET_PRETRADE_S", 0.5), *pannes]
+                   mock.patch.object(rapport_annexes, "SECTIONS",
+                                     [(n, m, f, 0.5) for n, m, f, _ in rapport_annexes.SECTIONS]), *pannes]
         for p in patchs:
             p.start()
         try:
@@ -155,19 +166,20 @@ class TestRoutine(BaseBarres):
         return {"rapport": rapport, "sauve": sauve, "actifs": [a["decision"] for a in actifs],
                 "decisions": [d["decision"] for d in toutes], "recu": [[x["decision"] for x in r] for r in recu]}
 
-    def test_meme_cycle_section_en_panne_ou_trop_longue(self):
+    def test_meme_cycle_chaque_section_en_panne_ou_trop_longue(self):
         temoin = self.lancer()
         self.assertIn("### AAA — BUY (7/10)", temoin["rapport"])
-        for panne in (RuntimeError("panne simulée"), lambda d: time.sleep(3)):
-            with self.subTest(panne=panne):
-                r = self.lancer(mock.patch.object(rapport_pretrade, "section_pretrade", side_effect=panne))
-                self.assertEqual((r["decisions"], r["actifs"], r["recu"]),
-                                 (temoin["decisions"], temoin["actifs"], temoin["recu"]))
-                self.assertEqual(r["rapport"].replace("\n", ""),
-                                 temoin["rapport"].replace("\n", "").replace(
-                                     rapport_pretrade.section_pretrade([decision("AAA", "BUY")]).replace("\n", ""), ""))
-                self.assertIn("## Registre simulé", r["rapport"])
-                self.assertEqual(len(r["sauve"]), 1)
+        for _, m, f, _ in rapport_annexes.SECTIONS:
+            texte = getattr(importlib.import_module(m), f)([decision("AAA", "BUY")]).replace("\n", "")
+            self.assertTrue(texte)
+            for panne in (RuntimeError("panne simulée"), lambda d: time.sleep(3)):
+                with self.subTest(section=f, panne=panne):
+                    r = self.lancer(mock.patch(f"{m}.{f}", side_effect=panne))
+                    self.assertEqual((r["decisions"], r["actifs"], r["recu"]),
+                                     (temoin["decisions"], temoin["actifs"], temoin["recu"]))
+                    self.assertEqual(r["rapport"].replace("\n", ""), temoin["rapport"].replace("\n", "").replace(texte, ""))
+                    self.assertIn("## Registre simulé", r["rapport"])
+                    self.assertEqual(len(r["sauve"]), 1)
 
 
 if __name__ == "__main__":
