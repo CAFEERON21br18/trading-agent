@@ -254,7 +254,13 @@ Constat d'origine :
     0,0 % devient `None` (`:151`, test `if change_1m`), un RSI sans aucune baisse
     devient `None` au lieu de 100 (`:135`).
 
-## 9. Conseils réels tronqués, stockés tels quels
+## 9. ~~Conseils réels tronqués, stockés tels quels~~
+
+**Corrigé le 17/10/2026** (`agents/real_advisor.py`) : si le texte du LLM ne se termine
+pas par une ponctuation de fin de phrase (guillemets, parenthèses ou gras fermants
+admis après), le conseil garde la justification produite par les règles, et une ligne
+de log le signale (sans le texte). `max_tokens` (200) et le nombre d'appels sont
+inchangés ; les conseils déjà en base ne sont pas réécrits. Constat d'origine ci-dessous.
 
 - `agents/real_advisor.py::_enrichir_llm` remplace la justification d'un
   conseil par le texte du LLM, appelé avec `max_tokens=200`

@@ -6,6 +6,7 @@ Les règles sont dans agents/real_advisor_rules.py (v5.4.1).
 
 import sys
 import os
+import re
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -19,6 +20,14 @@ from agents.real_advisor_rules import regles_position, regle_signal_technique
 from utils.registre_cycles import enregistrer_decisions
 
 logger = get_logger(__name__)
+
+_FINS_DE_PHRASE = (".", "!", "?", "…")
+_FERMANTS = re.compile(r"[\s\"'»”’)\]*_]+$")  # guillemets, parenthèses, gras ou italique, espaces
+
+
+def phrase_complete(texte: str | None) -> bool:
+    """TODO §9 : le texte finit par une ponctuation de fin de phrase (fermants admis après)."""
+    return _FERMANTS.sub("", texte or "").endswith(_FINS_DE_PHRASE)
 
 
 def _enrichir(inv: dict) -> dict:
@@ -80,8 +89,12 @@ def _enrichir_llm(conseils: list[dict], inv: dict, inv_e: dict, plan: dict) -> N
             r = ask_llm(prompt,
                          system="Tu es un conseiller trading. Concis, factuel, respecte la stratégie du plan.",
                          mode="silent", max_tokens=200, appelant="conseiller_reel")
-            if r.get("text"):
-                c["reasoning"] = r["text"]
+            texte = r.get("text")
+            if texte and phrase_complete(texte):
+                c["reasoning"] = texte
+            elif texte:  # §9 : coupé par max_tokens → justification des règles gardée
+                logger.warning(f"Conseil {inv['asset']} : texte du LLM sans fin de phrase "
+                               f"({len(texte)} caractères), justification des règles gardée")
         except Exception:
             pass  # garder le conseil règle-base si LLM KO
 
