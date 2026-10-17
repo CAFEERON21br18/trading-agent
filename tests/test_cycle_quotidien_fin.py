@@ -48,8 +48,9 @@ class BaseCycle(unittest.TestCase):
             routine = pile.enter_context(mock.patch(
                 "agents.orchestrator.lancer_routine_quotidienne",
                 side_effect=routine_effet or (lambda **k: ordre.append("routine") or dict(RESUME))))
-            pile.enter_context(mock.patch.object(plans_quotidien, "controler_les_plans",
-                                                 side_effect=lambda: ordre.append("plans") or 0))
+            for _, module, fonction, _ in cycle_daily.BLOCS_DE_FIN:  # chaque bloc simulé, dans l'ordre
+                pile.enter_context(mock.patch(f"{module}.{fonction}",
+                                              side_effect=lambda f=fonction: ordre.append(f) or 0))
             for p in bloc_patches:
                 pile.enter_context(p)
             t0 = time.monotonic()
@@ -62,7 +63,7 @@ class BaseCycle(unittest.TestCase):
 class TestBlocsDeFin(BaseCycle):
     def test_apres_la_routine(self):
         r = self.lancer()
-        self.assertEqual((r["code"], r["ordre"]), (0, ["routine", "plans"]))
+        self.assertEqual((r["code"], r["ordre"]), (0, ["routine", "controler_les_plans", "observer_cycle"]))
 
     def test_chaque_bloc_en_echec_meme_cycle(self):
         temoin = self.lancer()
@@ -75,12 +76,14 @@ class TestBlocsDeFin(BaseCycle):
                                  (1, temoin["succes"], sans_duree(temoin["heartbeat"])))  # mêmes décisions
                 self.assertEqual(r["heartbeat"].kwargs["status"], "healthy")
 
-    def test_bloc_trop_long_le_cycle_n_attend_pas(self):
+    def test_chaque_bloc_trop_long_le_cycle_n_attend_pas(self):
         lent = [(nom, module, fonction, 0.2) for nom, module, fonction, _ in cycle_daily.BLOCS_DE_FIN]
-        r = self.lancer(mock.patch.object(cycle_daily, "BLOCS_DE_FIN", lent),
-                        mock.patch.object(plans_quotidien, "controler_les_plans", side_effect=lambda: time.sleep(3)))
-        self.assertEqual(r["code"], 0)
-        self.assertLess(r["duree"], 2.0)
+        for _, module, fonction, _ in lent:
+            with self.subTest(bloc=fonction):
+                r = self.lancer(mock.patch.object(cycle_daily, "BLOCS_DE_FIN", lent),
+                                mock.patch(f"{module}.{fonction}", side_effect=lambda: time.sleep(3)))
+                self.assertEqual((r["code"], r["routine"]), (0, 1))
+                self.assertLess(r["duree"], 2.0)
 
     def test_import_casse(self):
         r = self.lancer(mock.patch.object(cycle_daily, "BLOCS_DE_FIN", [("bloc inventé", "module.absent", "f", 5)]))

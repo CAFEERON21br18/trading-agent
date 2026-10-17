@@ -40,7 +40,7 @@ Les indicateurs sont des **GUIDES, pas des lois**. L'agent peut s'écarter s'il 
 5. **Trade Journalist** → `agents/trade_journalist/` (journal + intuition tracker + auto-apprentissage)
 6. **Decision Engine** → `agents/decision_engine.py` (cerveau : croise tout + intuition)
 7. **Budget Manager** → `agents/budget_manager/` (banquier : alloue le capital, 4 modes)
-8. **Paper Trader** → `agents/paper_trader/` (exécute simulé + monitor SL/TP + LOCK-IN + rotation v5)
+8. **Paper Trader** → `agents/paper_trader/` (exécute simulé + monitor SL/TP + LOCK-IN ; rotation v5 en observation, non active)
 
 ## Modules v5.0 ajoutés
 - **Knowledge Base** → `agents/knowledge/` (savoir théorique : technique avancée, fondamental, macro, risk, psycho)
@@ -107,6 +107,9 @@ Allocation : score = confiance × (1 + winrate/100) × urgence — proportionnel
 
 **Sortie auto** : SL touché / TP atteint / signal inverse fort.
 **Mode LOCK-IN** : surveillance 5 min sur actifs en breakout (4h max).
+**Rotation v5 en observation, non active** : au cycle quotidien, slots pleins et opportunité refusée,
+la position qu'elle aurait fermée va dans `rotation_hypothetique` (database.db) ; rien n'est fermé.
+`ROTATION_ACTIVE=1` est refusé (« activation non autorisée : critère du registre requis »).
 
 ## Mémoire — Auto-amélioration
 - `memory/trade_journal.md` : chaque trade (jamais supprimer)

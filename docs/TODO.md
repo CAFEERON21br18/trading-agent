@@ -481,6 +481,12 @@ ils n'ont jamais été branchés. Ne rien supprimer avant décision.
   - Question : brancher (où ? dans le rapport quotidien, l'email d'ouverture
     de position ou le chat) ou supprimer les deux modules et retirer leur
     mention de CLAUDE.md ?
+- **`agents/paper_trader/rotation.py`** : **branché en mode fantôme le 17/10/2026**
+  (`agents/rotation_fantome.py`, fin du cycle quotidien). Slots pleins et opportunité
+  refusée (registre du jour, lu en mode=ro) : la position qu'elle aurait fermée va dans
+  la table `rotation_hypothetique` de `database.db` ; rien n'est fermé. `ROTATION_ACTIVE`
+  vaut 0 ; à 1, le code refuse d'agir. L'activer resterait un changement de décision :
+  critère du registre d'abord. Constat d'origine :
 - **`agents/paper_trader/rotation.py`** (ajouté le 19/06/2026, a404ac6, v5.0)
   - Censé faire : la « rotation v5 » du Paper Trader (CLAUDE.md). Si les
     `MAX_POSITIONS_SIMULTANEES` slots sont pleins et qu'une opportunité arrive

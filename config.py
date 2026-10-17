@@ -147,6 +147,8 @@ SEUIL_CONFIANCE_LEARNING       = int(_get_optional("SEUIL_CONFIANCE_LEARNING", "
 # Cycle quotidien uniquement ; aucune sortie lue par le vote. Désactivé par
 # défaut : seul JEV_OBSERVE=1 (ou true/oui/yes) l'active. Clé : TYPESAFE_API_KEY.
 JEV_OBSERVE      = _get_optional("JEV_OBSERVE", "0").strip().lower() in ("1", "true", "oui", "yes")
+# Rotation v5 : observation seulement (agents/rotation_fantome.py) ; à 1, refusée et journalisée
+ROTATION_ACTIVE  = _get_optional("ROTATION_ACTIVE", "0").strip().lower() in ("1", "true", "oui", "yes")
 TYPESAFE_API_KEY = _get_optional("TYPESAFE_API_KEY")
 JEV_TIMEOUT_SEC  = 3.0    # par appel, sans nouvelle tentative
 JEV_BUDGET_SEC   = 120.0  # par cycle : au-delà, plus aucun appel (actifs écartés journalisés)

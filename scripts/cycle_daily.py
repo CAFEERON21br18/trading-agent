@@ -36,6 +36,7 @@ def _rapport_du_jour_existe() -> bool:
 # 17/10/2026, règle 4) : (nom, module, fonction, budget en s), chacun borné et sans exception.
 BLOCS_DE_FIN = [
     ("contrôle des plans (TODO §30)", "agents.plans_quotidien", "controler_les_plans", 120),
+    ("rotation v5 en observation (TODO §17)", "agents.rotation_fantome", "observer_cycle", 30),
 ]
 
 
