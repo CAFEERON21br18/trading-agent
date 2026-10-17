@@ -3,7 +3,25 @@
 Points relevés pendant la Phase 4 (audit du chat stratégique, 01/10/2026).
 Non traités : chacun fera l'objet d'un travail séparé.
 
-## ⚠️ PRIORITÉ HAUTE — Décisions du cycle tactical persistées nulle part
+## ~~⚠️ PRIORITÉ HAUTE — Décisions du cycle tactical persistées nulle part~~
+
+**Couvert depuis R2 (8b0fde3, 06/10/2026)** ; vérifié dans le code le 17/10/2026.
+`utils/registre_cycles.enregistrer_decisions` écrit dans `data/registre.db` une ligne
+`decision` par décision du Decision Engine, quelle qu'elle soit : chaque passage du
+tactical (queue et watchlist, `scripts/cycle_tactical.py`), du quotidien
+(`agents/orchestrator.py`) et du conseiller réel. Chaque ligne porte le cycle, la
+source (`queue`, `watchlist`, `position_reelle`), l'origine (`cycle`, `conseiller`)
+et la suite donnée : `non_soumise` (HOLD, NO_TRADE), `ouverte`, `refusee` avec les
+raisons du Budget Manager, du Risk Manager ou du Paper Trader, `non_traitee`,
+`erreur_execution`. Les décisions sans prix sont marquées depuis R2c (df3ec89), les
+passages manuels du dashboard depuis R3 (212eb90).
+- Reste, sans changer ce constat : quand le capital investissable est épuisé, le
+  Budget Manager rend les demandes sans `raison_refus`. La ligne porte alors la
+  raison générique « BM en attente », pas le message « Capital investissable épuisé ».
+- Toujours vrai, par choix (E2) : le chat calcule sa propre décision et ne relit pas
+  celles des cycles.
+
+Constat d'origine (03/10/2026) :
 
 - `scripts/cycle_tactical.py:63-74` : `decider()` tourne toutes les 15 min
   (queue ≤ 5 tickers + 8 tickers de la watchlist hors positions ouvertes).
