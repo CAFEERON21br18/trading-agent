@@ -741,7 +741,15 @@ des fenêtres de mesure du registre (`docs/REGISTRE_CRITERES.md`) et de son §7
   cryptos `-USD`, contrats `=F`). Les rendements du registre sont des rapports
   de prix : l'unité ne les change pas. Note de fait dans le registre, v1.6 (§4).
 
-## 30. Les contrôles des plans réels ne tournent jamais dans un cycle
+## 30. ~~Les contrôles des plans réels ne tournent jamais dans un cycle~~
+
+**Corrigé le 17/10/2026** : `verifier_tous_les_plans` tourne une fois par jour, à la fin
+du cycle quotidien, au passage de 7h30 seulement (avant midi, heure de Lisbonne ;
+`agents/plans_quotidien.py`). Il passe après toute la routine, borné à 120 s, et un
+échec ne change rien au cycle (`utils/bloc_borne.py`). Alertes dans `plan_alerts` et sur
+la page Plans, aucun email ; une alerte du même plan et du même type n'est pas
+réinsérée tant qu'elle est active. Le bouton de la page Plans reste. Constat d'origine
+ci-dessous.
 
 Relevé le 13/10/2026, non corrigé.
 
@@ -757,7 +765,24 @@ Relevé le 13/10/2026, non corrigé.
   ou retirer de la page Plans la promesse « l'agent compare ton réel et
   t'alerte » ?
 
-## 31. `plan_advisor` lit une clé « allocation » qu'aucun plan n'a
+## 31. ~~`plan_advisor` lit une clé « allocation » qu'aucun plan n'a~~ (corrigé en partie)
+
+**Corrigé en partie le 17/10/2026** (`agents/plan_repartition.py`) :
+- `rules["repartition"]` du plan global est contrôlée : ses clés sont les `plan_type`
+  de ses sous-plans directs ; part de l'investi ouvert de chaque sous-plan (descendants
+  compris) contre la cible, une seule alerte `deviation` par plan au-delà de 15 points.
+  Structure ambiguë (clé sans sous-plan unique, cible ≠ 100 %, positions sur le plan
+  lui-même ou dans un sous-plan non cité, taux introuvable) : aucune alerte, une ligne
+  de log ;
+- **`sous_repartition` n'est pas contrôlée** : ses catégories ne désignent ni un
+  sous-plan ni, sans ambiguïté, une liste d'actifs. Dans un sous-plan, deux catégories
+  ne correspondent à une liste d'actifs que par la ressemblance du nom ; dans un autre,
+  rien ne permet de classer une action entre deux catégories. Il faudrait une liste
+  d'actifs par catégorie, sous le même nom ;
+- `max_position_size` reste vide dans les 4 plans : `verifier_taille_position` ne
+  peut toujours rien signaler.
+
+Constat d'origine :
 
 Relevé le 13/10/2026, non corrigé.
 

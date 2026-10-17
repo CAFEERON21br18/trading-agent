@@ -6,6 +6,7 @@ Le plus prioritaire après le critique. Skip si HEBDO tourne.
 
 import sys
 import os
+import importlib
 import traceback
 from datetime import datetime, timezone
 
@@ -29,6 +30,27 @@ def _rapport_du_jour_existe() -> bool:
     """Anti-doublon : si le rapport du jour est déjà généré, skip."""
     date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     return os.path.exists(os.path.join(DOSSIER_RAPPORTS, f"report_{date_str}.md"))
+
+
+# Ajouts placés APRÈS décisions, ouvertures, fermetures, Jev, rapport et emails (cadre du
+# 17/10/2026, règle 4) : (nom, module, fonction, budget en s), chacun borné et sans exception.
+BLOCS_DE_FIN = [
+    ("contrôle des plans (TODO §30)", "agents.plans_quotidien", "controler_les_plans", 120),
+]
+
+
+def _lancer(module: str, fonction: str):
+    return getattr(importlib.import_module(module), fonction)()
+
+
+def _blocs_de_fin() -> None:
+    """Chaque bloc a son budget de temps ; aucun n'interrompt ni ne change le cycle."""
+    for nom, module, fonction, budget in BLOCS_DE_FIN:
+        try:
+            from utils.bloc_borne import executer_borne
+            executer_borne(nom, _lancer, budget, module, fonction)
+        except Exception as e:
+            logger.error(f"{nom} : {e} (le cycle continue)")
 
 
 def _alerter_panne_si_critique(tentatives: int) -> None:
@@ -85,6 +107,7 @@ def main() -> int:
                          extra={"signaux_forts": resume.get("signaux_forts", 0),
                                 "rapport_envoye": resume.get("rapport_envoye", False)})
         logger.info(f"🔵 Quotidien terminé : {resume}")
+        _blocs_de_fin()  # après toute la routine ; ne lève jamais
         return 0
     except Exception as e:
         trace = traceback.format_exc()

@@ -23,8 +23,7 @@ from utils.real_devise import devise_de, symbole
 
 logger = get_logger(__name__)
 
-# Seuils
-DEVIATION_MIN_PCT       = 15  # déviation d'allocation > 15% → alerte
+# Seuils (écart de répartition : agents/plan_repartition.DEVIATION_MIN_PCT)
 PROFIT_TAKING_MULTIPLE  = 2.0 # x2 → suggérer prise de profit
 
 
@@ -44,41 +43,10 @@ def _parser_regles(rules_json: str | None) -> dict:
 
 
 def verifier_deviation_allocation(plan: dict) -> list[dict]:
-    """
-    Compare la répartition réelle des positions du plan vs les règles d'allocation.
-    Les règles peuvent contenir : {"allocation": {"BTC-USD": 50, "ETH-USD": 30, "autres": 20}}
-    """
-    alertes = []
-    regles = _parser_regles(plan.get("rules"))
-    target_alloc = regles.get("allocation")
-    if not target_alloc:
-        return alertes
-
-    positions = [p for p in positions_du_plan(plan["id"]) if p["status"] == "OPEN"]
-    total_invested = sum(p["invested_amount"] for p in positions)
-    if total_invested == 0:
-        return alertes
-
-    # Calcul de la répartition réelle par ticker
-    reelle = {}
-    for p in positions:
-        reelle[p["asset"]] = reelle.get(p["asset"], 0) + p["invested_amount"]
-    reelle_pct = {k: v / total_invested * 100 for k, v in reelle.items()}
-
-    # Comparer chaque entrée des règles
-    for ticker, pct_cible in target_alloc.items():
-        pct_reel = reelle_pct.get(ticker, 0)
-        ecart = pct_reel - pct_cible
-        if abs(ecart) > DEVIATION_MIN_PCT:
-            sens = "au-dessus" if ecart > 0 else "en-dessous"
-            alertes.append({
-                "plan_id":    plan["id"],
-                "alert_type": "deviation",
-                "severity":   "attention",
-                "message":    f"Allocation {ticker} : {pct_reel:.0f}% réel vs {pct_cible:.0f}% cible "
-                              f"({sens} de {abs(ecart):.0f}%) — rééquilibrer ?",
-            })
-    return alertes
+    """TODO §31 : structure réelle des plans (rules["repartition"]) au lieu de la clé « allocation »,
+    qu'aucun plan n'a ; « sous_repartition » n'est pas contrôlée (agents/plan_repartition.py)."""
+    from agents.plan_repartition import verifier_repartition
+    return verifier_repartition(plan, lire_plans())
 
 
 def verifier_progression_objectif(plan: dict) -> list[dict]:
