@@ -1,6 +1,7 @@
 """
 scripts/cycle_weekly.py — Cycle HEBDOMADAIRE (dimanche 20h)
 Revue de la semaine + rapport hebdomadaire par email.
+Puis, verrou libéré, carte du code Graphify et vault (BLOCS_APRES_VERROU).
 """
 
 import sys
@@ -16,6 +17,13 @@ from utils.heartbeat import update_heartbeat
 
 logger = get_logger("cycle_weekly")
 CYCLE = "weekly"
+
+# Après le rapport, l'email, le heartbeat ET la libération du verrou : le tactical et le
+# stratégique, qui sautent leur passage tant que le weekly tient son verrou, ne sont jamais
+# retardés (règle 4) : (nom, module, fonction, budget en s), chacun borné et sans exception.
+BLOCS_APRES_VERROU = [
+    ("carte du code et vault (Phase 3)", "scripts.regenerer_graphe", "regenerer", 600),
+]
 
 
 def _generer_rapport_hebdo() -> str:
@@ -126,15 +134,21 @@ def main() -> int:
             logger.error(f"Envoi email hebdo échoué : {e}")
         update_heartbeat(CYCLE, status="healthy", duration_sec=_t.time() - t0,
                          extra={"rapport_envoye": envoye})
-        return 0
+        code = 0
     except Exception as e:
         logger.error(f"❌ Cycle HEBDO échoué : {e}")
         logger.error(traceback.format_exc())
         update_heartbeat(CYCLE, status="error", duration_sec=_t.time() - t0,
                          extra={"error": str(e)[:200]})
-        return 1
+        code = 1
     finally:
         liberer_lock(CYCLE)
+    try:
+        from utils.bloc_borne import lancer_blocs
+        lancer_blocs(BLOCS_APRES_VERROU)  # verrou libéré ; ne lève jamais
+    except Exception as e:
+        logger.error(f"Blocs après le cycle : {e} (le cycle reste terminé)")
+    return code
 
 
 if __name__ == "__main__":

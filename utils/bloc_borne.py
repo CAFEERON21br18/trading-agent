@@ -7,8 +7,11 @@ et l'attend au plus budget_s secondes :
 - exception → journalisée, résultat `defaut` ;
 - budget dépassé → journalisé, le cycle continue sans attendre (le fil s'arrête avec le processus) ;
 - sinon → la valeur rendue par la fonction.
+lancer_blocs fait de même pour une liste (nom, module, fonction, budget en s) : l'import du
+module se fait dans le fil, donc un import cassé ou lent est borné lui aussi.
 """
 
+import importlib
 import threading
 
 from utils.logger import get_logger
@@ -41,3 +44,16 @@ def executer_borne(nom: str, fonction, budget_s: float, *args, defaut=None, **kw
                      f"le cycle continue")
         return defaut
     return resultat.get("valeur", defaut)
+
+
+def _appeler(module: str, fonction: str):
+    return getattr(importlib.import_module(module), fonction)()
+
+
+def lancer_blocs(blocs) -> None:
+    """Lance chaque (nom, module, fonction, budget en s), l'un après l'autre ; ne lève jamais."""
+    for nom, module, fonction, budget in blocs:
+        try:
+            executer_borne(nom, _appeler, budget, module, fonction)
+        except Exception as e:
+            logger.error(f"{nom} : {e} (le cycle continue)")

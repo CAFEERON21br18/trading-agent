@@ -64,7 +64,7 @@ Découvertes → `data/explorer_queue.json` si score ≥ 4 → analyse complète
 | 🟡 Tactical | 15 min | Monitor SL/TP + 7 explorateurs + queue (score ≥ 4, 5 par passage) + watchlist (8 actifs hors positions) + réévaluation des positions |
 | 🟢 Strategic | 4h | Monitor SL/TP + conseils réels + régime de marché (ni explorateurs ni queue) |
 | 🔵 Daily | 7h30 | Routine complète + email rapport |
-| 🟣 Weekly | Dim 20h | Revue hebdo + rapport |
+| 🟣 Weekly | Dim 20h | Revue hebdo + rapport, puis (verrou libéré) carte du code Graphify → vault |
 | 🧹 Cleanup | Dim 3h | Logs + cache + locks |
 
 ## Decision Engine — 5 étapes
