@@ -3,7 +3,8 @@ scripts/sync_graphify_vault.py — Copie la carte du code Graphify dans le vault
 
 Copie (pas de jonction) : le vault ne pointe jamais vers le dépôt, donc une
 suppression dans Obsidian ne touche pas graphify-out/, et le cache d'extraction
-(milliers de JSON) n'est pas indexé. À relancer après chaque régénération :
+(milliers de JSON) n'est pas indexé. scripts/regenerer_graphe.py enchaîne la régénération
+et cette copie (chaque dimanche, cycle hebdomadaire) :
   graphify extract . --code-only
   graphify cluster-only . --no-label
 
@@ -12,6 +13,9 @@ Fichiers copiés : GRAPH_REPORT.md (lisible dans Obsidian) et graph.html
 Notes générées : une par module Python dans 90-Graphify/modules/, liens vers
 les modules importés, tags code-mort / orphelin (voir scripts/graphify_modules.py).
 Les notes écrites à la main dans ce dossier ne sont jamais touchées.
+
+Vault par défaut : ALPHASIGNAL_VAULT (environnement ou .env), sinon
+%USERPROFILE%\\Documents\\AlphaSignalVault (utils/vault_chemin.py).
 
 Usage :
   python scripts/sync_graphify_vault.py                       # vault par défaut
@@ -29,9 +33,10 @@ RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, RACINE)
 
 from scripts.graphify_modules import generer_notes, ecrire_notes
+from utils.vault_chemin import dossier_vault
 
 SOURCE = os.path.join(RACINE, "graphify-out")
-VAULT_DEFAUT = os.path.join(os.path.expanduser("~"), "Documents", "AlphaSignalVault")
+VAULT_DEFAUT = dossier_vault()
 DOSSIER_VAULT = "90-Graphify"
 DOSSIER_MODULES = "modules"
 FICHIERS = ("GRAPH_REPORT.md", "graph.html")

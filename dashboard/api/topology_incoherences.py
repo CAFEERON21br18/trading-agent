@@ -6,6 +6,9 @@ liste d'incohérences n'est écrite à la main. Seule la référence TODO de
 chaque règle vient de topology_composants.TODO_INCOHERENCES.
 """
 
+import ast
+from collections import defaultdict
+
 from dashboard.api import topology_composants as tc
 from dashboard.api import topology_sources as ts
 
@@ -83,17 +86,55 @@ def _explorateurs_plusieurs_cycles(noeuds, liens):
         list(multiples) + lanceurs)
 
 
+def _fonctions_atteintes(arbres, comp):
+    """Noms des fonctions atteintes en production. Racines : appels au chargement d'un module, ou
+    depuis le __main__ d'un cycle ou du dashboard (points d'entrée planifiés) ; fonctions décorées
+    (routes Flask) ; noms passés par référence (callbacks) ou cités en chaîne (import dynamique).
+    Puis, de proche en proche, les fonctions appelées par une fonction atteinte. Le __main__ d'un
+    module de bibliothèque (démo) et les outils ne comptent pas (TODO, signal_results)."""
+    appels, atteints = defaultdict(set), set()
+    for chemin, arbre in arbres.items():
+        c = comp.get(chemin)
+        if c in (None, "outils"):
+            continue
+        entree = tc.COMPOSANTS.get(c, ("", ""))[1] == "cycles"
+        fonctions_appelees = set()
+        for noeud, fonction, dans_main in ts._parcourir(arbre):
+            if dans_main and not entree:
+                continue
+            if isinstance(noeud, ast.Call):
+                fonctions_appelees.add(id(noeud.func))
+                nom = ts._nom_appele(noeud)
+                if nom:
+                    (atteints.add(nom) if fonction is None else appels[fonction].add(nom))
+            elif isinstance(noeud, (ast.FunctionDef, ast.AsyncFunctionDef)) and noeud.decorator_list:
+                atteints.add(noeud.name)
+            elif isinstance(noeud, (ast.Name, ast.Attribute)) and isinstance(noeud.ctx, ast.Load) \
+                    and id(noeud) not in fonctions_appelees:
+                atteints.add(noeud.id if isinstance(noeud, ast.Name) else noeud.attr)
+            elif isinstance(noeud, ast.Constant) and isinstance(noeud.value, str) and noeud.value.isidentifier():
+                atteints.add(noeud.value)
+    file = list(atteints)
+    while file:
+        for suivant in appels.get(file.pop(), ()):
+            if suivant not in atteints:
+                atteints.add(suivant)
+                file.append(suivant)
+    return atteints
+
+
 def _tables_sans_ecrivain(noeuds, liens, arbres, comp):
     """Table lue en production dont les fonctions d'écriture ne sont appelées que dans un __main__."""
     trouves = []
     acces = ts.acces_tables(arbres, tc.TABLES)
+    atteintes = _fonctions_atteintes(arbres, comp)
     for table in tc.TABLES:
         ecrivains = {(c, f) for c, f, t, m, _, dm in acces
                      if t == table and m == "ecrit" and not dm and comp.get(c) not in (None, "outils")}
         if not ecrivains:
             continue
         appels = ts.appels_de(arbres, {f for _, f in ecrivains if f})
-        prod = [a for f in appels for a in appels[f] if not a[2] and comp.get(a[0]) != "outils"]
+        prod = {f for _, f in ecrivains if f} & atteintes
         lecteurs = sorted({l["cible"] for l in liens if l["source"] == f"table:{table}"})
         if prod or not lecteurs:
             continue

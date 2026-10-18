@@ -69,7 +69,36 @@ class TestSources(unittest.TestCase):
     def test_regles(self):
         self.assertEqual(tc.composant("agents/explorers/crypto_explorer/screener.py"), "explorer.crypto")
         self.assertEqual(tc.composant("agents/skills/pipeline_grouped.py"), "pipeline")
+        self.assertEqual(tc.composant("agents/jev/observer.py"), "jev")
         self.assertIsNone(tc.composant("inconnu/module.py"))
+
+    def test_demo_de_bibliotheque_pas_en_production(self):
+        from dashboard.api.topology_incoherences import _fonctions_atteintes
+        arbres = {
+            "agents/lib.py": ast.parse("def ecrire():\n    pass\ndef demo():\n    ecrire()\n"
+                                        "if __name__ == '__main__':\n    demo()\n"),
+            "scripts/cycle_daily.py": ast.parse("def main():\n    etape()\n"
+                                                 "if __name__ == '__main__':\n    main()\n"),
+            "agents/etapes.py": ast.parse("def etape():\n    sauver()\ndef sauver():\n    pass\n"),
+            "dashboard/r.py": ast.parse("@api.route('/x')\ndef route():\n    noter()\n"),
+        }
+        comp = {"agents/lib.py": "journalist", "scripts/cycle_daily.py": "cycle.daily",
+                "agents/etapes.py": "report.daily", "dashboard/r.py": "dashboard"}
+        atteintes = _fonctions_atteintes(arbres, comp)
+        self.assertNotIn("ecrire", atteintes)  # appelée par une démo lancée d'un __main__ de bibliothèque
+        self.assertNotIn("demo", atteintes)
+        self.assertTrue({"main", "etape", "sauver", "route", "noter"} <= atteintes)
+
+    def test_appelant_non_classe_jamais_relie(self):
+        from dashboard.api import topology_build as tb
+        arbres = {"utils/x.py": ast.parse('def ecrire(c):\n    c.execute("INSERT INTO prices (t) VALUES (1)")\n'),
+                  "agents/inconnu/y.py": ast.parse("def f():\n    ecrire(None)\n")}
+        noeuds = {"x": {"id": "x", "label": "ecrire()", "source_file": "utils/x.py"},
+                  "y": {"id": "y", "label": "f()", "source_file": "agents/inconnu/y.py"}}
+        graphe = {"links": [{"relation": "calls", "source": "y", "target": "x", "source_location": "L2"}]}
+        carte = tb._Carte()
+        tb._tables(arbres, graphe, noeuds, {"utils/x.py": "infra"}, carte)
+        self.assertTrue(all(l["source"] and l["cible"] for l in carte.liens.values()))
 
 
 @unittest.skipUnless(os.path.isfile(GRAPHE), "graphify-out/graph.json absent")
@@ -96,19 +125,29 @@ class TestCarteDuDepot(unittest.TestCase):
         self.assertTrue(all(n["etat"] is None for n in self.carte["noeuds"]))
         self.assertIn("etat_source", self.carte)
 
-    def test_tactical_lance_les_7_explorateurs(self):
+    def test_tactical_seul_lance_les_7_explorateurs(self):
         explos = {c for s, c, t in self.liens if s == "cycle.tactical" and t == "import_dynamique"}
         self.assertEqual(len([e for e in explos if e.startswith("explorer.")]), 7)
+        lanceurs = {s for s, c, _ in self.liens if c.startswith("explorer.") and s.startswith("cycle.")}
+        self.assertEqual(lanceurs, {"cycle.tactical"})  # TODO §19 : plus le stratégique
 
-    def test_incoherences_attendues(self):
-        for ident in ("explorateurs_sans_prix", "cycle_lit_queue_sans_analyse",
-                      "explorateurs_plusieurs_cycles", "table_sans_ecrivain_production",
-                      "modules_orphelins", "code_mort"):
+    def test_incoherences_du_jour(self):
+        """État du 18/10/2026 : §10 (code mort supprimé), §17 (modules branchés), §18/§19 corrigés."""
+        for ident in ("explorateurs_sans_prix", "table_sans_ecrivain_production", "llm_hors_routeur"):
             self.assertIn(ident, self.incoherences)
-        self.assertIn("cycle.strategic", self.incoherences["cycle_lit_queue_sans_analyse"]["noeuds"])
-        sr = self.incoherences["table_sans_ecrivain_production"]
+        for ident in ("cycle_lit_queue_sans_analyse", "explorateurs_plusieurs_cycles",
+                      "modules_orphelins", "code_mort"):
+            self.assertNotIn(ident, self.incoherences)
+        sr = self.incoherences["table_sans_ecrivain_production"]  # PRIORITÉ HAUTE, toujours ouverte
         self.assertIn("table:signal_results", sr["noeuds"])
         self.assertIn("decision_engine", sr["noeuds"])
+        self.assertNotIn("table:prices", sr["noeuds"])
+
+    def test_modules_du_17_atteints(self):
+        tags = {m["chemin"]: m["tags"] for n in self.carte["noeuds"] for m in n["modules"]}
+        for chemin in ("agents/knowledge/pretrade_analysis.py", "agents/knowledge/chart_reading.py",
+                       "agents/report_sections.py", "agents/paper_trader/rotation.py"):
+            self.assertEqual(tags[chemin], [], chemin)
 
     def test_pipeline_va_direct_a_groq(self):
         self.assertIn(("pipeline", "llm.groq", "llm"), self.liens)

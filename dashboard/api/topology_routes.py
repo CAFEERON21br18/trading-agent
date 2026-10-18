@@ -5,9 +5,8 @@ LECTURE SEULE : un seul GET (Flask répond 405 à tout autre verbe). Ne lit ni
 la base ni le registre ; seulement graphify-out/graph.json et le code source.
 Résultat gardé en mémoire tant que graph.json et le commit HEAD ne changent pas.
 
-Prérequis (machine sans Graphify, ex. la tour au premier passage) :
-  .venv\\Scripts\\pip.exe install -r requirements-dev.txt
-  .venv\\Scripts\\graphify.exe extract . --code-only
+Prérequis (machine sans Graphify) : les deux commandes d'AIDE. Le graphe est ensuite
+régénéré chaque dimanche par le cycle hebdomadaire (scripts/regenerer_graphe.py).
 Sans graph.json, la route répond 503 avec ces instructions.
 """
 
@@ -28,7 +27,7 @@ RACINE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file_
 GRAPHE = os.path.join(RACINE, "graphify-out", "graph.json")
 AIDE = [
     r".venv\Scripts\pip.exe install -r requirements-dev.txt",
-    r".venv\Scripts\graphify.exe extract . --code-only",
+    r".venv\Scripts\python.exe scripts\regenerer_graphe.py",
 ]
 
 _cache = {"cle": None, "carte": None}

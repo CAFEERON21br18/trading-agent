@@ -78,6 +78,8 @@ def _tables(arbres, graphe, noeuds, comp, carte):
         while a_voir:
             fichier, fct, preuve, profondeur = a_voir.pop()
             c = comp.get(fichier)
+            if c is None:
+                continue  # module non classé : listé dans non_classes, jamais relié
             if c not in tc.MASQUES:
                 if mode == "ecrit":
                     carte.lier(c, cible, "ecrit", preuve)
