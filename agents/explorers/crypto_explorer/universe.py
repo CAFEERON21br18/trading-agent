@@ -22,7 +22,19 @@ EXCLUS = {
     "GUSD", "LUSD", "UST", "EURT", "EURS",
     # wrapped tokens
     "WBTC", "WETH", "STETH", "WSTETH", "WBETH", "RETH", "CBETH",
+    # fonds et créances tokenisés (diagnostic du 19/10/2026)
+    "BUIDL", "FIGR_HELOC", "USYC",
 }
+# Symboles que Yahoo ne sert pas sous la forme XXX-USD : téléchargement vide (diagnostic du 19/10/2026)
+YAHOO_INDISPONIBLES = {"HYPE", "RAIN", "UNI", "CC", "SUI", "BTW", "TAO", "PUMP", "ASTER", "WLFI"}
+MARGE = len(EXCLUS) + len(YAHOO_INDISPONIBLES) + 15  # + stablecoins reconnus par la règle d'est_exclu
+
+
+def est_exclu(symbol: str) -> bool:
+    """Stablecoin (liste, ou symbole contenant USD ou commençant par EUR : USDS, USDE, USD1, RLUSD...),
+    wrapped, fonds tokenisé, ou symbole sans barres Yahoo. Sans effet sur les décisions (TODO §14)."""
+    s = (symbol or "").upper()
+    return not s or s in EXCLUS or s in YAHOO_INDISPONIBLES or "USD" in s or s.startswith("EUR")
 
 
 def _fetch_top(nb: int) -> list[dict]:
@@ -48,11 +60,11 @@ def lister_univers(nb_max: int = 50) -> list[str]:
     """
     Retourne la liste des tickers crypto au format yfinance, hors stablecoins/wrapped.
     """
-    items = _fetch_top(nb_max + len(EXCLUS))  # marge pour exclusions
+    items = _fetch_top(nb_max + MARGE)  # marge pour exclusions
     tickers = []
     for c in items:
         symbol = (c.get("symbol") or "").upper()
-        if symbol in EXCLUS or not symbol:
+        if est_exclu(symbol):
             continue
         tickers.append(_to_yfinance_ticker(symbol))
         if len(tickers) >= nb_max:
@@ -62,11 +74,11 @@ def lister_univers(nb_max: int = 50) -> list[str]:
 
 def metadata_univers(nb_max: int = 50) -> dict[str, dict]:
     """Retourne {ticker: {market_cap, volume_24h, variation_24h}} pour le filtrage."""
-    items = _fetch_top(nb_max + len(EXCLUS))
+    items = _fetch_top(nb_max + MARGE)
     meta = {}
     for c in items:
         symbol = (c.get("symbol") or "").upper()
-        if symbol in EXCLUS or not symbol:
+        if est_exclu(symbol):
             continue
         meta[_to_yfinance_ticker(symbol)] = {
             "nom":             c.get("name"),

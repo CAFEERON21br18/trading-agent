@@ -59,6 +59,8 @@ Crypto / Stock / Index / ETF / Commodity / Forex / CFD Index — scan ~180 actif
 lancés à chaque passage du tactical (toutes les 15 min) ; le stratégique ne les lance pas.
 Découvertes → `data/explorer_queue.json` si score ≥ 4 → analyse complète par le tactical
 (5 premières de la queue par passage) ; email si score ≥ 7 (`agents/explorers/base.py`).
+Une entrée par ticker et par jour dans la queue ; univers crypto sans stablecoins, fonds tokenisés
+ni symboles que Yahoo ne sert pas (`crypto_explorer/universe.py`, TODO §42).
 
 ## Les 5 cycles d'exécution (lock-managés via `utils/lock_manager.py`)
 | Cycle | Fréquence | Rôle |

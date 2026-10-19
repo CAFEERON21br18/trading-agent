@@ -1020,3 +1020,15 @@ a collecté pendant que Yahoo ne répondait pas (« Cookie/crumb fetch failed (T
 bloqué toute nouvelle tentative jusqu'au 18/10. Correction : `utils/collecte_verifiee.py`
 (vérification à 80 %, 3 essais, pas de rapport en cas d'échec, filet du tactical à 30 h).
 `scripts/daily_routine.py` (lancement manuel) collecte encore sans vérification.
+
+## 42. Hygiène des explorateurs (19/10/2026, sans effet sur les décisions)
+
+Préalables P2 (en partie) et P3 de `docs/BROUILLON_CRITERE_EXPLORATEURS.md` :
+- univers crypto (`agents/explorers/crypto_explorer/universe.py`, `est_exclu`) : stablecoins (liste,
+  et tout symbole contenant « USD » ou commençant par « EUR »), fonds tokenisés (BUIDL, FIGR_HELOC,
+  USYC) et symboles que Yahoo ne sert pas sous la forme XXX-USD (HYPE, RAIN, UNI, CC, SUI, BTW, TAO,
+  PUMP, ASTER, WLFI ; diagnostic du 19/10 et cache du soir) ;
+- queue : une entrée par ticker et par jour de Lisbonne (`data/cache/queue_du_jour.json`). USDMXN=X,
+  analysé puis retiré à chaque passage, occupait 18 % des analyses de la queue.
+Restent ouverts : P1 (EMA 200 vide sur 6 mois de barres), le biais d'ordre des explorateurs face à la
+queue pleine (P2), et P4 (prix des tickers de la queue, §14).

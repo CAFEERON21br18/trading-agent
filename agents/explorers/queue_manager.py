@@ -1,12 +1,15 @@
 """
 agents/explorers/queue_manager.py — File d'attente des découvertes des explorateurs
 Stockée dans data/explorer_queue.json. Triée par score décroissant.
+Une entrée par ticker et par jour de Lisbonne (data/cache/queue_du_jour.json) : un ticker analysé puis
+retiré par le tactical ne revient que le lendemain (USDMXN=X occupait 18 % des analyses de la queue).
 """
 
 import sys
 import os
 import json
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
@@ -20,6 +23,35 @@ CHEMIN_QUEUE = os.path.join(
     "data", "explorer_queue.json",
 )
 MAX_QUEUE = 20
+LISBONNE = ZoneInfo("Europe/Lisbon")
+
+
+def _chemin_jour() -> str:
+    """À côté de la queue (data/cache/queue_du_jour.json) : suit CHEMIN_QUEUE, y compris dans les tests."""
+    return os.path.join(os.path.dirname(CHEMIN_QUEUE), "cache", "queue_du_jour.json")
+
+
+def _jour() -> str:
+    return datetime.now(LISBONNE).date().isoformat()
+
+
+def _entres_aujourdhui() -> set[str]:
+    """Tickers déjà entrés dans la queue aujourd'hui (jour de Lisbonne)."""
+    try:
+        with open(_chemin_jour(), encoding="utf-8") as f:
+            d = json.load(f)
+        return set(d.get("tickers", [])) if d.get("jour") == _jour() else set()
+    except (OSError, ValueError):
+        return set()
+
+
+def _noter_entree(ticker: str) -> None:
+    try:
+        os.makedirs(os.path.dirname(_chemin_jour()), exist_ok=True)
+        with open(_chemin_jour(), "w", encoding="utf-8") as f:
+            json.dump({"jour": _jour(), "tickers": sorted(_entres_aujourdhui() | {ticker})}, f)
+    except OSError as e:
+        logger.error(f"Journal du jour de la queue : {e}")
 
 
 def _lire() -> list[dict]:
@@ -59,7 +91,9 @@ def ajouter_decouverte(explorer: str, ticker: str, score: int,
                 return True
             return False
 
-    # Nouvelle entrée — vérifier la capacité
+    # Nouvelle entrée : une seule par ticker et par jour, puis vérifier la capacité
+    if ticker in _entres_aujourdhui():
+        return False
     if len(items) >= MAX_QUEUE:
         # Si la queue est pleine, on remplace l'entrée la plus faible si le score est meilleur
         plus_faible = min(items, key=lambda x: x["score"])
@@ -77,6 +111,7 @@ def ajouter_decouverte(explorer: str, ticker: str, score: int,
     })
     items.sort(key=lambda x: x["score"], reverse=True)
     _ecrire(items)
+    _noter_entree(ticker)
     return True
 
 
