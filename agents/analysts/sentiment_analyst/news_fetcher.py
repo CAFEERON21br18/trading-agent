@@ -14,6 +14,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirna
 
 import config
 from utils.logger import get_logger
+from utils.secret_mask import masquer_secrets
 
 logger = get_logger(__name__)
 
@@ -62,7 +63,7 @@ def recuperer_news_newsapi(requete: str, nb_max: int = 5) -> list[dict]:
             "impact":      classer_impact(a.get("title", "")),
         } for a in articles]
     except Exception as e:
-        logger.error(f"Erreur NewsAPI : {e}")
+        logger.error(f"Erreur NewsAPI : {masquer_secrets(e)}")  # apiKey dans l'URL de l'erreur
         return []
 
 

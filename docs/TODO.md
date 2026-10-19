@@ -945,3 +945,14 @@ son propre budget ; le libellé commence par « positions de ses sous-plans », 
 donne « non disponible » (§35). « Aucune position » ne reste que pour un plan sans
 position, ni directe ni dans un sous-plan. Un plan qui a des positions directes ne
 compte que celles-ci.
+
+## 37. ~~Clés d'API en clair dans les logs~~ (corrigé le 19/10/2026)
+
+La clé NewsAPI (URL des erreurs 429) et la clé Alpha Vantage apparaissaient en clair dans
+les logs : `requests` met l'URL complète, paramètres compris, dans le message de ses
+exceptions, journalisé tel quel (`Erreur NewsAPI : {e}`). Corrigé à la source :
+`utils.secret_mask.FiltreSecrets`, posé par `utils/logger.py` sur chaque handler et sur le
+handler de dernier recours de Python, masque message, arguments et trace ; masquage explicite
+aux endroits connus (NewsAPI, Alpha Vantage, CoinGecko, Groq, Jev / TypeSafe, SMTP). Les
+fichiers de logs déjà écrits ne sont pas réécrits : à supprimer à la main (liste dans le
+rapport de la session du 19/10/2026).

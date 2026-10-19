@@ -14,10 +14,17 @@ import re
 import sys
 
 from utils.journal_rotation import RotationTolerante
+from utils.secret_mask import FiltreSecrets
 
 # Dossier des logs (créé si inexistant)
 LOGS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "logs")
 os.makedirs(LOGS_DIR, exist_ok=True)
+
+# Aucun secret dans les logs : filtre posé sur chaque handler, et sur le handler de dernier recours
+# de Python (avertissements des bibliothèques sans handler, écrits dans les logs/task_*.log)
+FILTRE_SECRETS = FiltreSecrets()
+if logging.lastResort is not None:
+    logging.lastResort.addFilter(FILTRE_SECRETS)
 
 # Format des messages de log
 LOG_FORMAT = "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s"
@@ -98,6 +105,8 @@ def get_logger(name: str) -> logging.Logger:
     error_handler.setLevel(logging.WARNING)
     error_handler.setFormatter(formatter)
 
+    for handler in (console_handler, file_handler, error_handler):
+        handler.addFilter(FILTRE_SECRETS)
     logger.addHandler(console_handler)
     logger.addHandler(file_handler)
     logger.addHandler(error_handler)

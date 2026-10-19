@@ -15,6 +15,7 @@ import pandas as pd
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.logger   import get_logger
+from utils.secret_mask import masquer_secrets
 from utils.database import initialiser_base, sauvegarder_prix
 from utils.helpers  import charger_watchlist, formater_prix, timestamp_maintenant
 
@@ -87,7 +88,7 @@ def recuperer_fear_greed() -> dict:
         logger.info(f"Fear & Greed Index : {valeur} ({label})")
         return {"valeur": valeur, "label": label}
     except Exception as e:
-        logger.error(f"Erreur Fear & Greed API : {e}")
+        logger.error(f"Erreur Fear & Greed API : {masquer_secrets(e)}")
         return {"valeur": None, "label": "Indisponible"}
 
 
@@ -108,7 +109,7 @@ def recuperer_prix_coingecko(ticker: str) -> float | None:
         logger.info(f"CoinGecko {ticker} : ${formater_prix(prix)}")
         return prix
     except Exception as e:
-        logger.error(f"Erreur CoinGecko {ticker} : {e}")
+        logger.error(f"Erreur CoinGecko {ticker} : {masquer_secrets(e)}")
         return None
 
 

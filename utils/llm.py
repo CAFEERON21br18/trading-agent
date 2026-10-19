@@ -187,7 +187,7 @@ def _try_groq(prompt, system, temperature, max_tokens):
         if "quota" in err:
             return {"text": None, "error": "quota_groq", "retry_after_sec": 3600,
                     "erreur_brute": brute}
-        return {"text": None, "error": str(e)[:80], "retry_after_sec": None,
+        return {"text": None, "error": masquer_secrets(str(e))[:80], "retry_after_sec": None,
                 "erreur_brute": brute}
 
 

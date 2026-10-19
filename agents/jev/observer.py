@@ -20,6 +20,7 @@ from zoneinfo import ZoneInfo
 
 import config
 from utils.logger import get_logger
+from utils.secret_mask import masquer_secrets
 from agents.jev.questions import (MODELE, QUESTIONS_VERSION, construire_questions,
                                   niveau_conviction, taille_hypothetique)
 from agents.jev.state import construire_state, serialiser
@@ -67,7 +68,7 @@ def preparer_observations(decisions: list[dict], cycle: str) -> list[dict]:
             })
         return lot
     except Exception as e:
-        logger.error(f"Jev : préparation impossible, aucune observation ce cycle ({e})")
+        logger.error(f"Jev : préparation impossible, aucune observation ce cycle ({masquer_secrets(e)})")
         return []
 
 
@@ -141,7 +142,7 @@ def observer(lot: list[dict], client=None, horloge=time.monotonic) -> dict:
                 resume["ok"] += 1
             except Exception as e:
                 resume["erreurs"] += 1
-                ligne.update(statut="erreur", erreur=f"{type(e).__name__}: {str(e)[:200]}")
+                ligne.update(statut="erreur", erreur=f"{type(e).__name__}: {masquer_secrets(str(e))[:200]}")
                 logger.warning(f"Jev {item['ticker']} : {ligne['erreur']}")
             ligne["latence_ms"] = int((horloge() - t0) * 1000)
             _enregistrer(ligne)
@@ -151,5 +152,5 @@ def observer(lot: list[dict], client=None, horloge=time.monotonic) -> dict:
         logger.info(f"Jev : {resume['ok']} observation(s), {resume['erreurs']} erreur(s), "
                     f"{len(resume['ecartes'])} écarté(s)")
     except Exception as e:
-        logger.error(f"Jev : observation interrompue, cycle non affecté ({e})")
+        logger.error(f"Jev : observation interrompue, cycle non affecté ({masquer_secrets(e)})")
     return resume

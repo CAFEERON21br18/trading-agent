@@ -10,6 +10,7 @@ import requests
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 
 from utils.logger import get_logger
+from utils.secret_mask import masquer_secrets
 
 logger = get_logger(__name__)
 
@@ -70,7 +71,7 @@ def recuperer_donnees_coin(ticker: str) -> dict:
         }
 
     except Exception as e:
-        logger.error(f"Erreur CoinGecko {ticker} : {e}")
+        logger.error(f"Erreur CoinGecko {ticker} : {masquer_secrets(e)}")
         return {}
 
 
@@ -82,7 +83,7 @@ def recuperer_dominance_btc() -> float | None:
         data = r.json()
         return data.get("data", {}).get("market_cap_percentage", {}).get("btc")
     except Exception as e:
-        logger.error(f"Erreur dominance BTC : {e}")
+        logger.error(f"Erreur dominance BTC : {masquer_secrets(e)}")
         return None
 
 

@@ -15,6 +15,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 
 import config
 from utils.logger import get_logger
+from utils.secret_mask import masquer_secrets
 
 logger = get_logger(__name__)
 
@@ -74,10 +75,10 @@ def envoyer_email(sujet: str, corps_texte: str,
             logger.info(f"Email envoyé à {destinataire} — sujet : {sujet}")
             return True
         except smtplib.SMTPAuthenticationError as e:
-            logger.error(f"Échec authentification SMTP (vérifie EMAIL_APP_PASSWORD) : {e}")
+            logger.error(f"Échec authentification SMTP (vérifie EMAIL_APP_PASSWORD) : {masquer_secrets(e)}")
             break  # inutile de réessayer si l'auth échoue
         except Exception as e:
-            logger.warning(f"Tentative {tentative}/{NB_TENTATIVES} échouée : {e}")
+            logger.warning(f"Tentative {tentative}/{NB_TENTATIVES} échouée : {masquer_secrets(e)}")
             if tentative < NB_TENTATIVES:
                 time.sleep(DELAI_RETRY)
 

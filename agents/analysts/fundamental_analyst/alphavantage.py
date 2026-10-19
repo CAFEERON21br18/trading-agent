@@ -13,6 +13,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirna
 
 import config
 from utils.logger import get_logger
+from utils.secret_mask import masquer_secrets
 
 logger = get_logger(__name__)
 
@@ -51,7 +52,7 @@ def _appel_av(function: str, symbol: str) -> dict:
             return {}
         return data
     except Exception as e:
-        logger.error(f"Erreur Alpha Vantage {function}/{symbol} : {e}")
+        logger.error(f"Erreur Alpha Vantage {function}/{symbol} : {masquer_secrets(e)}")  # apikey dans l'URL
         return {}
 
 
