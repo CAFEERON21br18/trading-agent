@@ -4,8 +4,8 @@ dashboard/api/topology_build.py — Assemble la carte de l'agent (Phase 3), lect
 Sources : graphify-out/graph.json (imports, appels entre fonctions) + lecture
 du code (topology_sources) + table écrite à la main (topology_composants).
 Les modules sont regroupés en composants ; un lien porte ses preuves
-(fichier:ligne). Chaque nœud a un champ `etat` (None ici) : emplacement de
-l'état en direct lu dans le registre, branché sur la tour.
+(fichier:ligne). Chaque nœud a un champ `etat` (None ici) : l'état en direct est
+servi à part (GET /api/topology/etat), à partir de `sources_etat` (etat_code.py).
 """
 
 import os
@@ -13,6 +13,7 @@ import json
 from collections import defaultdict
 from datetime import datetime, timezone
 
+from dashboard.api import etat_code
 from dashboard.api import topology_composants as tc
 from dashboard.api import topology_sources as ts
 from dashboard.api.topology_incoherences import detecter_incoherences
@@ -66,11 +67,13 @@ def _appelants(graphe, noeuds):
     return appelants
 
 
-def _tables(arbres, graphe, noeuds, comp, carte):
-    """Liens 'ecrit' (composant -> table) et 'lit' (table -> composant)."""
+def _tables(arbres, graphe, noeuds, comp, carte, acces=None):
+    """Liens 'ecrit' (composant -> table) et 'lit' (table -> composant) ; acces : par défaut
+    les requêtes sur les TABLES de la carte (topology_sources.acces_tables)."""
     index = {(_fichier(n), n["label"].lstrip(".")): i for i, n in noeuds.items()}
     appelants = _appelants(graphe, noeuds)
-    for chemin, fonction, table, mode, ligne, dans_main in ts.acces_tables(arbres, tc.TABLES):
+    acces = ts.acces_tables(arbres, tc.TABLES) if acces is None else acces
+    for chemin, fonction, table, mode, ligne, dans_main in acces:
         if dans_main or comp.get(chemin) in (None, "outils"):
             continue  # démonstration ou outil manuel : pas un flux de production
         cible = f"table:{table}"
@@ -137,6 +140,8 @@ def construire_topologie(racine, chemin_graphe):
             carte.lier(source, cible, mode, f"{chemin}:{ligne}")
     reserve = ts.reserve_gemini_defaut(racine)
     _llm(arbres, comp, carte, reserve)
+    ecritures = _Carte()  # état en direct : tables où chaque composant insère des lignes
+    _tables(arbres, graphe, noeuds, comp, ecritures, etat_code.insertions(arbres))
 
     atteints = modules_atteints(set(modules), deps)
     tags_module = {m: ["code-mort"] if m in CODE_MORT else [] if m in atteints else ["orphelin"]
@@ -171,5 +176,6 @@ def construire_topologie(racine, chemin_graphe):
         "liens": liens,
         "incoherences": detecter_incoherences(sortie, liens, arbres, comp),
         "non_classes": non_classes,
-        "etat_source": None,  # registre de la tour : branché plus tard
+        "etat_source": "GET /api/topology/etat",  # vue temps réel (dashboard/api/etat_*.py)
+        "sources_etat": etat_code.sources_etat(ecritures, arbres, comp),
     }

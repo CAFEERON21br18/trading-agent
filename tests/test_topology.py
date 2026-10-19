@@ -121,9 +121,13 @@ class TestCarteDuDepot(unittest.TestCase):
             self.assertIn(source, self.ids)
             self.assertIn(cible, self.ids)
 
-    def test_emplacement_etat_en_direct(self):
-        self.assertTrue(all(n["etat"] is None for n in self.carte["noeuds"]))
-        self.assertIn("etat_source", self.carte)
+    def test_sources_de_l_etat_en_direct(self):
+        self.assertTrue(all(n["etat"] is None for n in self.carte["noeuds"]))  # servi par /api/topology/etat
+        se = self.carte["sources_etat"]
+        self.assertEqual(se["taches"]["cycle.tactical"], ["tactical"])
+        self.assertIn("dashboard", se["taches"]["dashboard"])
+        self.assertIn("registre", se["tables_inserees"]["registre"])
+        self.assertNotIn("message_audit", se["tables_inserees"]["cycle.cleanup"])  # purge : DELETE seul
 
     def test_tactical_seul_lance_les_7_explorateurs(self):
         explos = {c for s, c, t in self.liens if s == "cycle.tactical" and t == "import_dynamique"}

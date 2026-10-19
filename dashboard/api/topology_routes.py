@@ -54,3 +54,18 @@ def get_topology():
     except Exception as e:
         logger.error(f"/api/topology : {e}", exc_info=True)
         return jsonify({"erreur": f"Construction de la carte impossible : {e}", "aide": AIDE}), 500
+
+
+@topology_api.route("/topology/etat", methods=["GET"])
+def get_topology_etat():
+    """Vue temps réel : état de chaque composant, lu en direct dans les tâches planifiées, logs/ et
+    les bases (lecture seule ; chaque source bornée dans le temps, voir etat_composants.py)."""
+    if not os.path.isfile(GRAPHE):
+        return jsonify({"erreur": "graphify-out/graph.json absent : carte du code non générée",
+                        "aide": AIDE, "composants": {}}), 503
+    try:
+        from dashboard.api.etat_composants import etat_des_composants
+        return jsonify(etat_des_composants(carte_en_cache()))
+    except Exception as e:
+        logger.error(f"/api/topology/etat : {e}", exc_info=True)
+        return jsonify({"erreur": f"État en direct indisponible : {e}", "composants": {}}), 500

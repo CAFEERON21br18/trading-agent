@@ -4,7 +4,7 @@
 
 (() => {
   const $ = id => document.getElementById(id);
-  let carte = null, graphe = null, incActive = null;
+  let carte = null, graphe = null, incActive = null, panneauId = null;
   const typesVisibles = new Set(Object.keys(ArchGraphe.LIENS));
 
   const nomModule = c => c.replace(/\.py$/, "").replace(/\/__init__$/, "").replaceAll("/", ".");
@@ -20,7 +20,7 @@
       `Graphe Graphify ${escHtml(g.graphify || "?")} — <span class="${g.a_jour ? "text-emerald-400" : "text-amber-400"}">` +
       `${escHtml(fraicheur)}</span><br>Gemini réservé à : ${escHtml(reserve)} ` +
       `<span class="text-slate-600">(${escHtml(carte.reserve_gemini.source)})</span><br>` +
-      `État en direct : <span class="text-slate-500">${carte.etat_source ? escHtml(carte.etat_source) : "pas encore branché (registre, sur la tour)"}</span>` +
+      `État en direct : <span id="arch-etat-meta" class="text-slate-500">${escHtml(ArchEtat.meta())}</span>` +
       (carte.non_classes.length ? `<br><span class="text-amber-400">Modules non classés : ${escHtml(carte.non_classes.join(", "))}</span>` : "");
   }
 
@@ -85,16 +85,29 @@
     $("arch-p-corps").innerHTML =
       (n.tags.length ? `<div>${pastilles(n.tags)}</div>` : "") +
       (n.annotation ? `<div class="text-amber-300">ℹ️ ${escHtml(n.annotation)}</div>` : "") +
-      `<div class="text-slate-500">État en direct : ${n.etat ? escHtml(JSON.stringify(n.etat)) : "non branché (registre, sur la tour)"}</div>` +
+      ArchEtat.html(id) +
       (n.modules.length ? `<div><div class="font-semibold text-slate-300 mb-1">Modules (${n.modules.length})</div>` +
         n.modules.map(m => `<div title="${escHtml(m.chemin)}">${escHtml(nomModule(m.chemin))} ${pastilles(m.tags)}</div>`).join("") + "</div>" : "") +
       (incs.length ? `<div><div class="font-semibold text-slate-300 mb-1">Incohérences</div>` +
         incs.map(i => `<div class="text-amber-400">⚠️ ${escHtml(i.titre)}</div>`).join("") + "</div>" : "") +
       blocLiens("Dépend de / alimente", sortants, "cible") + blocLiens("Utilisé par / lu depuis", entrants, "source");
     $("arch-panneau").classList.remove("hidden");
+    panneauId = id;
   }
 
-  function fermerPanneau() { $("arch-panneau").classList.add("hidden"); }
+  function fermerPanneau() { $("arch-panneau").classList.add("hidden"); panneauId = null; }
+
+  // Vue temps réel (architecture_etat.js) : points de la carte, liste, panneau ouvert, à chaque relecture
+  function majEtat() {
+    if ($("arch-etat-meta")) $("arch-etat-meta").textContent = ArchEtat.meta();
+    $("arch-etat-resume").textContent = ArchEtat.resume();
+    $("arch-etat-liste").innerHTML = ArchEtat.liste(carte);
+    $("arch-etat-liste").querySelectorAll(".arch-ligne").forEach(b => b.addEventListener("click", () => {
+      graphe && graphe.selectionner(b.dataset.id); ouvrirPanneau(b.dataset.id);
+    }));
+    graphe && graphe.majEtats(ArchEtat.couleur);
+    if (panneauId) ouvrirPanneau(panneauId);
+  }
 
   function dessiner() {
     graphe = ArchGraphe.dessiner($("arch-graphe"), carte, {
@@ -105,6 +118,7 @@
       },
     });
     graphe.filtrer([...typesVisibles]);
+    graphe.majEtats(ArchEtat.couleur);
     $("arch-tous-liens").classList.toggle("actif", graphe.estTousLiens());
   }
 
@@ -125,6 +139,8 @@
       return;
     }
     afficherMeta(); afficherFiltres(); afficherIncoherences(); dessiner();
+    if (window.innerWidth < 768) $("arch-etat").open = false;  // mobile : résumé, liste au toucher
+    ArchEtat.demarrer(majEtat);
   }
 
   document.querySelectorAll("[data-zoom]").forEach(b =>

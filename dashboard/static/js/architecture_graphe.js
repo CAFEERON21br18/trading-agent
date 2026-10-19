@@ -14,8 +14,6 @@ const ArchGraphe = (() => {
   const GROUPES = { cycles: "#10b981", exploration: "#0ea5e9", analyse: "#8b5cf6",
                     execution: "#f59e0b", ressources: "#64748b" };
   const ICONES = { table: "🗄 ", fichier: "📄 " };
-  // Emplacement de l'état en direct (registre, branché sur la tour) : couleur du point
-  const ETATS = { ok: "#10b981", alerte: "#f59e0b", erreur: "#ef4444" };
   const H = 34;
 
   function disposer(carte, largeur) {
@@ -126,8 +124,9 @@ const ArchGraphe = (() => {
       g.append("text").attr("text-anchor", "middle").attr("y", 3.5).attr("font-size", 9)
         .attr("fill", "#0f172a").attr("font-weight", 700).text(partiels);
     });
-    noeuds.filter(n => n.etat).append("circle").attr("cx", n => -pos[n.id].w / 2 + 7).attr("r", 4)
-      .attr("fill", n => ETATS[n.etat.statut] || "#94a3b8");
+    // Point d'état en direct (architecture_etat.js) : caché tant que l'état n'est pas connu
+    const points = noeuds.append("circle").attr("class", "arch-point-etat")
+      .attr("cx", n => -pos[n.id].w / 2 + 7).attr("r", 4).attr("display", "none");
 
     // État d'affichage : types visibles, sélection, surlignage, tous les liens
     const vue = { types: new Set(Object.keys(LIENS)), selection: null, surligne: null, tous: !mobile };
@@ -160,6 +159,7 @@ const ArchGraphe = (() => {
       selectionner(id) { vue.surligne = null; vue.selection = id; appliquer(); },
       surligner(ids) { vue.selection = null; vue.surligne = ids ? new Set(ids) : null; appliquer(); },
       zoomer(k) { k ? svg.transition().call(zoom.scaleBy, k) : svg.transition().call(zoom.transform, d3.zoomIdentity); },
+      majEtats(couleur) { points.attr("display", n => couleur(n.id) ? null : "none").attr("fill", n => couleur(n.id)); },
     };
   }
 
