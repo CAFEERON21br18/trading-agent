@@ -17,6 +17,7 @@ from datetime import datetime, timezone
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.logger import get_logger
+from utils.memoire_modeles import preparer as preparer_depuis_modele
 from agents.memory_reader import consulter_memoire
 
 logger = get_logger(__name__)
@@ -141,6 +142,7 @@ def enregistrer_decision_intuitive(ticker: str, decision: dict, intuition: dict,
     entree += "- **Résultat** : ⏳ à remplir après clôture\n"
 
     try:
+        preparer_depuis_modele(INTUITION_LOG)  # fichier hors git absent : créé depuis le modèle
         with open(INTUITION_LOG, "a", encoding="utf-8") as f:
             f.write(entree)
         logger.info(f"Décision intuitive enregistrée pour {ticker}")

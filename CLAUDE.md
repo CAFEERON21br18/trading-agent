@@ -118,6 +118,8 @@ la position qu'elle aurait fermée va dans `rotation_hypothetique` (database.db)
 - `memory/lessons_learned.md` : leçons (auto-écrit après 3+ pertes)
 - `memory/market_patterns.md` : patterns récurrents (auto après 3+ occurrences)
 - `memory/weekly_reviews/` : revues hebdomadaires
+- Ces fichiers ne sont PAS suivis par git (dépôt public, TODO §39) : ils vivent sur la tour ; les
+  modèles `memory/<nom>.md.exemple` (suivis) recréent un fichier absent au premier ajout.
 
 - Vault Obsidian (`scripts/sync_vault_trading.py`, chaque matin après le quotidien ; lecture seule
   des bases, jamais de données du portefeuille réel) : 00-Index, 10-Decisions (BUY/SELL par actif,

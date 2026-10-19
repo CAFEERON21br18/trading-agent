@@ -13,6 +13,7 @@ from collections import Counter
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from utils.logger import get_logger
+from utils.memoire_modeles import preparer as preparer_depuis_modele
 from utils.portfolio_db import lire_positions_recentes_fermees
 
 logger = get_logger(__name__)
@@ -44,6 +45,7 @@ def _lire(chemin: str) -> str:
 
 def _ajouter_si_nouveau(chemin: str, marqueur_unique: str, nouvelle_entree: str) -> bool:
     """Ajoute l'entrée seulement si `marqueur_unique` n'est pas déjà dans le fichier."""
+    preparer_depuis_modele(chemin)  # fichier hors git absent : créé depuis memory/<nom>.exemple
     contenu = _lire(chemin)
     if marqueur_unique in contenu:
         return False

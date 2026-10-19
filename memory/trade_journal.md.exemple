@@ -1,0 +1,40 @@
+# AlphaSignal — Journal de Trading
+
+> Enregistrement de tous les signaux émis et leurs résultats.
+> Ne jamais supprimer d'entrées — seulement ajouter.
+
+---
+
+## Statistiques globales
+
+| Métrique | Valeur |
+|----------|--------|
+| Total signaux | 0 |
+| Signaux gagnants | 0 |
+| Win rate | — |
+| Profit factor | — |
+| Dernier signal | — |
+
+---
+
+## Entrées de journal
+
+<!-- Format :
+JOURNAL ENTRY — [ID] — [DATE HEURE]
+Actif : [ticker]
+Direction : [LONG / SHORT / NEUTRE]
+Signal émis par : [sous-agent(s)]
+Confiance : [1-10]
+Prix signal : [prix]
+Stop-loss : [prix]
+Target 1 : [prix]
+Target 2 : [prix]
+Raison : [résumé]
+---
+RÉSULTAT :
+Prix de sortie : [prix]
+P&L : [+X% / -X%]
+Durée : [temps]
+Correct ? [OUI / NON / PARTIEL]
+Leçon : [1 phrase]
+-->

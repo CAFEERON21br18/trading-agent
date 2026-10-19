@@ -978,3 +978,12 @@ par `journaliser_intuition`, en journal seulement : rien n'est lu en retour, la 
 touchée, une erreur n'interrompt jamais le moteur. Origine « cycle » seulement (ni chat, ni
 conseiller réel), une entrée par actif, jour et décision. Le vault (30-Intuitions) reprend les
 entrées « Override ».
+
+## 39. memory/ hors du suivi git (19/10/2026)
+
+Les 6 fichiers de `memory/` écrits par les cycles (intuition_log, lessons_learned, market_patterns,
+metacognition_log, performance_tracker, trade_journal) changeaient à chaque cycle dans un dépôt
+public : retirés de l'index (`git rm --cached`), ajoutés au `.gitignore`. Les fichiers enrichis par
+ajout ont un modèle commité `memory/<nom>.md.exemple`, copié par `utils/memoire_modeles.preparer`
+quand le fichier est absent (premier lancement). Tous les lecteurs fonctionnent sans les fichiers.
+`performance_tracker.ajouter_lecon` n'est appelée nulle part (code mort, laissé tel quel).
