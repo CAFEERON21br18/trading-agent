@@ -55,6 +55,9 @@ après coup.
   comptées à part et le compte (lignes, tickers distincts) est affiché avec
   chaque résultat. Au 06/10/2026, ce sont les tickers de la queue des
   explorateurs (TODO §14).
+- **Décisions sous contexte bouclé : exclues de la lecture principale de Q1, Q2
+  et Q3.b** (v1.8). Définition et lecture de sensibilité au §9. Elles sont
+  comptées à part, et leur compte est affiché avec chaque résultat.
 
 ### 0.2 Rendement mesuré
 - **Prix de départ** p0 : le prix enregistré dans la ligne, c'est-à-dire la
@@ -270,7 +273,8 @@ la taille réduite tombe sous le minimum viable de 15 €.
   en premier.
 - **Prix de départ décalé.** p0 est la dernière clôture en base ; pour les
   cryptos, c'est le relevé de 06h30 UTC, pas un prix exécutable au moment de la
-  décision.
+  décision. Le décalage réel est plus large, en particulier pour les actions et
+  les ETF du tactical : voir le §9 (v1.8).
 - **Composition changeante.** La watchlist peut être modifiée depuis le
   dashboard (correction v1.1 : les explorateurs ne l'élargissent pas, ils
   alimentent la queue) : on ne compare pas toujours les mêmes actifs d'un mois
@@ -349,6 +353,17 @@ la taille réduite tombe sous le minimum viable de 15 €.
   actif. Aucun critère, aucun seuil ni aucune règle de lecture modifiés.
   Commitée avant le script de comptage et avant toute lecture de 3.a ; comme la
   v1.1, elle s'applique à toutes les lignes depuis R2.
+- v1.8, 19/10/2026 : ajout du §9 (rupture du prix d'entrée paper, boucles),
+  décisions de Lucia du 19/10. Définitions déterministes de la position
+  « boucle » et de la décision sous contexte bouclé ; exclusion de ces décisions
+  de la lecture principale de Q1, Q2 et Q3.b (§0.1) ; lecture de sensibilité
+  avec p0′ ; date effective de la version 2 du mécanisme d'entrée ; anti-boucle
+  de 24 h ; exclusion des positions « boucle » des statistiques paper à partir
+  du 28/10/2026. §4 complété. §7 et §8 non modifiés. Aucun seuil ni aucune règle
+  de décision des questions modifiés. Commitée avant toute ligne de code de la
+  correction et avant toute lecture qui utilise un prix, sans qu'aucun rendement
+  ait été calculé ; comme la v1.1 et la v1.7, l'exclusion s'applique à toutes
+  les lignes depuis R2.
 
 ---
 
@@ -648,3 +663,109 @@ retenue le 09/10/2026, plus 12 semaines, plus 10 jours.
   décisions du moteur.
 - Peu de positions : au plus une par actif et par période de cinq barres.
 - Mêmes limites que le §4 et le §7.7. Paper ≠ réel.
+
+---
+
+## 9. Rupture du prix d'entrée paper : boucles (v1.8, 19/10/2026)
+
+Décisions de Lucia du 19/10/2026. Note commitée seule, avant toute ligne de code de la
+correction et avant toute lecture qui utilise un prix (Q3.a, lue le 03/11/2026, n'en utilise
+pas). Mesures en lecture seule, sans aucun rendement : `docs/DIAG_PRIX_ENTREE.md`.
+
+### 9.1 Constat (rupture)
+- Le prix d'entrée paper était la dernière clôture 1d de `prices` : c'est la version 1 du
+  mécanisme d'entrée. Ce prix est collecté une fois par jour vers 06h30 UTC, et son âge médian
+  à l'ouverture était de 25,9 h depuis R2.
+- Le SL et le TP étaient calculés sur ce prix figé, puis la surveillance comparait au cours du
+  moment toutes les 5 minutes. Rien n'empêchait de rouvrir le même actif au passage suivant
+  du tactical. D'où des boucles ouverture-fermeture-réouverture, jusqu'à la collecte suivante.
+- Au 19/10/2026 : 16 boucles, 313 positions sur 421 concernées.
+- Le p0 des décisions (§0.2) est ce même prix. Âge médian du prix observé depuis R2 :
+  - tactical, actions et ETF : 30,8 h ;
+  - tactical, cryptos : 12,3 h ;
+  - cycle quotidien : 10,5 h.
+
+### 9.2 Définitions déterministes
+- **Position « boucle ».** Une position de la table `positions` est « boucle » si au moins
+  3 positions de la table, elle comprise, ont le même `ticker` et exactement le même
+  `entry_price`. Les dates ne comptent pas, et l'égalité porte sur la valeur REAL stockée,
+  sans arrondi. Requête de référence :
+  `SELECT ticker, entry_price FROM positions GROUP BY ticker, entry_price HAVING COUNT(*) >= 3`.
+  - Au 19/10/2026, elle donne 16 couples et 313 positions.
+  - La colonne `boucle` de `positions`, remplie par `scripts/marquer_boucles.py`, applique
+    exactement cette requête à toute la table au moment où le script tourne.
+- **Série.** Les positions qui partagent un même couple (`ticker`, `entry_price`) de la
+  requête. Sa fenêtre va de sa première ouverture (`entry_date`) à sa dernière fermeture
+  (`exit_date`, ou `entry_date` si la position est encore ouverte).
+- **T_excl.** L'horodatage du premier passage du registre dont la ligne `parametres` montre à
+  la fois `EXCLURE_BOUCLES_STATS` = 1 et `BOUCLES_MARQUEES` ≥ 1, c'est-à-dire au moins une
+  position marquée dans la base. Ces deux champs entrent dans l'empreinte des paramètres
+  avec la correction.
+- **Décision sous contexte bouclé.** Une ligne `decision` du registre, sur le ticker t et
+  d'horodatage h, est sous contexte bouclé si l'une de ces conditions est vraie :
+  - (a) h < T_excl, et au moins une position « boucle » de t a une `exit_date` < h : les
+    statistiques par actif lues par la décision comprenaient une fermeture de boucle ;
+  - (b) h est dans la fenêtre d'une série de t, quelle que soit la date.
+
+  Au 19/10/2026 : 3 479 des 9 442 décisions d'origine `cycle` avec données sont dans ce cas
+  (BTC-USD, ETH-USD, SOL-USD, NVDA, MSFT, VRT, AMZN, AAPL).
+
+### 9.3 Lectures de Q1, Q2 et Q3.b
+- **Lecture principale.** Les décisions prises sous un contexte bouclé sont EXCLUES, en plus
+  des décisions sans données (§0.1). Elles sont comptées à part, et leur compte est affiché
+  avec chaque résultat.
+  - Comme la v1.1 et la v1.7, cette exclusion s'applique à toutes les lignes depuis R2.
+  - Elle a été décidée avant toute lecture, sans qu'aucun rendement ait été calculé.
+- **Lecture de sensibilité, gardée.** Elle est descriptive et ne vaut jamais critère, comme
+  J+1 et J+10. C'est la même métrique, sur les mêmes décisions, avec
+  p0′ = premier prix disponible après la décision :
+  - pour une décision ouverte avec la version 2 du mécanisme (§9.4), le prix d'exécution
+    enregistré avec la position ;
+  - sinon, la clôture de la première barre de `prices` qui se termine après h :
+    - barres 1 h pour les cryptos (timeframe « 4h » de `prices`, qui contient des barres 1 h) ;
+    - barres 1d pour les autres actifs, avec une fin de séance à 20:00 UTC pour les actions
+      et ETF et à 21:00 UTC pour les futures.
+
+  Les jours J+h se comptent à partir de la barre de p0′, comme au §0.2. Si la lecture
+  principale et la sensibilité conduisent à des décisions différentes, la question est
+  « non décidable » (§0.3) et rien ne change.
+
+### 9.4 Correction : version 2 du mécanisme d'entrée et anti-boucle
+- **Mise en service :** à la fusion de la branche auto/2026-10-23. La date effective est
+  l'`entry_date` de la première position paper enregistrée avec la version 2 du mécanisme
+  d'entrée.
+- **Version 2 :**
+  - à l'ouverture, au tactical comme au quotidien, un prix frais : cours du moment, ou barre
+    intrajournalière de moins de 15 minutes ;
+  - le SL, le TP et la taille sont recalculés sur ce prix avec les règles existantes, sans
+    changer aucun paramètre ;
+  - sans prix frais, pas d'ouverture : refus « prix_frais_indisponible » ;
+  - chaque ouverture enregistre la version du mécanisme (2), le prix de la décision, le prix
+    d'exécution et son âge en secondes.
+- **Anti-boucle :** après une fermeture automatique (stop ou objectif), aucune réouverture
+  paper du même actif pendant 24 h : refus « anti_boucle ».
+- La décision elle-même (action, score, confiance) n'est pas modifiée. Le p0 du §0.2 reste
+  le prix de la décision.
+
+### 9.5 Statistiques paper
+- Les positions marquées « boucle » sont exclues, **à partir du 28/10/2026, pas avant**, de :
+  - les winrates ;
+  - les modes du Budget Manager ;
+  - `utils/memory_lookups.py` ;
+  - `performance_tracker` ;
+  - `lessons_learned` et `market_patterns`, pour les écritures futures.
+- Raison du délai : le chat lit ces statistiques, et le suivi de la consigne v2 court jusqu'au
+  27/10.
+- Mécanisme : interrupteur `EXCLURE_BOUCLES_STATS`, à 0 jusqu'à cette date.
+- Ces statistiques ne sont pas des critères du registre.
+
+### 9.6 Jev (§7) et fantôme (§8)
+Non modifiés. Leur p0 est le prix du cycle quotidien, pris juste après la collecte. Seul
+l'écart de la nuit les touche, sans boucle : le fantôme sort à la 5e barre, sans SL ni TP
+surveillés.
+
+### 9.7 Ce que cette note ne couvre pas
+- **Le canal global.** Le mode du Budget Manager et la porte paper à 9 dépendent des
+  fermetures de tous les actifs. Une décision sur un actif sans boucle a donc pu être
+  influencée avant T_excl. Elle n'est pas exclue, car l'exclusion du §9.3 se fait actif par actif.
+- Aucun rendement n'a été calculé. Rien n'est dit de l'issue des positions bouclées.
