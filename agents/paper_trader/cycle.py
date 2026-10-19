@@ -17,6 +17,7 @@ from agents.paper_trader.portfolio import etat_portefeuille
 from agents.paper_trader.executor import ouvrir_position_depuis_decision
 from agents.paper_trader.monitor import monitorer_positions
 from agents.paper_trader.rules import peut_ouvrir
+from agents.paper_trader.prix_frais import prix_frais, enregistrer_entree, MOTIF as MOTIF_PRIX_FRAIS
 from agents.budget_manager.manager import creer_demande, traiter_demandes
 from agents.analysts.risk_manager.manager import valider_signal
 
@@ -75,10 +76,17 @@ def executer_ouvertures(decisions: list[dict]) -> dict:
         if d is None:
             continue
         dec = d["decision"]
-        prix = d["analyses"]["technique"]["prix"]
+        prix_decision = d["analyses"]["technique"]["prix"]
         direction = "LONG" if dec["decision"] == "BUY" else "SHORT"
 
-        # Re-valider le risque avec le budget alloué par le BM
+        # Mécanisme d'entrée v2 (REGISTRE_CRITERES v1.8, §9.4) : prix frais, sinon pas d'ouverture
+        frais = prix_frais(ticker)
+        if frais is None:
+            refusees.append({"ticker": ticker, "raisons": [MOTIF_PRIX_FRAIS]})
+            continue
+        prix, age_prix_s = frais
+
+        # Re-valider le risque avec le budget alloué par le BM, sur le prix frais (SL, TP, taille)
         validation = valider_signal(ticker, direction, prix, budget_alloue=a["budget_alloue"])
         if not validation["valide"]:
             refusees.append({"ticker": ticker, "raisons": validation["rejets"]})
@@ -92,6 +100,7 @@ def executer_ouvertures(decisions: list[dict]) -> dict:
 
         pos_id = ouvrir_position_depuis_decision(dec, d["analyses"])
         if pos_id:
+            enregistrer_entree(pos_id, prix_decision, prix, age_prix_s)
             ouvertes.append({"ticker": ticker, "decision": dec["decision"],
                              "pos_id": pos_id, "budget": a["budget_alloue"]})
             etat["open_positions_count"] += 1

@@ -104,6 +104,9 @@ Allocation : score = confiance × (1 + winrate/100) × urgence — proportionnel
 - < 20 positions ouvertes (`MAX_POSITIONS_SIMULTANEES` du `.env` ; défaut du code : 5)
 - Pas de doublon sur cet actif
 - Capital investissable disponible
+- **Prix d'entrée (mécanisme v2, registre v1.8 §9.4)** : prix frais à l'ouverture, barre de 1 min
+  Yahoo de moins de 15 min (`agents/paper_trader/prix_frais.py`) ; SL, TP et taille recalculés
+  sur ce prix ; sans prix frais, refus « prix_frais_indisponible »
 
 **Sortie auto** : SL touché / TP atteint / signal inverse fort.
 **Mode LOCK-IN** : surveillance 5 min sur actifs en breakout (4h max).
