@@ -57,10 +57,7 @@
       `</summary><div class="aud-corps p-3 text-xs text-slate-500">Chargement…</div></details>`;
   }
 
-  function verification(v) {
-    if (typeof v === "string") {  // l'API rend ce champ en texte JSON (absent de _CHAMPS_JSON)
-      try { v = JSON.parse(v); } catch (e) { return `<div class="aud-code">${escHtml(v)}</div>`; }
-    }
+  function verification(v) {  // objet JSON rendu par l'API (null si non mesurée)
     if (!v) return `<div class="text-slate-500">Non mesurée (message antérieur à la vérification, ou sans réponse du LLM).</div>`;
     const taux = v.taux_non_soutenus === null || v.taux_non_soutenus === undefined ? "—"
       : `${Math.round(v.taux_non_soutenus * 1000) / 10} %`;

@@ -19,6 +19,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, RACINE)
@@ -55,7 +56,7 @@ const message = { id: 1, timestamp: "2026-10-19T08:00:00+00:00", source: PIEGE, 
 const complet = { ...message, reponse_brute: PIEGE, prompt_envoye: PIEGE, contexte_injecte: { [PIEGE]: PIEGE },
   chaine_de_fallback: [{ etape: "configuration", gemini_modele: PIEGE, gemini_cle: PIEGE },
                        { fournisseur: PIEGE, modele: PIEGE, ok: false, statut: PIEGE, type_erreur: PIEGE, erreur: PIEGE }],
-  verification_chiffres: JSON.stringify({ nb_chiffres: PIEGE, soutenus: PIEGE, non_soutenus: [PIEGE], taux_non_soutenus: 0.5 }),
+  verification_chiffres: { nb_chiffres: PIEGE, soutenus: PIEGE, non_soutenus: [PIEGE], taux_non_soutenus: 0.5 },
   actions_declenchees: { ecritures: [{ categorie: "persistante", operation: PIEGE, cible: PIEGE }], decider_lances: [PIEGE] },
   decisions_trading_generees: [{ cible: PIEGE }], origine_client: { via: PIEGE },
   passe_par_decision_engine: PIEGE, passe_par_budget_manager: 0 };
@@ -102,6 +103,26 @@ class TestPage(unittest.TestCase):
         self.assertEqual(set(re.findall(r"lire\(`?\"?(/api/[a-z/]*[a-z])", js)), {"/api/audit/stats", "/api/audit/messages"})
         for interdit in ("download", "Blob", "clipboard", "localStorage", "window.open", "sendBeacon"):
             self.assertNotIn(interdit, js)
+
+
+class TestApi(unittest.TestCase):
+    def test_verification_chiffres_en_objet(self):
+        from utils import database, message_audit_db, message_audit_query
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as d:
+            base = os.path.join(d, "t.db")
+            verif = {"version": 1, "nb_chiffres": 3, "soutenus": 2, "non_soutenus": ["7,5"],
+                     "petits_entiers": 0, "taux_non_soutenus": 0.3333}
+            with mock.patch.object(database, "DB_PATH", base), \
+                    mock.patch.object(message_audit_query, "DB_PATH", base):
+                rid = message_audit_db.inserer_audit({"timestamp": "2026-10-19T08:00:00+00:00", "source": "pwa",
+                                                      "message_utilisateur": "question inventée",
+                                                      "verification_chiffres": json.dumps(verif)})
+                r = app.test_client().get(f"/api/audit/messages/{rid}")
+                vide = message_audit_db.inserer_audit({"timestamp": "2026-10-19T08:01:00+00:00", "source": "pwa"})
+                r_vide = app.test_client().get(f"/api/audit/messages/{vide}")
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.get_json()["verification_chiffres"], verif)  # objet, plus du texte
+        self.assertIsNone(r_vide.get_json()["verification_chiffres"])
 
 
 @unittest.skipUnless(shutil.which("node"), "Node absent")

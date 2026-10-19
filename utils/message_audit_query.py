@@ -28,7 +28,7 @@ _COLONNES_LISTE = ("id, timestamp, source, message_utilisateur, llm_utilise, cha
                    "decisions_trading_generees, passe_par_decision_engine, passe_par_budget_manager, "
                    "latence_ms, erreur, origine_client")
 _CHAMPS_JSON = ("contexte_injecte", "chaine_de_fallback", "actions_declenchees",
-                "decisions_trading_generees", "origine_client")
+                "decisions_trading_generees", "origine_client", "verification_chiffres")
 _SQL_ACTIONS = ("(COALESCE(json_array_length(actions_declenchees, '$.decider_lances'), 0) > 0 "
                 "OR EXISTS (SELECT 1 FROM json_each(actions_declenchees, '$.ecritures') "
                 "WHERE json_extract(value, '$.categorie') = 'persistante'))")
