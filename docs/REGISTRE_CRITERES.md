@@ -364,6 +364,14 @@ la taille réduite tombe sous le minimum viable de 15 €.
   correction et avant toute lecture qui utilise un prix, sans qu'aucun rendement
   ait été calculé ; comme la v1.1 et la v1.7, l'exclusion s'applique à toutes
   les lignes depuis R2.
+- v1.9, 19/10/2026 : décisions de Lucia du 19/10 au soir. Texte du §9.2 (a) corrigé (canaux
+  contaminés : lessons_learned et market_patterns, pas le winrate), sans changement de règle ;
+  exclusion du §9.5 étendue à la porte paper défensive et au suivi d'intuition, même
+  interrupteur, même date ; conséquence du mécanisme v2 consignée (§9.4 : pas d'ouverture
+  d'action hors séance, y compris à 7h30) ; ajout du §9.8 (collecte vérifiée, cache CoinGecko,
+  date effective et effet attendu, écrit avant la mesure). Aucun seuil, aucune règle de
+  décision et aucune règle de lecture des questions modifiés. Commitée seule, avant toute
+  ligne de code des corrections.
 
 ---
 
@@ -704,7 +712,9 @@ pas). Mesures en lecture seule, sans aucun rendement : `docs/DIAG_PRIX_ENTREE.md
 - **Décision sous contexte bouclé.** Une ligne `decision` du registre, sur le ticker t et
   d'horodatage h, est sous contexte bouclé si l'une de ces conditions est vraie :
   - (a) h < T_excl, et au moins une position « boucle » de t a une `exit_date` < h : les
-    statistiques par actif lues par la décision comprenaient une fermeture de boucle ;
+    canaux par actif contaminés, `lessons_learned` et `market_patterns` (écrits à partir des
+    positions fermées), comprenaient une fermeture de boucle. Texte corrigé en v1.9 : le winrate
+    par actif n'en fait pas partie, car il vient de `signal_results`, vide. La règle est inchangée ;
   - (b) h est dans la fenêtre d'une série de t, quelle que soit la date.
 
   Au 19/10/2026 : 3 479 des 9 442 décisions d'origine `cycle` avec données sont dans ce cas
@@ -746,6 +756,12 @@ pas). Mesures en lecture seule, sans aucun rendement : `docs/DIAG_PRIX_ENTREE.md
   paper du même actif pendant 24 h : refus « anti_boucle ».
 - La décision elle-même (action, score, confiance) n'est pas modifiée. Le p0 du §0.2 reste
   le prix de la décision.
+- **Conséquence de la version 2 (consignée en v1.9) :** hors de la séance américaine, la
+  dernière barre de 1 minute d'une action a plus de 15 minutes. Les actions (et les ETF
+  américains) ne s'ouvrent donc plus hors séance, y compris au cycle quotidien de 7h30, où le
+  marché est fermé : refus « prix_frais_indisponible ». Les cryptos, cotées en continu, et les
+  futures (GC=F, NQ=F, CL=F, cotés presque 24 h sur 24 en semaine) peuvent encore s'ouvrir hors
+  de la séance américaine. Les décisions elles-mêmes restent enregistrées comme avant.
 
 ### 9.5 Statistiques paper
 - Les positions marquées « boucle » sont exclues, **à partir du 28/10/2026, pas avant**, de :
@@ -753,7 +769,13 @@ pas). Mesures en lecture seule, sans aucun rendement : `docs/DIAG_PRIX_ENTREE.md
   - les modes du Budget Manager ;
   - `utils/memory_lookups.py` ;
   - `performance_tracker` ;
-  - `lessons_learned` et `market_patterns`, pour les écritures futures.
+  - `lessons_learned` et `market_patterns`, pour les écritures futures ;
+  - ajoutés en v1.9, sous le même interrupteur et à la même date : la porte paper défensive
+    (`agents/paper_trader/portfolio.py:40-46`, seuil 9 après 3 fermetures perdantes d'affilée)
+    et le suivi d'intuition (`agents/trade_journalist/intuition_tracker.py`).
+- Note de fait (v1.9) : les winrates, `memory_lookups` et `performance_tracker` lisent
+  `signals` et `signal_results`, vide et sans lien avec `positions`. Pour eux, l'exclusion est
+  sans objet tant que `signal_results` n'est pas alimentée depuis les positions (TODO §40).
 - Raison du délai : le chat lit ces statistiques, et le suivi de la consigne v2 court jusqu'au
   27/10.
 - Mécanisme : interrupteur `EXCLURE_BOUCLES_STATS`, à 0 jusqu'à cette date.
@@ -768,4 +790,36 @@ surveillés.
 - **Le canal global.** Le mode du Budget Manager et la porte paper à 9 dépendent des
   fermetures de tous les actifs. Une décision sur un actif sans boucle a donc pu être
   influencée avant T_excl. Elle n'est pas exclue, car l'exclusion du §9.3 se fait actif par actif.
+  Après T_excl, ces deux canaux ne lisent plus les positions « boucle » (§9.5, v1.9).
 - Aucun rendement n'a été calculé. Rien n'est dit de l'issue des positions bouclées.
+
+### 9.8 Corrections de qualité des données (v1.9, 19/10/2026)
+Décisions de Lucia du 19/10 au soir. Ce sont des corrections de qualité des données : aucune
+règle de décision, aucun seuil et aucun calcul de score ne changent.
+- **(a) Collecte des prix vérifiée et relancée.** Après la collecte du cycle quotidien, le
+  nombre d'actifs qui ont leur barre 1d du jour attendu est compté. Sous 80 %, la collecte est
+  retentée jusqu'à 3 fois, à 5 minutes d'intervalle, avant le rapport. Si tout échoue : erreur
+  journalisée, pas de rapport du jour, et le rattrapage de 12h retente. Filet du tactical : si
+  la dernière barre 1d en base a plus de 30 h, une collecte est relancée, au plus une fois par
+  heure et jamais en même temps que le cycle quotidien. Cause : le 17/10, aucune barre n'a été
+  écrite (Yahoo injoignable au redémarrage de la tour).
+- **(b) Cache CoinGecko.** La dominance BTC et les données par pièce sont mises en cache
+  (10 minutes), et les appels sont espacés si nécessaire. Le 429 « par minute » ne vide plus
+  le fondamental de la 3e crypto d'un passage. Le format des données remises au moteur et le
+  calcul du score fondamental sont inchangés.
+- **Date effective :** la première exécution après la fusion de la branche auto/2026-10-24,
+  c'est-à-dire l'horodatage du premier passage du registre dont la ligne `parametres` contient
+  `QUALITE_DONNEES` = 1. Ce champ entre dans l'empreinte avec les corrections.
+- **Effet attendu, écrit avant la mesure :**
+  - le fondamental devient présent (`contributions.fondamental.confiance` > 0) dans au moins
+    95 % des décisions crypto d'origine `cycle`, et pour SOL-USD pris seul ;
+  - mesure sur les 14 jours qui suivent la date effective, publiée aussi par cycle (quotidien,
+    tactical) ;
+  - périmètre : les cryptos couvertes par l'analyse fondamentale (`TICKER_TO_COINGECKO` :
+    BTC-USD, ETH-USD, SOL-USD). HBAR-USD et CRO-USD n'ont pas d'analyse fondamentale (type
+    « inconnu », 0 décision avec un fondamental au 19/10), et ces corrections ne le changent pas.
+
+  C'est une mesure de qualité des données, pas un critère de décision. Si l'effet n'est pas
+  atteint, on le constate et on cherche la cause ; aucune règle ne change.
+- **Lectures :** toute lecture qui porte sur les cryptos note la date effective comme une
+  rupture (fondamental présent ou absent selon la période).
