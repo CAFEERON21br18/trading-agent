@@ -124,7 +124,12 @@ class TestEndroitsConnus(unittest.TestCase):
                 self.verifier(news_fetcher.logger, lambda: news_fetcher.recuperer_news_newsapi("AAA"))
             with mock.patch.object(alphavantage.requests, "get", side_effect=erreur_http(FORMES["Alpha Vantage (URL)"][9:])):
                 self.verifier(alphavantage.logger, lambda: alphavantage._appel_av("OVERVIEW", "X"))
-        with mock.patch.object(onchain.requests, "get", side_effect=erreur_http(FORMES["CoinGecko (URL)"][9:])):
+        from utils import cache
+        import tempfile
+        # cache CoinGecko (v1.9) isolé : une dominance fraîche sur disque masquerait l'erreur simulée
+        with tempfile.TemporaryDirectory() as tmp, mock.patch.object(cache, "CACHE_DIR", tmp), \
+                mock.patch.object(onchain, "_dormir"), \
+                mock.patch.object(onchain.requests, "get", side_effect=erreur_http(FORMES["CoinGecko (URL)"][9:])):
             self.verifier(onchain.logger, onchain.recuperer_dominance_btc)
 
     def test_groq(self):

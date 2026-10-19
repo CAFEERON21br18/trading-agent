@@ -77,7 +77,7 @@ def parametres_actifs() -> dict:
         "SEUIL_CONFIANCE_PAPER", "SEUIL_CONFIANCE_PAPER_DEFENSIF", "SEUIL_CONFIANCE_LEARNING",
         "EXCLURE_BOUCLES_STATS")}
     from utils.positions_boucles import nombre_marquees  # v1.8 (§9.2) : T_excl lisible au registre
-    p["BOUCLES_MARQUEES"] = nombre_marquees()
+    p.update(BOUCLES_MARQUEES=nombre_marquees(), QUALITE_DONNEES=1)  # v1.9 (§9.8) : date effective lisible
     p["GEMINI_RESERVE_POUR"] = sorted(getattr(config, "GEMINI_RESERVE_POUR", []))
     # R3 ; R3b : paires [catégorie, tickers], car l'empreinte est calculée sur un JSON à clés
     # triées (_canon) : un dictionnaire y perdrait l'ordre des catégories

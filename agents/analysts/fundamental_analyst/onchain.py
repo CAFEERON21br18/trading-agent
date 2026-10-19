@@ -1,20 +1,43 @@
 """
 agents/fundamental_analyst/onchain.py — Données fondamentales crypto via CoinGecko
 API gratuite sans clé : market cap, volume 24h, variations, dominance BTC
+
+Cache (REGISTRE_CRITERES v1.9, §9.8 b) : données par pièce et dominance BTC gardées 10 minutes
+(data/cache/coingecko_coin, coingecko_global), succès seulement ; au moins ESPACEMENT_S entre deux
+appels du même processus. Avant : 2 appels sans cache par crypto, plus la dominance de
+l'orchestrateur et du sentiment, d'où un 429 « par minute » dès la 3e crypto du passage.
+Le format renvoyé et le calcul du score (evaluer_crypto) sont inchangés.
 """
 
 import sys
 import os
+import time
 import requests
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 
+from utils import cache
 from utils.logger import get_logger
 from utils.secret_mask import masquer_secrets
 
 logger = get_logger(__name__)
 
 COINGECKO_API = "https://api.coingecko.com/api/v3"
+TTL_S = 10 * 60
+ESPACEMENT_S = 3.0
+_dernier_appel = [0.0]   # time.monotonic() du dernier appel CoinGecko de ce processus
+_dormir = time.sleep     # remplaçable dans les tests
+
+
+def _get(url: str, **kwargs):
+    """requests.get espacé d'au moins ESPACEMENT_S du précédent appel CoinGecko du processus."""
+    attente = ESPACEMENT_S - (time.monotonic() - _dernier_appel[0])
+    if _dernier_appel[0] and attente > 0:
+        _dormir(attente)
+    try:
+        return requests.get(url, timeout=15, **kwargs)
+    finally:
+        _dernier_appel[0] = time.monotonic()
 
 # Mapping ticker watchlist → id CoinGecko
 TICKER_TO_COINGECKO = {
@@ -26,13 +49,23 @@ TICKER_TO_COINGECKO = {
 
 def recuperer_donnees_coin(ticker: str) -> dict:
     """
-    Récupère les données fondamentales d'un crypto depuis CoinGecko.
+    Récupère les données fondamentales d'un crypto depuis CoinGecko (cache de 10 minutes).
     Retourne un dict avec : market_cap, volume_24h, variation_24h, variation_7j, variation_30j, ath_distance
     """
     coin_id = TICKER_TO_COINGECKO.get(ticker)
     if not coin_id:
         return {}
+    en_cache = cache.lire("coingecko_coin", coin_id, TTL_S)
+    if en_cache:
+        return en_cache
+    donnees = _telecharger_coin(ticker, coin_id)
+    if donnees:
+        cache.ecrire("coingecko_coin", coin_id, donnees)
+    return donnees
 
+
+def _telecharger_coin(ticker: str, coin_id: str) -> dict:
+    """Un appel CoinGecko /coins/{id} ; {} en cas d'erreur (journalisée)."""
     try:
         url = f"{COINGECKO_API}/coins/{coin_id}"
         params = {
@@ -42,7 +75,7 @@ def recuperer_donnees_coin(ticker: str) -> dict:
             "community_data": "false",
             "developer_data": "false",
         }
-        r = requests.get(url, params=params, timeout=15)
+        r = _get(url, params=params)
         r.raise_for_status()
         data = r.json()
 
@@ -76,9 +109,20 @@ def recuperer_donnees_coin(ticker: str) -> dict:
 
 
 def recuperer_dominance_btc() -> float | None:
-    """Récupère la dominance BTC (% du market cap crypto total)."""
+    """Récupère la dominance BTC (% du market cap crypto total), cache de 10 minutes."""
+    en_cache = cache.lire("coingecko_global", "dominance_btc", TTL_S)
+    if en_cache is not None:
+        return en_cache
+    dominance = _telecharger_dominance()
+    if dominance is not None:
+        cache.ecrire("coingecko_global", "dominance_btc", dominance)
+    return dominance
+
+
+def _telecharger_dominance() -> float | None:
+    """Un appel CoinGecko /global ; None en cas d'erreur (journalisée)."""
     try:
-        r = requests.get(f"{COINGECKO_API}/global", timeout=15)
+        r = _get(f"{COINGECKO_API}/global")
         r.raise_for_status()
         data = r.json()
         return data.get("data", {}).get("market_cap_percentage", {}).get("btc")

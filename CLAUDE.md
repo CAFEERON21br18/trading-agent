@@ -36,7 +36,8 @@ Les indicateurs sont des **GUIDES, pas des lois**. L'agent peut s'écarter s'il 
 
 ## Les 8 sous-agents
 1. **Market Analyst** → `agents/analysts/market_analyst/` (technique RSI/MACD/Bollinger/EMA/ATR/ADX/Fibo)
-2. **Fundamental Analyst** → `agents/analysts/fundamental_analyst/` (P/E, EPS, earnings via Alpha Vantage + macro)
+2. **Fundamental Analyst** → `agents/analysts/fundamental_analyst/` (P/E, EPS, earnings via Alpha Vantage + macro ;
+   cryptos BTC/ETH/SOL via CoinGecko, données par pièce et dominance en cache 10 min, registre v1.9 §9.8 b)
 3. **Sentiment Analyst** → `agents/analysts/sentiment_analyst/` (NewsAPI, F&G, **géopolitique**)
 4. **Risk Manager** → `agents/analysts/risk_manager/` (R:R, taille position, droit de veto)
 5. **Trade Journalist** → `agents/trade_journalist/` (journal + intuition tracker + auto-apprentissage)
