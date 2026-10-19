@@ -123,9 +123,7 @@ def decider(ticker: str, analyses: dict, origine: str = "cycle") -> dict:
     overrides   = _verifier_overrides(ticker, analyses)
     seuil_conf  = _seuil_confiance_requis(analyses)
 
-    # Style de trading et facteur de taille (v4.1)
-    style = "normal"
-    taille_factor = 1.0
+    style, taille_factor = "normal", 1.0  # style de trading et facteur de taille (v4.1)
 
     # ── Décision préliminaire (v4.1 — contradictions ne bloquent plus) ───────
     if overrides:
@@ -158,7 +156,7 @@ def decider(ticker: str, analyses: dict, origine: str = "cycle") -> dict:
         raison += f" | ⚠️ Taille -{int((1 - TAILLE_CONTRADICTION) * 100)}% à cause d'une contradiction"
 
     # ── Étape 4 — Consulter l'intuition (peut override la décision) ──────────
-    from agents.intuition import consulter_intuition
+    from agents.intuition import consulter_intuition, journaliser_intuition
     intuition = consulter_intuition(ticker, analyses, decision)
     if intuition.get("override_decision"):
         ancienne = decision
@@ -189,6 +187,7 @@ def decider(ticker: str, analyses: dict, origine: str = "cycle") -> dict:
         "seuil_confiance_requis": seuil_conf,
         "intuition":        intuition,
     }
+    journaliser_intuition(ticker, resultat, intuition, origine)  # journal seulement : rien n'est lu en retour
 
     # v5.5.2 — Score de qualité du setup (Skill technique 3)
     try:

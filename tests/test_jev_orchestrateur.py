@@ -64,6 +64,8 @@ class TestCycleQuotidien(unittest.TestCase):
             mock.patch.object(config, "JEV_OBSERVE", jev_actif),
             mock.patch.object(config, "METACOG_AUDIT_ENABLED", False),
             mock.patch.object(database, "DB_PATH", os.path.join(dossier, "t.db")),
+            # vrai decider : son journal d'intuition va dans le dossier du test, jamais dans memory/
+            mock.patch("agents.intuition.INTUITION_LOG", os.path.join(dossier, "intuition_log.md")),
             mock.patch.object(obs, "_contexte_paper", return_value=(set(), "NORMAL", 50.0)),
             mock.patch.object(obs, "_creer_client", return_value=client),
         ]

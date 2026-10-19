@@ -969,3 +969,12 @@ handler de dernier recours de Python, masque message, arguments et trace ; masqu
 aux endroits connus (NewsAPI, Alpha Vantage, CoinGecko, Groq, Jev / TypeSafe, SMTP). Les
 fichiers de logs déjà écrits ne sont pas réécrits : à supprimer à la main (liste dans le
 rapport de la session du 19/10/2026).
+
+## 38. ~~Journal d'intuition jamais écrit~~ (corrigé le 19/10/2026)
+
+`enregistrer_decision_intuitive` (agents/intuition.py) n'était appelée nulle part :
+`memory/intuition_log.md` n'avait aucune entrée depuis la v4.1. Branchée à l'étape 4 de `decider`
+par `journaliser_intuition`, en journal seulement : rien n'est lu en retour, la décision n'est pas
+touchée, une erreur n'interrompt jamais le moteur. Origine « cycle » seulement (ni chat, ni
+conseiller réel), une entrée par actif, jour et décision. Le vault (30-Intuitions) reprend les
+entrées « Override ».

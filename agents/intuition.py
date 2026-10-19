@@ -11,6 +11,7 @@ L'intuition se construit sur 3 piliers :
 
 import sys
 import os
+import re
 from datetime import datetime, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -145,3 +146,25 @@ def enregistrer_decision_intuitive(ticker: str, decision: dict, intuition: dict,
         logger.info(f"Décision intuitive enregistrée pour {ticker}")
     except Exception as e:
         logger.error(f"Écriture intuition_log échouée : {e}")
+
+
+def journaliser_intuition(ticker: str, resultat: dict, intuition: dict, origine: str = "cycle") -> None:
+    """Étape 4 du Decision Engine, journal SEULEMENT : quand l'intuition modifie (override) ou
+    ajuste la décision d'un cycle, une entrée dans intuition_log.md (miroir : vault, 30-Intuitions).
+    Rien n'est rendu ni modifié ; toute erreur est journalisée et n'interrompt jamais le moteur.
+    Hors cycles, rien : le chat n'écrit pas (E2) et les actifs du conseiller sont ceux du portefeuille
+    réel (intuition_log.md est suivi par git). Une entrée par actif, jour (UTC) et décision : le
+    tactical repasse toutes les 15 minutes."""
+    try:
+        if origine != "cycle" or not (intuition.get("override_decision") or intuition.get("ajustement")):
+            return
+        jour = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        deja = re.compile(rf"^### {jour} \d\d:\d\d UTC — {re.escape(ticker)} — "
+                          rf"{re.escape(str(resultat.get('decision')))} \(intuition\)", re.M)
+        if os.path.exists(INTUITION_LOG):
+            with open(INTUITION_LOG, encoding="utf-8") as f:
+                if deja.search(f.read()):
+                    return
+        enregistrer_decision_intuitive(ticker, resultat, intuition)
+    except Exception as e:
+        logger.warning(f"Journal d'intuition {ticker} non écrit (le moteur continue) : {e}")
