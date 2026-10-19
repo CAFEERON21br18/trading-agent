@@ -22,6 +22,13 @@ data/explorer_queue.json
 data/lockin_assets.json
 data/database.db-shm
 data/database.db-wal
+# Fichiers d'état écrits en production, hors du suivi git (dépôt public) : compteur NewsAPI du
+# rapport (agents/report_sections.py), état de la surveillance du dashboard
+# (scripts/surveiller_dashboard.py), copies de la base avant migration ou purge, qui contiennent
+# le portefeuille réel (scripts/migrer_devise_reelle.py, scripts/purger_signaux_demo.py)
+data/rapport_newsapi.json
+data/surveillance_dashboard.json
+data/sauvegardes/
 
 # CSV d'étiquetage du contrôle des chiffres du chat (scripts/rapport_verif_chiffres.py --passe) :
 # extraits des réponses, issus de prompts qui contiennent le portefeuille réel
@@ -59,8 +66,12 @@ env/
 logs/
 *.log
 
-# Rapports générés (optionnel — commenter si tu veux les versionner)
-# reports/
+# Rapports générés (quotidiens, hebdomadaires, emails non envoyés) : écrits en production,
+# hors du suivi git (dépôt public)
+reports/
+
+# Fichier de verrouillage npm vide, sans package.json : aucun outil du dépôt ne s'en sert
+package-lock.json
 
 # Résultats de backtest (volumieux)
 strategies/backtest_results/*.png
