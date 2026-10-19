@@ -29,6 +29,9 @@ data/database.db-wal
 data/rapport_newsapi.json
 data/surveillance_dashboard.json
 data/sauvegardes/
+# Watchlist modifiée depuis le dashboard : hors du suivi git. Son modèle data/watchlist.json.exemple
+# reste suivi, copié au premier lancement si le fichier manque (config.py, utils/helpers.py)
+data/watchlist.json
 
 # CSV d'étiquetage du contrôle des chiffres du chat (scripts/rapport_verif_chiffres.py --passe) :
 # extraits des réponses, issus de prompts qui contiennent le portefeuille réel

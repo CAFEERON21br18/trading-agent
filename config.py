@@ -158,6 +158,8 @@ JEV_BUDGET_SEC   = 120.0  # par cycle : au-delà, plus aucun appel (actifs écar
 # ── Chemins des fichiers ──────────────────────────────────────────────────────
 BASE_DIR          = os.path.dirname(os.path.abspath(__file__))
 WATCHLIST_FILE    = os.path.join(BASE_DIR, "data", "watchlist.json")
+from utils.memoire_modeles import preparer as _preparer  # noqa: E402 — hors git : modèle .exemple si absente
+_preparer(WATCHLIST_FILE, WATCHLIST_FILE + ".exemple")
 DATABASE_FILE     = os.path.join(BASE_DIR, "data", "database.db")
 MEMORY_DIR        = os.path.join(BASE_DIR, "memory")
 REPORTS_DIR       = os.path.join(BASE_DIR, "reports")

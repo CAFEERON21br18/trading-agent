@@ -31,6 +31,8 @@ Les indicateurs sont des **GUIDES, pas des lois**. L'agent peut s'écarter s'il 
 - ETF : SPY, QQQ, VOO
 - CFD : GC=F, NQ=F, **CL=F** (pétrole WTI)
 - **Élargie automatiquement** par les 7 explorateurs
+- `data/watchlist.json` n'est PAS suivi par git (modifié depuis le dashboard) : modèle suivi
+  `data/watchlist.json.exemple`, copié au premier lancement si le fichier manque
 
 ## Les 8 sous-agents
 1. **Market Analyst** → `agents/analysts/market_analyst/` (technique RSI/MACD/Bollinger/EMA/ATR/ADX/Fibo)

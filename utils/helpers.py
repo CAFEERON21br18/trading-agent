@@ -6,6 +6,7 @@ import json
 import os
 from datetime import datetime
 from utils.logger import get_logger
+from utils.memoire_modeles import preparer as preparer_depuis_modele
 
 logger = get_logger(__name__)
 
@@ -19,6 +20,7 @@ def charger_watchlist() -> dict:
     Retourne uniquement les actifs avec "actif": true.
     """
     try:
+        preparer_depuis_modele(WATCHLIST_FILE, WATCHLIST_FILE + ".exemple")  # hors git : 1er lancement
         with open(WATCHLIST_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
 
