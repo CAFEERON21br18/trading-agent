@@ -11,6 +11,7 @@ Définitions données par Lucia le 19/10/2026, reprises telles quelles :
 
 - W2 : frais, spread, change et fiscalité portugaise forment un seuil d'environ 6 à 10 points par an à battre. Les positions réelles sont en dollars, le montant débité en euros n'est pas stocké, et les coûts du §0.2 (crypto 1,0 %, reste 0,2 % aller-retour) sont des hypothèses, pas des frais Revolut mesurés.
 - W4 : plafonner la poche pilotée par l'agent à 10-20 % du capital investissable (à décider par Lucia).
+  **Décision de Lucia du 19/10/2026 : W4 vaut 20 %.**
 - C3 : le capital paper est constant, le P&L réalisé n'y est jamais ajouté, et l'arrêt d'urgence est inerte (portfolio.py:97-103 ; constat du 19/10 : il compare config.CAPITAL fixe au seuil de 700 €).
 - D6 : intuition.py:478-480 force un BUY après n'importe quel veto si l'ajustement est d'au moins 2, même sur un signal baissier (TODO §20).
 - D7 : le veto Extreme Greed est contournable par l'intuition au cycle quotidien et inactif dans le tactical (TODO §21).
@@ -33,7 +34,7 @@ Définitions données par Lucia le 19/10/2026, reprises telles quelles :
 | 3 | Frais Revolut réels mesurés, seuil annuel W2 connu | pas fait (coûts du §0.2 = hypothèses ; débit en euros non stocké) | aucune |
 | 4 | Défauts D6-D8 corrigés, avec critère | pas fait : TODO §20, §21, §22 ouverts, gelés jusqu'à un critère | aucune |
 | 5 | §29 (1 € = 1 $) corrigé | pas fait, gelé volontairement | après les fenêtres de mesure |
-| 6 | Plafond de la poche pilotée (W4, 10 à 20 %) | pas fait (valeur à décider, notion absente du code) | aucune |
+| 6 | Plafond de la poche pilotée (W4 = 20 %, décidé le 19/10) | pas fait (valeur fixée, notion absente du code) | aucune |
 | 7 | Arrêt d'urgence fonctionnel, capital paper qui intègre le P&L réalisé (C3) | **pas fonctionnel** | aucune |
 | 8 | Test de bout en bout « proposition seulement », N semaines | pas commencé | aucune |
 | 9 | Prix d'entrée paper au cours du moment | pas fait (cause confirmée le 19/10) | aucune |
@@ -111,11 +112,11 @@ conditions 1 et 8 mesurent un système différent de celui qui toucherait le ré
   fenêtres de Q1 (2027-2028) ?
 
 ### 6. Plafond de la poche pilotée (W4)
-- **État : pas fait.** La valeur reste à décider par toi, entre 10 et 20 % du capital
-  investissable. La notion n'existe pas dans le code, et la règle des 50 % du capital investi ne
-  s'applique qu'au paper.
-- **Condition :** le plafond décidé (un pourcentage entre 10 et 20 % du capital investissable),
-  écrit dans `.env`. Le code ne pourrait pas le dépasser.
+- **État : pas fait.** La valeur est fixée : **20 % du capital investissable** (décision du
+  19/10/2026). La notion n'existe pas encore dans le code, et la règle des 50 % du capital investi
+  ne s'applique qu'au paper.
+- **Condition :** ce plafond de 20 % du capital investissable écrit dans `.env`. Le code ne
+  pourrait pas le dépasser.
 - **Vérifier :** un test qui refuse une proposition au-delà du plafond ; le plafond et le
   montant engagé affichés sur la page Réel.
 
