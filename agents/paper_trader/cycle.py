@@ -18,6 +18,7 @@ from agents.paper_trader.executor import ouvrir_position_depuis_decision
 from agents.paper_trader.monitor import monitorer_positions
 from agents.paper_trader.rules import peut_ouvrir
 from agents.paper_trader.prix_frais import prix_frais, enregistrer_entree, MOTIF as MOTIF_PRIX_FRAIS
+from agents.paper_trader.anti_boucle import fermeture_auto_recente, MOTIF as MOTIF_ANTI_BOUCLE
 from agents.budget_manager.manager import creer_demande, traiter_demandes
 from agents.analysts.risk_manager.manager import valider_signal
 
@@ -59,15 +60,19 @@ def executer_ouvertures(decisions: list[dict]) -> dict:
     Retourne {"ouvertes", "refusees", "bm_resume"}.
     """
     actifs = [d for d in decisions if d["decision"]["decision"] in ("BUY", "SELL")]
+    # Anti-boucle 24 h (REGISTRE_CRITERES v1.8, §9.4), avant le Budget Manager
+    bloques = [{"ticker": d["decision"]["ticker"], "raisons": [MOTIF_ANTI_BOUCLE]}
+               for d in actifs if fermeture_auto_recente(d["decision"]["ticker"])]
+    actifs = [d for d in actifs if d["decision"]["ticker"] not in {b["ticker"] for b in bloques}]
     if not actifs:
-        return {"ouvertes": [], "refusees": [], "bm_resume": None}
+        return {"ouvertes": [], "refusees": bloques, "bm_resume": None}
 
     demandes = [_decision_to_demande(d) for d in actifs]
     bm_resume = traiter_demandes(demandes)
 
     # Index ticker → décision originale
     par_ticker = {d["decision"]["ticker"]: d for d in actifs}
-    ouvertes, refusees = [], []
+    ouvertes, refusees = [], bloques
     etat = etat_portefeuille(prix_courants={})
 
     for a in bm_resume["allocations"]:

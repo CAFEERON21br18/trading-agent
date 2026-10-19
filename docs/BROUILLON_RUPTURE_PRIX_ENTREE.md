@@ -1,6 +1,9 @@
 # Brouillon : note de rupture « prix d'entrée et p0 » pour le registre (19/10/2026)
 
-**Statut : brouillon à valider.** Ce texte n'est pas dans `docs/REGISTRE_CRITERES.md`. S'il est
+**Mise à jour du 19/10/2026 : intégré au registre (v1.8, §9, commit 4895e51), avec les décisions de
+Lucia.** Ce brouillon reste comme trace ; c'est le §9 du registre qui fait foi.
+
+**Statut d'origine : brouillon à valider.** Ce texte n'est pas dans `docs/REGISTRE_CRITERES.md`. S'il est
 validé, il y entrerait comme v1.8, par un commit daté, **avant toute lecture qui utilise un prix**.
 La seule lecture prévue d'ici là est Q3.a, le 03/11/2026, qui n'en utilise pas. Le brouillon a été
 écrit sans regarder aucun rendement. Le détail des mesures est dans `docs/DIAG_PRIX_ENTREE.md`.

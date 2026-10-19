@@ -987,3 +987,20 @@ public : retirés de l'index (`git rm --cached`), ajoutés au `.gitignore`. Les 
 ajout ont un modèle commité `memory/<nom>.md.exemple`, copié par `utils/memoire_modeles.preparer`
 quand le fichier est absent (premier lancement). Tous les lecteurs fonctionnent sans les fichiers.
 `performance_tracker.ajouter_lecon` n'est appelée nulle part (code mort, laissé tel quel).
+
+## 40. Positions « boucle » : ce que l'interrupteur EXCLURE_BOUCLES_STATS ne couvre pas (19/10/2026)
+
+Registre v1.8, §9.5. Avec `EXCLURE_BOUCLES_STATS=1` (prévu le 28/10/2026, après
+`scripts/marquer_boucles.py --appliquer`), `utils/positions_boucles.fermees_recentes` retire les
+positions marquées des modes du Budget Manager (`agents/budget_manager/strategy.py`) et des
+écritures de `lessons_learned` et de `market_patterns` (`agents/trade_journalist/learner.py`).
+Restent hors du périmètre fixé par Lucia, et lisent toujours toutes les positions :
+- la porte paper défensive (`agents/paper_trader/portfolio.py:40-46`, seuil 9 après 3 pertes) ;
+- le suivi d'intuition (`agents/trade_journalist/intuition_tracker.py:66`) ;
+- la revue hebdomadaire (`scripts/cycle_weekly.py:38`), l'attribution de performance
+  (`agents/technical_skills/performance_attribution.py`), le dashboard et le chat (affichage).
+
+Sans objet : `utils/memory_lookups.py`, `performance_tracker` et le winrate par actif lu par le
+Decision Engine (`agents/memory_reader.py`) lisent `signals` / `signal_results`, vide et sans lien
+avec `positions`. Si `signal_results` est un jour alimentée depuis les positions (condition 2 de
+`docs/AVANT_ARGENT_REEL.md`), ce lien devra porter la colonne `boucle`.

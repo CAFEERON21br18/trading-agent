@@ -149,14 +149,14 @@ Avant R2, 14 boucles :
 | Mesure | Ce qui est faussé | Depuis |
 |---|---|---|
 | §0.2 p0, donc Q1 (seuil BUY et zone d'apprentissage), Q2, Q3.b | p0 est une clôture figée : 26 h en médiane pour le tactical, qui produit 97 % des BUY/SELL. La fenêtre de rendement commence avant la décision et compte un mouvement qu'aucun ordre ne pouvait capter. C'est un bruit sans signe d'environ 1,8 % en crypto (tactical). Ce n'est un biais que s'il est corrélé au sens de la décision, ce qui ne se vérifie qu'avec des rendements | 06/10 (R2), dès la 1re décision |
-| Q3.a (verdicts) | Pas de prix. Indirect : le contexte du pipeline lit le winrate et les pertes consécutives du paper (`agents/skills/_memory_context.py:19-21`, `:79`) | 09/10 (boucle AMZN) |
+| Q3.a (verdicts) | Pas de prix. Le contexte du pipeline (`agents/skills/_memory_context.py:19-21`, `:79`) lit `utils/memory_lookups.py`, donc `signals` et `signal_results` (vide), pas les positions : pas de contamination par les boucles (corrigé le 19/10, session 8) | — |
 | §7 Jev | p0 = prix du cycle quotidien juste après la collecte (`agents/jev/observer.py:62`) : clôture de la veille pour les actions (environ 10,5 h), environ 0 h pour les cryptos et les futures. Seul l'écart de la nuit compte. Indirect : `mode_bm`, `plafond_bm` et `taille_hypothetique` dépendent du mode du Budget Manager | 09/10 |
 | §8 fantôme | Même p0 que le §7. Sortie à la 5e barre, sans SL/TP surveillé (`agents/jev/fantome_regles.py:68-76`), donc pas de boucle | 09/10 |
-| P&L paper, `performance_tracker.md`, statistiques du dashboard et du chat | 74 % des positions sont des artefacts de boucle | 07/05 |
-| Winrate par actif | Override « track record » (`decision_engine.py:82`, à partir de 5 trades), intuition (`intuition.py:63`), allocation du Budget Manager (`paper_trader/cycle.py:50` → `arbitrator.py:23-28`), prior du pipeline. La boucle AMZN suffit à dépasser 5 trades | 07/05 ; AMZN le 09/10 |
+| P&L paper, statistiques du dashboard et du chat (lues dans `positions`) | 74 % des positions sont des artefacts de boucle | 07/05 |
+| Winrate par actif | Lu dans `performance_tracker.md` (`agents/memory_reader.py:31-49`), lui-même tiré de `signal_results`, vide depuis la purge du 08/10 : pas alimenté par les positions, donc pas contaminé (corrigé le 19/10, session 8 ; la v1 de ce tableau le disait contaminé) | — |
 | Gains et pertes consécutifs | Modes DEFENSIF et AGRESSIF (`budget_manager/strategy.py:57`, `:91`, `:119`), porte paper à 9 (`paper_trader/portfolio.py:40-58`) | 07/05 |
 | `lessons_learned.md`, `market_patterns.md` | Leçons écrites après 3 pertes, patterns après 3 occurrences : une seule boucle suffit. Un pattern trouvé ajoute ensuite +1 à l'intuition (`intuition.py:74-77`) | 07/05 |
-| `contexte.winrate_actif` du registre | Contaminé pour les actifs bouclés (`utils/registre_cycles.py:102-103`) | 06/10 ; AMZN le 09/10 |
+| `contexte.winrate_actif` du registre | Même source que le winrate par actif (`utils/registre_cycles.py:102-103`) : vide, pas contaminé (corrigé le 19/10, session 8) | — |
 
 **Le §4 du registre (« Prix de départ décalé ») sous-estime le décalage.** Ta demande le place au
 §0.3 ; il est en fait au §4. Il ne parle que des cryptos (« relevé de 06h30 UTC »). En réalité :

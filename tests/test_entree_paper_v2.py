@@ -12,12 +12,10 @@ Base temporaire, cours inventés ; aucun réseau, aucun LLM, aucun email.
 """
 
 import copy
-import math
 import os
 import sys
-import tempfile
 import unittest
-from datetime import date, datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone
 from unittest import mock
 
 import pandas as pd
@@ -31,8 +29,8 @@ from tests.journaux_isoles import isoler_journaux
 isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
 
 from utils import database
-from utils.portfolio_db import initialiser_paper_db
 from agents.paper_trader import cycle, prix_frais as pf
+from tests.paper_fixtures import BasePaper, decision
 
 MAINTENANT = datetime(2026, 10, 20, 15, 0, tzinfo=timezone.utc)
 
@@ -42,15 +40,6 @@ def barres(minutes_avant: float, close: float = 120.0, nan_fin: bool = False) ->
     index = pd.DatetimeIndex([fin - timedelta(minutes=2), fin - timedelta(minutes=1), fin])
     closes = [close - 1, close - 0.5, float("nan") if nan_fin else close]
     return pd.DataFrame({"Close": closes}, index=index)
-
-
-def decision(ticker="AAA", action="BUY", conf=9, prix=117.0):
-    return {"ticker": ticker,
-            "decision": {"ticker": ticker, "decision": action, "confidence": conf, "score_composite": 2.4,
-                         "reasoning": f"Thèse inventée {ticker}", "style": "normal", "taille_factor": 1.0,
-                         "convergences": ["technique+sentiment"], "contradictions": []},
-            "analyses": {"technique": {"direction": "ACHAT", "confiance": 7, "prix": prix},
-                         "risque": {"valide": True, "signal": {"montant_investi": 50.0}}, "memory": {}}}
 
 
 class TestPrixFrais(unittest.TestCase):
@@ -74,31 +63,7 @@ class TestPrixFrais(unittest.TestCase):
                          (119.5, 240.0))
 
 
-class TestOuverture(unittest.TestCase):
-    def setUp(self):
-        self.dossier = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
-        self.patchs = [mock.patch.object(database, "DB_PATH", os.path.join(self.dossier.name, "t.db")),
-                       mock.patch("agents.paper_trader.executor._email_ouverture"),
-                       mock.patch("socket.socket.connect", side_effect=AssertionError("aucun réseau")),
-                       mock.patch("utils.llm.ask_llm", side_effect=AssertionError("aucun LLM"))]
-        for p in self.patchs:
-            p.start()
-        database.initialiser_base()
-        initialiser_paper_db()
-        conn = database.get_connection()
-        for i in range(400):
-            c = 100 + 10 * math.sin(i / 15) + i * 0.05  # cours inventés
-            conn.execute("INSERT INTO prices (ticker, timeframe, timestamp, open, high, low, close, volume) "
-                         "VALUES ('AAA', '1d', ?, ?, ?, ?, ?, 1000)",
-                         ((date(2025, 1, 1) + timedelta(days=i)).isoformat(), c, c + 1, c - 1, c))
-        conn.commit()
-        conn.close()
-
-    def tearDown(self):
-        for p in reversed(self.patchs):
-            p.stop()
-        self.dossier.cleanup()
-
+class TestOuverture(BasePaper):
     def ouvrir(self, frais, d=None):
         espion = mock.Mock(wraps=cycle.valider_signal)
         with mock.patch.object(cycle, "prix_frais", return_value=frais), \
@@ -106,19 +71,13 @@ class TestOuverture(unittest.TestCase):
             res = cycle.executer_ouvertures([d or decision()])
         return res, espion
 
-    def position(self):
-        conn = database.get_connection()
-        rows = [dict(r) for r in conn.execute("SELECT * FROM positions")]
-        conn.close()
-        return rows
-
     def test_sl_tp_taille_sur_le_prix_frais(self):
         res, espion = self.ouvrir((120.0, 42.0))
         self.assertEqual(len(res["ouvertes"]), 1, res["refusees"])
         (args, kwargs), = [c[:2] for c in espion.call_args_list]
         self.assertEqual(args[2], 120.0)  # le Risk Manager recalcule sur le prix frais
         attendu = cycle.valider_signal("AAA", "LONG", 120.0, budget_alloue=kwargs["budget_alloue"])["signal"]
-        p, = self.position()
+        p, = self.positions()
         for col, cle in (("entry_price", "prix_entree"), ("stop_loss", "stop_loss"), ("target_1", "target_1"),
                          ("target_2", "target_2"), ("quantity", "taille_unites"), ("invested_amount", "montant_investi")):
             self.assertAlmostEqual(p[col], attendu[cle], places=9, msg=col)
@@ -130,14 +89,14 @@ class TestOuverture(unittest.TestCase):
         self.assertEqual(res["ouvertes"], [])
         self.assertIn({"ticker": "AAA", "raisons": ["prix_frais_indisponible"]}, res["refusees"])
         espion.assert_not_called()
-        self.assertEqual(self.position(), [])
+        self.assertEqual(self.positions(), [])
 
     def test_decision_inchangee_seuls_prix_sl_tp_taille_changent(self):
         d = decision()
         avant = copy.deepcopy(d["decision"])
         self.ouvrir((117.0, 10.0), d)
         self.assertEqual(d["decision"], avant)  # ni l'action ni la confiance ne changent
-        p1, = self.position()
+        p1, = self.positions()
         conn = database.get_connection()
         conn.execute("DELETE FROM positions")
         conn.commit()
@@ -145,7 +104,7 @@ class TestOuverture(unittest.TestCase):
         d2 = decision()
         self.ouvrir((125.0, 10.0), d2)
         self.assertEqual(d2["decision"], avant)
-        p2, = self.position()
+        p2, = self.positions()
         changent = {"id", "entry_price", "stop_loss", "target_1", "target_2", "quantity", "invested_amount",
                     "prix_execution", "entry_date", "created_at"}
         for col in set(p1) - changent:

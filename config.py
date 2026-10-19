@@ -142,6 +142,8 @@ SEUIL_SELL = SEUIL_SELL if SEUIL_SELL < 0 else -2.0
 SEUIL_CONFIANCE_PAPER          = int(_get_optional("SEUIL_CONFIANCE_PAPER", "8"))
 SEUIL_CONFIANCE_PAPER_DEFENSIF = int(_get_optional("SEUIL_CONFIANCE_PAPER_DEFENSIF", "9"))
 SEUIL_CONFIANCE_LEARNING       = int(_get_optional("SEUIL_CONFIANCE_LEARNING", "4"))
+# Registre v1.8 (§9.5) : 1 = positions « boucle » exclues des statistiques paper ; 0 jusqu'au 28/10/2026
+EXCLURE_BOUCLES_STATS = 1 if _get_optional("EXCLURE_BOUCLES_STATS", "0").strip() == "1" else 0
 
 # ── Jev / TypeSafe : observation seule (agents/jev/, REGISTRE_CRITERES §7) ────
 # Cycle quotidien uniquement ; aucune sortie lue par le vote. Désactivé par

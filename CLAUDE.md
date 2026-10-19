@@ -107,6 +107,9 @@ Allocation : score = confiance × (1 + winrate/100) × urgence — proportionnel
 - **Prix d'entrée (mécanisme v2, registre v1.8 §9.4)** : prix frais à l'ouverture, barre de 1 min
   Yahoo de moins de 15 min (`agents/paper_trader/prix_frais.py`) ; SL, TP et taille recalculés
   sur ce prix ; sans prix frais, refus « prix_frais_indisponible »
+- **Anti-boucle (registre v1.8 §9.4)** : pas de réouverture du même actif pendant 24 h après une
+  fermeture automatique (stop, objectif, trailing stop) ; refus « anti_boucle »
+  (`agents/paper_trader/anti_boucle.py`)
 
 **Sortie auto** : SL touché / TP atteint / signal inverse fort.
 **Mode LOCK-IN** : surveillance 5 min sur actifs en breakout (4h max).
@@ -123,6 +126,9 @@ la position qu'elle aurait fermée va dans `rotation_hypothetique` (database.db)
 - `memory/weekly_reviews/` : revues hebdomadaires
 - Ces fichiers ne sont PAS suivis par git (dépôt public, TODO §39) : ils vivent sur la tour ; les
   modèles `memory/<nom>.md.exemple` (suivis) recréent un fichier absent au premier ajout.
+- Positions « boucle » (registre v1.8 §9.2, colonne `boucle` remplie par `scripts/marquer_boucles.py`) :
+  exclues des modes du Budget Manager et des écritures de lessons/patterns si `EXCLURE_BOUCLES_STATS=1`
+  (`utils/positions_boucles.py`), à 0 jusqu'au 28/10/2026.
 
 - Vault Obsidian (`scripts/sync_vault_trading.py`, chaque matin après le quotidien ; lecture seule
   des bases, jamais de données du portefeuille réel) : 00-Index, 10-Decisions (BUY/SELL par actif,

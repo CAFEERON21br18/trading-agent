@@ -74,7 +74,10 @@ def parametres_actifs() -> dict:
         "CAPITAL", "MAX_CAPITAL_INVESTI_PCT", "RISK_PER_TRADE_PCT", "MAX_POSITIONS_SIMULTANEES",
         "SEUIL_BUY", "SEUIL_SELL", "PIPELINE_FALLBACK_FACTOR", "PIPELINE_FALLBACK_ALERT",
         "METACOG_AUDIT_ENABLED", "GEMINI_RETRY_MAX_SEC", "CHAT_PRIX_AGE_MAX_MIN",
-        "SEUIL_CONFIANCE_PAPER", "SEUIL_CONFIANCE_PAPER_DEFENSIF", "SEUIL_CONFIANCE_LEARNING")}
+        "SEUIL_CONFIANCE_PAPER", "SEUIL_CONFIANCE_PAPER_DEFENSIF", "SEUIL_CONFIANCE_LEARNING",
+        "EXCLURE_BOUCLES_STATS")}
+    from utils.positions_boucles import nombre_marquees  # v1.8 (§9.2) : T_excl lisible au registre
+    p["BOUCLES_MARQUEES"] = nombre_marquees()
     p["GEMINI_RESERVE_POUR"] = sorted(getattr(config, "GEMINI_RESERVE_POUR", []))
     # R3 ; R3b : paires [catégorie, tickers], car l'empreinte est calculée sur un JSON à clés
     # triées (_canon) : un dictionnaire y perdrait l'ordre des catégories
@@ -83,8 +86,10 @@ def parametres_actifs() -> dict:
         from agents.decision_engine import POIDS, SEUIL_LEARNING, SEUIL_CONTRADICTION
         from agents.analysts.risk_manager.manager import RR_MINIMUM
         from agents.budget_manager.strategy import PARAMETRES as MODES_BM  # P13 : pré-filtre de confiance, tailles
+        from agents.paper_trader import anti_boucle, prix_frais  # v1.8 (§9.4) : mécanisme d'entrée, anti-boucle
         p.update(POIDS=POIDS, SEUIL_LEARNING=SEUIL_LEARNING, SEUIL_CONTRADICTION=SEUIL_CONTRADICTION,
-                 RR_MINIMUM=RR_MINIMUM, MODES_BM=MODES_BM)
+                 RR_MINIMUM=RR_MINIMUM, MODES_BM=MODES_BM, MECANISME_ENTREE=prix_frais.MECANISME_ENTREE,
+                 ANTI_BOUCLE_HEURES=anti_boucle.DELAI.total_seconds() / 3600)
     except Exception as e:
         p["erreur_lecture"] = str(e)[:120]
     return p
