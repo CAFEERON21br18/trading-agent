@@ -127,4 +127,9 @@ if __name__ == "__main__":
     logger.info("Accès téléphone : Tailscale Serve (scripts/setup_tailscale.py)")
     if HOST not in ("127.0.0.1", "localhost", "::1"):
         logger.warning(f"Dashboard joignable hors de ce PC (DASHBOARD_HOST={HOST})")
+    # Sous Windows, un second serveur se lierait au même port sans erreur (SO_REUSEADDR) :
+    # s'il est déjà pris, on s'arrête proprement (code 0) au lieu de doubler le dashboard
+    from dashboard.demarrage import port_libre_ou_arret
+    if not port_libre_ou_arret(HOST, PORT, logger):
+        sys.exit(0)
     app.run(host=HOST, port=PORT, debug=False)

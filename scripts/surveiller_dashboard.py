@@ -8,7 +8,9 @@ Lancement : .venv\\Scripts\\python.exe scripts\\surveiller_dashboard.py
 - 2 échecs consécutifs = incident : UN email (alerts/channels/email_channel.envoyer_email), puis un
   email de retour à la normale quand le dashboard répond de nouveau ;
 - si rien n'écoute sur le port : relance de la tâche \\AlphaSignal\\dashboard (schtasks /Run), au plus
-  une fois par RELANCE_MIN_S ; si le port écoute sans répondre : alerte seulement (rien n'est tué).
+  une fois par RELANCE_MIN_S, et JAMAIS si la tâche est déjà en cours (Running) ou démarrée il y a
+  moins de DEMARRAGE_RECENT_S (relance manuelle en cours), ni si son état est illisible ;
+  si le port écoute sans répondre : alerte seulement (rien n'est tué).
 L'état (échecs consécutifs, incident en cours, email envoyé, dernière relance) est gardé dans
 data/surveillance_dashboard.json. Le script ne lève jamais : code de sortie 0.
 """
@@ -34,6 +36,7 @@ URL = f"http://{HOTE}:{PORT}/api/health"
 DELAI_S = 5
 ECHECS_INCIDENT = 2
 RELANCE_MIN_S = 15 * 60
+DEMARRAGE_RECENT_S = 3 * 60
 TACHE = r"\AlphaSignal\dashboard"
 ETAT = os.path.join(RACINE, "data", "surveillance_dashboard.json")
 
@@ -55,6 +58,23 @@ def port_ecoute(hote: str = HOTE, port: int = PORT) -> bool:
             return True
     except OSError:
         return False
+
+
+def raison_de_ne_pas_relancer(maintenant: datetime) -> str | None:
+    """Pourquoi ne pas relancer la tâche, d'après son état (Get-ScheduledTaskInfo, délai court)."""
+    try:
+        from dashboard.api.etat_taches import lire_taches
+        tache = (lire_taches() or {}).get(TACHE.rsplit("\\", 1)[-1])
+    except Exception as e:
+        tache = None
+        logger.warning(f"État de {TACHE} illisible : {e}")
+    if tache is None:
+        return "état de la tâche illisible"
+    if tache["etat"] == "Running":
+        return "la tâche est déjà en cours (Running)"
+    if tache["dernier"] and (maintenant - tache["dernier"]).total_seconds() < DEMARRAGE_RECENT_S:
+        return f"tâche démarrée le {tache['dernier']:%d/%m %H:%M:%S}, il y a moins de 3 minutes"
+    return None
 
 
 def relancer() -> tuple[bool, str]:
@@ -105,7 +125,12 @@ def passage(etat: dict, maintenant: datetime) -> dict:
     action = "le port écoute sans répondre : alerte seulement, rien n'est relancé"
     if not ecoute:
         derniere = nouvel.get("derniere_relance")
-        if not derniere or (maintenant - datetime.fromisoformat(derniere)).total_seconds() >= RELANCE_MIN_S:
+        delai_ecoule = not derniere or (maintenant - datetime.fromisoformat(derniere)).total_seconds() >= RELANCE_MIN_S
+        refus = raison_de_ne_pas_relancer(maintenant) if delai_ecoule else None
+        if refus:
+            nouvel["relance"] = f"pas de relance : {refus}"
+            logger.warning(f"Rien n'écoute sur {PORT}, pas de relance de {TACHE} : {refus}")
+        elif delai_ecoule:
             r_ok, r_detail = relancer()
             nouvel.update(derniere_relance=iso, relance=r_detail)
             logger.warning(f"Rien n'écoute sur {PORT} : relance de {TACHE} ({'OK' if r_ok else 'échec'} : {r_detail})")

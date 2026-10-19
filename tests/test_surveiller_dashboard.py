@@ -38,12 +38,14 @@ class BaseSurveillance(unittest.TestCase):
     def setUp(self):
         self.dossier = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
         self.reponses, self.ecoute, self.emails, self.relances = [], True, [], []
+        self.taches = {"dashboard": {"etat": "Ready", "dernier": T0 - timedelta(days=1)}}  # Get-ScheduledTaskInfo simulé
         self.patchs = [
             mock.patch.object(sd, "ETAT", os.path.join(self.dossier.name, "surveillance_dashboard.json")),
             mock.patch.object(sd, "sonder", side_effect=lambda url=sd.URL: self.reponses.pop(0)),
             mock.patch.object(sd, "port_ecoute", side_effect=lambda *a: self.ecoute),
             mock.patch.object(sd, "relancer", side_effect=lambda: self.relances.append(1) or (True, "relancée")),
-            mock.patch.object(sd, "envoyer", side_effect=lambda s, c: self.emails.append((s, c)) or True)]
+            mock.patch.object(sd, "envoyer", side_effect=lambda s, c: self.emails.append((s, c)) or True),
+            mock.patch("dashboard.api.etat_taches.lire_taches", side_effect=lambda: self.taches)]
         for p in self.patchs:
             p.start()
 

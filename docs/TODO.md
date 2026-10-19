@@ -856,6 +856,19 @@ chiffres. Restent donc à faire après la fenêtre :
 
 ## 34. Dashboard arrêté le 13/10 au soir, sans alerte
 
+**Relance concurrente du 19/10/2026, 13:30:41** (tâche finie en -1, lecture des logs) : le -1
+(4294967295) est le code de l'instance tuée par `Stop-Process -Force` (TerminateProcess -1, que
+`cmd /c` rend à la tâche). Le `Start-ScheduledTask` lancé juste après a été ignoré : la tâche était
+encore « Running » et elle est réglée en `MultipleInstances = IgnoreNew`. Rien n'écoutait de 13:30:41
+à 13:37:25 (la surveillance a vu un seul échec, à 13:35:04 : pas d'incident, pas de relance). De
+plus, Werkzeug lie le port avec SO_REUSEADDR : sous Windows, un second dashboard se lie au même port
+sans erreur. Corrigé : la surveillance ne relance jamais une tâche Running, démarrée il y a moins de
+3 minutes ou à l'état illisible ; `dashboard/demarrage.py` arrête proprement (code 0, message) un
+second démarrage qui trouve le port pris. Relance manuelle sûre (PowerShell administrateur) :
+`Stop-Process -Id (Get-NetTCPConnection -LocalPort 8080 -State Listen).OwningProcess -Force;
+while ((Get-ScheduledTask -TaskPath "\AlphaSignal\" -TaskName dashboard).State -eq "Running")
+{ Start-Sleep 1 }; Start-ScheduledTask -TaskPath "\AlphaSignal\" -TaskName dashboard`.
+
 **Surveillance prête le 17/10/2026, à installer** : `scripts/surveiller_dashboard.py`
 interroge `GET /api/health` (délai 5 s) ; après 2 échecs consécutifs, UN email par
 incident puis un email de retour à la normale ; rien n'écoute sur le port : relance de
