@@ -95,9 +95,10 @@
           ('budget', '/budget', '💵', 'Bud'),
           ('memory', '/memory', '🧠', 'Mem'),
           ('architecture', '/architecture', '🗺️', 'Arch'),
+          ('audit', '/audit', '🔎', 'Aud'),
           ('settings', '/settings', '⚙️', 'Set'),
         ] %}
-        <!-- Une colonne par entrée (13 depuis la page Fantôme Jev) -->
+        <!-- Une colonne par entrée (14 depuis la page Audit) -->
         <div class="grid max-w-4xl mx-auto"
              style="grid-template-columns: repeat({{ nav_items|length }}, minmax(0, 1fr));">
             {% for slug, href, emoji, label in nav_items %}

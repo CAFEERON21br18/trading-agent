@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Audit — AlphaSignal{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+    <h2 class="font-semibold mb-1 text-sm">🔎 Audit du chat</h2>
+    <div class="text-xs text-slate-400">
+        Chaque message du chat, la réponse, le contexte injecté, la vérification des chiffres et la
+        chaîne de repli des LLM. Lecture seule, sur ce dashboard local seulement : rien n'est exporté.
+        Les prompts contiennent le portefeuille réel.
+    </div>
+    <div id="aud-stats" class="text-xs text-slate-300 mt-2">…</div>
+</div>
+
+<div class="card mb-3">
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-2 text-xs">
+        <label class="flex flex-col gap-1">Du<input id="aud-du" type="date" class="aud-champ"></label>
+        <label class="flex flex-col gap-1">Au<input id="aud-au" type="date" class="aud-champ"></label>
+        <label class="flex flex-col gap-1">LLM
+            <select id="aud-llm" class="aud-champ">
+                <option value="">tous</option><option value="gemini">gemini</option>
+                <option value="groq">groq</option><option value="rule_based">rule_based</option>
+            </select>
+        </label>
+        <label class="flex flex-col gap-1">Erreur
+            <select id="aud-erreur" class="aud-champ">
+                <option value="">toutes</option><option value="oui">avec erreur</option>
+                <option value="non">sans erreur</option>
+            </select>
+        </label>
+        <div class="flex items-end"><button id="aud-effacer" class="aud-btn w-full">Effacer les filtres</button></div>
+    </div>
+</div>
+
+<div id="aud-erreur-chargement" class="card mb-3 hidden border-red-700 text-xs text-red-300"></div>
+<div id="aud-liste" class="space-y-2"><div class="skeleton h-24"></div></div>
+
+<div class="flex items-center justify-between gap-2 mt-3 text-xs">
+    <button id="aud-recents" class="aud-btn" disabled>← Plus récents</button>
+    <span id="aud-page" class="text-slate-400"></span>
+    <button id="aud-anciens" class="aud-btn" disabled>Plus anciens →</button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+  .aud-champ { background: #0f172a; border: 1px solid #475569; border-radius: 0.4rem; padding: 0.35rem 0.4rem;
+               color: #e2e8f0; min-height: 2.25rem; }
+  .aud-btn { padding: 0.4rem 0.8rem; border-radius: 9999px; background: #334155; color: #e2e8f0; min-height: 2.25rem; }
+  .aud-btn:disabled { opacity: 0.4; }
+  .aud-item { background: #1e293b; border: 1px solid #334155; border-radius: 0.6rem; }
+  .aud-item > summary { list-style: none; cursor: pointer; padding: 0.6rem 0.75rem; }
+  .aud-item > summary::-webkit-details-marker { display: none; }
+  .aud-item[open] > summary { border-bottom: 1px solid #334155; }
+  .aud-texte { white-space: pre-wrap; word-break: break-word; }
+  .aud-code { font-family: ui-monospace, monospace; font-size: 11px; color: #cbd5e1; white-space: pre-wrap;
+              word-break: break-all; background: #0f172a; border-radius: 0.4rem; padding: 0.5rem;
+              max-height: 22rem; overflow: auto; }
+  .aud-titre { font-weight: 600; color: #cbd5e1; margin-bottom: 0.25rem; }
+  .aud-ko { color: #fca5a5; } .aud-ok { color: #6ee7b7; }
+</style>
+<script src="/static/js/audit_page.js"></script>
+{% endblock %}

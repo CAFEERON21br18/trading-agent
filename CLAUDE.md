@@ -152,8 +152,10 @@ Après : `mettre_a_jour_performance_md()` synchronise tout (intuition + learner)
 8. **Tester au fur et à mesure** — chaque module a son test
 9. Dépôt public : aucune donnée réelle (quantité, prix d'entrée, montant, texte de plan ou de conseil du portefeuille réel) dans un fichier commité, tests compris. Les données de test sont inventées. Avant chaque push, comparer le diff aux valeurs des tables real_*.
 
-## Dashboard PWA (`dashboard/app.py` sur port 8080) — v5 : 10 pages
-Pages : Overview, Portfolio, **Réel** (v5), **Chat** (v5), Watchlist, Explorers, Journal, Budget, Memory, Settings.
+## Dashboard PWA (`dashboard/app.py` sur port 8080) — 14 pages
+Pages : Overview, Portfolio, Fantôme Jev, **Réel** (v5), Plans, **Chat** (v5), Watchlist, Explorers, Journal,
+Budget, Memory, **Architecture** (carte du code + état en direct, relu toutes les 30 s),
+**Audit** (messages du chat, lecture seule), Settings.
 Écoute sur **127.0.0.1** (`DASHBOARD_HOST`, défaut) — plus d'accès direct depuis le Wi-Fi local.
 iPhone (maison ou 4G) : uniquement via Tailscale Serve `https://<machine>.<tailnet>.ts.net/`
 puis "Ajouter à l'écran d'accueil". Ne pas repasser en 0.0.0.0 : le dashboard n'a pas

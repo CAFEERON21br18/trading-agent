@@ -95,6 +95,12 @@ def page_architecture():
     return render_template("architecture.html", page="architecture")
 
 
+@app.route("/audit")
+def page_audit():
+    """Phase 4, partie D : consultation de message_audit (GET /api/audit/*, lecture seule)."""
+    return render_template("audit.html", page="audit")
+
+
 @app.route("/manifest.json")
 def manifest():
     """Manifest PWA — pour 'Ajouter à l'écran d'accueil' sur iPhone."""
