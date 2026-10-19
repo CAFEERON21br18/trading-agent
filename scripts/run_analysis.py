@@ -4,6 +4,8 @@ Usage :
   python3 scripts/run_analysis.py               → analyse + email
   python3 scripts/run_analysis.py --no-email    → analyse sans email (test)
   python3 scripts/run_analysis.py --preview     → génère rapport mais ne l'envoie pas
+                                                  (la routine tourne quand même : décisions,
+                                                  ouvertures et fermetures paper comprises)
 """
 
 import sys
@@ -26,8 +28,9 @@ def main():
     print("="*60 + "\n")
 
     if "--preview" in args:
-        # Juste générer et afficher, sans persistance ni email
-        rapport, signaux = generer_rapport_quotidien()
+        # Générer et afficher sans email (generer_rapport_quotidien rend 3 valeurs : rapport,
+        # décisions BUY/SELL retenues, toutes les décisions)
+        rapport, signaux, _toutes = generer_rapport_quotidien()
         print(rapport)
         print(f"\n--- {len(signaux)} signaux forts détectés ---")
         return
