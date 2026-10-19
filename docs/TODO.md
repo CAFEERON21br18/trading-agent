@@ -1004,3 +1004,19 @@ Sans objet : `utils/memory_lookups.py`, `performance_tracker` et le winrate par 
 Decision Engine (`agents/memory_reader.py`) lisent `signals` / `signal_results`, vide et sans lien
 avec `positions`. Si `signal_results` est un jour alimentée depuis les positions (condition 2 de
 `docs/AVANT_ARGENT_REEL.md`), ce lien devra porter la colonne `boucle`.
+
+**Mise à jour du 19/10/2026 (registre v1.9, §9.5)** : la porte paper défensive et le suivi
+d'intuition entrent dans l'exclusion du 28/10, sous le même interrupteur. Ce n'est PAS encore codé
+(session 9 : le cadre limitait le code de décision aux étapes C et D) ; à faire avant le 28/10 :
+`fermees_recentes` à la place de `lire_positions_recentes_fermees` dans `portfolio.py` et
+`intuition_tracker.py`, avec un test à 0 et à 1.
+
+## 41. ~~Collecte des prix du 17/10 jamais faite~~ (corrigé le 19/10/2026, registre v1.9 §9.8 a)
+
+Cause : la tour était éteinte du 16/10 23h06 au 17/10 12h19. Au redémarrage, le rattrapage de 12h
+a collecté pendant que Yahoo ne répondait pas (« Cookie/crumb fetch failed (Timeout) » de 12h20 à
+12h46 dans `logs/task_critical.log`). Les 69 téléchargements sont revenus vides et 0 barre a été
+écrite. Le rapport a pourtant été écrit sur les barres du 16/10, et `_rapport_du_jour_existe()` a
+bloqué toute nouvelle tentative jusqu'au 18/10. Correction : `utils/collecte_verifiee.py`
+(vérification à 80 %, 3 essais, pas de rapport en cas d'échec, filet du tactical à 30 h).
+`scripts/daily_routine.py` (lancement manuel) collecte encore sans vérification.

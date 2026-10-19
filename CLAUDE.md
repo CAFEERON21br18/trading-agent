@@ -69,6 +69,11 @@ Découvertes → `data/explorer_queue.json` si score ≥ 4 → analyse complète
 | 🟣 Weekly | Dim 20h | Revue hebdo + rapport, puis (verrou libéré) carte du code Graphify → vault |
 | 🧹 Cleanup | Dim 3h | Logs + cache + locks |
 
+Collecte des prix (registre v1.9 §9.8 a, `utils/collecte_verifiee.py`) : le quotidien vérifie que
+80 % des actifs ont leur barre 1d du jour attendu, sinon 3 essais à 5 min ; si tout échoue, ni
+routine ni rapport (le rattrapage de 12h retente). Filet : le tactical relance une collecte si la
+dernière barre 1d a été écrite il y a plus de 30 h (une fois par heure, verrou « collecte »).
+
 ## Decision Engine — 5 étapes
 1. **Collecter** technique + fondamental + sentiment + risque + mémoire + contexte
 2. **Corréler** convergences/contradictions (pas additionner bêtement)

@@ -45,6 +45,8 @@ class BaseCycle(unittest.TestCase):
             battement = pile.enter_context(mock.patch.object(cycle_daily, "update_heartbeat"))
             pile.enter_context(mock.patch("utils.database.initialiser_base"))
             pile.enter_context(mock.patch("utils.helpers.charger_watchlist", return_value=[]))
+            pile.enter_context(mock.patch("utils.collecte_verifiee.collecter_et_verifier",  # collecte réussie
+                                          return_value={"ok": True, "raison": ""}))
             routine = pile.enter_context(mock.patch(
                 "agents.orchestrator.lancer_routine_quotidienne",
                 side_effect=routine_effet or (lambda **k: ordre.append("routine") or dict(RESUME))))

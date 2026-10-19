@@ -131,7 +131,7 @@ def collecter_toute_la_watchlist(watchlist: dict) -> dict:
                     nb = sauvegarder_prix(ticker, tf, df, TIMEFRAME_CONFIG.get(tf, {}).get("duree"))
                     resume[ticker][tf] = nb
                 else:
-                    resume[ticker][tf] = 0
+                    resume[ticker][tf] = None  # téléchargement vide, distinct de « 0 ligne nouvelle » (v1.9)
 
                 # Pause courte pour ne pas surcharger l'API
                 time.sleep(0.5)
@@ -191,7 +191,7 @@ if __name__ == "__main__":
     print("\n--- Résumé de la collecte ---")
     for ticker, tfs in resume.items():
         for tf, nb in tfs.items():
-            statut = "✅" if nb > 0 else "⚠️ "
+            statut = "✅" if (nb or 0) > 0 else "⚠️ "
             print(f"  {statut} {ticker:12s} [{tf}] : {nb} nouvelles lignes")
 
     print("\nCollecte terminée.")

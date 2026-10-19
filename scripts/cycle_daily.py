@@ -91,17 +91,19 @@ def main() -> int:
             logger.warning(f"État dégradé avant lancement : {sante_avant['raison']}")
 
         from utils.database import initialiser_base
-        from scripts.fetch_data import collecter_toute_la_watchlist
-        from utils.helpers import charger_watchlist
+        from utils.collecte_verifiee import collecter_et_verifier
         from agents.orchestrator import lancer_routine_quotidienne
 
         initialiser_base()
-        try:
-            watchlist = charger_watchlist()
-            if watchlist:
-                collecter_toute_la_watchlist(watchlist)
-        except Exception as e:
-            logger.error(f"Collecte données : {e} (on continue)")
+        # Collecte vérifiée et relancée (REGISTRE_CRITERES v1.9, §9.8 a) : 3 essais au plus ; sans
+        # les prix du jour, pas de routine ni de rapport, et le rattrapage de 12h retente
+        collecte = collecter_et_verifier()
+        if not collecte["ok"]:
+            nb = signaler_echec(f"collecte des prix : {collecte['raison']}")
+            update_heartbeat(CYCLE, status="error", duration_sec=_t.time() - t0,
+                             extra={"collecte": collecte["raison"][:200]})
+            _alerter_panne_si_critique(nb)
+            return 1
 
         resume = lancer_routine_quotidienne(envoyer_emails=True)
         signaler_succes(rapport_envoye=resume.get("rapport_envoye", False))

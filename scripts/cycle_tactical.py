@@ -133,6 +133,8 @@ def main() -> int:
         from agents.paper_trader.monitor import monitorer_positions
 
         initialiser_paper_db()
+        from utils.collecte_verifiee import filet_tactical
+        filet_tactical()  # v1.9 (§9.8 a) : barre 1d écrite il y a plus de 30 h → collecte, 1 fois par heure
 
         # 1. Monitor positions (SL/TP)
         logger.info("📍 ÉTAPE 1 — Monitor positions (SL/TP)")
