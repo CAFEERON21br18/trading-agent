@@ -5,9 +5,24 @@ l'agent soit appliquée au portefeuille réel. Même alors, c'est toi qui passer
 la main sur Revolut. Il n'y a aucun code d'exécution d'ordre, et ce document n'en prévoit
 pas. Aujourd'hui, l'agent conseille sur le réel et n'agit jamais (CLAUDE.md, « Portefeuille RÉEL »).
 
-**Repères W2, W4, C3, D6-D8.** Je les reprends de ta demande. Leur définition n'est ni dans
-le dépôt ni dans la mémoire de l'agent, et le « journal du council » n'est pas sur la tour.
-J'applique à W2, W4 et C3 le sens donné par ta phrase. D6-D8 restent à préciser.
+## Codes utilisés
+
+Définitions données par Lucia le 19/10/2026, reprises telles quelles :
+
+- W2 : frais, spread, change et fiscalité portugaise forment un seuil d'environ 6 à 10 points par an à battre. Les positions réelles sont en dollars, le montant débité en euros n'est pas stocké, et les coûts du §0.2 (crypto 1,0 %, reste 0,2 % aller-retour) sont des hypothèses, pas des frais Revolut mesurés.
+- W4 : plafonner la poche pilotée par l'agent à 10-20 % du capital investissable (à décider par Lucia).
+- C3 : le capital paper est constant, le P&L réalisé n'y est jamais ajouté, et l'arrêt d'urgence est inerte (portfolio.py:97-103 ; constat du 19/10 : il compare config.CAPITAL fixe au seuil de 700 €).
+- D6 : intuition.py:478-480 force un BUY après n'importe quel veto si l'ajustement est d'au moins 2, même sur un signal baissier (TODO §20).
+- D7 : le veto Extreme Greed est contournable par l'intuition au cycle quotidien et inactif dans le tactical (TODO §21).
+- D8 : le tactical n'évalue que les 8 premiers actifs sans position (TODO §22).
+
+**Emplacements vérifiés le 19/10/2026 dans le code actuel :**
+- C3 : `agents/paper_trader/portfolio.py:97-103` (`capital_total = config.CAPITAL`, `cash = capital_total − invested`).
+- D6 : le code est maintenant à `agents/intuition.py:100-102`, depuis le découpage du fichier.
+  La règle couvre `HOLD` comme `NO_TRADE`.
+- D7 : `agents/decision_engine.py:88-96` ; le tactical appelle `analyser_actif_complet(t)` sans
+  `sentiment_global` (`scripts/cycle_tactical.py:67`).
+- D8 : `scripts/cycle_tactical.py:158-159`.
 
 ## 1. Vue d'ensemble
 
@@ -15,13 +30,13 @@ J'applique à W2, W4 et C3 le sens donné par ta phrase. D6-D8 restent à préci
 |---|---|---|---|
 | 1 | Lectures du registre faites (Q1, Q3, §7 Jev) | en cours | 03/11/2026 (Q3.a) ; 11/01/2027 (Jev) ; ≈ 16/03/2027 (Q1) |
 | 2 | `signal_results` alimentée | pas fait | aucune |
-| 3 | Frais Revolut réels mesurés (W2) | pas fait | aucune |
-| 4 | Défauts D6-D8 corrigés, avec critère | inconnu (définitions introuvables) | — |
+| 3 | Frais Revolut réels mesurés, seuil annuel W2 connu | pas fait (coûts du §0.2 = hypothèses ; débit en euros non stocké) | aucune |
+| 4 | Défauts D6-D8 corrigés, avec critère | pas fait : TODO §20, §21, §22 ouverts, gelés jusqu'à un critère | aucune |
 | 5 | §29 (1 € = 1 $) corrigé | pas fait, gelé volontairement | après les fenêtres de mesure |
-| 6 | Plafond de la poche pilotée (W4) | pas fait (notion absente du code) | aucune |
-| 7 | Arrêt d'urgence fonctionnel (C3) | **pas fonctionnel** | aucune |
+| 6 | Plafond de la poche pilotée (W4, 10 à 20 %) | pas fait (valeur à décider, notion absente du code) | aucune |
+| 7 | Arrêt d'urgence fonctionnel, capital paper qui intègre le P&L réalisé (C3) | **pas fonctionnel** | aucune |
 | 8 | Test de bout en bout « proposition seulement », N semaines | pas commencé | aucune |
-| 9 | Prix d'entrée paper au cours du moment | pas fait (relevé le 19/10) | aucune |
+| 9 | Prix d'entrée paper au cours du moment | pas fait (cause confirmée le 19/10) | aucune |
 | 10 | Données des sous-agents disponibles | pas fait (quotas) | aucune |
 
 Les conditions 9 et 10 ne sont pas dans ta liste. Je les ajoute parce que, sans elles, les
@@ -54,23 +69,36 @@ conditions 1 et 8 mesurent un système différent de celui qui toucherait le ré
 - **Vérifier :** un test de bout en bout (ouverture, fermeture, ligne écrite), puis un
   comptage : positions fermées depuis la date = lignes de `signal_results` sur la même période.
 
-### 3. Frais Revolut réels mesurés (W2)
-- **État :**
-  - le registre et le fantôme Jev déduisent des coûts **estimés** (0,2 % aller-retour hors
-    crypto, 1,0 % en crypto, `REGISTRE_CRITERES.md` §0.2) ;
-  - le paper trader n'en déduit **aucun** : aucun frais, aucun spread dans `agents/paper_trader/`.
-- **Condition :** des frais et un spread effectifs par classe d'actif (crypto, actions US,
-  ETF, matières), mesurés sur tes propres relevés Revolut. Si ces frais sont plus élevés que
-  les estimations, les valeurs sont relevées par un commit du registre **avant** la lecture
-  concernée (§0.2).
-- **Vérifier :** une table des pourcentages par classe, avec le nombre d'ordres mesurés et
-  leur période. Seuls les pourcentages entrent dans le dépôt (règle 9), jamais les relevés.
+### 3. Frais Revolut réels mesurés, seuil annuel connu (W2)
+- **État : pas fait.**
+  - Le registre et le fantôme Jev déduisent des coûts **hypothétiques** (0,2 % aller-retour hors
+    crypto, 1,0 % en crypto, `REGISTRE_CRITERES.md` §0.2).
+  - Le paper trader n'en déduit **aucun** : aucun frais, aucun spread dans `agents/paper_trader/`.
+  - Le change n'est pas mesurable : les positions réelles sont en dollars, et le montant débité
+    en euros n'est pas stocké (D1).
+  - La fiscalité n'est prise en compte nulle part.
+- **Condition :**
+  - des frais, un spread et un coût de change effectifs par classe d'actif (crypto, actions US,
+    ETF, matières), mesurés sur tes propres relevés Revolut ;
+  - le seuil annuel W2 (environ 6 à 10 points, fiscalité portugaise comprise) recalculé à partir
+    de ces mesures ;
+  - si ces frais sont plus élevés que les hypothèses, les valeurs du §0.2 sont relevées par un
+    commit du registre **avant** la lecture concernée.
+- **Vérifier :**
+  - une table des pourcentages par classe, avec le nombre d'ordres mesurés et leur période ;
+  - le montant débité en euros enregistré pour chaque nouvelle position réelle ;
+  - seuls les pourcentages entrent dans le dépôt (règle 9), jamais les relevés.
 
 ### 4. Défauts D6-D8 corrigés, avec critère
-- **État :** inconnu, faute de définition.
-- **Condition :** pour chaque défaut, une entrée au TODO, un commit de correction, un test et,
-  si le défaut touche une série mesurée, un critère au registre écrit avant la correction.
-- **Vérifier :** les trois références (TODO, commit, test) pour chaque défaut.
+- **État : pas fait.** Les trois sont ouverts et gelés : chaque entrée du TODO demande un critère
+  pré-enregistré au registre avant toute correction, et aucun n'y figure.
+  - D6, TODO §20 : intuition qui force un BUY après un veto (`agents/intuition.py:100-102`).
+  - D7, TODO §21 : veto Extreme Greed contournable au quotidien, inactif dans le tactical.
+  - D8, TODO §22 : tactical limité aux 8 premiers actifs sans position. Ce défaut déséquilibre
+    aussi les groupes de Q3.a.
+- **Condition :** pour chaque défaut, un critère au registre écrit avant la correction, un
+  commit de correction et un test.
+- **Vérifier :** les trois références (critère, commit, test) pour chaque défaut.
 
 ### 5. §29 corrigé (1 € = 1 $ sur les actifs cotés en dollars)
 - **État :** relevé le 13/10/2026. Le TODO §29 interdit de corriger avant la fin des fenêtres
@@ -83,22 +111,27 @@ conditions 1 et 8 mesurent un système différent de celui qui toucherait le ré
   fenêtres de Q1 (2027-2028) ?
 
 ### 6. Plafond de la poche pilotée (W4)
-- **État :** la notion n'existe pas dans le code. La règle des 50 % du capital investi ne
+- **État : pas fait.** La valeur reste à décider par toi, entre 10 et 20 % du capital
+  investissable. La notion n'existe pas dans le code, et la règle des 50 % du capital investi ne
   s'applique qu'au paper.
-- **Condition :** un montant maximal, fixé d'avance, de la part du portefeuille réel où une
-  proposition de l'agent peut être appliquée. Il serait écrit dans `.env`, et le code ne
-  pourrait pas le dépasser.
+- **Condition :** le plafond décidé (un pourcentage entre 10 et 20 % du capital investissable),
+  écrit dans `.env`. Le code ne pourrait pas le dépasser.
 - **Vérifier :** un test qui refuse une proposition au-delà du plafond ; le plafond et le
   montant engagé affichés sur la page Réel.
 
-### 7. Arrêt d'urgence fonctionnel (C3)
-- **État : pas fonctionnel.** `verifier_capital_minimum` (`agents/analysts/risk_manager/manager.py`),
-  `agents/orchestrator.py` et `main.py` comparent `config.CAPITAL` à `CAPITAL_STOP_THRESHOLD`
-  (700). Or `config.CAPITAL` est le capital de **référence** lu dans `.env` (1 000 par défaut),
-  pas la valeur courante du portefeuille. Il ne baisse jamais avec les pertes, donc l'arrêt ne
-  peut pas se déclencher. Rien de tel n'existe pour le réel.
-- **Condition :** l'arrêt compare la valeur courante (paper, puis poche pilotée) au seuil.
-  Sous le seuil : plus aucune proposition, un email, et un interrupteur manuel qui coupe tout.
+### 7. Arrêt d'urgence fonctionnel, capital paper qui intègre le P&L réalisé (C3)
+- **État : pas fonctionnel.**
+  - Le capital paper est constant : `agents/paper_trader/portfolio.py:97-103` part de
+    `config.CAPITAL` et n'y ajoute jamais le P&L réalisé (cash = capital − investi).
+  - `verifier_capital_minimum` (`agents/analysts/risk_manager/manager.py`), `agents/orchestrator.py`
+    et `main.py` comparent `config.CAPITAL` à `CAPITAL_STOP_THRESHOLD` (700). Or `config.CAPITAL`
+    est le capital de **référence** lu dans `.env` (1 000 par défaut), pas la valeur courante du
+    portefeuille. Il ne baisse jamais avec les pertes, donc l'arrêt ne peut pas se déclencher.
+  - Rien de tel n'existe pour le réel.
+  - Même corrigé, le capital paper intégrerait aujourd'hui les artefacts des boucles (condition 9).
+- **Condition :** un capital paper qui intègre le P&L réalisé, et un arrêt qui compare la valeur
+  courante (paper, puis poche pilotée) au seuil. Sous le seuil : plus aucune proposition, un
+  email, et un interrupteur manuel qui coupe tout.
 - **Vérifier :** un test où la valeur courante passe sous le seuil (aucune proposition, une
   alerte) ; un essai réel de l'interrupteur, noté avec sa date.
 
@@ -118,13 +151,13 @@ conditions 1 et 8 mesurent un système différent de celui qui toucherait le ré
 - **Vérifier :** la table des propositions (N semaines sans trou, zéro ordre passé par le code).
 
 ### 9. Prix d'entrée paper au cours du moment
-- **État :**
-  - 315 des 418 positions paper fermées ont duré moins d'une heure (en octobre, 68 fermées,
-    durée médiane 0,1 h) ;
-  - le prix d'entrée est la dernière barre de `prices`, collectée une fois par jour. À
-    l'ouverture, elle a 46 h en médiane (69 ouvertures depuis le 06/10). La surveillance compare
-    au cours du moment ;
-  - cause probable, à vérifier (`docs/HORIZONS.md`, §4).
+- **État : pas fait, cause confirmée** (`docs/DIAG_PRIX_ENTREE.md`).
+  - Le prix d'entrée est la dernière clôture 1d de `prices`, collectée une fois par jour vers
+    06h30 UTC. Depuis R2, ce prix a 25,9 h en médiane à l'ouverture.
+  - La surveillance compare au cours du moment toutes les 5 min, et rien n'empêche de rouvrir
+    l'actif au même prix figé au passage suivant du tactical.
+  - 16 boucles regroupent 313 des 421 positions, et 59 des 70 ouvertures depuis R2. 70 % des
+    fermetures ont lieu en moins de 5 min.
 - **Condition :** le prix d'entrée est un cours horodaté au moment de la décision.
 - **Vérifier :** un test sur la source du prix d'entrée ; sur 4 semaines, la durée des
   positions n'est plus concentrée sous une heure.
