@@ -48,11 +48,13 @@ def insertions(arbres) -> list:
 
 
 def journalisent(arbres) -> list:
-    """Modules qui journalisent leur activité (logger.info / logger.debug) : un module qui n'écrit
-    que ses avertissements et erreurs ne prouve pas, par son silence, qu'il n'a pas tourné."""
+    """Modules qui journalisent leur activité (logger.info / logger.debug, ou utils.passage.noter_passage) :
+    un module qui n'écrit que ses avertissements et erreurs ne prouve pas, par son silence, qu'il n'a
+    pas tourné."""
     return sorted(c for c, a in arbres.items() if any(
-        isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr in ("info", "debug")
-        and isinstance(n.func.value, ast.Name) and "log" in n.func.value.id.lower() for n in ast.walk(a)))
+        isinstance(n, ast.Call) and (ts._nom_appele(n) == "noter_passage" or (
+            isinstance(n.func, ast.Attribute) and n.func.attr in ("info", "debug")
+            and isinstance(n.func.value, ast.Name) and "log" in n.func.value.id.lower())) for n in ast.walk(a)))
 
 
 def _points_d_entree(modules) -> list:

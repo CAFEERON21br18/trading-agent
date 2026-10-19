@@ -9,6 +9,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 
 from utils.logger import get_logger
+from utils.passage import noter_passage
 from utils.valeurs import nombre_ou_none
 
 logger = get_logger(__name__)
@@ -22,6 +23,7 @@ def calculer_stop_loss(prix_entree: float, direction: str, atr: float,
       - LONG : max entre (entrée - ATR × 1.5) et support (le plus proche au-dessus)
       - SHORT : min entre (entrée + ATR × 1.5) et résistance (la plus proche en dessous)
     """
+    noter_passage(logger, "Risk Manager")  # appelée par valider_signal à chaque signal analysé
     if direction == "LONG":
         stop_atr = prix_entree - (atr * multiplicateur_atr)
         # Si un support est valide (sous l'entrée), on prend le max (le plus proche de l'entrée)

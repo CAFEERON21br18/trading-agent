@@ -10,6 +10,11 @@ import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
+from utils.logger import get_logger
+from utils.passage import noter_passage
+
+logger = get_logger(__name__)
+
 
 def calculer_metriques(trades: list[dict], equity_curve: pd.Series,
                        capital_initial: float) -> dict:
@@ -18,6 +23,7 @@ def calculer_metriques(trades: list[dict], equity_curve: pd.Series,
     trades : [{entry_date, exit_date, direction, entry_price, exit_price, pnl, pnl_pct}, ...]
     equity_curve : pd.Series indexée par date, valeur = equity au cours du temps
     """
+    noter_passage(logger, "Backtester")
     if not trades or equity_curve.empty:
         return {
             "nb_trades": 0, "win_rate": 0, "profit_factor": 0,

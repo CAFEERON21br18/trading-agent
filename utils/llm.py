@@ -23,16 +23,15 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.logger import get_logger
 from utils.secret_mask import masquer_secrets
 from utils.audit_trace import noter_appel_llm
+from utils.groq_appels import noter_appel as noter_appel_groq
 import config
 
 logger = get_logger(__name__)
 
 MODEL_GEMINI = "gemini-2.5-flash"
-# v5.4.2 : llama-3.3-70b-versatile a été déprécié par Groq → bascule sur
-# groq/compound-mini.
-# v5.4.3 : compound-mini à son tour retiré par Groq (2e modèle mort en peu
-# de temps) → le modèle n'est plus codé en dur, il vient de GROQ_MODEL
-# (.env), avec openai/gpt-oss-120b comme valeur par défaut.
+# v5.4.2 : llama-3.3-70b-versatile déprécié par Groq → bascule sur groq/compound-mini.
+# v5.4.3 : compound-mini à son tour retiré (2e modèle mort en peu de temps) → le modèle
+# n'est plus codé en dur : GROQ_MODEL (.env), openai/gpt-oss-120b par défaut.
 DEFAULT_MODEL_GROQ = "openai/gpt-oss-120b"
 
 # Les modèles "raisonneurs" (gpt-oss) réfléchissent avant de répondre et ces
@@ -103,6 +102,7 @@ def ask_llm(prompt: str, system: str | None = None,
     debut = time.monotonic()
     q = _try_groq(prompt, system, temperature, max_tokens)
     tentatives.append(_tentative("groq", modele_groq(), q, debut))
+    noter_appel_groq(modele_groq(), bool(q["text"]))  # page Architecture : source d'état de Groq
     if q["text"]:
         return _conclure(q, "groq", tentatives, prompt, system)
 

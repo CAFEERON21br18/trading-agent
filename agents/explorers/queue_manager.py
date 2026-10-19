@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from utils.logger import get_logger
+from utils.passage import noter_passage
 
 logger = get_logger(__name__)
 
@@ -80,7 +81,9 @@ def ajouter_decouverte(explorer: str, ticker: str, score: int,
 
 
 def lire_queue() -> list[dict]:
-    return _lire()
+    items = _lire()
+    noter_passage(logger, "Queue des découvertes", f"{len(items)} en attente")
+    return items
 
 
 def retirer(ticker: str) -> bool:

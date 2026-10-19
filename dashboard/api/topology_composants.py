@@ -120,6 +120,7 @@ REGLES = [
     ("agents/__init__.py", "infra"),
     ("utils/registre", "registre"),
     ("utils/gemini", "llm.gemini"),
+    ("utils/groq", "llm.groq"),
     ("utils/llm.py", "llm.router"),
     ("utils/data_fetcher.py", "fetch_data"),
     ("utils/", "infra"),

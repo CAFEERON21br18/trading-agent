@@ -14,6 +14,7 @@ import time
 from utils.logger import get_logger
 from utils.helpers import charger_watchlist, tous_les_tickers
 from utils.heartbeat import update_heartbeat_explorer
+from utils.passage import noter_passage
 from agents.explorers.queue_manager import ajouter_decouverte
 from alerts.channels.email_channel import envoyer_email
 
@@ -108,6 +109,8 @@ class ExplorerBase:
                     f"{len(decouvertes)} découverte(s), {len(observations)} observation(s), "
                     f"{erreurs} erreur(s)")
         logger.info(f"{'─' * 60}")
+        noter_passage(get_logger(type(self).__module__), f"Explorateur {self.nom}",  # composant de la carte
+                      f"{len(univers)} actifs, {len(decouvertes)} découverte(s)")
 
         # Mettre à jour le heartbeat de l'explorer
         update_heartbeat_explorer(self.nom, {

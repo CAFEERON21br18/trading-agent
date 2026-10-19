@@ -10,6 +10,7 @@ import pandas as pd
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from utils.logger import get_logger
+from utils.passage import noter_passage
 from utils.indicators import charger_ohlcv, calculer_tous_indicateurs, detecter_divergence_rsi, detecter_niveaux_cles
 from agents.analysts.market_analyst.patterns import detecter_tous_patterns, calculer_fibonacci
 
@@ -62,6 +63,7 @@ def analyser_graphique(ticker: str, timeframe: str = "1d") -> dict:
     """
     Analyse en 5 couches : structure → niveaux → patterns → contexte MT → confluence.
     """
+    noter_passage(logger, "Knowledge", "lecture graphique")
     df = charger_ohlcv(ticker, timeframe, limite=500)
     if df.empty:
         return {"erreur": f"Pas de données pour {ticker} [{timeframe}]"}

@@ -11,6 +11,7 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 
 from utils.logger import get_logger
+from utils.passage import noter_passage
 
 logger = get_logger(__name__)
 
@@ -111,6 +112,7 @@ def detecter_breakout(df: pd.DataFrame, periode: int = 20) -> str:
 
 def detecter_tous_patterns(df: pd.DataFrame) -> list[str]:
     """Retourne la liste des patterns identifiés sur le DataFrame."""
+    noter_passage(logger, "Market Analyst")  # appelée à chaque analyse technique (calculer_score)
     patterns = []
 
     if detecter_double_top(df):
