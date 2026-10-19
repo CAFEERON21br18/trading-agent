@@ -63,7 +63,8 @@ class BaseCycle(unittest.TestCase):
 class TestBlocsDeFin(BaseCycle):
     def test_apres_la_routine(self):
         r = self.lancer()
-        self.assertEqual((r["code"], r["ordre"]), (0, ["routine", "controler_les_plans", "observer_cycle"]))
+        self.assertEqual((r["code"], r["ordre"]),
+                         (0, ["routine", "controler_les_plans", "observer_cycle", "synchroniser_du_matin"]))
 
     def test_chaque_bloc_en_echec_meme_cycle(self):
         temoin = self.lancer()

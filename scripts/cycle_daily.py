@@ -37,6 +37,7 @@ def _rapport_du_jour_existe() -> bool:
 BLOCS_DE_FIN = [
     ("contrôle des plans (TODO §30)", "agents.plans_quotidien", "controler_les_plans", 120),
     ("rotation v5 en observation (TODO §17)", "agents.rotation_fantome", "observer_cycle", 30),
+    ("mémoire de trading dans le vault (Phase 2)", "scripts.sync_vault_trading", "synchroniser_du_matin", 120),
 ]
 
 

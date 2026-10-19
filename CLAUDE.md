@@ -63,7 +63,7 @@ Découvertes → `data/explorer_queue.json` si score ≥ 4 → analyse complète
 | 🔴 Critical | 5 min | Vérifier SL/TP positions (priorité absolue) |
 | 🟡 Tactical | 15 min | Monitor SL/TP + 7 explorateurs + queue (score ≥ 4, 5 par passage) + watchlist (8 actifs hors positions) + réévaluation des positions |
 | 🟢 Strategic | 4h | Monitor SL/TP + conseils réels + régime de marché (ni explorateurs ni queue) |
-| 🔵 Daily | 7h30 | Routine complète + email rapport |
+| 🔵 Daily | 7h30 | Routine complète + email rapport, puis contrôle des plans, rotation en observation, mémoire de trading → vault |
 | 🟣 Weekly | Dim 20h | Revue hebdo + rapport, puis (verrou libéré) carte du code Graphify → vault |
 | 🧹 Cleanup | Dim 3h | Logs + cache + locks |
 
@@ -118,6 +118,10 @@ la position qu'elle aurait fermée va dans `rotation_hypothetique` (database.db)
 - `memory/lessons_learned.md` : leçons (auto-écrit après 3+ pertes)
 - `memory/market_patterns.md` : patterns récurrents (auto après 3+ occurrences)
 - `memory/weekly_reviews/` : revues hebdomadaires
+
+- Vault Obsidian (`scripts/sync_vault_trading.py`, chaque matin après le quotidien ; lecture seule
+  des bases, jamais de données du portefeuille réel) : 00-Index, 10-Decisions (BUY/SELL par actif,
+  jour et action), 20-Actifs, 30-Intuitions, 40-Cycles, 50-Positions ; carte du code dans 90-Graphify.
 
 Avant chaque analyse : lire `lessons_learned.md` + `market_patterns.md`.
 Après : `mettre_a_jour_performance_md()` synchronise tout (intuition + learner).
