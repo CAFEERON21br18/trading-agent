@@ -154,8 +154,10 @@ class TestRoutine(BaseBarres):
                    mock.patch("agents.orchestrator_llm.narratif_quotidien", return_value=""),
                    mock.patch("agents.skills.pipeline_cache.section_rapport", return_value=""),
                    mock.patch.object(rapport_annexes, "section_registre", return_value="\n## Registre simulé\n"),
+                   # budget de 2 s (0,5 s avant) : sous charge, le témoin perdait la section pré-trade ;
+                   # la panne « trop longue » (3 s) le dépasse toujours
                    mock.patch.object(rapport_annexes, "SECTIONS",
-                                     [(n, m, f, 0.5) for n, m, f, _ in rapport_annexes.SECTIONS]), *pannes]
+                                     [(n, m, f, 2.0) for n, m, f, _ in rapport_annexes.SECTIONS]), *pannes]
         for p in patchs:
             p.start()
         try:
