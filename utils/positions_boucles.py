@@ -6,7 +6,8 @@ utils/positions_boucles.py — Positions paper « boucle » (REGISTRE_CRITERES v
   arrondi), toutes dates confondues. REQUETE_IDS la reproduit ; scripts/marquer_boucles.py
   l'écrit dans la colonne `boucle` de `positions`.
 - Statistiques paper (§9.5) : fermees_recentes() remplace lire_positions_recentes_fermees() pour
-  les modes du Budget Manager et les écritures de lessons_learned / market_patterns. Interrupteur
+  les modes du Budget Manager, les écritures de lessons_learned / market_patterns et, depuis la
+  v1.9, la porte paper défensive et le suivi d'intuition. Interrupteur
   EXCLURE_BOUCLES_STATS à 0 (jusqu'au 28/10/2026), ou colonne absente : résultat identique à
   lire_positions_recentes_fermees(). À 1 : les positions marquées « boucle » sont exclues.
 - memory_lookups et performance_tracker lisent signals / signal_results, qui n'ont aucun lien avec

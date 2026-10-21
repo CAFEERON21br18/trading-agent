@@ -158,6 +158,9 @@ class TestPorteEtIntuition(BaseBoucles):
         avant = (portfolio.est_en_mode_defensif(), portfolio.seuil_confiance_actuel())  # sans colonne, à 0
         self.marquer(True)
         self.assertEqual((portfolio.est_en_mode_defensif(), portfolio.seuil_confiance_actuel()), avant)
+        with mock.patch.object(portfolio, "lire_positions_recentes_fermees",
+                               portfolio_db.lire_positions_recentes_fermees):  # lecture d'avant la v1.9
+            self.assertEqual((portfolio.est_en_mode_defensif(), portfolio.seuil_confiance_actuel()), avant)
         self.assertEqual(avant, (True, config.SEUIL_CONFIANCE_PAPER_DEFENSIF))
         with mock.patch.object(config, "EXCLURE_BOUCLES_STATS", 1):
             self.assertEqual((portfolio.est_en_mode_defensif(), portfolio.seuil_confiance_actuel()),
@@ -173,6 +176,8 @@ class TestPorteEtIntuition(BaseBoucles):
             with mock.patch.object(config, "EXCLURE_BOUCLES_STATS", valeur), \
                     mock.patch.object(intuition_tracker, "INTUITION_LOG", log):
                 self.assertEqual(intuition_tracker.synchroniser_intuition()["tickers"], attendu, valeur)
+        self.assertEqual(intuition_tracker.lire_positions_recentes_fermees(20),  # à 0 : lecture d'avant la v1.9
+                         portfolio_db.lire_positions_recentes_fermees(20))
 
 
 if __name__ == "__main__":
