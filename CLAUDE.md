@@ -165,7 +165,9 @@ Après : `mettre_a_jour_performance_md()` synchronise tout (intuition + learner)
 ## Alertes email immédiates
 🚀 Position ouverte | 🟢/🔴 Position fermée | 🚨 Signal fort ≥ 8 |
 ⚠️ F&G extrême | 🔍 Opportunité explorer ≥ 7 | 📉 Dégradation perf |
-📊 Rapport quotidien (7h30) | 📊 Rapport hebdo (dim 20h)
+📊 Rapport quotidien (7h30) | 📊 Rapport hebdo (dim 20h) |
+⚠️ Journée sans routine : collectes de 7h30 et de 12h en échec, un seul e-mail par jour
+(`utils/alerte_routine.py`)
 
 ## Règles absolues
 1. Jamais de clé API dans le code — uniquement `.env`

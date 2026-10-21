@@ -12,6 +12,7 @@ import glob
 import importlib
 import math
 import os
+import re
 import sys
 import tempfile
 import time
@@ -179,7 +180,10 @@ class TestRoutine(BaseBarres):
                     r = self.lancer(mock.patch(f"{m}.{f}", side_effect=panne))
                     self.assertEqual((r["decisions"], r["actifs"], r["recu"]),
                                      (temoin["decisions"], temoin["actifs"], temoin["recu"]))
-                    self.assertEqual(r["rapport"].replace("\n", ""), temoin["rapport"].replace("\n", "").replace(texte, ""))
+                    # horodatage à la minute (« Généré le ») normalisé : le test peut passer une minute
+                    heure = lambda s: re.sub(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2} UTC", "<heure> UTC", s)  # noqa: E731
+                    self.assertEqual(heure(r["rapport"].replace("\n", "")),
+                                     heure(temoin["rapport"].replace("\n", "").replace(texte, "")))
                     self.assertIn("## Registre simulé", r["rapport"])
                     self.assertEqual(len(r["sauve"]), 1)
 

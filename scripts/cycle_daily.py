@@ -102,6 +102,8 @@ def main() -> int:
             nb = signaler_echec(f"collecte des prix : {collecte['raison']}")
             update_heartbeat(CYCLE, status="error", duration_sec=_t.time() - t0,
                              extra={"collecte": collecte["raison"][:200]})
+            from utils.alerte_routine import alerter_journee_sans_routine
+            alerter_journee_sans_routine(collecte["raison"])  # après midi seulement, un e-mail par jour
             _alerter_panne_si_critique(nb)
             return 1
 
