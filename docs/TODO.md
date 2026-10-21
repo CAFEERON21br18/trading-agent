@@ -1024,7 +1024,8 @@ a collecté pendant que Yahoo ne répondait pas (« Cookie/crumb fetch failed (T
 écrite. Le rapport a pourtant été écrit sur les barres du 16/10, et `_rapport_du_jour_existe()` a
 bloqué toute nouvelle tentative jusqu'au 18/10. Correction : `utils/collecte_verifiee.py`
 (vérification à 80 %, 3 essais, pas de rapport en cas d'échec, filet du tactical à 30 h).
-`scripts/daily_routine.py` (lancement manuel) collecte encore sans vérification.
+`scripts/daily_routine.py` (lancement manuel) utilise la même collecte vérifiée depuis le 21/10/2026
+(échec : exception `CollecteEnEchec`, e-mail d'erreur, ni routine ni rapport).
 Ajout du 21/10/2026 : si la collecte échoue encore au rattrapage de 12h (ou plus tard), un e-mail
 « Collecte des prix en échec, pas de routine ni d'observation Jev aujourd'hui » part avec la cause,
 une seule fois par jour (`utils/alerte_routine.py`, état dans `data/cache/alerte_sans_routine.json`).

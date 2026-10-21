@@ -47,21 +47,23 @@ def _alerter_panne_si_critique(tentatives: int) -> None:
         logger.error(f"Impossible d'envoyer l'alerte de panne : {e}")
 
 
+class CollecteEnEchec(RuntimeError):
+    """Collecte des prix en échec après 3 essais : ni routine, ni rapport."""
+
+
 def _executer_routine_complete() -> dict:
-    """Cœur de la routine : collecte → analyse → email. Peut lever des exceptions."""
+    """Cœur de la routine : collecte vérifiée → analyse → email. Peut lever des exceptions."""
     from utils.database import initialiser_base
-    from scripts.fetch_data import collecter_toute_la_watchlist
-    from utils.helpers import charger_watchlist
+    from utils.collecte_verifiee import collecter_et_verifier
     from agents.orchestrator import lancer_routine_quotidienne
 
     initialiser_base()
-    watchlist = charger_watchlist()
-    if watchlist:
-        logger.info("Collecte de données fraîches...")
-        try:
-            collecter_toute_la_watchlist(watchlist)
-        except Exception as e:
-            logger.error(f"Erreur collecte données (on continue) : {e}")
+    # Même collecte vérifiée que cycle_daily (REGISTRE_CRITERES v1.9, §9.8 a) : 3 essais au plus ;
+    # sans les prix du jour, ni routine ni rapport (erreur journalisée et e-mail d'erreur de main())
+    logger.info("Collecte de données fraîches (vérifiée)...")
+    collecte = collecter_et_verifier()
+    if not collecte["ok"]:
+        raise CollecteEnEchec(f"Collecte des prix en échec : {collecte['raison']}")
 
     return lancer_routine_quotidienne(envoyer_emails=True)
 
