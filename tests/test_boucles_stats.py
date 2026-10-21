@@ -6,7 +6,8 @@ tests/test_boucles_stats.py — Positions « boucle » (REGISTRE_CRITERES v1.8, 
    au moins 3 positions) ; relancé, il ne fait rien ;
 2. EXCLURE_BOUCLES_STATS à 0 : résultats identiques à aujourd'hui (positions fermées, mode du Budget
    Manager, leçons et patterns) ; à 1 : positions « boucle » exclues ; à 1 sans colonne : identiques ;
-3. nombre_marquees (empreinte des paramètres du registre) : lecture seule, None sans base ni colonne.
+3. nombre_marquees (empreinte des paramètres du registre) : lecture seule, None sans base ni colonne ;
+4. v1.9 : porte paper défensive et suivi d'intuition, identiques à 0, sans les positions « boucle » à 1.
 
 Lancement : .venv\\Scripts\\python.exe -m unittest tests.test_boucles_stats -v
 Base temporaire, données inventées ; aucun réseau, aucun LLM, aucun email.
@@ -31,7 +32,8 @@ isoler_journaux()  # avant tout import du code testé : rien dans logs/ (product
 import config
 from utils import database, portfolio_db, positions_boucles, registre
 from agents.budget_manager import strategy
-from agents.trade_journalist import learner
+from agents.paper_trader import portfolio
+from agents.trade_journalist import intuition_tracker, learner
 from scripts import marquer_boucles
 from tests.paper_fixtures import BasePaper, inserer_position
 
@@ -143,6 +145,34 @@ class TestEmpreinte(BaseBoucles):
         with mock.patch.object(database, "DB_PATH", absent):
             self.assertIsNone(positions_boucles.nombre_marquees())
         self.assertFalse(os.path.exists(absent))  # jamais de base créée
+
+
+class TestPorteEtIntuition(BaseBoucles):
+    """Registre v1.9 (§9.5) : porte paper défensive et suivi d'intuition sous le même interrupteur."""
+
+    def test_porte_defensive(self):
+        conn = database.get_connection()  # les 3 fermetures les plus récentes : pertes en boucle (AAA à 10.0)
+        conn.execute("UPDATE positions SET exit_date = '2026-10-02T09:00:00+00:00' WHERE ticker = 'AAA' AND entry_price = 10.0")
+        conn.commit()
+        conn.close()
+        avant = (portfolio.est_en_mode_defensif(), portfolio.seuil_confiance_actuel())  # sans colonne, à 0
+        self.marquer(True)
+        self.assertEqual((portfolio.est_en_mode_defensif(), portfolio.seuil_confiance_actuel()), avant)
+        self.assertEqual(avant, (True, config.SEUIL_CONFIANCE_PAPER_DEFENSIF))
+        with mock.patch.object(config, "EXCLURE_BOUCLES_STATS", 1):
+            self.assertEqual((portfolio.est_en_mode_defensif(), portfolio.seuil_confiance_actuel()),
+                             (False, config.SEUIL_CONFIANCE_PAPER))
+
+    def test_suivi_intuition(self):
+        self.marquer(True)  # CCC n'a que des positions « boucle »
+        for valeur, attendu in ((0, ["CCC"]), (1, [])):
+            log = os.path.join(self.dossier.name, f"intuition_log{valeur}.md")
+            with open(log, "w", encoding="utf-8") as f:
+                f.write("### 2026-10-01 10:00 UTC — CCC — BUY (intuition)\n"
+                        "- **Résultat** : ⏳ à remplir après clôture\n")
+            with mock.patch.object(config, "EXCLURE_BOUCLES_STATS", valeur), \
+                    mock.patch.object(intuition_tracker, "INTUITION_LOG", log):
+                self.assertEqual(intuition_tracker.synchroniser_intuition()["tickers"], attendu, valeur)
 
 
 if __name__ == "__main__":

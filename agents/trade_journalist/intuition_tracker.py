@@ -12,7 +12,8 @@ from datetime import datetime, timezone
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from utils.logger import get_logger
-from utils.portfolio_db import lire_positions_recentes_fermees
+# Registre v1.9 (§9.5) : sans les positions « boucle » si EXCLURE_BOUCLES_STATS=1, sinon identique
+from utils.positions_boucles import fermees_recentes as lire_positions_recentes_fermees
 
 logger = get_logger(__name__)
 

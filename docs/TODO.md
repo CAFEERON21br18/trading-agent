@@ -988,7 +988,14 @@ ajout ont un modèle commité `memory/<nom>.md.exemple`, copié par `utils/memoi
 quand le fichier est absent (premier lancement). Tous les lecteurs fonctionnent sans les fichiers.
 `performance_tracker.ajouter_lecon` n'est appelée nulle part (code mort, laissé tel quel).
 
-## 40. Positions « boucle » : ce que l'interrupteur EXCLURE_BOUCLES_STATS ne couvre pas (19/10/2026)
+## 40. ~~Positions « boucle » : ce que l'interrupteur EXCLURE_BOUCLES_STATS ne couvre pas~~ (corrigé le 21/10/2026, registre v1.9 §9.5)
+
+**Corrigé le 21/10/2026** (point A.2 de la v1.9, autorisé par Lucia le 20/10) : la porte paper
+défensive (`agents/paper_trader/portfolio.py`) et le suivi d'intuition
+(`agents/trade_journalist/intuition_tracker.py`) lisent désormais `fermees_recentes`, sous le même
+interrupteur (0 jusqu'au 28/10 : résultats identiques ; 1 : positions « boucle » exclues). Tests :
+`tests/test_boucles_stats.py`. La revue hebdomadaire, l'attribution de performance, le dashboard et
+le chat (affichage) lisent toujours toutes les positions. Constat d'origine ci-dessous.
 
 Registre v1.8, §9.5. Avec `EXCLURE_BOUCLES_STATS=1` (prévu le 28/10/2026, après
 `scripts/marquer_boucles.py --appliquer`), `utils/positions_boucles.fermees_recentes` retire les
@@ -1006,10 +1013,8 @@ avec `positions`. Si `signal_results` est un jour alimentée depuis les position
 `docs/AVANT_ARGENT_REEL.md`), ce lien devra porter la colonne `boucle`.
 
 **Mise à jour du 19/10/2026 (registre v1.9, §9.5)** : la porte paper défensive et le suivi
-d'intuition entrent dans l'exclusion du 28/10, sous le même interrupteur. Ce n'est PAS encore codé
-(session 9 : le cadre limitait le code de décision aux étapes C et D) ; à faire avant le 28/10 :
-`fermees_recentes` à la place de `lire_positions_recentes_fermees` dans `portfolio.py` et
-`intuition_tracker.py`, avec un test à 0 et à 1.
+d'intuition entrent dans l'exclusion du 28/10, sous le même interrupteur. Codé le 21/10/2026 (voir
+en tête de cette section).
 
 ## 41. ~~Collecte des prix du 17/10 jamais faite~~ (corrigé le 19/10/2026, registre v1.9 §9.8 a)
 

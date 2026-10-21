@@ -11,9 +11,9 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 import config
 from utils.logger import get_logger
 from utils.dernier_prix import enregistrer as enregistrer_dernier_prix
-from utils.portfolio_db import (
-    lire_positions_ouvertes, lire_positions_recentes_fermees, lire_dernier_snapshot,
-)
+from utils.portfolio_db import lire_positions_ouvertes, lire_dernier_snapshot
+# Registre v1.9 (§9.5) : sans les positions « boucle » si EXCLURE_BOUCLES_STATS=1, sinon identique
+from utils.positions_boucles import fermees_recentes as lire_positions_recentes_fermees
 
 logger = get_logger(__name__)
 

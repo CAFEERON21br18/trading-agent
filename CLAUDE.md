@@ -137,8 +137,9 @@ la position qu'elle aurait fermée va dans `rotation_hypothetique` (database.db)
 - Ces fichiers ne sont PAS suivis par git (dépôt public, TODO §39) : ils vivent sur la tour ; les
   modèles `memory/<nom>.md.exemple` (suivis) recréent un fichier absent au premier ajout.
 - Positions « boucle » (registre v1.8 §9.2, colonne `boucle` remplie par `scripts/marquer_boucles.py`) :
-  exclues des modes du Budget Manager et des écritures de lessons/patterns si `EXCLURE_BOUCLES_STATS=1`
-  (`utils/positions_boucles.py`), à 0 jusqu'au 28/10/2026.
+  exclues des modes du Budget Manager, de la porte paper défensive, du suivi d'intuition et des
+  écritures de lessons/patterns si `EXCLURE_BOUCLES_STATS=1` (`utils/positions_boucles.py`, registre
+  v1.9 §9.5), à 0 jusqu'au 28/10/2026.
 
 - Vault Obsidian (`scripts/sync_vault_trading.py`, chaque matin après le quotidien ; lecture seule
   des bases, jamais de données du portefeuille réel) : 00-Index, 10-Decisions (BUY/SELL par actif,
