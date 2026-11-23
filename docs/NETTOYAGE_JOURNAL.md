@@ -469,3 +469,12 @@ Un commit par fichier.
 `analyser_tendance` et `calculer_score` partent dans `agents/analysts/market_analyst/score.py`
 (116 lignes). `agents/asset_analyzer.py` continue de les importer depuis `analyst.py`.
 Tests : `Ran 459 tests` / `OK (skipped=10)`.
+
+### `utils/real_price.py` : 270 → 129 lignes
+
+`get_historical_price` et `get_current_price` (lecture chez Yahoo) partent dans
+`utils/real_price_yahoo.py` (153 lignes). La calibration et le calcul du P&L restent dans
+`real_price.py` et appellent toujours `get_current_price` par son nom dans ce module : les tests qui
+le remplacent (`mock.patch.object(real_price, "get_current_price")`) restent valables. Le nouveau
+module journalise sous le nom `utils.real_price`, comme avant : les lignes de journal ne changent pas.
+Tests : `Ran 459 tests` / `OK (skipped=10)`.
