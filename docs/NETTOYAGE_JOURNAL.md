@@ -445,3 +445,21 @@ d'avant la réécriture du dépôt public ; ils n'existent pas dans l'historique
 (hors consigne), signalé au §43.
 
 Tests : `Ran 459 tests` / `OK (skipped=10)` (aucun code touché dans ce lot).
+
+## Lot 8 — Fichiers de plus de 200 lignes (déplacements purs)
+
+Méthode, la même pour chaque fichier : des blocs entiers de premier niveau (fonctions, constantes)
+sont déplacés vers un nouveau module, sans toucher à une ligne de leur corps ; le module d'origine
+les réimporte, donc les anciens chemins d'import restent valides. Contrôle après chaque fichier :
+
+- comparaison des arbres syntaxiques (`ast.dump`) de chaque fonction et constante entre la version
+  d'avant et les nouveaux fichiers : identiques, chacune présente une seule fois ;
+- aucun nom indéfini dans les deux fichiers ;
+- la suite de tests complète.
+
+Un commit par fichier.
+
+### `agents/analysts/risk_manager/manager.py` : 204 → 167 lignes
+
+`formater_rapport_risque` part dans `agents/analysts/risk_manager/rapport.py` (45 lignes).
+`RR_MINIMUM` reste dans `manager.py` (le registre l'y lit). Tests : `Ran 459 tests` / `OK (skipped=10)`.
