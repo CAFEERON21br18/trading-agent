@@ -463,3 +463,9 @@ Un commit par fichier.
 
 `formater_rapport_risque` part dans `agents/analysts/risk_manager/rapport.py` (45 lignes).
 `RR_MINIMUM` reste dans `manager.py` (le registre l'y lit). Tests : `Ran 459 tests` / `OK (skipped=10)`.
+
+### `agents/analysts/market_analyst/analyst.py` : 218 → 111 lignes
+
+`analyser_tendance` et `calculer_score` partent dans `agents/analysts/market_analyst/score.py`
+(116 lignes). `agents/asset_analyzer.py` continue de les importer depuis `analyst.py`.
+Tests : `Ran 459 tests` / `OK (skipped=10)`.
