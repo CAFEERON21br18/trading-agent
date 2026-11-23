@@ -37,3 +37,50 @@ Resté :
   `EXCLURE_BOUCLES_STATS` (lots 5 et 6).
 
 Tests : `Ran 470 tests` / `OK (skipped=10)`.
+
+## Lot 1 — Code mort sans risque
+
+Parti :
+
+- 15 fonctions jamais référencées (1.19 à 1.31), chacune revérifiée avant le retrait par
+  `git grep -w -n <nom>` → la ligne `def` seule : `recuperer_prix_dernier` (`macro.py`),
+  `formater_section_budget` (`budget_manager/manager.py`), `formater_markdown`
+  (`pretrade_analysis.py`), `_signal_depuis_analyses` (`orchestrator.py`), `reponse_vide`
+  (`skills/_json_helper.py`), `lister_signaux_recents` (`journalist.py`), `ajouter_lecon`
+  (`performance_tracker.py`), `recuperer_prix_coingecko` (`scripts/fetch_data.py`), `info_actif` et
+  `recuperer_lot` (`utils/data_fetcher.py`), `lire_prix` (`utils/database.py`), `stats_usage`
+  (`utils/gemini.py`), `cycles_actifs` (`utils/lock_manager.py`), `prix_actuel_calibre` et
+  `get_display_entry_price` (`utils/real_price.py`).
+- Ce que ces fonctions étaient seules à lire : `LESSONS_LEARNED_FILE` (`performance_tracker.py`) et
+  sa redirection dans `demo_performance.py` ; `COINGECKO_URL`, `COINGECKO_IDS` et l'import
+  `formater_prix` de `scripts/fetch_data.py`.
+- `scripts/check_health.py` (1.2), copie exacte de `check_status.py`. L'en-tête de
+  `check_status.py`, le message de panne de `scripts/daily_routine.py` et la docstring de
+  `utils/scheduler_check.py` citent maintenant `check_status.py`.
+- `main.py` (1.1), avec ses trois déclarations de point d'entrée (`scripts/graphify_modules.py`,
+  `dashboard/api/etat_code.py`, `dashboard/api/topology_composants.py`), le paquet `main` de
+  `tests/test_journaux_isoles.py`, et les mentions du `README.md` et de
+  `docs/AVANT_ARGENT_REEL.md`.
+- `CREATE TABLE` de `indicators` et de `sentiment` (4.1, 4.2) dans `utils/database.py`, et leurs
+  deux entrées de `TABLES_CACHE` (`utils/audit_trace.py`). Aucune base existante n'est touchée :
+  les tables déjà créées y restent.
+- `NB_TRADES_DEFENSIF_RESET` (7.14) : `git grep -w` → sa définition seule.
+
+Resté :
+
+- 1.32, `get_real_budget_summary` et `progression_plan` : quatre modules de test s'en servent
+  comme calcul de référence (consigne).
+- `tests/test_topology.py` n'a pas eu besoin d'être modifié : aucun de ses tests ne cite `main.py`
+  (le `main` de la ligne 90 est une fonction d'un dépôt fictif). Vérifié avec un graphe régénéré
+  dans le worktree (`graphify extract . --code-only`, `Token cost: 0 input · 0 output`) : les
+  18 tests du module passent, aucun n'est ignoré.
+- Noms inutilisés qui existaient avant ce lot et ne sont pas à l'inventaire, laissés tels quels :
+  `SERIES_FRED` (`macro.py`), `logger` (`pretrade_analysis.py`), `REQUEST_TIMEOUT_SEC`
+  (`utils/gemini.py`), trois imports (`timedelta`, `timezone`, `datetime`).
+- `docs/TODO.md` §34 cite encore `check_health.py` : l'entrée sort au lot 7.
+
+À savoir après la fusion : `graphify-out/graph.json` de la tour contient encore `main.py` jusqu'à
+la prochaine régénération (dimanche 20h, ou `scripts\regenerer_graphe.py`). D'ici là,
+`test_tous_les_modules_classes` signalerait `main.py` comme non classé.
+
+Tests : `Ran 470 tests` / `OK (skipped=10)` sans graphe ; `test_real_*` : 41 tests, OK.

@@ -113,25 +113,3 @@ def tableau_de_bord() -> str:
                 f"({p['invested_amount'] / cap_inv * 100:.1f}%){pnl_str}"
             )
     return "\n".join(lignes)
-
-
-def formater_section_budget(res: dict) -> str:
-    """Génère un bloc markdown pour le rapport quotidien."""
-    lignes = [
-        f"## 💰 Budget Manager — mode **{res['mode']}**",
-        "",
-        f"- Cash disponible : **{res['cash_dispo']:.2f}€**",
-        f"- Total alloué : **{res['total_alloue']:.2f}€**",
-        f"- Cash restant après allocation : {res.get('cash_restant', 0):.2f}€",
-    ]
-    if res["allocations"]:
-        lignes.append("\n**Allocations** :")
-        for a in res["allocations"]:
-            d = a["demande"]
-            lignes.append(f"- 🟢 **{d['actif']}** {d['direction']} — alloué **{a['budget_alloue']:.2f}€** "
-                          f"(demandé {a['budget_demande']:.2f}€) — {a['raison_allocation']}")
-    if res["en_attente"]:
-        lignes.append("\n**En attente / refusées** :")
-        for d in res["en_attente"]:
-            lignes.append(f"- ⏸️ {d['actif']} {d.get('direction', '')} — {d.get('raison_refus', 'pas de cash')}")
-    return "\n".join(lignes)

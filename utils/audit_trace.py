@@ -23,7 +23,7 @@ logger = get_logger(__name__)
 # Écritures qui ne comptent pas comme « actions » (définition validée Phase 4)
 TABLES_EXCLUES = {"chat_history", "message_audit"}
 # Caches de données de marché : tracés, mais exclus du calcul passe_par_*
-TABLES_CACHE = {"prices", "indicators", "sentiment"}
+TABLES_CACHE = {"prices"}
 
 _RE_ECRITURE = re.compile(
     r"^\s*(INSERT(?:\s+OR\s+\w+)?\s+INTO|REPLACE\s+INTO|UPDATE(?:\s+OR\s+\w+)?|DELETE\s+FROM)"

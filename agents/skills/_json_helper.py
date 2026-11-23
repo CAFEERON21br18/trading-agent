@@ -38,8 +38,3 @@ def parser_json_gemini(texte: str) -> dict | None:
             pass
 
     return None
-
-
-def reponse_vide(motif: str = "Skill indisponible") -> dict:
-    """Retour standard quand Gemini KO ou parsing impossible."""
-    return {"disponible": False, "raison": motif}

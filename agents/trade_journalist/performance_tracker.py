@@ -16,7 +16,6 @@ logger = get_logger(__name__)
 
 BASE_DIR                = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PERFORMANCE_FILE        = os.path.join(BASE_DIR, "memory", "performance_tracker.md")
-LESSONS_LEARNED_FILE    = os.path.join(BASE_DIR, "memory", "lessons_learned.md")
 SEUIL_ALERTE_WINRATE    = 50  # Alerte email si win rate < 50% sur les 20 derniers trades
 
 
@@ -178,18 +177,6 @@ def mettre_a_jour_performance_md():
         logger.info(f"Performance mise à jour : {PERFORMANCE_FILE}")
     except Exception as e:
         logger.error(f"Erreur mise à jour performance_tracker.md : {e}")
-
-
-def ajouter_lecon(categorie: str, lecon: str):
-    """Ajoute une leçon dans memory/lessons_learned.md."""
-    date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    entree = f"\n`{date} — {categorie.upper()} — {lecon}`\n"
-    try:
-        with open(LESSONS_LEARNED_FILE, "a", encoding="utf-8") as f:
-            f.write(entree)
-        logger.info(f"Leçon ajoutée ({categorie})")
-    except Exception as e:
-        logger.error(f"Erreur ajout leçon : {e}")
 
 
 if __name__ == "__main__":

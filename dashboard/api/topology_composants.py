@@ -77,7 +77,6 @@ REGLES = [
     ("scripts/regenerer_graphe.py", "vault"),
     ("scripts/sync_vault_trading.py", "vault"),
     ("scripts/", "outils"),
-    ("main.py", "outils"),
     ("tests/", "outils"),
     ("dashboard/", "dashboard"),
     ("agents/explorers/crypto_explorer/", "explorer.crypto"),

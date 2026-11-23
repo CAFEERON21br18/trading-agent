@@ -88,24 +88,6 @@ def recuperer_contexte_macro() -> dict:
     }
 
 
-def recuperer_prix_dernier(ticker: str, timeframe: str = "1d") -> float | None:
-    """Lit le dernier prix de clôture depuis la BDD SQLite."""
-    try:
-        conn = get_connection()
-        cursor = conn.cursor()
-        cursor.execute("""
-            SELECT close FROM prices
-            WHERE ticker = ? AND timeframe = ?
-            ORDER BY timestamp DESC LIMIT 1
-        """, (ticker, timeframe))
-        row = cursor.fetchone()
-        conn.close()
-        return float(row["close"]) if row else None
-    except Exception as e:
-        logger.error(f"Erreur lecture prix {ticker} : {e}")
-        return None
-
-
 def position_52_semaines(ticker: str) -> dict:
     """
     Calcule où se situe le prix actuel dans sa range 52 semaines.

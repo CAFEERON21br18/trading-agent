@@ -234,16 +234,3 @@ def _extraire_retry_delay(msg: str) -> int | None:
 def gemini_disponible() -> bool:
     """Vérifie rapidement que Gemini est utilisable."""
     return _get_client() is not None
-
-
-def stats_usage() -> dict:
-    """Stats du rate-limiting local (debug)."""
-    with _rate_lock:
-        now = time.time()
-        recents = [t for t in _request_times if now - t <= 60]
-        return {
-            "requetes_dernieres_60s": len(recents),
-            "plafond_local_min":       MAX_REQUESTS_PER_MIN,
-            "modele":                  MODEL_NAME,
-            "configure":               bool(config.GEMINI_API_KEY),
-        }

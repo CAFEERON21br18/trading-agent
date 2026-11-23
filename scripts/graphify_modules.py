@@ -8,7 +8,7 @@ Utilisé par scripts/sync_graphify_vault.py (dossier 90-Graphify/modules/ du vau
   d'Obsidian montrent le vrai sens des dépendances. « Importé par » en texte simple.
 - Tags (frontmatter, pour colorer la vue graphe) :
   code-mort : liste déclarée CODE_MORT (vide depuis la suppression du TODO §10) ;
-  orphelin  : module jamais atteint depuis un point d'entrée (scripts/, main.py,
+  orphelin  : module jamais atteint depuis un point d'entrée (scripts/,
               dashboard/app.py) en suivant les imports ; calculé à chaque passage.
 Seules les arêtes AST `imports` / `imports_from` sont retenues (aucune arête inférée).
 """
@@ -20,7 +20,7 @@ from collections import defaultdict
 
 MARQUEUR = "genere_par: sync_graphify_vault"
 RELATIONS_IMPORT = ("imports", "imports_from")
-POINTS_ENTREE = ("main.py", "dashboard/app.py")
+POINTS_ENTREE = ("dashboard/app.py",)
 
 # Code mort confirmé, chargé ou non, jamais appelé : les 7 modules du TODO §10 sont supprimés
 CODE_MORT: set[str] = set()

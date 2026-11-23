@@ -129,12 +129,3 @@ def doit_skipper(cycle_courant: str) -> tuple[bool, str]:
         if est_actif(c):
             return True, f"Cycle {c} en cours — {cycle_courant} skippé"
     return False, ""
-
-
-def cycles_actifs() -> list[str]:
-    """Liste des cycles actuellement actifs (non expirés)."""
-    actifs = []
-    for c in ("critical", "tactical", "strategic", "daily", "weekly"):
-        if est_actif(c):
-            actifs.append(c)
-    return actifs

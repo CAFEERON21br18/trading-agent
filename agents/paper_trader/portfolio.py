@@ -18,7 +18,6 @@ from utils.positions_boucles import fermees_recentes as lire_positions_recentes_
 logger = get_logger(__name__)
 
 NB_PERTES_DEFENSIF       = 3   # 3 trades perdants consécutifs → mode défensif
-NB_TRADES_DEFENSIF_RESET = 5   # mode défensif désactivé après 5 trades suivants
 
 
 def prix_actuel(ticker: str) -> float | None:

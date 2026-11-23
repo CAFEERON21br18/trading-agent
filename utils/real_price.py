@@ -213,25 +213,10 @@ def get_adjusted_price(ticker: str) -> dict:
     return base
 
 
-def prix_actuel_calibre(ticker: str) -> float | None:
-    """Helper simple : retourne le prix calibré ou None.
-    Réservé à l'affichage. Pour le P&L utiliser calculate_position_pnl."""
-    r = get_adjusted_price(ticker)
-    return r.get("price")
-
-
 def prix_actuel_brut(ticker: str) -> float | None:
     """Helper simple : prix BRUT (non calibré) — référence pour le calcul du P&L."""
     r = get_current_price(ticker)
     return r.get("price")
-
-
-def get_display_entry_price(ticker: str, entry_raw: float) -> float:
-    """Prix d'entrée calibré pour l'affichage uniquement (≈ ce que Revolut affichait)."""
-    cal = get_calibration(ticker)
-    if cal and cal.get("adjustment_factor"):
-        return round(entry_raw * cal["adjustment_factor"], 4)
-    return entry_raw
 
 
 def calculate_position_pnl(investment: dict, current_raw: float | None = None) -> dict | None:

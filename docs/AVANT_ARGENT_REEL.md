@@ -124,8 +124,8 @@ conditions 1 et 8 mesurent un système différent de celui qui toucherait le ré
 - **État : pas fonctionnel.**
   - Le capital paper est constant : `agents/paper_trader/portfolio.py:97-103` part de
     `config.CAPITAL` et n'y ajoute jamais le P&L réalisé (cash = capital − investi).
-  - `verifier_capital_minimum` (`agents/analysts/risk_manager/manager.py`), `agents/orchestrator.py`
-    et `main.py` comparent `config.CAPITAL` à `CAPITAL_STOP_THRESHOLD` (700). Or `config.CAPITAL`
+  - `verifier_capital_minimum` (`agents/analysts/risk_manager/manager.py`) et `agents/orchestrator.py`
+    comparent `config.CAPITAL` à `CAPITAL_STOP_THRESHOLD` (700). Or `config.CAPITAL`
     est le capital de **référence** lu dans `.env` (1 000 par défaut), pas la valeur courante du
     portefeuille. Il ne baisse jamais avec les pertes, donc l'arrêt ne peut pas se déclencher.
   - Rien de tel n'existe pour le réel.

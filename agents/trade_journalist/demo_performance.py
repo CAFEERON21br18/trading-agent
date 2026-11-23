@@ -44,7 +44,6 @@ CLOTURES_DEMO = [
 _CHEMINS = [(database, "DB_PATH", "database.db"),
             (journalist, "JOURNAL_FILE", "trade_journal.md"),
             (performance_tracker, "PERFORMANCE_FILE", "performance_tracker.md"),
-            (performance_tracker, "LESSONS_LEARNED_FILE", "lessons_learned.md"),
             (intuition_tracker, "INTUITION_LOG", "intuition_log.md"),
             (learner, "PATTERNS_MD", "market_patterns.md"),
             (learner, "LESSONS_MD", "lessons_learned.md")]

@@ -145,23 +145,3 @@ def cloturer_signal(signal_id: str, prix_sortie: float, lecon: str = "") -> bool
     except Exception as e:
         logger.error(f"Erreur clôture signal : {e}")
         return False
-
-
-def lister_signaux_recents(limite: int = 10) -> list[dict]:
-    """Retourne les N derniers signaux émis (avec leurs résultats si disponibles)."""
-    try:
-        conn = get_connection()
-        cursor = conn.cursor()
-        cursor.execute("""
-            SELECT s.*, r.exit_price, r.pnl_pct, r.correct
-            FROM signals s
-            LEFT JOIN signal_results r ON s.signal_id = r.signal_id
-            ORDER BY s.timestamp DESC
-            LIMIT ?
-        """, (limite,))
-        rows = cursor.fetchall()
-        conn.close()
-        return [dict(r) for r in rows]
-    except Exception as e:
-        logger.error(f"Erreur lecture signaux : {e}")
-        return []

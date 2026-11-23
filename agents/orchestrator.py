@@ -39,19 +39,6 @@ from alerts.alert_manager                import (
 logger = get_logger(__name__)
 
 
-def _signal_depuis_analyses(ticker: str, analyses: dict) -> dict:
-    """Adapte le résultat d'analyser_actif_complet au format 'signal' attendu par le tableau."""
-    t = analyses["technique"]
-    return {
-        "ticker":    ticker,
-        "signal":    t["direction"],
-        "confiance": t["confiance"],
-        "prix":      t["prix"],
-        "tendance":  t.get("tendance", "Neutre"),
-        "motifs":    t.get("motifs", []),
-    }
-
-
 def generer_resume_30s(decisions: list[dict], sentiment_global: dict) -> str:
     """Résumé '30 secondes' en tête du rapport — basé sur les décisions du Decision Engine."""
     nb_buy  = sum(1 for d in decisions if d["decision"]["decision"] == "BUY")

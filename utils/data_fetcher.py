@@ -103,16 +103,3 @@ def prix_actuel(ticker: str) -> float | None:
     """Dernier prix de clôture (court-circuit du cache si très récent)."""
     rows = recuperer_ohlcv_yf(ticker, periode="5d", intervalle="1d")
     return rows[-1]["close"] if rows else None
-
-
-def info_actif(ticker: str) -> dict:
-    """Métadonnées d'un actif : type détecté + nom + dernier prix."""
-    type_ = detecter_type(ticker)
-    nom = INDICES_MONDIAUX.get(ticker) or COMMODITIES_FUTURES.get(ticker) \
-        or FOREX_MAJEURS.get(ticker) or ticker
-    return {"ticker": ticker, "type": type_, "nom": nom, "prix": prix_actuel(ticker)}
-
-
-def recuperer_lot(tickers: list[str], periode: str = "1mo", intervalle: str = "1d") -> dict:
-    """Récupère les OHLCV pour plusieurs tickers (bulk avec cache par ticker)."""
-    return {t: recuperer_ohlcv_yf(t, periode, intervalle) for t in tickers}

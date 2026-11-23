@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.logger   import get_logger
 from utils.secret_mask import masquer_secrets
 from utils.database import initialiser_base, sauvegarder_prix
-from utils.helpers  import charger_watchlist, formater_prix, timestamp_maintenant
+from utils.helpers  import charger_watchlist, timestamp_maintenant
 
 logger = get_logger(__name__)
 
@@ -32,14 +32,6 @@ TIMEFRAME_CONFIG = {
 
 # URL de l'API Fear & Greed Index (gratuite, sans clé)
 FEAR_GREED_URL = "https://api.alternative.me/fng/?limit=1"
-
-# URL CoinGecko (gratuite, sans clé) — données de marché crypto
-COINGECKO_URL = "https://api.coingecko.com/api/v3/simple/price"
-COINGECKO_IDS = {
-    "BTC-USD": "bitcoin",
-    "ETH-USD": "ethereum",
-    "SOL-USD": "solana",
-}
 
 
 def recuperer_ohlcv_yfinance(ticker: str, timeframe: str) -> pd.DataFrame:
@@ -90,27 +82,6 @@ def recuperer_fear_greed() -> dict:
     except Exception as e:
         logger.error(f"Erreur Fear & Greed API : {masquer_secrets(e)}")
         return {"valeur": None, "label": "Indisponible"}
-
-
-def recuperer_prix_coingecko(ticker: str) -> float | None:
-    """
-    Récupère le prix actuel d'un actif crypto via CoinGecko.
-    Retourne None en cas d'erreur.
-    """
-    coin_id = COINGECKO_IDS.get(ticker)
-    if not coin_id:
-        return None
-    try:
-        params = {"ids": coin_id, "vs_currencies": "usd"}
-        response = requests.get(COINGECKO_URL, params=params, timeout=10)
-        response.raise_for_status()
-        data   = response.json()
-        prix   = data[coin_id]["usd"]
-        logger.info(f"CoinGecko {ticker} : ${formater_prix(prix)}")
-        return prix
-    except Exception as e:
-        logger.error(f"Erreur CoinGecko {ticker} : {masquer_secrets(e)}")
-        return None
 
 
 def collecter_toute_la_watchlist(watchlist: dict) -> dict:

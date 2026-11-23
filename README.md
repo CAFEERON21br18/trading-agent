@@ -213,7 +213,7 @@ dashboard (et donc le portefeuille paper/réel) publiquement sur Internet.
 ```
 trading-agent/
 ├── CLAUDE.md                  ← orchestrateur principal (règles)
-├── config.py / .env / requirements.txt / main.py
+├── config.py / .env / requirements.txt
 │
 ├── agents/
 │   ├── orchestrator.py        ← coordination globale
@@ -241,7 +241,7 @@ trading-agent/
 │
 ├── scripts/
 │   ├── cycle_{critical,tactical,strategic,daily,weekly}.py
-│   ├── cleanup.py / check_status.py / check_health.py
+│   ├── cleanup.py / check_status.py
 │   ├── run_mac.sh / install_v4.sh
 │   └── com.alphasignal.*.plist (×6)
 │

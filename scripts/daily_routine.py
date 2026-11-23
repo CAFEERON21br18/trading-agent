@@ -41,7 +41,7 @@ def _alerter_panne_si_critique(tentatives: int) -> None:
             sujet=f"⚠️ [AlphaSignal] PANNE — {tentatives} échecs consécutifs",
             corps_texte=(f"AlphaSignal a échoué {tentatives} fois consécutivement.\n\n"
                          f"Vérifie les logs dans logs\\daily_routine_errors.log (à la racine du dépôt)\n"
-                         f"Lance le diagnostic : python scripts/check_health.py"),
+                         f"Lance le diagnostic : python scripts/check_status.py"),
         )
     except Exception as e:
         logger.error(f"Impossible d'envoyer l'alerte de panne : {e}")

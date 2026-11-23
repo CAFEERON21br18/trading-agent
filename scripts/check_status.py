@@ -1,6 +1,6 @@
 """
-scripts/check_health.py — Diagnostic manuel d'AlphaSignal
-Usage : python scripts/check_health.py
+scripts/check_status.py — Diagnostic manuel d'AlphaSignal
+Usage : python scripts/check_status.py
 Vérifie : scheduler, dernier rapport, heartbeat, SMTP, accès APIs.
 """
 

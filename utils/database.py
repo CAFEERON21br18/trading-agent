@@ -49,30 +49,6 @@ def initialiser_base():
             )
         """)
 
-        # Table : indicateurs techniques calculés
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS indicators (
-                id          INTEGER PRIMARY KEY AUTOINCREMENT,
-                ticker      TEXT    NOT NULL,
-                timeframe   TEXT    NOT NULL,
-                timestamp   TEXT    NOT NULL,
-                rsi         REAL,
-                macd        REAL,
-                macd_signal REAL,
-                macd_hist   REAL,
-                bb_upper    REAL,
-                bb_middle   REAL,
-                bb_lower    REAL,
-                ema_20      REAL,
-                ema_50      REAL,
-                ema_200     REAL,
-                atr         REAL,
-                adx         REAL,
-                created_at  TEXT    DEFAULT (datetime('now')),
-                UNIQUE(ticker, timeframe, timestamp)
-            )
-        """)
-
         # Table : signaux émis
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS signals (
@@ -105,17 +81,6 @@ def initialiser_base():
                 lesson          TEXT,
                 closed_at       TEXT,
                 FOREIGN KEY(signal_id) REFERENCES signals(signal_id)
-            )
-        """)
-
-        # Table : données de sentiment (Fear & Greed)
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS sentiment (
-                id              INTEGER PRIMARY KEY AUTOINCREMENT,
-                timestamp       TEXT    NOT NULL UNIQUE,
-                fear_greed_crypto  INTEGER,
-                fear_greed_label   TEXT,
-                created_at      TEXT    DEFAULT (datetime('now'))
             )
         """)
 
@@ -176,25 +141,3 @@ def sauvegarder_prix(ticker: str, timeframe: str, df, duree_barre: str | None = 
         logger.error(f"Erreur sauvegarde prix {ticker} : {e}")
 
     return lignes_inserees
-
-
-def lire_prix(ticker: str, timeframe: str, limite: int = 200):
-    """
-    Lit les N dernières bougies OHLCV pour un actif/timeframe.
-    Retourne une liste de sqlite3.Row.
-    """
-    try:
-        conn = get_connection()
-        cursor = conn.cursor()
-        cursor.execute("""
-            SELECT * FROM prices
-            WHERE ticker = ? AND timeframe = ?
-            ORDER BY timestamp DESC
-            LIMIT ?
-        """, (ticker, timeframe, limite))
-        rows = cursor.fetchall()
-        conn.close()
-        return rows
-    except Exception as e:
-        logger.error(f"Erreur lecture prix {ticker} [{timeframe}] : {e}")
-        return []

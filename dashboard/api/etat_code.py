@@ -58,9 +58,9 @@ def journalisent(arbres) -> list:
 
 
 def _points_d_entree(modules) -> list:
-    """Scripts lancés directement : scripts/<x>.py (pas de sous-dossier), dashboard/app.py, main.py."""
+    """Scripts lancés directement : scripts/<x>.py (pas de sous-dossier) et dashboard/app.py."""
     return [m for m in modules if (m.startswith("scripts/") and m.count("/") == 1)
-            or m in ("dashboard/app.py", "main.py")]
+            or m == "dashboard/app.py"]
 
 
 def sources_etat(ecritures, arbres, comp) -> dict:
