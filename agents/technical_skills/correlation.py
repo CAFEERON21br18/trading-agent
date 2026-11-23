@@ -95,33 +95,3 @@ def correlation_portefeuille(jours: int = 60) -> dict:
         "alerte":          alerte,
         "seuil_haut":      SEUIL_CORRELATION_HAUTE,
     }
-
-
-def evaluation_nouvelle_position(candidat: str, jours: int = 60) -> dict:
-    """Évalue la corrélation d'un candidat avec les positions ouvertes.
-    Retourne {max_corr, avec_qui, warning}."""
-    try:
-        positions = lire_positions_ouvertes()
-    except Exception:
-        positions = []
-    tickers_ouverts = list(dict.fromkeys(p["ticker"] for p in positions if p["ticker"] != candidat))
-    if not tickers_ouverts:
-        return {"max_corr": None, "avec_qui": None, "warning": None}
-    max_c = None
-    avec  = None
-    for t in tickers_ouverts:
-        c = calculer_correlation(candidat, t, jours)
-        if c is None:
-            continue
-        if max_c is None or c > max_c:
-            max_c = c
-            avec  = t
-    warning = None
-    if max_c is not None and max_c >= SEUIL_CORRELATION_HAUTE:
-        warning = (f"⚠️ {candidat} est fortement corrélé à {avec} "
-                   f"({max_c:.2f}) déjà en portefeuille : sur-concentration cachée.")
-    return {
-        "max_corr":  round(max_c, 3) if max_c is not None else None,
-        "avec_qui":  avec,
-        "warning":   warning,
-    }

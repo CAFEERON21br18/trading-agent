@@ -36,14 +36,6 @@ def get_positions():
     return jsonify(queries.positions(filtre_status=status, filtre_type=asset_type))
 
 
-@api.route("/positions/<int:pos_id>")
-def get_position(pos_id):
-    pos = queries.position_detail(pos_id)
-    if not pos:
-        return jsonify({"error": "Position non trouvée"}), 404
-    return jsonify(pos)
-
-
 @api.route("/watchlist")
 def get_watchlist():
     from dashboard.api.watchlist_io import reponse_sans_tri
@@ -118,79 +110,6 @@ def get_budget():
     })
 
 
-@api.route("/intuition")
-def get_intuition():
-    """Stats du suivi d'intuition."""
-    from agents.trade_journalist.intuition_tracker import stats_intuition
-    return jsonify(stats_intuition())
-
-
-@api.route("/positions/<int:pos_id>/trailing-stop", methods=["POST"])
-def post_trailing_stop(pos_id):
-    """v5.5.1 — Active/désactive le trailing stop sur une position paper.
-    Body : {"active": true|false, "atr_multiplier": 2.0 (opt)}."""
-    from agents.technical_skills.trailing_stop import (
-        activer_trailing_stop, desactiver_trailing_stop,
-    )
-    from utils.registre_manuel import noter_trailing
-    data = request.get_json() or {}
-    if data.get("active"):
-        res = activer_trailing_stop(pos_id, float(data.get("atr_multiplier", 2.0)))
-    else:
-        res = desactiver_trailing_stop(pos_id)
-    noter_trailing(pos_id, bool(data.get("active")), res)  # registre (Phase 4, R3) : cycle « manuel »
-    return jsonify(res)
-
-
-@api.route("/attribution")
-def get_attribution():
-    """v5.5.9 — Attribution performance : par classe actif / direction / sortie / ticker."""
-    from agents.technical_skills.performance_attribution import rapport_attribution_complet
-    limite = int(request.args.get("limite", 500))
-    return jsonify(rapport_attribution_complet(limite))
-
-
-@api.route("/backtest/<ticker>")
-def get_backtest(ticker):
-    """v5.5.8 — Backtest avec split in/out sample sur toutes les stratégies."""
-    from agents.technical_skills.backtester_pro import tester_toutes_strategies_avec_validation
-    return jsonify(tester_toutes_strategies_avec_validation(ticker))
-
-
-@api.route("/stress-test")
-def get_stress_test():
-    """v5.5.7 — Stress test du portefeuille sur un choc prédéfini.
-    Query: ?choc=marche_-15 (défaut) ou 'all' pour tous."""
-    from agents.technical_skills.scenario_simulation import (
-        stress_test_portefeuille, tous_les_stress_tests, CHOCS_PREDEFINIS,
-    )
-    key = request.args.get("choc", "marche_-15")
-    if key == "all":
-        return jsonify({"chocs_dispo": list(CHOCS_PREDEFINIS.keys()),
-                         "resultats": tous_les_stress_tests()})
-    return jsonify(stress_test_portefeuille(key))
-
-
-@api.route("/news-catalysts")
-def get_news_catalysts():
-    """v5.5.6 — Scan de la watchlist pour catalyseurs news récents."""
-    from agents.technical_skills.news_catalyst import scanner_watchlist, catalyseurs_hauts
-    from utils.helpers import charger_watchlist, tous_les_tickers
-    try:
-        tickers = tous_les_tickers(charger_watchlist())
-    except Exception:
-        tickers = []
-    scan = scanner_watchlist(tickers)
-    return jsonify({"scan": scan, "hauts_uniquement": catalyseurs_hauts(scan)})
-
-
-@api.route("/liquidity/<ticker>")
-def get_liquidity(ticker):
-    """v5.5.5 — Analyse de liquidité d'un ticker."""
-    from agents.technical_skills.liquidity import analyser_liquidite
-    return jsonify(analyser_liquidite(ticker))
-
-
 @api.route("/calendar")
 def get_calendar():
     """v5.5.4 — Calendrier économique : macro + earnings de la watchlist."""
@@ -210,23 +129,6 @@ def get_correlation():
     """v5.5.3 — Matrice de corrélation du portefeuille paper OPEN + alertes."""
     from agents.technical_skills.correlation import correlation_portefeuille
     return jsonify(correlation_portefeuille())
-
-
-@api.route("/regime")
-def get_regime():
-    """v5.5.0 — Régime de marché courant (global + actifs suivis)."""
-    from agents.technical_skills.market_regime import dernier_regime
-    from utils.helpers import charger_watchlist, tous_les_tickers
-    global_r = dernier_regime("global")
-    per_asset: dict = {}
-    try:
-        for t in tous_les_tickers(charger_watchlist())[:20]:
-            r = dernier_regime(t)
-            if r:
-                per_asset[t] = r
-    except Exception:
-        pass
-    return jsonify({"global": global_r, "actifs": per_asset})
 
 
 # ── v5.0 — Portefeuille RÉEL ─────────────────────────────────────────────
@@ -481,15 +383,6 @@ def post_real_calibrate():
     return jsonify(calibrer_vue(ticker, float(revolut_price), data.get("devise")))
 
 
-@api.route("/real/calibrate/<ticker>")
-def get_real_calibration(ticker):
-    """Lit le facteur de calibration courant pour un ticker."""
-    from utils.real_price import get_calibration, get_current_price
-    cal = get_calibration(ticker.strip().upper())
-    current = get_current_price(ticker.strip().upper())
-    return jsonify({"calibration": cal, "current": current})
-
-
 @api.route("/real/investments/<int:inv_id>/attach-plan", methods=["POST"])
 def post_attach_plan(inv_id):
     """Rattacher une position réelle à un plan."""
@@ -559,28 +452,6 @@ def post_run_analysis():
 
     threading.Thread(target=_run, daemon=True).start()
     return jsonify({"started": True, "message": "Routine lancée en arrière-plan"})
-
-
-@api.route("/settings/watchlist", methods=["POST"])
-def post_watchlist():
-    """Met à jour data/watchlist.json (le format doit rester valide)."""
-    data = request.get_json()
-    if not data:
-        return jsonify({"error": "Body JSON manquant"}), 400
-    chemin = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
-        "data", "watchlist.json",
-    )
-    try:
-        from utils.registre import composition_watchlist
-        from utils.registre_manuel import noter_watchlist
-        from dashboard.api.watchlist_io import ecrire_watchlist
-        avant = composition_watchlist()
-        ecrire_watchlist(chemin, data)  # P14 : jamais de réordonnancement du fichier existant
-        noter_watchlist(avant)  # registre (Phase 4, R3) : cycle « manuel », différence de composition
-        return jsonify({"saved": True})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 
 
 @api.route("/settings/watchlist/actif", methods=["POST"])

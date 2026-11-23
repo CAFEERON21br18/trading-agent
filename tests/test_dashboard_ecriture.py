@@ -58,7 +58,7 @@ class TestEnTeteExige(unittest.TestCase):
 
     def test_chaque_route_modifiante(self):
         routes = routes_modifiantes()
-        self.assertGreaterEqual(len(routes), 23)  # inventaire du 16/10/2026
+        self.assertGreaterEqual(len(routes), 21)  # 23 le 16/10/2026, moins 2 routes retirées le 23/11/2026
         self.assertIn(("plans_api.post_plan", "POST", "/api/plans"), routes)
         for endpoint, methode, url in routes:
             with self.subTest(route=f"{methode} {url}"), \

@@ -116,17 +116,3 @@ def evenements_a_surveiller(tickers: list[str], jours_avant: int = 7) -> dict:
         "total":       len(macro) + len(earnings),
         "horizon_j":   jours_avant,
     }
-
-
-def alerte_evenement_proche(ticker: str, seuil_jours: int = 3) -> str | None:
-    """Retourne un warning si un événement à fort impact touche l'actif <= seuil jours."""
-    e = prochains_earnings(ticker, jours_avant=seuil_jours)
-    if e:
-        return (f"⚠️ Earnings {ticker} dans {e['delta_jours']}j — volatilité "
-                f"attendue. Réduire la taille ou attendre.")
-    macro = [m for m in evenements_macro(seuil_jours) if m["delta_jours"] <= seuil_jours]
-    if macro:
-        m = macro[0]
-        return (f"⚠️ {m['type']} dans {m['delta_jours']}j — événement macro à "
-                f"fort impact sur le marché.")
-    return None

@@ -145,3 +145,52 @@ docstring de `utils/real_devise.py` le dit.
 
 Tests : `Ran 459 tests` / `OK (skipped=10)`. Les 11 tests en moins sont ceux des deux fichiers de
 test supprimés (4 + 7).
+
+## Lot 4 — Routes et analyses sans page
+
+Contrôle préalable, refait sur l'arbre courant : aucun des chemins retirés n'apparaît dans
+`dashboard/templates/` ni `dashboard/static/` (`grep -rn -i -E "attribution|backtest|stress-test|
+catalyst|/regime|liquidity|api/intuition|trailing-stop|calibrate/|settings/watchlist\"|
+api/positions/"` → rien). `dashboard/static/sw.js:3-9` ne met rien en cache : aucune ancienne page
+ne peut appeler `POST /api/settings/watchlist`.
+
+Parti :
+
+- Modules : `agents/technical_skills/performance_attribution.py`, `backtester_pro.py`,
+  `scenario_simulation.py`, `news_catalyst.py` ; `agents/backtester/` (`engine.py`, `metrics.py`,
+  `CLAUDE.md`).
+- Routes de `dashboard/api/routes.py` (11) : `/api/attribution`, `/api/backtest/<ticker>`,
+  `/api/stress-test`, `/api/news-catalysts` (2.1) ; `/api/regime`, `/api/liquidity/<ticker>` (2.2) ;
+  `/api/intuition` (2.3) ; `POST /api/positions/<id>/trailing-stop` (2.4) ;
+  `GET /api/positions/<id>` (2.5) ; `POST /api/settings/watchlist` (2.6) ;
+  `GET /api/real/calibrate/<ticker>` (2.7). Le fichier passe de 604 à 475 lignes.
+- Ce que ces routes étaient seules à appeler : `noter_trailing` et son assistant `_position`
+  (`utils/registre_manuel.py`), `position_detail` (`dashboard/api/queries.py`).
+- Deux fonctions jamais appelées (1.34) : `evaluation_nouvelle_position` (`correlation.py`),
+  `alerte_evenement_proche` (`economic_calendar.py`).
+- Composant « Backtester » de la page Architecture (`dashboard/api/topology_composants.py` : sa
+  ligne de `COMPOSANTS` et sa règle), et sa mention dans `utils/passage.py`.
+- Tests ajustés, sans changer leur nombre : `tests/test_sources_passage.py` (11.5 : 12 composants
+  au lieu de 13, plus d'appel à `agents.backtester.metrics`) ; `tests/test_dashboard_ecriture.py`
+  (le plancher du nombre de routes modifiantes passe de 23 à 21 : les deux `POST` retirés).
+
+Resté :
+
+- `correlation.py` et `economic_calendar.py`, avec leurs routes `/api/correlation` et
+  `/api/calendar` (consigne).
+- Les modules `market_regime`, `liquidity` et la fonction `stats_intuition` : seules leurs routes
+  partent.
+- `utils/registre_manuel.py` garde les libellés `ROUTE_TRAILING` et `ROUTE_WATCHLIST` : d'anciennes
+  lignes du registre les portent. `ROUTE_WATCHLIST` reste la valeur par défaut de
+  `noter_watchlist` ; le seul appelant restant passe `ROUTE_WATCHLIST_ACTIF`.
+- `activer_trailing_stop` et `desactiver_trailing_stop` (`agents/technical_skills/trailing_stop.py`)
+  n'ont plus d'appelant : la route retirée était le seul. Elles ne sont pas à l'inventaire et
+  touchent aux positions paper ; je les ai laissées. Le moniteur continue de suivre le stop des
+  positions où `trailing_stop_active` vaut 1 ; plus rien ne peut mettre cette colonne à 1 ou à 0.
+- `import subprocess` de `routes.py`, déjà inutilisé avant ce lot : laissé (le fichier est découpé
+  au lot 8).
+- `agents/technical_skills/CLAUDE.md` et `docs/TODO.md` citent encore les modules supprimés : le
+  premier part au lot 6, les entrées du second (§10, §40) au lot 7.
+
+Tests : `Ran 459 tests` / `OK (skipped=10)`. Avec un graphe régénéré dans le worktree :
+`test_topology` → 18 tests, OK, aucun ignoré.

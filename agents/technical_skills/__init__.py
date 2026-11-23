@@ -1,9 +1,10 @@
 """
-agents/technical_skills/ — 10 skills techniques (v5.5.x).
+agents/technical_skills/ — skills techniques (v5.5.x).
 
-Skills disponibles :
-  market_regime         : détection régime (haussier/baissier/range/transition)
-  # à venir : trailing_stop, setup_quality, correlation, liquidity,
-  # economic_calendar, scenario_simulation, news_catalyst, backtester_pro,
-  # performance_attribution
+  market_regime     : régime de marché (stratégique, analyse d'actif)
+  setup_quality     : grade du setup (Decision Engine, affichage)
+  trailing_stop     : suivi du stop des positions paper (moniteur)
+  liquidity         : liquidité d'un actif (setup_quality)
+  correlation       : corrélation du portefeuille paper (GET /api/correlation)
+  economic_calendar : résultats et FOMC (GET /api/calendar)
 """

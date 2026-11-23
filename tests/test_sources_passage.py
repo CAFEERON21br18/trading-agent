@@ -1,6 +1,6 @@
 """
-tests/test_sources_passage.py — Sources d'état manquantes de la page Architecture : les 13 composants sans
-source (7 explorateurs, queue, Market Analyst, Risk Manager, Knowledge, Backtester, Groq) écrivent une
+tests/test_sources_passage.py — Sources d'état manquantes de la page Architecture : les 12 composants sans
+source (7 explorateurs, queue, Market Analyst, Risk Manager, Knowledge, Groq) écrivent une
 ligne INFO par passage (utils/passage.noter_passage), au format que lit dashboard/api/etat_journaux.py.
 
 Bout en bout : le vrai code de chaque composant tourne (données, heartbeat et queue simulés), ses lignes
@@ -37,7 +37,7 @@ from utils import logger as journal, passage
 
 SANS_SOURCE = ["explorer.crypto", "explorer.stock", "explorer.index", "explorer.etf", "explorer.commodity",
                "explorer.forex", "explorer.cfd_index", "queue", "analyst.market", "risk_manager", "knowledge",
-               "backtester", "llm.groq"]
+               "llm.groq"]
 
 
 def carte_du_depot() -> dict:
@@ -76,8 +76,6 @@ def faire_tourner_les_composants():
         from agents.knowledge import chart_reading
         pile.enter_context(mock.patch.object(chart_reading, "charger_ohlcv", return_value=pd.DataFrame()))
         chart_reading.analyser_graphique("AAA")
-        from agents.backtester.metrics import calculer_metriques
-        calculer_metriques([], pd.Series(dtype=float), 1000.0)
         from utils.groq_appels import noter_appel
         noter_appel("modele-test", True)
 

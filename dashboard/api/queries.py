@@ -90,19 +90,6 @@ def positions(filtre_status: str | None = None, filtre_type: str | None = None) 
     return [dict(r) for r in rows]
 
 
-def position_detail(pos_id: int) -> dict | None:
-    conn = get_connection()
-    row = conn.execute("SELECT * FROM positions WHERE id = ?", (pos_id,)).fetchone()
-    if not row:
-        conn.close()
-        return None
-    pos = dict(row)
-    txs = conn.execute("SELECT * FROM transactions WHERE position_id = ?", (pos_id,)).fetchall()
-    conn.close()
-    pos["transactions"] = [dict(t) for t in txs]
-    return pos
-
-
 def watchlist() -> dict:
     chemin = os.path.join(config.BASE_DIR, "data", "watchlist.json")
     try:
