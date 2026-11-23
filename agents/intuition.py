@@ -1,12 +1,12 @@
 """
 agents/intuition.py — Système d'intuition de l'agent
-L'agent consulte sa mémoire (winrate historique, patterns, contexte géopolitique)
+L'agent consulte sa mémoire (winrate historique, patterns)
 et peut s'écarter des indicateurs s'il a un "pressentiment" justifié.
 
-L'intuition se construit sur 3 piliers :
+L'intuition se construit sur 2 piliers :
 1. MÉMOIRE : winrate par actif (memory_reader.consulter_memoire)
 2. EXPÉRIENCE : patterns récurrents (market_patterns.md)
-3. CONTEXTE : géopolitique (geopolitics.resume_contexte_geopolitique)
+Les leçons (lessons_learned.md) ne donnent qu'une phrase de « raisons », sans effet sur la décision.
 """
 
 import sys

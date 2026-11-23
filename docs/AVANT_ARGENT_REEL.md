@@ -37,7 +37,7 @@ Définitions données par Lucia le 19/10/2026, reprises telles quelles :
 | 6 | Plafond de la poche pilotée (W4 = 20 %, décidé le 19/10) | pas fait (valeur fixée, notion absente du code) | aucune |
 | 7 | Arrêt d'urgence fonctionnel, capital paper qui intègre le P&L réalisé (C3) | **pas fonctionnel** | aucune |
 | 8 | Test de bout en bout « proposition seulement », N semaines | pas commencé | aucune |
-| 9 | Prix d'entrée paper au cours du moment | pas fait (cause confirmée le 19/10) | aucune |
+| 9 | Prix d'entrée paper au cours du moment | codé depuis (prix frais de moins de 15 min, anti-boucle 24 h ; mise à jour du 23/11/2026) ; vérification sur 4 semaines à faire | aucune |
 | 10 | Données des sous-agents disponibles | pas fait (quotas) | aucune |
 
 Les conditions 9 et 10 ne sont pas dans ta liste. Je les ajoute parce que, sans elles, les
@@ -152,7 +152,12 @@ conditions 1 et 8 mesurent un système différent de celui qui toucherait le ré
 - **Vérifier :** la table des propositions (N semaines sans trou, zéro ordre passé par le code).
 
 ### 9. Prix d'entrée paper au cours du moment
-- **État : pas fait, cause confirmée** (`docs/DIAG_PRIX_ENTREE.md`).
+- **Mise à jour du 23/11/2026 : codé.** À l'ouverture, le prix d'entrée est une barre de 1 min de
+  moins de 15 min (`agents/paper_trader/prix_frais.py`) ; sans prix frais, l'ouverture est refusée.
+  Le même actif ne peut pas être rouvert pendant 24 h après une fermeture automatique
+  (`agents/paper_trader/anti_boucle.py`). Registre v1.8, §9.4. La vérification ci-dessous (durée des
+  positions sur 4 semaines) reste à faire. Le constat d'origine est gardé tel quel :
+- **État au 19/10/2026 : pas fait, cause confirmée** (`docs/DIAG_PRIX_ENTREE.md`).
   - Le prix d'entrée est la dernière clôture 1d de `prices`, collectée une fois par jour vers
     06h30 UTC. Depuis R2, ce prix a 25,9 h en médiane à l'ouverture.
   - La surveillance compare au cours du moment toutes les 5 min, et rien n'empêche de rouvrir

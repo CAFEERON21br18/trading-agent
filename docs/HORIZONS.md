@@ -73,8 +73,9 @@ chevauchent, et il y a très peu d'observations indépendantes.
 - **Exécution :** Revolut sans API, donc un ordre passé à la main, avec des minutes de délai au mieux.
 - **Constat lié :** le paper se comporte déjà ainsi, sans l'avoir voulu. 315 des 418
   positions paper fermées ont duré moins d'une heure ; en octobre, 68 fermées avec une durée
-  médiane de 0,1 h. Le prix d'entrée est la dernière barre de `prices`, collectée une fois
-  par jour : sur les 69 ouvertures du registre depuis le 06/10, cette barre a 46 h en médiane
+  médiane de 0,1 h. Le prix d'entrée était alors la dernière barre de `prices`, collectée une fois
+  par jour (corrigé depuis : prix frais de moins de 15 min à l'ouverture et anti-boucle de 24 h,
+  registre v1.8 §9.4) : sur les 69 ouvertures du registre depuis le 06/10, cette barre a 46 h en médiane
   depuis son ouverture. La surveillance, elle, compare au cours du moment : l'écart peut
   suffire à toucher le SL ou le TP dès le premier contrôle. C'est l'explication la plus
   probable, à vérifier (je n'ai pas regardé l'issue des positions). Si elle se confirme,
@@ -138,7 +139,7 @@ chevauchent, et il y a très peu d'observations indépendantes.
 
 - Quelle correspondance entre tes 5 horizons et les 4 plans de `seed_plans.py` (renommer,
   ajouter un plan, ou garder les libellés actuels) ?
-- Le prix d'entrée paper : faut-il prendre le cours du moment plutôt que la dernière barre
-  de `prices` ? Cela change les résultats paper : à décider avant la lecture du registre concernée.
+- Le prix d'entrée paper : tranché et codé (registre v1.8, §9.4) : prix frais de moins de 15 min
+  à l'ouverture, anti-boucle de 24 h.
 - Faut-il ajouter une sortie à date au paper (J+5 comme le registre, ou J+20) ?
 - Faut-il pré-enregistrer une mesure à J+63/J+126 pour le court terme ?

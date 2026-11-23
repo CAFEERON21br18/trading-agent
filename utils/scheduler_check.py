@@ -2,8 +2,8 @@
 utils/scheduler_check.py — Vérification des tâches planifiées Windows.
 Utilisée par scripts/check_status.py.
 
-Les 7 tâches sont créées par scripts/install_tasks_windows.ps1 dans le
-dossier \\AlphaSignal\\ du Planificateur de tâches Windows.
+Les 8 tâches du dossier \\AlphaSignal\\ du Planificateur de tâches Windows : 7 créées par
+scripts/install_tasks_windows.ps1, « surveillance » par scripts/installer_surveillance.ps1.
 """
 
 import csv
@@ -11,7 +11,8 @@ import io
 import subprocess
 
 DOSSIER_TACHES_WINDOWS = "\\AlphaSignal\\"
-TACHES_WINDOWS = ["critical", "tactical", "strategic", "daily", "weekly", "cleanup", "dashboard"]
+TACHES_WINDOWS = ["critical", "tactical", "strategic", "daily", "weekly", "cleanup", "dashboard",
+                  "surveillance"]
 
 # Codes LastTaskResult (schtasks) à connaître — tout code hors de cette liste = échec.
 CODE_SUCCES        = 0
@@ -26,7 +27,7 @@ def verifier_taches_windows(noms: list[str] | None = None,
     AlphaSignal attendue.
 
     Retourne (ok, details, manquantes, echecs) :
-      - ok         : True si les 7 tâches existent et sont saines
+      - ok         : True si les 8 tâches existent et sont saines
       - details    : une ligne lisible par tâche
       - manquantes : noms des tâches absentes du Planificateur
       - echecs     : noms des tâches présentes mais avec un LastTaskResult inattendu

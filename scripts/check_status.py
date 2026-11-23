@@ -30,7 +30,7 @@ def check_scheduler() -> bool:
 
 
 def _check_scheduler_windows() -> bool:
-    """Vérifie les 7 tâches AlphaSignal dans le Planificateur de tâches (Windows)."""
+    """Vérifie les 8 tâches AlphaSignal dans le Planificateur de tâches (Windows)."""
     print("\n[1] Scheduler — Planificateur de tâches Windows")
     from utils.scheduler_check import verifier_taches_windows
     ok, details, manquantes, echecs = verifier_taches_windows()
@@ -41,7 +41,7 @@ def _check_scheduler_windows() -> bool:
     if echecs:
         _ko(f"Tâches en échec : {', '.join(echecs)}")
     if ok:
-        _ok("Les 7 tâches sont présentes et saines")
+        _ok("Les 8 tâches sont présentes et saines")
     return ok
 
 

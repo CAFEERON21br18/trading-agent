@@ -132,7 +132,7 @@ def calculer_score(df, tendance: str) -> tuple[int, str, list]:
 def analyser_actif(ticker: str, timeframe: str = "1d") -> str:
     """
     Analyse technique complète d'un actif sur un timeframe.
-    Retourne le rapport formaté (conforme au Skill 1 du CLAUDE.md).
+    Retourne le rapport formaté.
     """
     df = charger_ohlcv(ticker, timeframe, limite=500)
     if df.empty:

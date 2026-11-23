@@ -158,7 +158,7 @@ def valider_signal(ticker: str, direction: str, prix_entree: float,
 
 
 def formater_rapport_risque(resultat: dict) -> str:
-    """Génère le rapport texte (conforme au format Skill 4 du CLAUDE.md)."""
+    """Génère le rapport texte."""
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     sep = "─" * 60
     entete = f"ANALYSE RISQUE — {now}\n{sep}"

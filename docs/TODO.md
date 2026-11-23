@@ -1032,7 +1032,8 @@ une seule fois par jour (`utils/alerte_routine.py`, état dans `data/cache/alert
 
 ## 42. Hygiène des explorateurs (19/10/2026, sans effet sur les décisions)
 
-Préalables P2 (en partie) et P3 de `docs/BROUILLON_CRITERE_EXPLORATEURS.md` :
+Préalables P2 (en partie) et P3 du critère des explorateurs, resté à l'état de brouillon (fichier
+retiré du dépôt le 23/11/2026, gardé par l'histoire git) :
 - univers crypto (`agents/explorers/crypto_explorer/universe.py`, `est_exclu`) : stablecoins (liste,
   et tout symbole contenant « USD » ou commençant par « EUR »), fonds tokenisés (BUIDL, FIGR_HELOC,
   USYC) et symboles que Yahoo ne sert pas sous la forme XXX-USD (HYPE, RAIN, UNI, CC, SUI, BTW, TAO,

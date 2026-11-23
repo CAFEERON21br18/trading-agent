@@ -323,3 +323,74 @@ mode défensif, 4.3 `signal_results`, 6.3 `lessons_learned` : les corriger chang
 Ils sont listés dans le TODO, section « Lot comportement » (lot 7).
 
 Tests : `Ran 459 tests` / `OK (skipped=10)`.
+
+## Lot 6 — Documentation
+
+Parti :
+
+- Les 10 `CLAUDE.md` restants des sous-dossiers de `agents/` (8.29 ; le onzième,
+  `agents/backtester/CLAUDE.md`, est parti au lot 4). Deux docstrings qui renvoyaient à ces fichiers
+  (`market_analyst/analyst.py`, `risk_manager/manager.py`) ne les citent plus.
+- `docs/BROUILLON_RUPTURE_PRIX_ENTREE.md` et `docs/BROUILLON_CRITERE_EXPLORATEURS.md` (8.35), et la
+  référence de `docs/TODO.md` §42 vers le second.
+
+Corrigé dans `CLAUDE.md` (racine) :
+
+- 8.1 : 16 routes `/api/real/*` (17 à l'inventaire, moins `GET /api/real/calibrate/<ticker>`).
+- 8.2 : univers de 224 actifs, 207 à 212 par passage.
+- 8.3 : la watchlist n'est modifiée que depuis le dashboard.
+- 8.4 : convergence non exigée (`CONVERGENCES_REQUISES = 0`).
+- 8.5 : une contradiction majeure ne bloque plus, elle réduit la taille (× 0,5) ; les trois vrais
+  overrides sont nommés.
+- 8.6 : poids du risque présent, contribution toujours 0.
+- 8.13 : la liste des titres du rapport suit ce que le code produit (Synthèse exécutive, Pipeline en
+  mode Prudent, Registre des décisions ajoutés ; titres exacts des sections).
+- 8.15 : section « Planification — 8 tâches du Planificateur Windows » (les 5 cycles, `cleanup`,
+  `dashboard`, `surveillance`, les deux scripts d'installation, les journaux `task_<nom>.log`) ;
+  plus de LaunchAgent ni de launchd.
+- 8.16 : 20 positions sur la tour par le `.env`, 5 par défaut dans le code et dans `.env.example`.
+- 8.17 : `trade_journal.md` ne reçoit que les BUY/SELL du cycle quotidien.
+- 8.12 : `EXCLURE_BOUCLES_STATS` vaut 0 (lecture du lot 5) ; même correction dans `.env.example` et
+  dans le commentaire de `config.py`.
+- Mentions retirées : LOCK-IN (8.9), géopolitique dans l'intuition et le rapport (8.7),
+  `weekly_reviews` (8.11), ligne CONVICTION du tableau des modes (8.10). 8.18 : la formule
+  d'allocation écrite est devenue exacte au lot 5, elle est restée.
+- Ligne ajoutée : « `memory/metacognition_log.md` n'est jamais une source de décision. »
+
+Autres documents :
+
+- `README.md` réécrit pour la v5 sous Windows (8.19 à 8.25) : installation PowerShell, 6 clés
+  d'API, 8 tâches planifiées, 14 pages, seuils réels (8 / 9 / 4, R:R 1,2, DEFENSIF à 7), journaux
+  `task_<nom>.log`, arborescence complète. La liste « Améliorations futures » est gardée, sans le
+  Mac ni le backtester visuel.
+- `docs/AVANT_ARGENT_REEL.md` (8.30) : condition 9 marquée « codé » avec la date de mise à jour ;
+  le constat du 19/10 est gardé en dessous.
+- `docs/CONSOMMATION_API.md` (8.32) : cache CoinGecko de 10 min ; collecte de 51 séries
+  (5 cryptos × 3 + 18 × 2, recompté dans `data/watchlist.json.exemple`).
+- `docs/HORIZONS.md` (8.33) : prix d'entrée paper tranché et codé.
+- `docs/TAILSCALE.md` (8.36) : réécrit pour la tour Windows ; HTTPS par Tailscale Serve présenté
+  comme le seul accès.
+- `dashboard/templates/budget.html` (8.37) : confiance minimale 7 (DEFENSIF) et 3 (AGRESSIF) ; la
+  fiche CONVICTION, jamais affichée (le mode n'est jamais renvoyé), est retirée.
+- `utils/scheduler_check.py` (8.38) : `surveillance` ajoutée à `TACHES_WINDOWS` ; « 8 tâches »
+  dans le module et dans `scripts/check_status.py`. Ce contrôle n'est lancé qu'à la main.
+- `agents/intuition.py` : la docstring du module ne cite plus le contexte géopolitique.
+
+Resté :
+
+- 8.31 (`docs/AVANT_ARGENT_REEL.md:32,50`) : **à signaler.** Le document écrit toujours « Q3.a :
+  lecture le 03/11/2026 », « en cours ». La date est passée de 20 jours ; rien dans le dépôt ne dit
+  si la lecture a eu lieu. Laissé tel quel, comme demandé.
+- 8.34 (`docs/DIAG_PRIX_ENTREE.md`) : archive datée, laissée. Sa ligne 192 renvoie à
+  `docs/BROUILLON_RUPTURE_PRIX_ENTREE.md`, supprimé dans ce lot : le renvoi est mort. L'inventaire
+  disait ce brouillon « cité par aucun fichier » ; c'était inexact.
+- Une mention de CONVICTION reste dans `CLAUDE.md` : la phrase qui explique pourquoi l'entrée de
+  `PARAMETRES` est gardée (empreinte du registre).
+- `scripts/show_access_urls.py` affiche encore des adresses `http://<ip>:8080` qui ne répondent
+  plus et un lien de téléchargement pour Mac ; le script est classé GARDER (1.16) et n'était pas
+  dans la consigne. `docs/TAILSCALE.md` prévient de ne pas s'y fier ; reporté au TODO (lot 7).
+- 8.8, 8.14 et les lignes de `CLAUDE.md` qui dépendent du lot comportement (arrêt d'urgence à
+  700 €, « risque ajusté par mode BM », statistiques par actif) : inchangées, elles suivent des
+  décisions à prendre.
+
+Tests : `Ran 459 tests` / `OK (skipped=10)`.
