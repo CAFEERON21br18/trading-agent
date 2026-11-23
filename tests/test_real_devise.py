@@ -27,7 +27,6 @@ isoler_journaux()  # avant tout import du code testé : rien dans logs/ (product
 
 from agents import real_advisor
 from agents.real_advisor_rules import regles_position
-from scripts import migrer_devise_reelle as migration
 from tests.fx_fixtures import faux_yfinance
 from utils import database, real_price, real_vue
 from utils import real_portfolio_db as db
@@ -130,8 +129,8 @@ class TestBaseTemporaire(unittest.TestCase):
         self.dossier.cleanup()
 
     def migrer_puis_une_position_en_euros(self):
-        migration.migrer(self.base, appliquer=True, dossier_sauvegarde=os.path.join(self.dossier.name, "s"))
-        conn = sqlite3.connect(self.base)
+        conn = sqlite3.connect(self.base)  # colonne de la migration D1 (script retiré, appliqué sur la tour)
+        conn.execute("ALTER TABLE real_investments ADD COLUMN devise TEXT NOT NULL DEFAULT 'USD'")
         conn.execute("UPDATE real_investments SET devise = 'EUR' WHERE asset = 'BBB'")
         conn.commit()
         conn.close()

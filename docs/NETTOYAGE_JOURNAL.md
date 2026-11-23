@@ -110,3 +110,38 @@ Resté :
   `dashboard/app.py:122`, section `# macOS` de `.gitignore`) : laissés.
 
 Tests : `Ran 470 tests` / `OK (skipped=10)`.
+
+## Lot 3 — Scripts ponctuels
+
+Parti :
+
+- `scripts/check_message_audit.py` (1.5), `scripts/reparer_barres_incompletes.py` (1.6),
+  `scripts/reparer_prix_null.py` (1.7) : cités par aucun fichier, aucun test.
+- `scripts/purger_signaux_demo.py` et `tests/test_purger_signaux_demo.py` (1.8, 11.3 ; 4 tests) :
+  purge appliquée le 08/10.
+- `scripts/migrer_devise_reelle.py` et `tests/test_real_devise_migration.py` (1.9, 11.4 ; 7 tests).
+  Vérification préalable, base de la tour ouverte en lecture seule (`mode=ro`), structure
+  seulement : `PRAGMA table_info(real_investments)` → la colonne `devise` est présente. Aucune
+  valeur ni aucun nombre de lignes n'a été lu.
+- `tests/test_fichiers_hors_git.py` (11.7) : le test des chemins ignorés par git prend le dossier
+  des sauvegardes dans `scripts/marquer_boucles.py` (même dossier `data/sauvegardes/`), au lieu des
+  deux scripts supprimés. Même nombre de tests dans ce fichier.
+- `tests/test_real_devise.py` : il appelait `migration.migrer` pour créer la colonne dans sa base
+  temporaire ; il exécute maintenant la même instruction `ALTER TABLE … ADD COLUMN devise` (comme le
+  fait déjà `tests/test_plan_repartition.py`). Ce cas n'était pas à l'inventaire, qui ne citait que
+  les 7 tests de la migration.
+- Commentaires qui citaient les scripts supprimés : `.gitignore`, `demo_performance.py`,
+  `utils/real_devise.py`, `tests/test_plan_repartition.py`.
+
+Resté :
+
+- `scripts/seed_plans.py` (1.10) et tous les scripts classés GARDER.
+- `docs/TODO.md:94` cite `purger_signaux_demo.py` avec son commit, comme un fait daté : laissé.
+
+À savoir : `initialiser_real_db` ne crée pas la colonne `devise` ; le script de migration était le
+seul code qui l'ajoutait. Sur une base neuve, la colonne manque et `utils/real_devise.py` applique
+la devise par défaut (USD), comme avant la migration. Le script reste dans l'histoire git ; la
+docstring de `utils/real_devise.py` le dit.
+
+Tests : `Ran 459 tests` / `OK (skipped=10)`. Les 11 tests en moins sont ceux des deux fichiers de
+test supprimés (4 + 7).

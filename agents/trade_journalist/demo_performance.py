@@ -25,7 +25,7 @@ from agents.trade_journalist import journalist, performance_tracker, intuition_t
 
 logger = get_logger(__name__)
 
-# Valeurs du __main__ d'origine (relues par scripts/purger_signaux_demo.py)
+# Valeurs du __main__ d'origine
 SIGNAUX_DEMO = [
     ("BTC-USD", "LONG",  8, 71349.71, 67743.60, 78561.93, 82168.04, "1d", "Market+Fundamental", "EMA bullish + BTC sous-évalué"),
     ("ETH-USD", "LONG",  6, 3200.00,   3048.52,  3502.97,  3654.45, "1d", "Market",             "Double bottom daily"),

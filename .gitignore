@@ -24,8 +24,8 @@ data/database.db-shm
 data/database.db-wal
 # Fichiers d'état écrits en production, hors du suivi git (dépôt public) : compteur NewsAPI du
 # rapport (agents/report_sections.py), état de la surveillance du dashboard
-# (scripts/surveiller_dashboard.py), copies de la base avant migration ou purge, qui contiennent
-# le portefeuille réel (scripts/migrer_devise_reelle.py, scripts/purger_signaux_demo.py)
+# (scripts/surveiller_dashboard.py), copies de la base avant migration ou marquage, qui contiennent
+# le portefeuille réel (scripts/marquer_boucles.py)
 data/rapport_newsapi.json
 data/surveillance_dashboard.json
 data/sauvegardes/

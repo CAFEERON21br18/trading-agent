@@ -44,7 +44,7 @@ class Base(unittest.TestCase):
                        mock.patch("socket.socket.connect", side_effect=OSError("réseau coupé (test)"))]
         self.courriel = [p.start() for p in self.patchs][0]
         db.initialiser_real_db()
-        conn = database.get_connection()  # colonne de la migration D1 (scripts/migrer_devise_reelle.py)
+        conn = database.get_connection()  # colonne de la migration D1 (script retiré, appliqué sur la tour)
         conn.execute("ALTER TABLE real_investments ADD COLUMN devise TEXT NOT NULL DEFAULT 'USD'")
         conn.commit()
         conn.close()

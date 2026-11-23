@@ -54,11 +54,11 @@ class TestRegles(unittest.TestCase):
 
     def test_chemins_ecrits_par_le_code(self):
         from agents import report_sections
-        from scripts import migrer_devise_reelle, purger_signaux_demo, surveiller_dashboard
+        from scripts import marquer_boucles, surveiller_dashboard
         from utils import helpers
         chemins = [report_sections.COMPTEUR, surveiller_dashboard.ETAT,
-                   os.path.join(migrer_devise_reelle.SAUVEGARDES_DEFAUT, "copie.db"),
-                   os.path.join(purger_signaux_demo.DOSSIER_SAUVEGARDES, "copie.json"),
+                   os.path.join(marquer_boucles.SAUVEGARDES_DEFAUT, "copie.db"),
+                   os.path.join(marquer_boucles.SAUVEGARDES_DEFAUT, "copie.json"),
                    os.path.join(helpers.BASE_DIR, "reports", "daily", "report_2026-01-01.md"),
                    os.path.join(helpers.BASE_DIR, "reports", "weekly", "week_2026_W01.md"),
                    os.path.join(RACINE, "package-lock.json")]
