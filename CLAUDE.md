@@ -179,6 +179,7 @@ Après : `mettre_a_jour_performance_md()` synchronise tout (intuition + learner)
 7. Scheduler incassable : try/except global + heartbeat + retry email
 8. **Tester au fur et à mesure** — chaque module a son test
 9. Dépôt public : aucune donnée réelle (quantité, prix d'entrée, montant, texte de plan ou de conseil du portefeuille réel) dans un fichier commité, tests compris. Les données de test sont inventées. Avant chaque push, comparer le diff aux valeurs des tables real_*.
+10. Aucune ligne Co-Authored-By ni Claude-Session dans les messages de commit de ce dépôt.
 
 ## Dashboard PWA (`dashboard/app.py` sur port 8080) — 14 pages
 Pages : Overview, Portfolio, Fantôme Jev, **Réel** (v5), Plans, **Chat** (v5), Watchlist, Explorers, Journal,

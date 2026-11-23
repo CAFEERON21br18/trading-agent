@@ -60,8 +60,7 @@ ALERT_CONFIDENCE_THRESHOLD = int(_get_optional("ALERT_CONFIDENCE_THRESHOLD", "8"
 FEAR_GREED_EXTREME_LOW     = int(_get_optional("FEAR_GREED_EXTREME_LOW", "20"))
 FEAR_GREED_EXTREME_HIGH    = int(_get_optional("FEAR_GREED_EXTREME_HIGH", "80"))
 
-# ── Rapport quotidien ─────────────────────────────────────────────────────────
-REPORT_TIME = _get_optional("REPORT_TIME", "07:30")
+# ── Fuseau horaire (l'heure du rapport quotidien est dans la tâche planifiée) ─
 TIMEZONE    = _get_optional("TIMEZONE", "Europe/Lisbon")
 
 # ── Audit du chat (Phase 4) ───────────────────────────────────────────────────
@@ -180,7 +179,7 @@ def afficher_config():
     print(f"  Risque par trade       : {RISK_PER_TRADE_PCT:.1f}% = {RISK_PER_TRADE_EUR:.2f}€")
     print(f"  Positions simultanées  : {MAX_POSITIONS_SIMULTANEES} max")
     print(f"  Seuil d'arrêt urgence  : {CAPITAL_STOP_THRESHOLD:.0f}€")
-    print(f"  Rapport quotidien      : {REPORT_TIME} ({TIMEZONE})")
+    print(f"  Fuseau horaire         : {TIMEZONE}")
     print(f"  Email destinataire     : {EMAIL_RECIPIENT}")
     print(f"  NewsAPI                : {'✓ configurée' if NEWSAPI_KEY else '✗ non configurée (RSS utilisé)'}")
     print(f"  Alpha Vantage          : {'✓ configurée' if ALPHA_VANTAGE_KEY else '✗ non configurée'}")

@@ -14,14 +14,9 @@ numpy>=1.24.0             # Calculs numériques
 # Indicateurs techniques
 pandas-ta>=0.3.14b        # RSI, MACD, Bollinger, EMA, ATR, ADX, Stochastic RSI
 
-# Visualisation
-matplotlib>=3.7.0         # Graphiques statiques (equity curve, drawdown)
-plotly>=5.15.0            # Graphiques interactifs HTML (dashboard V2)
-
 # Infrastructure
 python-dotenv>=1.0.0      # Chargement des variables .env
-schedule>=1.2.0           # Scheduler pour les tâches automatiques
-pytz>=2023.3              # Gestion des fuseaux horaires (Lisbonne UTC+0/+1)
+tzdata                    # Base des fuseaux horaires pour zoneinfo sous Windows
 
 # Dashboard web (Phase P4)
 flask>=3.0.0              # Serveur web local (PWA + API JSON)
