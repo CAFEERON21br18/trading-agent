@@ -394,3 +394,54 @@ Resté :
   décisions à prendre.
 
 Tests : `Ran 459 tests` / `OK (skipped=10)`.
+
+## Lot 7 — `docs/TODO.md`
+
+Le fichier passe de 1 044 à 560 lignes. Les numéros des entrées restantes n'ont pas changé : le code
+et les autres documents citent « TODO §N » à de nombreux endroits.
+
+Parti (23 entrées) :
+
+- Les 20 entrées classées SUPPRIMER en section 12 : entrée de tête sur les décisions du tactical,
+  §1, 6, 9, 10, 13, 16, 18, 19, 23, 28, 30, 34, 35, 36, 37, 38, 39, 40, 41.
+- §11 et §24, notes que le registre porte déjà.
+- §15 (`_seuil_confiance_requis`) : la fonction a été supprimée au lot 5, l'entrée n'a plus d'objet.
+  Ce retrait n'était pas dans la consigne du lot 7 ; il découle du lot 5.
+- Une table en fin de fichier, « Entrées sorties le 23/11/2026 », garde une ligne par entrée sortie
+  (titre, ce qui l'a close), pour que les renvois « TODO §N » du code restent lisibles.
+
+Reliquats reportés dans une entrée restante :
+
+- « BM en attente » (entrée de tête) → §26.
+- `get_real_budget_summary` et `progression_plan` (§35, inventaire 1.32) → §32.
+- `EXCLURE_BOUCLES_STATS` toujours à 0 (§40, 7.13) → section de tête.
+- `logs/task_*.log` jamais bornés (§1), clés d'API dans l'URL de `check_status.py` et anciens
+  journaux à supprimer à la main (§37) → nouvelle entrée §43, « Reliquats du nettoyage ».
+- §39 (`ajouter_lecon`) : plus de reliquat, la fonction est partie au lot 1.
+
+Réduit à ce qui reste : §2 (Groq), §7 (`PUT /api/plans/<id>`), §8 (trois cas), §27 (actifs sans
+fondamental, pas de cache Alpha Vantage), §31 (`sous_repartition`, `max_position_size`), §42 (EMA 200,
+biais d'ordre, prix de la queue).
+
+Références corrigées : les entrées gardées citent des fonctions au lieu de numéros de ligne (têtes,
+§12, 14, 20, 21, 22, 25, 26, 29). §20 : la docstring fausse est dite corrigée, le pilier
+géopolitique retiré. §27 : la coupure d'Alpha Vantage est dans `scripts/_chat_a_blanc.py`. Entrée
+`signal_results` : la démo est dans `agents/trade_journalist/demo_performance.py`. §32 : n'annonce
+plus de tailles de fichiers périmées.
+
+Ajouté :
+
+- En tête, « Lot comportement — après la lecture Q3.a » : arrêt d'urgence (7.7), veto Fear & Greed
+  au tactical (7.8), risque en mode défensif (7.15), `setups_similaires` (7.10), alimentation de
+  `signal_results` (4.3). Chacun exige un critère commité au registre avant d'être codé.
+- §43 : ce que le nettoyage laisse (audit métacognitif et entrée CONVICTION liés à l'empreinte du
+  registre, trailing stop sans commande, `jev_essai.py` non classé, `show_access_urls.py`, colonne
+  `devise` sur une base neuve, fichiers d'état devenus inutiles).
+
+Resté tel quel : §3, 4, 17, 33 ; §5 reçoit une ligne qui renvoie à `CLAUDE.md`.
+
+À savoir : les identifiants de commit cités dans le TODO et dans `docs/` sont ceux de l'historique
+d'avant la réécriture du dépôt public ; ils n'existent pas dans l'historique actuel. Non corrigé
+(hors consigne), signalé au §43.
+
+Tests : `Ran 459 tests` / `OK (skipped=10)` (aucun code touché dans ce lot).
