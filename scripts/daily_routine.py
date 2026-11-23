@@ -1,7 +1,7 @@
 """
-scripts/daily_routine.py — Point d'entrée pour launchd
+scripts/daily_routine.py — Lancement manuel de la routine quotidienne
 Routine incassable : try/except global, anti-doublon, heartbeat, alerte panne.
-Appelé automatiquement à 7h30 et 12h00, et au chargement (RunAtLoad).
+La tâche planifiée « daily » lance scripts/cycle_daily.py, pas ce fichier.
 """
 
 import sys
@@ -70,7 +70,7 @@ def _executer_routine_complete() -> dict:
 
 def main():
     logger.info("=" * 60)
-    logger.info("AlphaSignal — Routine quotidienne (déclenchée par launchd)")
+    logger.info("AlphaSignal — Routine quotidienne (lancement manuel)")
     logger.info("=" * 60)
 
     # ── Anti-doublon : si le rapport du jour est déjà généré, on s'arrête ─────

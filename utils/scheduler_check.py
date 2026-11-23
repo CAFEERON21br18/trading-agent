@@ -1,6 +1,6 @@
 """
 utils/scheduler_check.py — Vérification des tâches planifiées Windows.
-Utilisée par scripts/check_status.py (le côté macOS/launchd reste propre au script).
+Utilisée par scripts/check_status.py.
 
 Les 7 tâches sont créées par scripts/install_tasks_windows.ps1 dans le
 dossier \\AlphaSignal\\ du Planificateur de tâches Windows.

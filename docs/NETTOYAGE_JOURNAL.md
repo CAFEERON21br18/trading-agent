@@ -84,3 +84,29 @@ la prochaine régénération (dimanche 20h, ou `scripts\regenerer_graphe.py`). D
 `test_tous_les_modules_classes` signalerait `main.py` comme non classé.
 
 Tests : `Ran 470 tests` / `OK (skipped=10)` sans graphe ; `test_real_*` : 41 tests, OK.
+
+## Lot 2 — macOS (Windows seulement)
+
+Parti :
+
+- Les 7 `scripts/com.alphasignal.*.plist`, `install_launchd.sh`, `uninstall_launchd.sh`,
+  `install_v4.sh`, `run_mac.sh`, `backup_before_update.sh` (5.2) et `scripts/check_after_update.py`
+  (1.4) : 13 fichiers.
+- Ce qui les citait dans le code : la branche launchd de `scripts/check_status.py`
+  (`_check_scheduler_launchd`, qui renvoyait vers `install_launchd.sh`) ; `check_scheduler` appelle
+  maintenant le contrôle Windows sans condition. Le commentaire d'en-tête de
+  `scripts/install_tasks_windows.ps1` ne cite plus `install_launchd.sh` (une ligne de commentaire ;
+  aucune tâche planifiée n'est touchée).
+- `scripts/daily_routine.py` : la docstring et la ligne de journal disaient « déclenchée par
+  launchd » ; elles disent maintenant « lancement manuel » (la tâche `daily` lance
+  `cycle_daily.py`).
+
+Resté :
+
+- `README.md`, `CLAUDE.md` et `docs/TAILSCALE.md` citent encore launchd et ces fichiers : ils sont
+  réécrits au lot 6 (8.15, 8.19 à 8.25, 8.36).
+- `docs/DIAG_PRIX_ENTREE.md:103` (« launchd sur macOS » avant le 23/09) : archive datée, laissée.
+- Commentaires de portabilité sans lien avec les fichiers supprimés (`utils/lock_manager.py:27,31`,
+  `dashboard/app.py:122`, section `# macOS` de `.gitignore`) : laissés.
+
+Tests : `Ran 470 tests` / `OK (skipped=10)`.

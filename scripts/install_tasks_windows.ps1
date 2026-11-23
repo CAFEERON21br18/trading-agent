@@ -1,6 +1,6 @@
 ﻿# ============================================================
 # AlphaSignal - install_tasks_windows.ps1
-# Equivalent Windows de install_launchd.sh : cree les 7 taches
+# Cree les 7 taches
 # planifiees dans le dossier \AlphaSignal\ du Planificateur.
 #
 # A lancer dans PowerShell ouvert EN ADMINISTRATEUR.

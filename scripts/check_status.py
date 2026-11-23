@@ -6,7 +6,6 @@ Vérifie : scheduler, dernier rapport, heartbeat, SMTP, accès APIs.
 
 import sys
 import os
-import subprocess
 from datetime import datetime, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -26,27 +25,8 @@ def _wn(msg): print(f"  ⚠️  {msg}")
 
 
 def check_scheduler() -> bool:
-    """Vérifie que le scheduler de l'OS connaît bien les tâches AlphaSignal."""
-    if sys.platform == "win32":
-        return _check_scheduler_windows()
-    return _check_scheduler_launchd()
-
-
-def _check_scheduler_launchd() -> bool:
-    """Vérifie que launchd connaît bien le job (macOS)."""
-    print("\n[1] Scheduler launchd")
-    try:
-        result = subprocess.run(["launchctl", "list"], capture_output=True, text=True, timeout=10)
-        if "com.alphasignal.daily" in result.stdout:
-            ligne = next(l for l in result.stdout.splitlines() if "com.alphasignal.daily" in l)
-            _ok(f"Job chargé : {ligne.strip()}")
-            return True
-        _ko("Job 'com.alphasignal.daily' non chargé dans launchctl")
-        print("     → relance : bash scripts/install_launchd.sh")
-        return False
-    except Exception as e:
-        _ko(f"Impossible de vérifier launchctl : {e}")
-        return False
+    """Vérifie que le Planificateur de tâches Windows connaît bien les tâches AlphaSignal."""
+    return _check_scheduler_windows()
 
 
 def _check_scheduler_windows() -> bool:
