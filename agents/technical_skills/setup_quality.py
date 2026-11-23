@@ -17,10 +17,6 @@ GRADES = [
     ("D",  0),
 ]
 
-# Facteur d'ajustement Budget Manager : bonus si beau setup, malus si mauvais
-BUDGET_BOOST = {"A+": 1.5, "A": 1.2, "B": 1.0, "C": 0.5, "D": 0.0}
-
-
 def _direction_bullish(analyse: dict) -> int:
     """+1 haussier, -1 baissier, 0 neutre."""
     d = (analyse or {}).get("direction", "").upper()
@@ -38,7 +34,7 @@ def _decision_bullish(decision: str) -> int:
 
 def noter_setup(analyses: dict, decision_result: dict) -> dict:
     """Note un setup selon 8 critères. Retourne
-    {grade, score, criteres, criteres_ok, criteres_manquants, budget_boost}."""
+    {grade, score, total_criteres, criteres, criteres_ok, criteres_manquants}."""
     d_dir = _decision_bullish(decision_result.get("decision", ""))
     criteres = {}
 
@@ -109,7 +105,6 @@ def noter_setup(analyses: dict, decision_result: dict) -> dict:
         "criteres":            criteres,
         "criteres_ok":         ok,
         "criteres_manquants":  ko,
-        "budget_boost":        BUDGET_BOOST.get(grade, 1.0),
     }
 
 

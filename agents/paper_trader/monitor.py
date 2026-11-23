@@ -13,7 +13,6 @@ from utils.logger import get_logger
 from utils.portfolio_db import lire_positions_ouvertes
 from agents.paper_trader.portfolio import prix_actuel
 from agents.paper_trader.executor import fermer_position
-from agents.paper_trader.lockin import lister_lockin, desactiver_lockin
 from utils.registre_cycles import noter_cloture, noter_evenement
 
 logger = get_logger(__name__)
@@ -77,24 +76,17 @@ def _verifier_position(pos: dict, passage=None) -> dict | None:
 
 def monitorer_positions(passage=None) -> dict:
     """
-    Vérifie toutes les positions ouvertes. Les positions en LOCK-IN sont vérifiées EN PREMIER.
-    Après fermeture, le LOCK-IN éventuel est désactivé.
+    Vérifie toutes les positions ouvertes, dans l'ordre de lire_positions_ouvertes.
     passage (Phase 4, R2) : passage du registre du cycle appelant ; clôtures et stops
     déplacés y sont enregistrés (None : rien n'est enregistré).
     """
     positions = lire_positions_ouvertes()
     if not positions:
         logger.info("Monitor : aucune position ouverte à surveiller")
-        return {"verifiees": 0, "fermees_tp": 0, "fermees_sl": 0, "details": [], "lockin_actifs": 0}
-
-    # Tickers en LOCK-IN à prioriser
-    lockin_tickers = {it["asset"] for it in lister_lockin()}
-
-    # Trier : LOCK-IN d'abord, le reste ensuite
-    positions_triees = sorted(positions, key=lambda p: 0 if p["ticker"] in lockin_tickers else 1)
+        return {"verifiees": 0, "fermees_tp": 0, "fermees_sl": 0, "details": []}
 
     fermes_tp, fermes_sl, details = 0, 0, []
-    for p in positions_triees:
+    for p in positions:
         try:
             res = _verifier_position(p, passage)
         except Exception as e:
@@ -107,22 +99,16 @@ def monitorer_positions(passage=None) -> dict:
             "ticker":    p["ticker"],
             "pnl_euros": res["pnl_euros"],
             "pnl_percent": res["pnl_percent"],
-            "lockin":    p["ticker"] in lockin_tickers,
         })
         if res["pnl_euros"] >= 0:
             fermes_tp += 1
         else:
             fermes_sl += 1
-        # Désactiver le LOCK-IN si la position fermée en avait un
-        if p["ticker"] in lockin_tickers:
-            desactiver_lockin(p["ticker"])
 
-    logger.info(f"Monitor : {len(positions)} surveillée(s) ({len(lockin_tickers)} en LOCK-IN), "
-                f"{fermes_tp} TP, {fermes_sl} SL")
+    logger.info(f"Monitor : {len(positions)} surveillée(s), {fermes_tp} TP, {fermes_sl} SL")
     return {
         "verifiees":     len(positions),
         "fermees_tp":    fermes_tp,
         "fermees_sl":    fermes_sl,
         "details":       details,
-        "lockin_actifs": len(lockin_tickers),
     }

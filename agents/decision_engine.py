@@ -98,14 +98,6 @@ def _verifier_overrides(ticker: str, analyses: dict) -> list[str]:
     return overrides
 
 
-def _seuil_confiance_requis(analyses: dict) -> int:
-    """Si winrate faible mais > 0 sur cet actif, exige confiance plus élevée."""
-    perf = analyses.get("memory", {}).get("perf")
-    if perf and perf["trades"] >= 3 and perf["winrate_pct"] < WINRATE_PRUDENCE:
-        return 9
-    return 7
-
-
 @zone_audit("decision_engine")  # audit du chat (Phase 4) : no-op hors requête auditée
 def decider(ticker: str, analyses: dict, origine: str = "cycle") -> dict:
     """
@@ -121,7 +113,6 @@ def decider(ticker: str, analyses: dict, origine: str = "cycle") -> dict:
     score_total = round(sum(scores.values()), 2)
     convergences, contradictions = _convergences_contradictions(analyses)
     overrides   = _verifier_overrides(ticker, analyses)
-    seuil_conf  = _seuil_confiance_requis(analyses)
 
     style, taille_factor = "normal", 1.0  # style de trading et facteur de taille (v4.1)
 
@@ -184,7 +175,6 @@ def decider(ticker: str, analyses: dict, origine: str = "cycle") -> dict:
         "convergences":     convergences,
         "contradictions":   contradictions,
         "overrides":        overrides,
-        "seuil_confiance_requis": seuil_conf,
         "intuition":        intuition,
     }
     journaliser_intuition(ticker, resultat, intuition, origine)  # journal seulement : rien n'est lu en retour
@@ -196,11 +186,9 @@ def decider(ticker: str, analyses: dict, origine: str = "cycle") -> dict:
         resultat["quality_grade"]     = qual["grade"]
         resultat["quality_score"]     = qual["score"]
         resultat["quality_criteres"]  = qual["criteres"]
-        resultat["budget_boost"]      = qual["budget_boost"]
     except Exception as e:
         logger.warning(f"Setup quality {ticker} : {e}")
         resultat["quality_grade"] = "?"
-        resultat["budget_boost"]  = 1.0
 
     # Phase 4 / E2 — origine="chat" : ni audit métacognitif ni pipeline (aucun
     # appel LLM, aucune écriture dans metacognition_log). Cycles : inchangés.

@@ -44,15 +44,15 @@ def consulter_intuition(ticker: str, analyses: dict, decision_preliminaire: str)
 
     Retourne :
         {
-          "ajustement":       int (-3 à +3, à ajouter au score composite),
+          "ajustement":       int (-2 à +2) : jamais ajouté au score composite ; il donne le
+                              pressentiment et, à ±2, l'override ci-dessous ; écrit au journal,
           "pressentiment":    "haussier" | "baissier" | "neutre",
           "raisons":          list[str] (pourquoi l'agent a un pressentiment),
           "override_decision": str | None (si l'intuition force une décision),
-          "boost_confiance":   int (-2 à +2, ajustement de la confiance finale),
+          "boost_confiance":   int (-1 à +1, ajouté à la confiance finale),
         }
     """
     perf  = analyses.get("memory", {}).get("perf")
-    geo   = analyses.get("context", {})
     raisons = []
     ajustement = 0
     boost_conf = 0
@@ -81,14 +81,7 @@ def consulter_intuition(ticker: str, analyses: dict, decision_preliminaire: str)
     if lecons:
         raisons.append(f"{len(lecons)} leçon(s) historique(s) sur cet actif")
 
-    # ── 4. Contexte géopolitique ─────────────────────────────────────────────
-    if isinstance(geo, dict) and geo.get("actifs_a_surveiller"):
-        if ticker in geo["actifs_a_surveiller"]:
-            ajustement += 1
-            boost_conf += 1
-            raisons.append("Actif identifié par la veille géopolitique comme à surveiller")
-
-    # ── 5. Détermination du pressentiment ────────────────────────────────────
+    # ── 4. Détermination du pressentiment ────────────────────────────────────
     if ajustement >= 2:
         pressentiment = "haussier"
     elif ajustement <= -2:
@@ -96,7 +89,7 @@ def consulter_intuition(ticker: str, analyses: dict, decision_preliminaire: str)
     else:
         pressentiment = "neutre"
 
-    # ── 6. Override possible ─────────────────────────────────────────────────
+    # ── 5. Override possible ─────────────────────────────────────────────────
     # Si décision préliminaire HOLD/NO_TRADE mais intuition très forte → override BUY
     if decision_preliminaire in ("HOLD", "NO_TRADE") and ajustement >= 2:
         override = "BUY"

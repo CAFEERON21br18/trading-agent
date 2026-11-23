@@ -1,6 +1,8 @@
 """
 agents/budget_manager/strategy.py — Détection du mode actuel + paramètres
-4 modes : NORMAL, DEFENSIF, AGRESSIF, CONVICTION (manuel).
+3 modes atteints : NORMAL, DEFENSIF, AGRESSIF. L'entrée CONVICTION de PARAMETRES n'est atteinte
+par aucun code ; elle reste parce que PARAMETRES entre dans l'empreinte des paramètres du
+registre (utils/registre.py, MODES_BM) : la retirer changerait cette empreinte.
 """
 
 import sys
@@ -46,7 +48,7 @@ PARAMETRES = {
         "taille_factor":              1.3,
         "max_conviction_par_trade":   35.0,
     },
-    "CONVICTION": {
+    "CONVICTION": {  # jamais renvoyé par detecter_mode ; gardé pour l'empreinte du registre (MODES_BM)
         "capital_investissable_pct": 50.0,
         "confiance_min":              8,    # v4.1 : 8 (avant 9)
         "taille_factor":              1.0,
@@ -83,11 +85,8 @@ def _drawdown_recent_pct(positions: list[dict]) -> float:
     return abs(pnl_total) / config.CAPITAL * 100
 
 
-def detecter_mode(conviction_force: bool = False) -> str:
-    """Détecte le mode actuel du Budget Manager (NORMAL / DEFENSIF / AGRESSIF / CONVICTION)."""
-    if conviction_force:
-        return "CONVICTION"
-
+def detecter_mode() -> str:
+    """Détecte le mode actuel du Budget Manager (NORMAL / DEFENSIF / AGRESSIF)."""
     fermees = lire_positions_recentes_fermees(limite=20)
     wins, pertes = _wins_pertes_consecutives(fermees)
     drawdown = _drawdown_recent_pct(fermees[:10])  # drawdown récent (10 trades)

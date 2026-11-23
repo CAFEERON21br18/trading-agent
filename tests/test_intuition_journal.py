@@ -32,13 +32,13 @@ from agents import decision_engine, intuition
 from agents.vault.notes_positions import entrees_intuition
 
 
-def analyses(tech=("NEUTRE", 0), fond=("NEUTRE", 0), perf=None, patterns=(), surveiller=()):
+def analyses(tech=("NEUTRE", 0), fond=("NEUTRE", 0), perf=None, patterns=()):
     return {"technique": {"direction": tech[0], "confiance": tech[1], "prix": 100.0},
             "fondamental": {"direction": fond[0], "confiance": fond[1]},
             "sentiment": {"direction": "NEUTRE", "confiance": 0},
             "risque": {"valide": True, "direction": "NEUTRE", "confiance": 0},
             "memory": {"perf": perf, "patterns": list(patterns), "lecons": []},
-            "context": {"actifs_a_surveiller": list(surveiller)}}
+            "context": {}}
 
 
 CAS = {  # ticker inventé -> analyses
@@ -61,7 +61,7 @@ class TestJournalSeulement(unittest.TestCase):
         pile.enter_context(mock.patch("agents.skills.pipeline_cache.executer_pipeline_cache",
                                       return_value={"executed": False, "raison": "simulé"}))
         pile.enter_context(mock.patch("agents.technical_skills.setup_quality.noter_setup",  # lit la base : simulé
-                                      return_value={"grade": "B", "score": 5, "criteres": [], "budget_boost": 1.0}))
+                                      return_value={"grade": "B", "score": 5, "criteres": []}))
 
     def decisions(self, origine="cycle"):
         return {t: decision_engine.decider(t, copy.deepcopy(a), origine=origine) for t, a in CAS.items()}

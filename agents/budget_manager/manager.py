@@ -48,11 +48,11 @@ def _cash_disponible_actuel(mode: str) -> float:
 
 
 @zone_audit("budget_manager")  # audit du chat (Phase 4) : no-op hors requête auditée
-def traiter_demandes(demandes: list[dict], conviction_force: bool = False) -> dict:
+def traiter_demandes(demandes: list[dict]) -> dict:
     """
     Point d'entrée principal : reçoit une liste de demandes, retourne les allocations.
     """
-    mode = detecter_mode(conviction_force=conviction_force)
+    mode = detecter_mode()
     params = parametres_mode(mode)
     cash_dispo = _cash_disponible_actuel(mode)
 

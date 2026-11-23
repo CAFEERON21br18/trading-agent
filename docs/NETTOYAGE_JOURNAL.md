@@ -194,3 +194,132 @@ Resté :
 
 Tests : `Ran 459 tests` / `OK (skipped=10)`. Avec un graphe régénéré dans le worktree :
 `test_topology` → 18 tests, OK, aucun ignoré.
+
+## Lot 5 — Code de décision sans effet
+
+Constat qui encadre tout le lot : `utils/registre.py:72-97` (`parametres_actifs`) calcule l'empreinte
+des paramètres écrite au registre à chaque passage. Elle contient `METACOG_AUDIT_ENABLED` (lu par
+`getattr(config, …, None)`) et `MODES_BM`, le dictionnaire `PARAMETRES` de
+`agents/budget_manager/strategy.py`, entrée `CONVICTION` comprise. Retirer l'un ou l'autre change
+une écriture du registre : interdit par la règle centrale. D'où ce qui suit pour 7.2 et 7.9.
+
+Deux contrôles communs, relancés après le lot :
+
+- Empreinte de `parametres_actifs()` sur l'arbre de départ (`38300ca`) et sur l'arbre nettoyé, dans
+  les mêmes conditions (sans `.env`, watchlist du modèle) : même SHA-256 (`e39a0f32…46c4`), mêmes
+  26 clés, `erreur_lecture` absent.
+- Sorties comparées sur 1 456 cas inventés et fixes (400 arbitrages de demandes construites par
+  `creer_demande`, 1 056 appels de `consulter_intuition` sur une grille de mémoires, de contextes et
+  de décisions) : même SHA-256 avant et après (`58b6d033…0a66`).
+
+### 7.1 `budget_boost` — retiré
+
+Preuve que le facteur vaut toujours 1.0 :
+
+- Lecture unique : `arbitrator.py:27`, `demande.get("budget_boost", 1.0)`.
+- `arbitrer` n'a qu'un appelant, `manager.traiter_demandes` ; qui n'en a qu'un,
+  `paper_trader/cycle.py:71`, avec des demandes venues de `_decision_to_demande` → `creer_demande`
+  (`git grep -n -E "creer_demande|traiter_demandes|arbitrer\("`).
+- `creer_demande` construit un dictionnaire de 10 clés fixes, sans `budget_boost`
+  (`manager.py:29-40`) ; rien n'ajoute de clé ensuite.
+- Donc `boost` = 1.0, et `x * 1.0 == x` exactement en virgule flottante : le score est le même.
+- La clé `budget_boost` de la décision (`decision_engine.py`) et de `noter_setup` n'a aucun lecteur :
+  `resume_decision` (registre), `_resumer` (audit du chat), `context_builder` (chat), le pipeline et
+  le formatage lisent des clés nommées, jamais celle-ci ; aucun code n'itère sur le dictionnaire.
+
+Parti : le facteur dans `_calculer_score`, la clé dans `decider` (deux lignes) et dans
+`noter_setup`, la constante `BUDGET_BOOST`.
+
+### 7.2 Mode CONVICTION — branche retirée, entrée de `PARAMETRES` gardée
+
+Preuve que la branche est inatteignable : `detecter_mode` est appelée sans argument partout
+(`strategy.py:112,122`, `jev/observer.py:40`, `routes.py`, tests) sauf `manager.py:55`, qui
+transmettait `conviction_force` de `traiter_demandes` ; or le seul appel est
+`traiter_demandes(demandes)`. `conviction_force` vaut donc toujours `False`.
+
+Parti : le paramètre `conviction_force` des deux fonctions et le `return "CONVICTION"`.
+
+Resté, contre la lettre de la consigne : l'entrée `"CONVICTION"` de `PARAMETRES`. Elle entre dans
+l'empreinte du registre (`MODES_BM`) ; la retirer changerait l'empreinte de chaque passage. Un
+commentaire le dit dans `strategy.py`.
+
+### 7.3 LOCK-IN — retiré
+
+Preuve que la liste est toujours vide :
+
+- `activer_lockin` est le seul code qui ajoute une entrée ; `git grep` ne lui trouve aucun appelant,
+  et `git log -S"activer_lockin("` ne renvoie que le premier commit du dépôt (sa définition) :
+  elle n'a jamais été appelée.
+- Les deux autres écrivains (`lister_lockin`, `desactiver_lockin`) n'écrivent qu'un sous-ensemble de
+  ce qu'ils ont lu. Parti d'un fichier absent ou vide, le contenu reste `[]`.
+- Avec une liste vide, `sorted(positions, key=…)` reçoit la même clé pour toutes les positions ; le
+  tri de Python est stable : l'ordre est celui de `lire_positions_ouvertes`. Aucune position n'est
+  « en LOCK-IN », `desactiver_lockin` n'est jamais atteinte.
+- Le fichier `data/lockin_assets.json` de la tour n'a pas été ouvert (interdit de la session) : la
+  preuve repose sur le code et sur l'histoire git.
+
+Parti : `agents/paper_trader/lockin.py` ; dans `monitor.py`, l'import, la lecture de la liste, le
+tri, les clés `lockin` et `lockin_actifs` du résultat ; la mention dans la ligne de journal du
+moniteur et de `cycle_critical.py`.
+
+Effet de bord, sans lien avec une décision : le moniteur ne réécrit plus `data/lockin_assets.json`
+(il y écrivait `[]` à chaque passage). Le fichier reste sur le disque, toujours ignoré par git.
+
+### 7.4 Canal géopolitique de l'intuition — retiré
+
+Preuve que la clé n'est jamais présente : `analyses["context"]` n'est construit qu'à un endroit,
+`asset_analyzer.py:116` (`dict(sentiment_global or {})`), puis reçoit `regime_marche`, `regime_adx`,
+`regime_global`. `sentiment_global` n'est passé que par `orchestrator.py:113` (4 clés : `fg_valeur`,
+`fg_label`, `dominance`, `corr_btc_spy`) et par `scripts/jev_essai.py` (qui n'appelle pas
+`decider`). Le tactical, le chat et le conseiller réel n'en passent pas. `actifs_a_surveiller`
+n'existe que dans la sortie de `geopolitics.py`, lue par l'analyste de sentiment et l'explorateur de
+matières premières, jamais copiée dans le contexte.
+
+Parti : le bloc 4 de `consulter_intuition` et la variable `geo`. `tests/test_intuition_journal.py`
+construisait un contexte avec une liste `actifs_a_surveiller` toujours vide : le paramètre est
+retiré, les 3 tests sont inchangés.
+
+### 7.5 Docstring de « ajustement » — corrigée
+
+Elle disait « à ajouter au score composite ». Le code ne l'ajoute pas : la valeur (−2 à +2) donne le
+pressentiment et, à ±2, l'override. La docstring le dit maintenant ; celle de `boost_confiance`
+donne la plage réelle (−1 à +1).
+
+### 7.6 `_seuil_confiance_requis` — retiré
+
+Preuve : `git grep -n "seuil_confiance_requis\|seuil_conf\b"` → la définition, son appel et la clé
+du résultat, dans `decision_engine.py` seulement. Aucun lecteur (mêmes consommateurs qu'en 7.1).
+`WINRATE_PRUDENCE` reste : `_verifier_overrides` la lit.
+
+### 7.9 Audit métacognitif — NON FAIT
+
+`audit_metacognitif` et `METACOG_AUDIT_ENABLED` sont restés, pour deux raisons :
+
+1. `METACOG_AUDIT_ENABLED` entre dans l'empreinte des paramètres du registre. La retirer de
+   `config.py` fait passer sa valeur de `False` à `None` dans l'empreinte ; la retirer aussi de la
+   liste change l'empreinte autrement. Dans les deux cas, une écriture du registre change à chaque
+   passage, pendant la fenêtre Q3.a.
+2. La branche n'est inatteignable que si l'interrupteur est éteint dans le `.env` de la tour, que
+   je n'ai pas le droit de lire. S'il était allumé, la fonction ferait un appel LLM (Groq, hors
+   réserve Gemini) par décision non-HOLD : la retirer changerait la charge sur Groq, que le pipeline
+   utilise aussi pour ajuster la taille des positions.
+
+Ce qui est prouvé : le champ `metacognition` du résultat n'est lu par aucun code
+(`decision_formatter.py:133` et `registre_cycles.py:99` lisent le `metacognition` du pipeline, pas
+celui-ci). Le retrait demande donc seulement une note de rupture d'empreinte au registre : décision
+de Lucia, reportée dans le TODO au lot 7.
+
+### 7.13 `EXCLURE_BOUCLES_STATS`
+
+`grep -c "EXCLURE_BOUCLES_STATS" .env` (copie de production) → `0` : la variable n'est pas dans le
+`.env` de la tour. Le défaut du code s'applique (`config.py` : `"0"`) : **elle vaut 0**. Les
+statistiques paper comptent donc encore les positions « boucle ». La phrase de `CLAUDE.md` et de
+`.env.example` (« à 0 jusqu'au 28/10/2026 ») est corrigée au lot 6.
+
+### Non touchés (consigne)
+
+7.7 arrêt d'urgence, 7.8 veto Fear & Greed du tactical, 7.10 `setups_similaires`, 7.15 risque en
+mode défensif, 4.3 `signal_results`, 6.3 `lessons_learned` : les corriger changerait des décisions.
+Ils sont listés dans le TODO, section « Lot comportement » (lot 7).
+
+Tests : `Ran 459 tests` / `OK (skipped=10)`.

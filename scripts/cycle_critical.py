@@ -1,6 +1,6 @@
 """
 scripts/cycle_critical.py — Cycle CRITIQUE (toutes les 5 min, 24/7)
-Vérifie les SL/TP des positions ouvertes (prioritaires : LOCK-IN d'abord).
+Vérifie les SL/TP des positions ouvertes.
 Léger : < 30s, < 50 Mo RAM.
 PAS de lock check (ce cycle est toujours prioritaire).
 """
@@ -37,8 +37,7 @@ def main() -> int:
         initialiser_paper_db()
         res = monitorer_positions(passage)
         logger.info(f"⚡ Critical : {res['verifiees']} surveillée(s), "
-                    f"{res['fermees_tp']} TP, {res['fermees_sl']} SL, "
-                    f"{res.get('lockin_actifs', 0)} LOCK-IN")
+                    f"{res['fermees_tp']} TP, {res['fermees_sl']} SL")
         update_heartbeat(CYCLE, status="healthy", duration_sec=_t.time() - t0,
                          extra={"positions_verifiees": res["verifiees"],
                                 "fermees_tp": res["fermees_tp"], "fermees_sl": res["fermees_sl"]})
