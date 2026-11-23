@@ -34,9 +34,10 @@ worktree neuf de la branche, réseau coupé par `HTTP_PROXY=HTTPS_PROXY=ALL_PROX
   `refs/heads/main` le 23/10/2026 (08:19 et 09:12 UTC), `efb4003 → 387d569 → 562ae4a`. Aucun ne vient
   de ce clone (`git reflog origin/main` : dernier envoi local = `efb4003`, le 21/10).
 - Les 86 premiers commits ont les mêmes arbres des deux côtés (comparaison des `%T` un à un) ; les
-  identifiants diffèrent parce que les messages diffèrent (commit racine : la ligne `Co-Authored-By`
-  est absente côté distant). Le distant a en plus 2 commits absents ici (`48bfcd3`,
-  `scripts/jev_essai.py`, et `562ae4a`).
+  identifiants diffèrent parce que les messages diffèrent : aucun message distant ne porte de ligne
+  `Co-Authored-By` (0 sur 88), contre 156 sur 161 en local
+  (`git log <réf> --format=%B | grep -c -i "^Co-Authored-By"`). Le distant a en plus 2 commits
+  absents ici (`48bfcd3`, `scripts/jev_essai.py`, et `562ae4a`).
 - Conséquence : pousser `nettoyage` republierait sur le dépôt public les 161 commits locaux que la
   réécriture du 23/10 a retirés. **La branche n'a donc pas été poussée** ; voir la question Q1.
 
