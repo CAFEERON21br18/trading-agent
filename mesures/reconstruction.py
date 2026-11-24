@@ -42,7 +42,8 @@ def reconstruire(executions) -> tuple[list[TradeClos], list[PositionOuverte]]:
             compte_id=lot.execution.compte_id, symbole=lot.execution.symbole,
             sens="long" if lot.sens == "achat" else "court",
             quantite=lot.quantite, prix_entree=lot.prix,
-            ouvert_le=lot.execution.horodatage, devise=lot.execution.devise)
+            ouvert_le=lot.execution.horodatage, devise=lot.execution.devise,
+            couts=lot.cout_unitaire * lot.quantite)
         for file in files.values() for lot in file
     ]
     clos.sort(key=lambda t: t.clos_le)

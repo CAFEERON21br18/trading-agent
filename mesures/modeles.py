@@ -45,6 +45,7 @@ class PositionOuverte:
     prix_entree: Decimal
     ouvert_le: datetime
     devise: str
+    couts: Decimal = Decimal("0")  # frais d'entrée de la quantité encore ouverte
 
 
 @dataclass(frozen=True)

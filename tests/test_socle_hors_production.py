@@ -7,8 +7,11 @@ cycle, par le moteur de décision ni par le dashboard actuel ; aucune décision 
    scripts/ledger_*.py, n'importe ledger, mesures ou importeurs (lecture du source, imports de
    tout niveau, y compris dans le corps des fonctions) ;
 2. les trois paquets n'importent rien de l'agent (agents, alerts, config, dashboard, scripts, utils).
-Le jour où le nouveau dashboard lira le grand livre, le point 1 sera à ouvrir pour lui, en
-connaissance de cause.
+Ouvert le 24/11/2026 pour le dashboard professionnel, et pour lui seul (consigne des pages
+« Vue d'ensemble » et « Mes trades ») : dashboard/pro/ lit le grand livre. En échange :
+3. dashboard/pro n'est importé que par dashboard/app.py et par lui-même : ni un cycle, ni le
+   moteur de décision, ni le paper trader n'atteignent le socle par ce chemin ;
+4. rien du portefeuille fantôme Jev dans dashboard/pro ni dans ses gabarits.
 
 Lancement : .venv\\Scripts\\python.exe -m unittest tests.test_socle_hors_production -v
 Lecture de fichiers source seulement : aucune base, aucun réseau, aucun .env.
@@ -28,6 +31,7 @@ isoler_journaux()  # même convention que les autres modules de test
 
 SOCLE = {"ledger", "mesures", "importeurs"}
 AGENT = {"agents", "alerts", "config", "dashboard", "scripts", "utils"}
+PRO = os.path.join(RACINE, "dashboard", "pro") + os.sep  # seul paquet de l'agent ouvert au socle
 
 
 def _fichiers(*dossiers: str) -> list[str]:
@@ -54,7 +58,9 @@ class TestSocleHorsProduction(unittest.TestCase):
         fichiers = _fichiers("agents", "alerts", "dashboard", "utils", "scripts") + [os.path.join(RACINE, "config.py")]
         fichiers = [f for f in fichiers if not os.path.basename(f).startswith("ledger_")
                     or os.path.basename(os.path.dirname(f)) != "scripts"]
+        fichiers = [f for f in fichiers if not f.startswith(PRO)]
         self.assertGreater(len(fichiers), 150)
+        self.assertIn(os.path.join(RACINE, "dashboard", "app.py"), fichiers)  # l'application reste fermée
         for chemin in fichiers:
             with self.subTest(fichier=os.path.relpath(chemin, RACINE)):
                 self.assertEqual(imports_de(chemin, SOCLE), [])
@@ -69,6 +75,25 @@ class TestSocleHorsProduction(unittest.TestCase):
     def test_detecte_un_import(self):
         chemin = os.path.join(RACINE, "scripts", "ledger_sync_paper.py")
         self.assertEqual({nom for _, nom in imports_de(chemin, SOCLE)}, {"ledger", "importeurs"})
+        chemin = os.path.join(RACINE, "dashboard", "pro", "donnees.py")
+        self.assertEqual({nom for _, nom in imports_de(chemin, SOCLE)}, {"ledger", "mesures"})
+
+    def test_dashboard_pro_importe_par_l_application_seule(self):
+        fichiers = _fichiers("agents", "alerts", "dashboard", "utils", "scripts") + [os.path.join(RACINE, "config.py")]
+        importeurs = {os.path.relpath(f, RACINE).replace(os.sep, "/") for f in fichiers
+                      if not f.startswith(PRO)
+                      and any(nom.startswith("dashboard.pro") for _, nom in imports_de(f, {"dashboard"}))}
+        self.assertLessEqual(importeurs, {"dashboard/app.py"})
+
+    def test_dashboard_pro_sans_jev(self):
+        gabarits = glob.glob(os.path.join(RACINE, "dashboard", "templates", "pro*.html"))
+        fichiers = _fichiers(os.path.join("dashboard", "pro")) + gabarits
+        self.assertGreaterEqual(len(fichiers), 4)
+        for chemin in fichiers:
+            with self.subTest(fichier=os.path.relpath(chemin, RACINE)), open(chemin, encoding="utf-8") as f:
+                texte = f.read().lower()
+                # seule mention permise : la phrase qui dit que le fantôme n'est ni lu ni affiché
+                self.assertNotIn("jev", texte.replace("fantôme jev n'est ni lu", ""))
 
 
 if __name__ == "__main__":

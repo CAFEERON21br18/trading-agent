@@ -39,7 +39,7 @@ de test et `tests/socle_ancien_schema.py`.
   L'import reste tout ou rien et sans doublon (référence = empreinte de la ligne, comme pour les
   trades ; les références des trades déjà importés ne changent pas). Les autres types restent
   ignorés et comptés. La lecture du fichier est sortie dans `importeurs/revolut_lecture.py`
-  (200 lignes). Ajouts : `importer_flux` (relevé déjà ouvert, donc lisible depuis la mémoire) et
+  (règle des 200 lignes). Ajouts : `importer_flux` (relevé déjà ouvert, donc lisible depuis la mémoire) et
   `apercu` (compte ce qu'un import ajouterait, par lecture seule).
 - **`mesures`** : `dividendes(mouvements)` et `apports_nets(mouvements)` rendent une `Mesure`
   (nom, valeur, n, période, décidable, raison) ; `mouvements_en_devise` bascule les montants au
@@ -65,3 +65,57 @@ Tests existants modifiés, parce que la consigne change le comportement : `tests
 mouvements) et `tests/test_ledger.py` (8 tables au lieu de 7 dans le test des déclencheurs).
 
 Tests : `Ran 535 tests` / `OK (skipped=10)` (521 + 8 + 6).
+
+## Lot 2 — préparation des données (module pur)
+
+Fichiers : `dashboard/pro/donnees.py`, `dashboard/pro/latent.py`, `dashboard/pro/prix.py`,
+`tests/pro_fixtures.py`, deux fichiers de test ; `tests/test_socle_hors_production.py` ouvert.
+
+- **Emplacement.** Le paquet `dashboard/pro/` est le nouveau blueprint : ses routes viendront aux
+  lots 3 à 5. Ces trois modules n'importent ni Flask ni aucun module de l'agent ; un test le
+  vérifie dans un processus séparé.
+- **Garde de la règle centrale.** `tests/test_socle_hors_production.py` est ouvert pour
+  `dashboard/pro/`, et pour lui seul : `dashboard/app.py` et le reste du dashboard restent fermés
+  au socle. Deux gardes ajoutées : `dashboard/pro` n'est importé que par `dashboard/app.py`
+  (aucun cycle, ni le moteur de décision, ni le paper trader ne peuvent atteindre le grand livre
+  par ce chemin) ; rien du fantôme Jev dans `dashboard/pro` ni dans ses gabarits.
+- **Un compte, et un seul.** `charger(conn, compte_id)` refuse l'absence de compte, et chaque
+  fonction reçoit la source d'un seul compte : aucune fonction n'additionne deux comptes.
+- **Blocs** (une fonction chacun, pour un compte et une devise d'affichage EUR ou USD) : trades
+  clos, positions ouvertes, tableau des mesures, dividendes, apports nets, total des frais,
+  résultat latent, série du résultat net réalisé cumulé par jour de clôture. S'y ajoute
+  `lignes_trades`, pour les tableaux : la bascule y est tentée trade par trade.
+- **Taux manquant.** Le bloc rend « taux indisponible » au lieu d'un chiffre. Sans bascule à
+  faire (devise d'affichage = devise des montants), le chiffre existe même sans aucun taux.
+- **Résultat latent.** Dernier prix de la table `prices` de la base de l'agent, ouverte en
+  lecture seule ; prix absent ou de plus de 3 jours : « prix indisponible », position exclue du
+  total ; aucune position valorisée : total `None`, jamais 0. La bascule en devise d'affichage
+  prend le dernier taux connu au jour de la lecture.
+
+Choix non couverts par la consigne, option prudente retenue :
+
+- **Date du correctif du prix d'entrée.** Le registre (§9.4) ne donne pas un jour mais une règle :
+  « l'`entry_date` de la première position paper enregistrée avec la version 2 du mécanisme
+  d'entrée ». La valeur a donc été lue dans la base de la tour, en lecture seule, le 24/11/2026 :
+  plus ancienne `entry_date` des positions où `mecanisme_entree` = 2, soit le 21/10/2026 à
+  13:31:27 UTC ; aucune position d'un autre mécanisme n'a été ouverte après. Elle est dans la
+  constante `CORRECTIF_PRIX_ENTREE`, avec sa référence. C'est une date de position paper, pas une
+  donnée du portefeuille réel. Le registre n'est pas modifié.
+- **Filtre de période.** Il porte sur la date d'ouverture : un trade ouvert avant le correctif et
+  clos après est du côté « avant ».
+- **Dernier prix.** Barres « 1d » et « 4h » (qui contient les barres horaires des cryptos), la
+  plus récente. Les barres hebdomadaires sont écartées : datées du lundi, elles fausseraient
+  l'âge. L'âge se compte en jours calendaires entre le jour de la barre et le jour de la
+  lecture : le cours du vendredi sert encore le lundi (3 jours), plus le mardi.
+- **Devise autre que l'euro et le dollar.** La bascule du socle ne connaît que EUR et USD. Un
+  montant en livres, par exemple, donne « devise non convertie : GBP » : jamais de conversion au
+  hasard.
+- **Total des frais.** Il compte tous les ordres du compte, positions ouvertes comprises. La
+  « part des coûts » du socle, elle, porte sur les trades clos : les deux chiffres seront
+  libellés séparément sur la page.
+- **Dividendes et apports nets** sont basculés séparément : un dividende sans taux ne prive pas
+  la page des apports.
+- **`mesures.PositionOuverte`** reçoit un champ `couts` (frais d'entrée de la quantité encore
+  ouverte), nécessaire au lot 4 ; valeur par défaut 0, calculs existants inchangés.
+
+Tests : `Ran 556 tests` / `OK (skipped=10)` (535 + 11 + 8 + 2).
