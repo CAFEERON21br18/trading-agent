@@ -71,6 +71,11 @@ class TestRegles(unittest.TestCase):
         self.assertFalse(_ignore(os.path.join(RACINE, "data", "watchlist.json.exemple")))
         self.assertTrue(os.path.isfile(os.path.join(RACINE, "data", "watchlist.json.exemple")))
 
+    def test_grand_livre_hors_git(self):
+        # data/ledger.db (grand livre du socle, chemin par défaut de ledger.ouvrir) et ses fichiers WAL
+        for nom in ("ledger.db", "ledger.db-wal", "ledger.db-shm"):
+            self.assertTrue(_ignore(os.path.join(RACINE, "data", nom)), nom)
+
 
 class TestPremierLancement(unittest.TestCase):
     def test_rapport_recree_le_dossier(self):

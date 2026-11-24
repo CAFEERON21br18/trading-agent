@@ -24,7 +24,8 @@ isoler_journaux()  # avant tout import du code testé : rien dans logs/ (product
 
 from utils import logger as journal
 
-PAQUETS = {"agents", "alerts", "config", "dashboard", "scripts", "tests", "utils"}
+PAQUETS = {"agents", "alerts", "config", "dashboard", "importeurs", "ledger", "mesures", "scripts", "tests",
+           "utils"}
 LOGS = os.path.normcase(os.path.join(RACINE, "logs")) + os.sep
 
 
@@ -77,6 +78,10 @@ class TestChaqueModuleAppelleIsolerJournaux(unittest.TestCase):
         self.assertEqual(imports_avant_l_appel("try:\n    import config\nexcept Exception:\n    pass\n"),
                          (False, [(2, "config")]))
         self.assertEqual(imports_avant_l_appel(appel + "def f():\n    import config\n"), (True, []))
+        # paquets du socle (grand livre, mesures, importeurs) : surveillés comme le reste du dépôt
+        self.assertEqual(imports_avant_l_appel("import ledger\nfrom mesures import tableau\n"
+                                               "from importeurs import revolut_csv\n" + appel),
+                         (True, [(1, "ledger"), (2, "mesures"), (3, "importeurs")]))
 
 
 class TestAucunHandlerVersLogs(unittest.TestCase):

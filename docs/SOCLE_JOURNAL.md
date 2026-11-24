@@ -141,3 +141,33 @@ positions marquées depuis (lot 3), paquets ajoutés à la garde des journaux et
 - `.gitignore` : `data/ledger.db`, `data/ledger.db-wal` et `data/ledger.db-shm` sont ignorés
   (`git check-ignore`). Fichier non modifié.
 - Tests : `Ran 459 tests` / `OK (skipped=10)`, inchangé (aucun test ajouté à ce lot).
+
+### Lot 2 — les tests, en unittest
+
+- Les 5 fichiers de test de la source sont réécrits sous le même nom : `tests/test_ledger.py`,
+  `test_reconstruction.py`, `test_conversion.py`, `test_mesures.py`, `test_import_csv.py`.
+  `tests/conftest.py` (propre à pytest) devient `tests/socle_fixtures.py`.
+- 43 cas gardés, chacun avec ses valeurs attendues : 30 méthodes de test, dont 3 paramétrées
+  devenues 16 sous-tests (7 tables, 5 et 4 montants). Compte vérifié par un lanceur qui compte
+  les sous-tests : 30 − 3 + 16 = 43.
+- `pytest.approx` devient `assertProche`, avec la même tolérance (relative 1e-6, absolue 1e-12).
+  `pytest.raises(..., match=...)` devient `assertRaisesRegex`.
+- Chaque base de test est un fichier d'un dossier temporaire, fermé avant la suppression du
+  dossier. Le test paramétré sur les 7 tables ouvre une base neuve par table, comme la fixture
+  d'origine. Rien dans `data/`, aucun `.env`, aucun réseau.
+- Décision 3 de Lucia : `ledger`, `mesures` et `importeurs` sont ajoutés à `PAQUETS` de
+  `tests/test_journaux_isoles.py` (un cas ajouté au test qui prouve la détection) ; chaque
+  nouveau fichier de test appelle `isoler_journaux()` avant d'importer ces paquets.
+- Topologie : trois règles dans `dashboard/api/topology_composants.py`, vers le composant
+  `outils` (masqué, comme `scripts/` et `tests/`). Choix prudent : un composant visible aurait
+  ajouté un nœud à la page Architecture et ses modules, que rien n'atteint en production,
+  auraient été signalés orphelins (`test_incoherences_du_jour` l'interdit). C'est une table de
+  préfixes : le dashboard n'importe pas les paquets. Vérifié avec un graphe régénéré dans le
+  worktree (coût LLM nul, puis retiré) : `test_topology` 18 tests OK, aucun module non classé,
+  mêmes trois incohérences qu'avant, aucun module du socle sur la carte.
+- Ajout hors des 43 cas : `test_grand_livre_hors_git` (`tests/test_fichiers_hors_git.py`), qui
+  garde `data/ledger.db` et ses fichiers WAL sous `.gitignore`.
+- Tests : `Ran 490 tests` / `OK (skipped=10)` (459 + 30 + 1).
+- Conséquence à connaître : dans le vault (90-Graphify), les modules de `mesures/` et
+  `importeurs/revolut_csv.py` porteront le tag « orphelin » tant qu'aucun script ne les importe.
+  C'est exact : rien ne s'en sert encore.

@@ -70,6 +70,8 @@ class TestSources(unittest.TestCase):
         self.assertEqual(tc.composant("agents/explorers/crypto_explorer/screener.py"), "explorer.crypto")
         self.assertEqual(tc.composant("agents/skills/pipeline_grouped.py"), "pipeline")
         self.assertEqual(tc.composant("agents/jev/observer.py"), "jev")
+        for chemin in ("ledger/schema.py", "mesures/resultats.py", "importeurs/revolut_csv.py"):
+            self.assertEqual(tc.composant(chemin), "outils", chemin)  # socle : hors production
         self.assertIsNone(tc.composant("inconnu/module.py"))
 
     def test_demo_de_bibliotheque_pas_en_production(self):
