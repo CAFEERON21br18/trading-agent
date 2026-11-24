@@ -450,7 +450,12 @@ session (il n'a pas été découpé au nettoyage du 23/11/2026).
   `agents/technical_skills/market_regime.py` : à ranger au découpage.
 - La colonne `devise` de `real_investments` n'est créée par aucun code du dépôt (§43) : à mettre
   dans le schéma au découpage.
-- Autres fichiers encore au-dessus de 200 lignes : voir `docs/NETTOYAGE_JOURNAL.md`, lot 8.
+- Autres fichiers de code encore au-dessus de 200 lignes après le nettoyage du 23/11/2026 :
+  `dashboard/templates/real.html` (550) et `plans.html` (255), dont le JavaScript en ligne n'a pas
+  été sorti (un test interdit les `fetch` modifiants hors des gabarits qui étendent `base.html`,
+  et quatre autres lisent le script dans le gabarit) ; `agents/orchestrator.py` (224), dont les deux
+  grandes fonctions ne peuvent pas bouger sans toucher aux tests qui remplacent des noms sur ce
+  module. Détail : `docs/NETTOYAGE_JOURNAL.md`, lot 8.
 
 ## 33. D1, partie chat : reportée après le suivi de la consigne v2
 

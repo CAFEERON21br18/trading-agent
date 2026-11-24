@@ -565,3 +565,50 @@ Contrôles propres à ce fichier :
 Les fonctions de vue déplacées ne sont plus des attributs de `dashboard.api.routes` ; aucun code ni
 aucun test ne les importait (`git grep` : seuls `dashboard/app.py` et un test importent `api`).
 Tests : `Ran 459 tests` / `OK (skipped=10)`.
+
+### `dashboard/templates/real.html` (550 lignes) et `plans.html` (255 lignes) — NON FAITS
+
+Le JavaScript en ligne des deux gabarits n'a pas été sorti vers `dashboard/static/`. Raison : ce
+déplacement fait échouer des tests par construction, et l'un d'eux porte une règle de sécurité.
+
+- `tests/test_dashboard_ecriture.py`, `test_chaque_fetch_modifiant_passe_par_base_html` : tout
+  fichier qui contient un `fetch` modifiant (`method: "POST"`, `PUT`, `DELETE`…) doit être un gabarit
+  qui étend `base.html`, là où l'en-tête `X-AlphaSignal` est ajouté ; le test parcourt aussi
+  `dashboard/static/` et refuse un tel `fetch` dans un fichier `.js`. Les scripts de `real.html` et
+  de `plans.html` en contiennent. Les sortir oblige à réécrire cette garde : c'est une décision,
+  pas un déplacement.
+- Quatre autres modules lisent le script dans le gabarit lui-même : `test_plan_racine.py` et
+  `test_plan_sans_position.py` (ils extraient le `<script>` de `plans.html` et l'exécutent avec
+  Node), `test_real_devise_gabarits.py` et `test_real_sans_prix.py` (ils cherchent des expressions
+  dans `real.html` et `plans.html`).
+- Les scripts font 411 et 208 lignes : sortis tels quels, ils donneraient deux fichiers statiques
+  encore au-dessus de 200 lignes. Les couper en plusieurs fichiers change l'ordre de chargement, que
+  seul un essai dans le navigateur peut valider.
+
+Consigne appliquée : un découpage qui fait échouer un test est abandonné.
+
+### Bilan du lot 8
+
+| Fichier | Avant | Après | Nouveaux modules |
+|---|---|---|---|
+| `dashboard/api/routes.py` | 475 (604 à l'inventaire) | 190 | `routes_reel.py`, `routes_reel_saisie.py`, `routes_plans_suivi.py`, `routes_chat.py` |
+| `utils/indicators.py` | 334 | 147 | `indicators_calcul.py`, `indicators_lecture.py` |
+| `utils/real_price.py` | 270 (285) | 129 | `real_price_yahoo.py` |
+| `agents/orchestrator.py` | 263 (276) | **224** | `orchestrator_resume.py` |
+| `agents/decision_engine.py` | 258 (270) | 180 | `decision_regles.py` |
+| `utils/gemini.py` | 236 (249) | 188 | `gemini_client.py` |
+| `agents/analysts/market_analyst/analyst.py` | 218 | 111 | `score.py` |
+| `utils/heartbeat.py` | 212 | 126 | `heartbeat_sante.py` |
+| `agents/analysts/risk_manager/manager.py` | 204 | 167 | `rapport.py` |
+
+Fichiers de code encore au-dessus de 200 lignes : `utils/real_portfolio_db.py` (707, hors de cette
+session par consigne), `dashboard/templates/real.html` (550), `dashboard/templates/plans.html` (255),
+`agents/orchestrator.py` (224). Aucun nouveau module ne dépasse 153 lignes.
+
+Contrôles de fin de lot :
+
+- suite complète : `Ran 459 tests` / `OK (skipped=10)` ;
+- avec un graphe régénéré dans le worktree (`graphify extract . --code-only`, coût LLM nul) :
+  `test_topology` → 18 tests, OK, aucun ignoré ; tous les nouveaux modules sont classés dans le
+  composant de leur module d'origine (règles par préfixe de `topology_composants.py`) ;
+- empreinte de `parametres_actifs()` : identique à celle de départ.
