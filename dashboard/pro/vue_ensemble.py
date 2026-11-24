@@ -39,6 +39,20 @@ def ligne_trade(trade, converti, compte: str, devise: str) -> dict:
     }
 
 
+def phrase_sans_courbe(serie: donnees.Bloc, trades_clos: int, devise: str) -> str:
+    """Ce qui s'écrit à la place du graphique : il faut au moins deux jours de clôture pour une
+    courbe. La phrase donne le nombre de trades clos et le résultat. Vide s'il y a un graphique."""
+    if trades_clos == 0:
+        return "Aucun trade clos sur la période."
+    clos = f"{chiffres.pluriel(trades_clos, 'trade')} clos"
+    if serie.indisponible:
+        return f"{clos} ; résultat net réalisé : {serie.indisponible}."
+    if len(serie.valeur) >= courbe_svg.JOURS_MINIMUM:
+        return ""
+    return (f"{clos} sur un seul jour de clôture, résultat net réalisé "
+            f"{formats.montant_signe(serie.valeur[-1][1], devise)}. Pas de graphique avant un deuxième jour de clôture.")
+
+
 def panneau(conn, affiche: comptes.Affiche, devise: str, periode: str, chemin_base: str,
             aujourd_hui: date) -> dict:
     """Tout ce que la page montre d'un compte. `vide` : le compte n'a encore rien."""
@@ -51,14 +65,14 @@ def panneau(conn, affiche: comptes.Affiche, devise: str, periode: str, chemin_ba
     cours = prix.prix_connus(conn, chemin_base, [o.symbole for o in ouvertes])
     valeur_latente = latent.resultat_latent(source, devise, cours, aujourd_hui, periode)
     serie = donnees.serie_cumulee(source, devise, periode)
+    lignes = [ligne_trade(t, c, affiche.titre, devise) for t, c in donnees.lignes_trades(source, devise, periode)]
     p.update(
         vide=False,
         chiffres=chiffres.cinq_chiffres(source, devise, periode, valeur_latente),
         courbe=courbe_svg.courbe(serie.valeur or [], devise,
                                  f"Résultat net réalisé cumulé, {affiche.titre}"),
-        courbe_message=serie.indisponible or ("" if serie.valeur else "Aucun trade clos sur la période."),
-        lignes=[ligne_trade(t, c, affiche.titre, devise)
-                for t, c in donnees.lignes_trades(source, devise, periode)],
+        courbe_message=phrase_sans_courbe(serie, len(lignes), devise),
+        lignes=lignes,
     )
     if affiche is comptes.REEL:
         p["apports"] = chiffres.mouvement(donnees.apports_nets(source, devise), "Apports nets", devise)

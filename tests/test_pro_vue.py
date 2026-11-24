@@ -113,7 +113,7 @@ class TestPanneaux(BasePage):
 
     def test_une_courbe_par_compte_et_tableau_des_derniers_trades(self):
         html = self.page("/pro")
-        self.assertEqual((html.count("<svg "), html.count("<polyline")), (2, 2))
+        self.assertEqual((html.count("<svg "), html.count("<polyline"), html.count("<figure")), (2, 2, 2))
         self.assertIn("Résultat net réalisé cumulé — Réel (Revolut)", html)
         self.assertIn("Résultat net réalisé cumulé — Paper (agent)", html)
         tableau = html[html.index('id="titre-derniers"'):]
@@ -123,6 +123,14 @@ class TestPanneaux(BasePage):
             f"AAA long Réel (Revolut) 02/11/2026 · 100,00{E}$ 05/11/2026 · 110,00{E}$ +78,40{E}€ —",
             f"FFF long Paper (agent) 25/10/2026 · 100,00{E}$ 28/10/2026 · 120,00{E}$ +16,00{E}€ +2,00{E}R",
             f"EEE long Paper (agent) 01/10/2026 · 100,00{E}$ 05/10/2026 · 95,00{E}$ −8,00{E}€ −0,50{E}R"])
+
+    def test_moins_de_deux_jours_de_cloture_une_phrase_sans_graphique(self):
+        html = self.page("/pro?periode=correctif")  # compte paper : un seul trade clos depuis le correctif
+        self.assertEqual(self.section(html, "courbe-paper"), "Résultat net réalisé cumulé — Paper (agent) "
+                         f"1 trade clos sur un seul jour de clôture, résultat net réalisé +16,00{E}€. "
+                         "Pas de graphique avant un deuxième jour de clôture.")
+        self.assertEqual(html.count("<svg "), 1)  # le compte réel garde sa courbe : deux jours de clôture
+        self.assertIn("plus haut", self.section(html, "courbe-reel"))
 
     def test_gains_et_pertes_signes_pas_la_couleur_seule(self):
         html = self.page("/pro")
@@ -157,7 +165,8 @@ class TestTauxEtEchappement(BasePage):
                         f"Apports nets +900,00{E}€"):
             self.assertIn(attendu, reel)
         self.assertIsNone(re.search(r"(?<!\d)0,00", reel))  # aucun zéro à la place d'un chiffre manquant
-        self.assertIn("taux indisponible", self.section(html, "courbe-reel"))
+        self.assertEqual(self.section(html, "courbe-reel"), "Résultat net réalisé cumulé — Réel (Revolut) "
+                         "2 trades clos ; résultat net réalisé : taux indisponible.")
         self.assertIn(f"+77,50{E}$", self.section(self.page("/pro?devise=USD"), "compte-reel"))
 
     def test_texte_venu_du_grand_livre_echappe(self):

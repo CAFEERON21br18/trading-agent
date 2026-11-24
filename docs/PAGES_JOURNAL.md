@@ -452,3 +452,47 @@ Choix non couverts par la consigne, option prudente retenue :
   instrument est listé « introuvable » : les positions et les taux restent écrits.
 
 Tests : `Ran 620 tests` / `OK (skipped=10)` (612 + 3 + 1 + 4).
+
+## Correctifs, lot 3 — courbe du résultat cumulé
+
+Fichiers : `dashboard/pro/courbe_svg.py` (réécrit), `dashboard/pro/vue_ensemble.py`, deux fichiers
+de test adaptés.
+
+- **Moins de deux jours de clôture : pas de graphique.** La page écrit une phrase : « 1 trade clos
+  sur un seul jour de clôture, résultat net réalisé +78,40 €. Pas de graphique avant un deuxième
+  jour de clôture. » Sans trade clos : « Aucun trade clos sur la période. » Sans taux : « 2 trades
+  clos ; résultat net réalisé : taux indisponible. »
+- **Libellés et graduations dans des zones séparées.** Avant, tout était du texte dessiné dans le
+  SVG, à des positions fixes : le « 0 » de l'axe pouvait tomber sur la ligne « plus haut · plus
+  bas », et tout rétrécissait avec le dessin sur un téléphone (12 px dessinés pour 640 px de
+  large devenaient 7 px à 360 px). Maintenant le SVG ne contient plus aucun texte : il ne porte
+  que la grille, le zéro en pointillé, la ligne et ses points, et s'étire à la largeur
+  disponible. Les textes sont du HTML, à taille fixe (11 px), chacun dans sa zone : la ligne
+  « plus haut », « plus bas », « dernier » au-dessus ; la colonne des graduations à gauche ; les
+  deux dates sous le dessin. Les libellés ne peuvent donc pas recouvrir une graduation, quelle
+  que soit la largeur.
+- **Graduations** : valeurs rondes (1, 2 ou 5 fois une puissance de 10), 7 au plus, toujours avec
+  le zéro, sans décimales sauf pour de petits montants.
+
+Vérifié dans un navigateur, sur un dashboard de démonstration lancé depuis le worktree (port 8098,
+grand livre et base fabriqués, données inventées) : sur grand écran (figure de 895 px), puis dans
+un cadre de 390 px et de 320 px de large. À chaque largeur, les rectangles des libellés et des
+graduations ont été mesurés dans la page : 0 chevauchement entre libellés et graduations, 0 entre
+graduations, 0 entre libellés, aucun texte hors de sa carte ; texte des axes à 11 px partout. Sur
+téléphone, « dernier » passe à la ligne sous « plus haut » et « plus bas ». La même démonstration
+a montré la phrase sans graphique (compte à un seul jour de clôture) et, sur « Mes trades », le
+prix avec « cours du 09/11/2026 (grand livre) » et « cours du 06/11/2026 (base de l'agent) ». Le
+dashboard de production (port 8080) n'a pas été touché.
+
+Choix non couverts par la consigne, option prudente retenue :
+
+- **Le zéro reste toujours sur l'axe**, comme avant : une série entièrement positive est dessinée
+  dans le haut du graphique plutôt que recadrée, pour que la hauteur de la courbe garde son sens.
+- **Axe horizontal** : toujours l'ordre des jours de clôture (un point par jour), avec la
+  première et la dernière date. Deux dates tiennent à 320 px ; en ajouter d'autres aurait recréé
+  un risque de recouvrement.
+- **Points de la courbe** : des traits de longueur nulle à bouts ronds, qui restent ronds quand le
+  dessin s'étire (un cercle deviendrait une ellipse).
+
+Tests : `Ran 623 tests` / `OK (skipped=10)` (620 + 3).
+
