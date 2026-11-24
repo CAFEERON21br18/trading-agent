@@ -118,3 +118,26 @@ Tous vérifiés dans le code de `main` (09af052), sans ouvrir aucune base de `da
   journal, publier une branche sur le dépôt public n'apporte rien et reste à la main de Lucia
   (`git push -u origin socle-dashboard`).
 - Tests : 459 lancés, 10 ignorés avant et après (un fichier de documentation ajouté, aucun code).
+
+## Reprise du 24/11/2026 — la source est en place
+
+Source lue en entier avant toute copie : `README.md`, le plan du 22/11/2026, 12 fichiers Python de
+paquets, 6 fichiers de test. Aucun appel réseau, aucun sous-processus, aucune dépendance hors de la
+bibliothèque standard. Suite d'origine lancée sur une copie hors du dépôt : `43 passed` (pytest,
+Python 3.12).
+
+Décisions de Lucia pour cette reprise : devise de cotation par suffixe de place (lot 3), lecture
+de la colonne `boucle` à chaque synchronisation avec arrêt si elle manque et annulation des
+positions marquées depuis (lot 3), paquets ajoutés à la garde des journaux et à la topologie
+(lot 2), aucun coût pour les trades paper (lots 3 et 5).
+
+### Lot 1 — les trois paquets
+
+- Copiés à la racine, octet pour octet (empreintes SHA-256 comparées fichier par fichier) :
+  `ledger/` (4 fichiers), `mesures/` (6), `importeurs/` (2). Aucune ligne modifiée.
+- Plus long fichier : `ledger/ecriture.py`, 179 lignes.
+- Non copiés : le `README.md` et le plan de la source (la consigne ne les demande pas ; leur contenu
+  utile passe dans `CLAUDE.md` et `docs/TODO.md` au lot 5), `tests/` (réécrits au lot 2).
+- `.gitignore` : `data/ledger.db`, `data/ledger.db-wal` et `data/ledger.db-shm` sont ignorés
+  (`git check-ignore`). Fichier non modifié.
+- Tests : `Ran 459 tests` / `OK (skipped=10)`, inchangé (aucun test ajouté à ce lot).
