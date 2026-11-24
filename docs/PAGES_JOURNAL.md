@@ -119,3 +119,53 @@ Choix non couverts par la consigne, option prudente retenue :
   ouverte), nécessaire au lot 4 ; valeur par défaut 0, calculs existants inchangés.
 
 Tests : `Ran 556 tests` / `OK (skipped=10)` (535 + 11 + 8 + 2).
+
+## Lot 3 — page « Vue d'ensemble » (`/pro`)
+
+Fichiers : `dashboard/pro/routes.py` (blueprint « pro »), `vue_ensemble.py`, `chiffres.py`,
+`comptes.py`, `formats.py`, `courbe_svg.py`, `dashboard/templates/pro_vue.html`, l'entrée « Pro »
+de la navigation (`base.html`, 15 entrées), l'enregistrement du blueprint dans `dashboard/app.py`,
+deux fichiers de test et `tests/pro_page_fixtures.py`.
+
+- La page est rendue par le serveur : aucune lecture ne passe par du JavaScript. Elle ouvre le
+  grand livre et la base de l'agent en lecture seule (testé : empreintes des deux fichiers
+  identiques avant et après, `POST /pro` refusé).
+- En-tête : titre et bascule EUR / USD, retenue dans l'URL (`?devise=`), comme la période du
+  compte paper (`?periode=`). Une valeur inconnue revient au défaut (EUR, tout).
+- Un panneau par compte, côte à côte au-delà de 1024 px, empilés en dessous. Cinq chiffres :
+  résultat net réalisé, résultat latent, total des frais avec leur part du résultat brut,
+  espérance en R, taux de réussite ; sous chacun, le nombre de trades et le badge
+  « non décidable · n / 100 » sous 100.
+- Panneau paper : la mention « Résultats bruts de frais : le paper trader n'en compte aucun »
+  et le filtre de période sont affichés même sans trade. Panneau réel : apports nets et
+  dividendes.
+- Une courbe par compte, sur deux graphiques séparés, et le tableau des 20 derniers trades clos
+  des deux comptes (chaque ligne nomme son compte ; aucune somme).
+- Gains et pertes : signe « + » ou « − » toujours écrit ; la couleur le répète. Testé sur la
+  page : tout texte coloré en vert commence par « + », en rouge par « − ».
+- Sans grand livre, ou pour un compte sans trade, la page le dit et nomme ce qui le remplit.
+- Tout texte venu du grand livre est échappé par le gabarit (testé avec un titre contenant du
+  HTML). Les journaux ne reçoivent que le type d'une erreur, jamais une valeur lue.
+
+Choix non couverts par la consigne, option prudente retenue :
+
+- **Courbe en SVG écrit par le serveur.** Chart.js est bien dans le dashboard, mais seulement
+  par un CDN (`base.html`). La consigne dit « aucun appel à un CDN » : la courbe est donc du SVG
+  généré en Python, sans script. **Reste vrai, et non corrigé :** les nouveaux gabarits étendent
+  `base.html`, comme demandé, et `base.html` charge Tailwind et Chart.js depuis deux CDN. Les
+  pages `/pro` n'ajoutent aucun appel externe, mais elles héritent de ces deux-là, dont leur
+  mise en page (classes Tailwind) dépend comme celle des 14 autres pages. Les retirer de
+  `base.html` changerait tout le dashboard : noté au TODO, pas fait ici.
+- **Bouton « Synchroniser » et lien vers « Mes trades »** : ajoutés à la page avec leurs lots
+  (5 et 4), pour que chaque commit soit cohérent.
+- **Badge du résultat latent.** Le résultat latent n'est pas une mesure sur des trades clos :
+  son détail compte les positions ouvertes (« 1 position sur 2 avec un prix ») et il ne porte
+  pas le badge « non décidable ». Apports nets et dividendes non plus (sommes de faits).
+- **Frais absents.** Un compte sans aucun frais enregistré (le compte paper) affiche « — » pour
+  le total et pour la part, pas « 0,00 € » ni « 0 % » : aucun frais compté n'est pas zéro frais.
+- **Lecture en échec.** La page s'affiche avec « Le grand livre n'a pas pu être lu » et aucun
+  chiffre, plutôt qu'une erreur 500.
+- **Navigation.** Une entrée « Pro » en deuxième position ; « Mes trades » s'ouvrira depuis
+  cette page, sans seizième colonne dans une barre déjà serrée sur téléphone.
+
+Tests : `Ran 572 tests` / `OK (skipped=10)` (556 + 6 + 10).

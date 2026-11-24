@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}Vue d'ensemble — AlphaSignal{% endblock %}
+
+{% block content %}
+{# Dashboard professionnel, page « Vue d'ensemble » : tout est rendu par le serveur depuis le grand
+   livre, lu en lecture seule. Chaque compte a son panneau et sa courbe : aucun total ne les réunit. #}
+<div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+    <h2 class="font-bold text-lg">Vue d'ensemble</h2>
+    <div role="group" aria-label="Devise d'affichage"
+         class="flex rounded-full overflow-hidden border border-slate-600 text-sm">
+        {% for d in ("EUR", "USD") %}
+        <a href="/pro?devise={{ d }}&amp;periode={{ periode }}" {% if d == devise %}aria-current="true"{% endif %}
+           class="px-3 py-1.5 {% if d == devise %}bg-emerald-700/40 text-emerald-300 font-semibold{% else %}text-slate-300{% endif %}">{{ d }}</a>
+        {% endfor %}
+    </div>
+</div>
+
+{% if erreur %}
+<p class="card mb-4 text-red-300" role="alert">{{ erreur }}</p>
+{% endif %}
+{% if not grand_livre %}
+<p class="card mb-4 text-slate-300">
+    Le grand livre n'existe pas encore sur cette machine : aucun chiffre à afficher.
+    Il se remplit par l'import d'un relevé Revolut (compte réel) et par la synchronisation des
+    positions paper (compte de l'agent).
+</p>
+{% endif %}
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+    {% for p in panneaux %}
+    <section class="card" id="compte-{{ p.cle }}" aria-labelledby="titre-{{ p.cle }}">
+        <h3 id="titre-{{ p.cle }}" class="font-semibold mb-2">{{ p.titre }}</h3>
+        {% if p.cle == "paper" %}
+        <p class="text-xs text-amber-300 mb-2">Résultats bruts de frais : le paper trader n'en compte aucun.</p>
+        <div class="flex flex-wrap items-center gap-2 mb-3 text-xs" role="group" aria-label="Période du compte paper">
+            <span class="text-slate-400">Période :</span>
+            {% for cle, libelle in periodes.items() %}
+            <a href="/pro?devise={{ devise }}&amp;periode={{ cle }}" {% if cle == periode %}aria-current="true"{% endif %}
+               class="px-2 py-1 rounded-full {% if cle == periode %}bg-emerald-700/40 text-emerald-300 font-semibold{% else %}bg-slate-700/60 text-slate-300{% endif %}">{{ libelle }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if p.vide %}
+        <p class="text-sm text-slate-300">
+            Aucun trade dans ce compte.
+            {% if p.cle == "reel" %}Il se remplit par l'import du relevé CSV Revolut.
+            {% else %}Il se remplit par la synchronisation des positions paper.{% endif %}
+        </p>
+        {% else %}
+        <div class="grid grid-cols-2 gap-2">
+            {% for c in p.chiffres %}
+            <div class="rounded-lg bg-slate-900/60 border border-slate-700 p-2">
+                <div class="text-xs text-slate-400">{{ c.libelle }}</div>
+                <div class="font-bold text-lg {{ c.classe }}">{{ c.texte }}</div>
+                {% if c.note %}<div class="text-xs text-slate-300">{{ c.note }}</div>{% endif %}
+                {% if c.detail %}<div class="text-xs text-slate-400">{{ c.detail }}</div>{% endif %}
+                {% if c.badge %}<span class="pill pill-neutral inline-block mt-1">{{ c.badge }}</span>{% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% if p.apports %}
+        <div class="grid grid-cols-2 gap-2 mt-2">
+            {% for c in (p.apports, p.dividendes) %}
+            <div class="rounded-lg bg-slate-900/60 border border-slate-700 p-2">
+                <div class="text-xs text-slate-400">{{ c.libelle }}</div>
+                <div class="font-bold {{ c.classe }}">{{ c.texte }}</div>
+                {% if c.detail %}<div class="text-xs text-slate-400">{{ c.detail }}</div>{% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endif %}
+    </section>
+    {% endfor %}
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+    {% for p in panneaux if not p.vide %}
+    <section class="card" aria-labelledby="courbe-{{ p.cle }}">
+        <h3 id="courbe-{{ p.cle }}" class="font-semibold mb-2 text-sm">Résultat net réalisé cumulé — {{ p.titre }}</h3>
+        {% if p.courbe %}{{ p.courbe }}
+        {% else %}<p class="text-sm text-slate-300">{{ p.courbe_message }}</p>{% endif %}
+    </section>
+    {% endfor %}
+</div>
+
+{% if derniers %}
+<section class="card" aria-labelledby="titre-derniers">
+    <h3 id="titre-derniers" class="font-semibold mb-2">Derniers trades clos</h3>
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm whitespace-nowrap">
+            <thead class="text-xs text-slate-400 text-left">
+                <tr>
+                    <th class="py-1 pr-3">Titre</th><th class="pr-3">Sens</th><th class="pr-3">Compte</th>
+                    <th class="pr-3">Entrée</th><th class="pr-3">Sortie</th>
+                    <th class="pr-3 text-right">Résultat net</th><th class="text-right">En R</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in derniers %}
+                <tr class="border-t border-slate-700">
+                    <td class="py-1 pr-3 font-semibold">{{ t.titre }}</td><td class="pr-3">{{ t.sens }}</td>
+                    <td class="pr-3">{{ t.compte }}</td><td class="pr-3">{{ t.entree }}</td><td class="pr-3">{{ t.sortie }}</td>
+                    <td class="pr-3 text-right {{ t.classe }}">{{ t.net }}</td><td class="text-right">{{ t.r }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endif %}
+
+<p class="text-xs text-slate-400 mt-4">
+    Sous {{ seuil }} trades, une mesure est affichée mais ne prouve rien : elle porte le badge
+    « non décidable ». « — » signifie « non calculable », jamais zéro. Montants en {{ devise }} au taux
+    du jour de clôture ; les prix d'entrée et de sortie restent dans la devise de cotation du titre.
+</p>
+{% endblock %}

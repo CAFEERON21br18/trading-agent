@@ -84,6 +84,7 @@
     <nav class="fixed bottom-0 left-0 right-0 bg-slate-800 border-t border-slate-700 z-10">
         {% set nav_items = [
           ('overview', '/', '🏠', 'Home'),
+          ('pro', '/pro', '📈', 'Pro'),
           ('portfolio', '/portfolio', '💼', 'Pf'),
           ('fantome_jev', '/fantome-jev', '👻', 'Jev'),
           ('real', '/real', '💰', 'Réel'),
@@ -98,7 +99,7 @@
           ('audit', '/audit', '🔎', 'Aud'),
           ('settings', '/settings', '⚙️', 'Set'),
         ] %}
-        <!-- Une colonne par entrée (14 depuis la page Audit) -->
+        <!-- Une colonne par entrée (15 depuis le dashboard professionnel, /pro) -->
         <div class="grid max-w-4xl mx-auto"
              style="grid-template-columns: repeat({{ nav_items|length }}, minmax(0, 1fr));">
             {% for slug, href, emoji, label in nav_items %}

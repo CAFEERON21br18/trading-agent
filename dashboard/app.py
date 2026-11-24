@@ -16,6 +16,7 @@ from dashboard.api.audit_routes import audit_api
 from dashboard.api.topology_routes import topology_api
 from dashboard.api.jev_fantome_routes import jev_fantome_api, jev_fantome_page
 from dashboard.api.plans_routes import plans_api
+from dashboard.pro.routes import pro
 from dashboard.api.garde_ecriture import exiger_en_tete
 from utils.logger import get_logger
 
@@ -31,6 +32,7 @@ app.register_blueprint(audit_api)  # Phase 4 / C : consultation de message_audit
 app.register_blueprint(topology_api)  # Phase 3 : carte de l'agent (GET seulement, sans base)
 app.register_blueprint(jev_fantome_api)  # REGISTRE §8.3 : fantôme Jev, ligne et détail (GET seulement, mode=ro)
 app.register_blueprint(jev_fantome_page)  # REGISTRE §8.3 v1.5 : page /fantome-jev (GET seulement)
+app.register_blueprint(pro)  # dashboard professionnel : /pro, lit le grand livre (data/ledger.db)
 
 
 # ── Pages HTML ────────────────────────────────────────────────────────────────
