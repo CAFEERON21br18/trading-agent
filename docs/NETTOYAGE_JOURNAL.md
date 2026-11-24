@@ -488,3 +488,12 @@ Tests : `Ran 459 tests` / `OK (skipped=10)`.
   `utils.indicators`, comme avant. `import sqlite3`, déjà inutilisé, est resté.
 
 Tests : `Ran 459 tests` / `OK (skipped=10)`.
+
+### `utils/gemini.py` : 236 → 188 lignes
+
+Le client et la limite locale partent dans `utils/gemini_client.py` (66 lignes) : `MODEL_NAME`,
+`MAX_REQUESTS_PER_MIN`, l'état partagé (`_client`, `_client_lock`, `_request_times`, `_rate_lock`),
+`_get_client` et `_respecter_rate_limit`. L'état n'est lu et écrit que par ces deux fonctions, qui
+partent avec lui : il n'existe toujours qu'en un seul exemplaire. `ask_gemini`, `ask_gemini_status`
+et `gemini_disponible` restent dans `gemini.py`. Même nom de journal (`utils.gemini`).
+Tests : `Ran 459 tests` / `OK (skipped=10)`.
