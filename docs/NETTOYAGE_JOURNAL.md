@@ -612,3 +612,65 @@ Contrôles de fin de lot :
   `test_topology` → 18 tests, OK, aucun ignoré ; tous les nouveaux modules sont classés dans le
   composant de leur module d'origine (règles par préfixe de `topology_composants.py`) ;
 - empreinte de `parametres_actifs()` : identique à celle de départ.
+
+## Fin de session (24/11/2026)
+
+### Suite de tests
+
+Dernier lancement, sur la pointe de la branche : `Ran 459 tests` / `OK (skipped=10)`, aucune tentative
+d'appel réseau dans la sortie. Départ : 470 lancés, 10 ignorés. Les 11 tests en moins sont ceux des
+deux fichiers supprimés au lot 3 (`test_purger_signaux_demo.py`, 4 ; `test_real_devise_migration.py`,
+7). Les 10 ignorés sont toujours ceux de `tests/test_topology.py` sans `graphify-out/graph.json` ; avec
+un graphe régénéré, les 18 tests de ce module passent.
+
+### Contrôles avant la poussée
+
+- Fichiers `.env`, `.db` ou ledger suivis par git : aucun (`.env.example` seul).
+- Lignes d'attribution automatique dans les messages de `origin/nettoyage..HEAD` : 0.
+- Nombres à 6 décimales ou plus dans ces messages : 0 ; dans les lignes ajoutées par le diff : 0.
+- `origin/nettoyage` est un ancêtre de la pointe : poussée en avance rapide, sans `--force`.
+- Le contrôle de la règle 9 contre les valeurs des tables `real_*` n'a pas été lancé : lire ces
+  valeurs était interdit dans cette session. Aucune n'a été lue ; le diff ne contient que du code déjà
+  public, déplacé ou supprimé, et du texte écrit sans accès aux données réelles.
+
+### Bilan
+
+- 117 fichiers touchés, 6 449 lignes supprimées, 2 453 ajoutées (solde : −3 996). Pour le Python seul :
+  4 089 supprimées, 1 273 ajoutées. 42 fichiers supprimés, 14 créés (13 modules issus des découpages
+  et ce journal).
+- Empreinte de `parametres_actifs()` (écrite au registre à chaque passage) : identique à celle de
+  départ après chaque lot qui touche au code de décision.
+
+### Gardé contre la consigne, ou fait en partie
+
+1. **7.9, audit métacognitif** : `audit_metacognitif` et `METACOG_AUDIT_ENABLED` sont restés.
+   L'interrupteur entre dans l'empreinte des paramètres du registre ; son état dans le `.env` de la
+   tour n'est pas lisible (lot 5).
+2. **7.2, mode CONVICTION** : le paramètre et la branche sont partis ; l'entrée `"CONVICTION"` de
+   `PARAMETRES` reste, pour la même empreinte. `CLAUDE.md` garde une phrase qui l'explique (lots 5, 6).
+3. **Lot 8, `agents/orchestrator.py`** : 224 lignes, pas moins de 200.
+4. **Lot 8, `real.html` et `plans.html`** : JavaScript en ligne non sorti.
+5. **Lot 1, `tests/test_topology.py`** : non modifié, aucun de ses tests ne citait `main.py`.
+
+### Fait au-delà de la lettre de la consigne
+
+Chaque point découle d'un retrait demandé ; aucun ne change une décision.
+
+- Code devenu mort par un retrait demandé, parti dans le même commit : `position_detail`
+  (`queries.py`), `_position` (`registre_manuel.py`), `LESSONS_LEARNED_FILE`, `COINGECKO_URL`,
+  `COINGECKO_IDS`, la branche launchd de `check_status.py`, la fiche CONVICTION de `budget.html`,
+  `import subprocess` de `routes.py`.
+- Tests ajustés pour suivre un retrait : `test_real_devise.py` (il appelait le script de migration),
+  `test_dashboard_ecriture.py` (plancher de 23 à 21 routes modifiantes), `test_sources_passage.py`,
+  `test_intuition_journal.py`, `test_fichiers_hors_git.py`, `test_journaux_isoles.py`.
+- `docs/TODO.md` : §15 sorti (sa fonction est partie au lot 5) ; §43 ajouté pour les reliquats.
+- `scripts/daily_routine.py` : docstring et une ligne de journal (« launchd » → « lancement manuel »).
+
+### Après la fusion, sur la tour
+
+- `graphify-out/graph.json` cite les modules supprimés jusqu'à sa régénération (dimanche 20h, ou
+  `.venv\Scripts\python.exe scripts\regenerer_graphe.py`).
+- `requirements.txt` ajoute `tzdata` et retire quatre paquets jamais importés : rien à désinstaller,
+  `pip install -r requirements.txt` suffit.
+- Le dashboard doit être relancé pour charger les nouveaux modules de routes.
+- `data/lockin_assets.json` n'est plus lu ni écrit.
