@@ -291,3 +291,51 @@ Tests : `Ran 521 tests` / `OK (skipped=10)` (510 + 8 + 3).
   `/api/real/*` dans `dashboard/api/routes.py` ; depuis le nettoyage du 23/11/2026 elles sont dans
   `routes_reel.py` et `routes_reel_saisie.py`.
 - Tests : `Ran 521 tests` / `OK (skipped=10)`, inchangé (documentation seule).
+
+### Fin de session (24/11/2026)
+
+**Suite de tests.** Dernier lancement sur la pointe de la branche, réseau coupé :
+`Ran 521 tests` / `OK (skipped=10)`, aucune tentative d'appel réseau dans la sortie. Départ :
+459 lancés, 10 ignorés. Les 62 tests ajoutés : 30 pour les 43 cas de la source, 1 pour
+`.gitignore`, 12 + 5 + 3 pour l'adaptateur paper, son script et la garde de la règle centrale,
+8 + 3 pour le taux de change et son script. Les 10 ignorés sont ceux de `tests/test_topology.py`
+sans `graphify-out/graph.json` ; avec un graphe régénéré dans le worktree, ses 18 tests passent,
+aucun module n'est non classé, et les seuls fichiers qui importent le socle sont
+`scripts/ledger_sync_paper.py` et `scripts/ledger_taux.py`.
+
+**Contrôles avant la poussée.**
+
+- Fichiers `.env`, bases SQLite ou grand livre suivis par git : aucun.
+- Règle 9 : le diff `main..HEAD` et les messages de commit ont été comparés aux valeurs de
+  `real_investments`, `real_advice_log`, `real_budget`, `investment_plans` et `plan_alerts`
+  (base de production ouverte en lecture seule, aucune valeur affichée) : aucune correspondance.
+  Toutes les données des tests sont inventées (tickers `AAA`, `BBB.PA`…, dates de 2030).
+- Lignes d'attribution automatique dans les messages de `main..HEAD` : 0.
+- Aucun fichier Python ajouté ou modifié ne dépasse 200 lignes (le plus long : 191).
+- `main`, la copie de production, `data/` et les tâches planifiées ne sont pas touchés. Aucun des
+  deux scripts n'a été lancé sur la base de production. Un seul appel réel a été fait à Yahoo,
+  en lecture, sans grand livre : `cloture_yfinance` sur les 12 derniers jours, pour vérifier la
+  forme de la réponse (9 barres, dont celle du jour en cours, que l'importeur écarte).
+- Portefeuille fantôme Jev : ni importé, ni lu.
+
+**Écarts à la consigne, et choix faits sans consigne.**
+
+1. Les deux scripts sont **à blanc par défaut** ; il faut `--appliquer` pour écrire (lots 3 et 4).
+2. La règle de topologie classe les trois paquets avec les **outils** (composant masqué) plutôt
+   que dans un composant visible de la page Architecture (lot 2).
+3. Tests ajoutés au-delà des 43 cas de la source : `.gitignore` du grand livre, garde de la règle
+   centrale (`tests/test_socle_hors_production.py`), tests des lots 3 et 4.
+4. La règle de devise tient dans `importeurs/devises.py` et non dans `importeurs/paper.py`, pour
+   rester sous 200 lignes ; `devise_incertaine` s'y ajoute pour nommer les tickers douteux.
+5. Le taux du jour en cours n'est pas enregistré ; les taux sont arrondis à 6 décimales (lot 4).
+6. Le README et le plan de la source ne sont pas copiés dans le dépôt (lot 1).
+7. Le point « taux EURUSD » du README de la source est reporté au TODO sous une forme
+   reformulée, pour arriver aux quatre points demandés (lot 5).
+8. La liste des tickers à devise incertaine vient du code, pas des positions de production : le
+   script n'a pas été lancé sur la tour (lot 3).
+
+**À faire par Lucia après relecture.** Fusionner si la branche convient. Puis, sur la tour :
+`scripts\marquer_boucles.py` (à blanc, pour voir si le marquage est à jour),
+`scripts\ledger_sync_paper.py` à blanc puis `--appliquer`, `scripts\ledger_taux.py` à blanc puis
+`--appliquer`. Après la fusion, `graphify-out/graph.json` ne connaît pas les nouveaux modules
+jusqu'à sa régénération (dimanche 20h, ou `scripts\regenerer_graphe.py`).
