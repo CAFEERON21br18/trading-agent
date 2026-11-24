@@ -511,3 +511,13 @@ identique à celle de départ (`e39a0f32…46c4`, `erreur_lecture` absent) ; sor
 l'intuition identiques sur les 1 456 cas fixes (`58b6d033…0a66`). `docs/TODO.md` cite
 `_verifier_overrides` à sa nouvelle place.
 Tests : `Ran 459 tests` / `OK (skipped=10)`.
+
+### `utils/heartbeat.py` : 212 → 126 lignes
+
+`DELAIS_MAX_MIN`, `evaluer_sante_cycles` et `evaluer_sante` partent dans `utils/heartbeat_sante.py`
+(104 lignes). Ces fonctions lisent `lire_heartbeat` et deux seuils restés dans `heartbeat.py`, qui
+les réexporte : les deux modules s'importent l'un l'autre. Les deux imports croisés sont placés en fin
+de fichier ; vérifié dans deux processus neufs, l'import fonctionne dans les deux ordres.
+`lire_heartbeat` reste dans `heartbeat.py` : le test qui redirige `heartbeat.CHEMIN_HEARTBEAT` reste
+valable. `timedelta`, déjà inutilisé, est resté.
+Tests : `Ran 459 tests` / `OK (skipped=10)`.
