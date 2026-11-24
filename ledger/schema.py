@@ -5,7 +5,7 @@ from pathlib import Path
 
 TABLES = (
     "comptes", "instruments", "trades", "couts",
-    "change", "valeur_quotidienne", "contexte_entree", "mouvements",
+    "change", "valeur_quotidienne", "contexte_entree", "mouvements", "cours",
 )
 
 SCHEMA = """
@@ -87,6 +87,16 @@ CREATE TABLE IF NOT EXISTS mouvements (
     UNIQUE (source, ref_source)
 );
 CREATE INDEX IF NOT EXISTS idx_mouvements_compte ON mouvements (compte_id, horodatage);
+CREATE TABLE IF NOT EXISTS cours (
+    id INTEGER PRIMARY KEY,
+    instrument_id INTEGER NOT NULL REFERENCES instruments(id),
+    jour TEXT NOT NULL,
+    cloture TEXT NOT NULL CHECK (CAST(cloture AS REAL) > 0),
+    devise TEXT NOT NULL CHECK (length(devise) = 3),
+    source TEXT NOT NULL,
+    saisi_le TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_cours_instrument ON cours (instrument_id, jour);
 CREATE INDEX IF NOT EXISTS idx_trades_compte ON trades (compte_id, horodatage);
 CREATE INDEX IF NOT EXISTS idx_trades_remplace ON trades (remplace_id);
 CREATE INDEX IF NOT EXISTS idx_couts_trade ON couts (trade_id);
@@ -102,7 +112,22 @@ END;
 
 def ouvrir(chemin: str = "data/ledger.db") -> sqlite3.Connection:
     """Ouvre le grand livre, crée les tables et les protections si besoin."""
-    conn = sqlite3.connect(chemin)
+    return _preparer(sqlite3.connect(chemin))
+
+
+def copie_en_memoire(chemin: str) -> sqlite3.Connection:
+    """Copie d'un grand livre existant, en mémoire et prête à l'écriture : pour un essai à blanc
+    qui ne touche pas au fichier, pas même pour y créer une table manquante."""
+    source = sqlite3.connect(Path(chemin).resolve().as_uri() + "?mode=ro", uri=True)
+    copie = sqlite3.connect(":memory:")
+    try:
+        source.backup(copie)
+    finally:
+        source.close()
+    return _preparer(copie)
+
+
+def _preparer(conn: sqlite3.Connection) -> sqlite3.Connection:
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     conn.executescript(SCHEMA)
@@ -118,7 +143,7 @@ def ouvrir(chemin: str = "data/ledger.db") -> sqlite3.Connection:
 def ouvrir_lecture(chemin: str = "data/ledger.db") -> sqlite3.Connection | None:
     """Ouvre un grand livre existant en lecture seule, sans rien créer. None si le fichier manque.
 
-    Une table ajoutée après la création du fichier (mouvements) peut encore manquer : les
+    Une table ajoutée après la création du fichier (mouvements, cours) peut encore manquer : les
     lectures de ledger/lecture.py la traitent alors comme vide.
     """
     if not os.path.isfile(chemin):

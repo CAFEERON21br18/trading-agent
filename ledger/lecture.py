@@ -129,3 +129,45 @@ def references_presentes(conn: sqlite3.Connection, table: str, source: str) -> s
         return set()
     return {l["ref_source"] for l in conn.execute(
         f"SELECT ref_source FROM {table} WHERE source = ?", (source,))}
+
+
+@dataclass(frozen=True)
+class Cours:
+    """Clôture d'un instrument pour un jour, telle qu'elle compte aujourd'hui."""
+    symbole: str
+    jour: date
+    cloture: Decimal
+    devise: str
+    source: str
+
+
+def cours(conn: sqlite3.Connection, symbole: str | None = None) -> list[Cours]:
+    """Cours d'un instrument (ou de tous), triés par symbole puis par jour. Pour un même
+    instrument et un même jour, la dernière saisie l'emporte."""
+    if not _table_presente(conn, "cours"):
+        return []  # grand livre ouvert en lecture seule, créé avant la table
+    filtre, params = ("WHERE i.symbole = ?", (symbole.strip().upper(),)) if symbole else ("", ())
+    retenus: dict[tuple[str, date], Cours] = {}
+    for l in conn.execute(
+            "SELECT i.symbole, c.jour, c.cloture, c.devise, c.source FROM cours c"
+            f" JOIN instruments i ON i.id = c.instrument_id {filtre} ORDER BY c.id", params):
+        jour = date.fromisoformat(l["jour"])
+        retenus[(l["symbole"], jour)] = Cours(l["symbole"], jour, Decimal(l["cloture"]),
+                                              l["devise"], l["source"])
+    return [retenus[cle] for cle in sorted(retenus)]
+
+
+def derniers_cours(conn: sqlite3.Connection) -> dict[str, Cours]:
+    """Le cours le plus récent de chaque instrument qui en a un."""
+    return {c.symbole: c for c in cours(conn)}  # triés par jour : le dernier écrase les précédents
+
+
+def instruments_negocies(conn: sqlite3.Connection) -> list[tuple[int, str, str, date]]:
+    """(id, symbole, devise, jour du premier trade) des instruments qui ont un trade actif."""
+    premiers: dict[str, date] = {}
+    for e in executions_actives(conn):
+        jour = e.horodatage.date()
+        premiers[e.symbole] = min(premiers.get(e.symbole, jour), jour)
+    return [(l["id"], l["symbole"], l["devise"], premiers[l["symbole"]])
+            for l in conn.execute("SELECT id, symbole, devise FROM instruments ORDER BY symbole")
+            if l["symbole"] in premiers]

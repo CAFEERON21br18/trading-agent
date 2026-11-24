@@ -3,6 +3,7 @@ import sqlite3
 from datetime import date, datetime
 
 from ._valeurs import EcritureInvalide, _iso, _maintenant, _positif
+from .ecriture_cours import enregistrer_cours  # noqa: F401  (même module pour l'appelant)
 
 TYPES_MOUVEMENT = ("depot", "retrait", "dividende")
 

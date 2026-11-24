@@ -223,17 +223,17 @@ Trois paquets à la racine, intégrés le 24/11/2026. **Aucun cycle, ni le Decis
 trader ne les importe** : ils ne changent aucune décision. Seul le dashboard professionnel
 (`dashboard/pro/`) lit le grand livre, et `dashboard/pro/` n'est importé que par `dashboard/app.py`
 (`tests/test_socle_hors_production.py`). Détail : `docs/SOCLE_JOURNAL.md`, `docs/PAGES_JOURNAL.md`.
-- `ledger/` : grand livre SQLite `data/ledger.db` (hors git), 8 tables (comptes, instruments,
-  trades, coûts, change, valeur quotidienne, contexte d'entrée, **mouvements**).
+- `ledger/` : grand livre SQLite `data/ledger.db` (hors git), 9 tables (comptes, instruments,
+  trades, coûts, change, valeur quotidienne, contexte d'entrée, **mouvements**, **cours**).
   `ledger.ouvrir` crée ce qui manque sur une base existante ; `ledger.ouvrir_lecture` ouvre en
-  lecture seule, sans rien créer.
+  lecture seule, sans rien créer ; `ledger.copie_en_memoire` sert aux essais à blanc.
 - `mesures/` : calcul pur, sans accès à la base — trades clos reconstruits en FIFO (long et court),
   résultat net, taux de réussite, payoff, profit factor, espérance en R, part des coûts ; rendement,
   drawdown max, Sharpe, Sortino, écart au benchmark ; dividendes et apports nets (dépôts moins
   retraits).
 - `importeurs/` : relevé CSV Revolut (`revolut_csv.py` et `revolut_lecture.py`, format générique
   jamais confronté à un vrai relevé), positions paper (`paper.py`), taux EURUSD quotidien
-  (`taux_change.py`).
+  (`taux_change.py`), clôtures quotidiennes des instruments (`cours.py`).
 
 Règles :
 - **Écriture seule** : ni UPDATE ni DELETE (des déclencheurs SQLite les refusent) ; une correction
@@ -247,6 +247,9 @@ Règles :
   titre facultatif pour un dividende, sans doublon sur `(source, ref_source)`. Dans le relevé
   Revolut, CASH TOP-UP, CASH WITHDRAWAL (valeur absolue) et DIVIDEND, au type exact ; les autres
   types restent ignorés et comptés.
+- **Cours** (table `cours`) : clôture quotidienne d'un instrument, non ajustée, dans la devise de
+  l'instrument ; pour un même jour, la dernière saisie l'emporte à la lecture. Le jour en cours
+  n'est jamais enregistré.
 - Trades paper : devise de cotation de l'instrument, EUR pour les suffixes `.PA .DE .AS .MI .MC .LS`,
   USD sinon (`importeurs/devises.py`) ; le paper trader, lui, reste à 1 € = 1 $ (TODO §29).
   Positions « boucle » jamais importées ; marquées après leur import, elles sont annulées.
@@ -278,11 +281,14 @@ fonctions de `ledger/ecriture.py`, sur une action de Lucia, avec l'en-tête `X-A
   rien n'est écrit, le message est affiché tel quel.
 Aucune tâche planifiée n'écrit dans le grand livre.
 
-Deux scripts manuels (aucune tâche planifiée), à blanc par défaut, `--appliquer` pour écrire :
+Trois scripts manuels (aucune tâche planifiée), à blanc par défaut, `--appliquer` pour écrire :
 - `scripts/ledger_sync_paper.py` : positions paper de `data/database.db` (lue en lecture seule) vers
   le compte « Paper agent » ; sans doublon ; s'arrête si la colonne `boucle` manque.
 - `scripts/ledger_taux.py` : clôture quotidienne EURUSD (yfinance, « EURUSD=X ») vers la table
   `change` ; un jour déjà présent n'est pas réécrit.
+- `scripts/ledger_cours.py` : clôtures quotidiennes (yfinance) de chaque instrument qui a un trade,
+  du jour de son premier trade jusqu'à la veille, vers la table `cours` ; un symbole introuvable
+  chez Yahoo est listé et n'empêche pas les autres.
 
 ## Stack technique
 Python 3.11+ · yfinance · pandas · pandas-ta · CoinGecko · NewsAPI · Alpha Vantage ·

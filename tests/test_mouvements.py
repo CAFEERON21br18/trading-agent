@@ -66,9 +66,10 @@ class TestEcritureEtLecture(BaseLedgerIds):
 
 
 def etat(conn) -> tuple:
-    """Schéma et contenu de tout ce qui n'est pas la table mouvements."""
+    """Schéma et contenu des sept tables de l'ancien grand livre."""
+    marques = ", ".join("?" * len(ancien.TABLES))
     schema = conn.execute("SELECT type, name, tbl_name, sql FROM sqlite_master"
-                          " WHERE tbl_name != 'mouvements' ORDER BY name").fetchall()
+                          f" WHERE tbl_name IN ({marques}) ORDER BY name", ancien.TABLES).fetchall()
     lignes = {t: [tuple(l) for l in conn.execute(f"SELECT * FROM {t} ORDER BY id")] for t in ancien.TABLES}
     return [tuple(l) for l in schema], lignes
 

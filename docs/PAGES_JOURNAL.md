@@ -356,3 +356,61 @@ Start-ScheduledTask -TaskPath "\AlphaSignal\" -TaskName dashboard
 Depuis le téléphone : `https://<machine>.<tailnet>.ts.net/pro`. Premier usage : vérifier le
 marquage des boucles (`scripts\marquer_boucles.py`, à blanc), cliquer « Synchroniser », puis
 importer le relevé depuis « Mes trades » (l'aperçu ne modifie rien).
+
+# Correctifs des pages — session du 24/11/2026
+
+Branche `pages-correctifs`, créée depuis `main` (9af3162, les pages y sont fusionnées) dans le
+worktree `..\trading-agent-correctifs`. Consigne en mode autonome, mêmes règles que la session
+des pages. Référence de départ, réseau coupé : `Ran 599 tests` / `OK (skipped=10)`.
+
+## Correctifs, lot 1 — cours dans le grand livre
+
+Fichiers : `ledger/schema.py`, `ledger/ecriture_cours.py`, `ledger/lecture.py`,
+`importeurs/cours.py`, `scripts/ledger_cours.py`, deux fichiers de test, deux fichiers d'aide aux
+tests ; `CLAUDE.md`.
+
+- **Table `cours`**, en écriture seule comme les huit autres : instrument, jour, clôture, devise,
+  source, date de saisie. À la lecture (`ledger.cours`, `ledger.derniers_cours`), la dernière
+  saisie d'un instrument pour un jour l'emporte.
+- **Base existante** : testé sur un grand livre à 7 tables (avant `mouvements`) et à 8 tables
+  (`tests/socle_schema_8_tables.py`, copie mot pour mot de `ledger/schema.py` à 9af3162) : schéma,
+  index, déclencheurs et lignes des anciennes tables identiques avant et après ; seuls la table,
+  son index et ses deux déclencheurs s'ajoutent.
+- **`enregistrer_cours`** : rien n'est ajouté si la dernière saisie du jour porte déjà la même
+  clôture ; une clôture différente ajoute une ligne (rien n'est modifié).
+- **`importeurs/cours.py`** : pour chaque instrument qui a un trade actif, clôtures yfinance du
+  jour de son premier trade jusqu'à la veille ; le jour en cours n'est jamais enregistré ; un
+  symbole introuvable est listé dans le rapport et les autres continuent.
+- **`scripts/ledger_cours.py`** : à blanc par défaut, `--appliquer` pour écrire. Tests sans réseau,
+  source simulée ; `cloture_yfinance` est testée sur un faux module `yfinance`.
+
+Choix non couverts par la consigne, option prudente retenue :
+
+- **Emplacement de `enregistrer_cours`.** `ledger/ecriture.py` est à 184 lignes : la fonction est
+  dans `ledger/ecriture_cours.py`, que `ecriture.py` ré-exporte. On l'appelle toujours par
+  `ecriture.enregistrer_cours` : les écritures restent derrière le même module.
+- **Clôture non ajustée** (`auto_adjust=False`) : le résultat latent compare un prix d'achat réel
+  à un cours réel, pas à un cours recalculé après un dividende. Arrondie à 8 décimales.
+- **Devise du cours** : celle de l'instrument dans le grand livre. Un instrument à la devise
+  incertaine (indice hors États-Unis enregistré en USD par défaut) reçoit ses cours sous la même
+  devise que ses trades : c'est cohérent entre eux, pas forcément juste.
+- **Symbole** : celui du grand livre est demandé tel quel à Yahoo. Un titre du relevé Revolut dont
+  le symbole diffère chez Yahoo sera listé « introuvable ».
+- **Période redemandée.** Au premier passage, tout depuis le premier trade. Ensuite, seulement les
+  7 derniers jours déjà stockés et la suite : cela évite de retélécharger tout l'historique à
+  chaque clic, et reprend une clôture que Yahoo aurait corrigée. Si un trade plus ancien apparaît
+  (relevé importé après coup), tout est redemandé depuis ce trade.
+- **Instruments sans trade actif** (seulement un dividende, ou tous ses trades annulés) : aucun
+  cours demandé.
+- **Valeur invalide** (absente, nulle, négative) : écartée et comptée, sans bloquer le reste.
+- **Essai à blanc du script** : il travaille sur une copie du grand livre en mémoire
+  (`ledger.copie_en_memoire`). Le fichier n'est pas ouvert en écriture, la table `cours` n'y est
+  même pas créée (testé : fichier identique octet pour octet). Les deux autres scripts, à blanc
+  sur un grand livre existant, l'ouvrent toujours par `ledger.ouvrir`, qui crée les tables
+  manquantes sans écrire de donnée : non modifié ici.
+- **Sans grand livre** : le script s'arrête avec un message, code 1, sans rien créer.
+- Tests existants modifiés : `test_ledger.py` (9 tables dans le test des déclencheurs),
+  `test_mouvements.py` (la comparaison « rien d'autre ne bouge » nomme les tables de l'ancien
+  schéma au lieu d'exclure la seule table `mouvements`).
+
+Tests : `Ran 612 tests` / `OK (skipped=10)` (599 + 6 + 7).

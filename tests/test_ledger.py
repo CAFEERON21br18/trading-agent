@@ -3,7 +3,8 @@ tests/test_ledger.py — Grand livre en écriture seule (ledger/).
 
 Réécriture en unittest de tests/test_ledger.py de la source (pytest) : 8 tests, 14 cas
 (le test paramétré sur les 7 tables devient 7 sous-tests), mêmes valeurs attendues. Depuis la
-table mouvements (tests/test_mouvements.py) : 8 tables, donc 8 sous-tests.
+table mouvements (tests/test_mouvements.py) et la table cours (tests/test_cours.py) :
+9 tables, donc 9 sous-tests.
 1. UPDATE et DELETE refusés sur chacune des tables ;
 2. un trade déjà présent (même source, même référence) n'est pas réécrit ;
 3. valeurs invalides refusées avant d'atteindre la base ;
@@ -42,6 +43,8 @@ class TestLedger(BaseLedgerIds):
                 ledger.enregistrer_valeur(conn, ids[0], date(2030, 1, 1), "1000", "USD")
                 ledger.enregistrer_mouvement(conn, compte_id=ids[0], horodatage=jour(1), type_="depot",
                                              montant="500", devise="USD", source="test", ref_source="m")
+                ledger.enregistrer_cours(conn, instrument_id=ids[1], jour=date(2030, 1, 1), cloture="101",
+                                         devise="USD", source="test")
                 with self.assertRaisesRegex(sqlite3.IntegrityError, "ecriture seule"):
                     conn.execute(f"UPDATE {table} SET id = id")
                 with self.assertRaisesRegex(sqlite3.IntegrityError, "ecriture seule"):
