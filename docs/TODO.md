@@ -534,6 +534,47 @@ décision, sauf mention.
   (`agents/analysts/fundamental_analyst/macro.py`), `REQUEST_TIMEOUT_SEC` (`utils/gemini.py`),
   `logger` de `agents/knowledge/pretrade_analysis.py`.
 
+## 44. Socle du dashboard (grand livre, mesures, importeurs) : points ouverts
+
+Intégré le 24/11/2026 (`ledger/`, `mesures/`, `importeurs/`, `docs/SOCLE_JOURNAL.md`). Rien en
+production ne lit encore ces paquets. Aucun point ci-dessous ne change une décision de l'agent.
+
+Points ouverts du README de la source, toujours vrais :
+
+1. **Colonnes du relevé Revolut** : `COLONNES` (`importeurs/revolut_csv.py`) décrit un format
+   générique, jamais confronté à un vrai relevé. À ajuster sur les en-têtes du vrai fichier avant
+   le premier import. Le relevé réel et le grand livre restent hors git (règle 9).
+2. **Frais du relevé** : l'importeur les déduit de l'écart entre `Total Amount` et quantité × prix,
+   au-delà de 0,01. À confirmer sur le vrai relevé.
+3. **Taux EURUSD quotidien** : `scripts/ledger_taux.py` remplit la table `change`, mais seulement
+   quand on le lance à la main ; aucune tâche planifiée. Sans taux dans les 7 jours qui précèdent
+   une clôture, la bascule lève `TauxManquant`. À décider : lancement manuel avant chaque lecture,
+   ou tâche planifiée.
+4. **Dépôts et retraits** : `mesures/courbe.py` attend une série de valeurs où ils sont déjà
+   neutralisés, sinon un dépôt passe pour un gain. Rien ne remplit encore `valeur_quotidienne`.
+
+Les deux autres points de ce README sont faits : adaptateur paper sans les positions « boucle »
+(`importeurs/paper.py`), `data/ledger.db` sous `.gitignore`.
+
+Points nés de l'intégration :
+
+- **Premier lancement sur la tour** : `scripts\ledger_sync_paper.py` à blanc, lire le rapport, puis
+  `--appliquer` ; de même pour `scripts\ledger_taux.py`. Ni l'un ni l'autre n'a été lancé sur la
+  base de production. Si `marquer_boucles.py` n'a pas tourné depuis les dernières positions, le
+  lancer d'abord : une position ajoutée après le dernier marquage vaut 0 dans la colonne `boucle`.
+- **Devise incertaine** : indices hors États-Unis et paires de change non cotées en dollars sont
+  enregistrés en USD par défaut (liste dans `docs/SOCLE_JOURNAL.md`, lot 3) ; le script les nomme à
+  chaque lancement. Une devise fausse se corrige par `corriger_trade(devise=...)`.
+- **1 € = 1 $ dans le paper trader** (§29) : le grand livre enregistre la devise de cotation, mais
+  les tailles des positions ont été calculées en prenant des euros pour des dollars. Les montants
+  du grand livre et `pnl_euros` de la table `positions` ne se comparent donc pas directement.
+- **Résultats paper bruts de frais** : aucun coût inscrit pour ces trades ; pour le compte paper, la
+  « part des coûts » vaut 0 (ou n'est pas calculable si le résultat brut est négatif).
+- **Garde de la règle centrale** : `tests/test_socle_hors_production.py` refuse tout import du
+  socle par `agents/`, `dashboard/`, `utils/`, `alerts/`, `config.py` et les scripts autres que
+  `scripts/ledger_*.py`. À ouvrir pour le nouveau dashboard le jour où il lira le grand livre ;
+  la topologie classe aujourd'hui les trois paquets avec les outils.
+
 ## Entrées sorties le 23/11/2026
 
 Le détail de chaque entrée reste dans l'histoire git de ce fichier.

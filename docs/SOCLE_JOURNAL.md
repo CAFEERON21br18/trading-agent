@@ -273,3 +273,21 @@ Reste vrai après ce lot : les week-ends et jours fériés n'ont pas de barre ; 
 clos un dimanche).
 
 Tests : `Ran 521 tests` / `OK (skipped=10)` (510 + 8 + 3).
+
+### Lot 5 — documentation
+
+- `CLAUDE.md` : section « Grand livre et mesures (socle du futur dashboard) », avant « Stack
+  technique » : rôle des trois paquets, les trois règles (écriture seule, devise par montant,
+  seuil de 100 trades), la règle de devise des trades paper, les deux scripts, et la mention
+  demandée par Lucia : aucun coût pour les trades paper, résultats paper affichés bruts de frais.
+- `docs/TODO.md`, nouveau §44. Le README de la source liste 6 points « à faire à l'intégration ».
+  Quatre restent vrais et sont reportés : colonnes du relevé Revolut, frais du relevé, taux EURUSD
+  quotidien, dépôts et retraits. Le point sur le taux est reformulé : le script existe désormais,
+  mais rien ne le lance tout seul. Les deux autres sont faits (adaptateur paper, `.gitignore`) et
+  le §44 le dit. S'y ajoutent les points nés de l'intégration (premier lancement sur la tour,
+  devises incertaines, 1 € = 1 $ du paper trader, résultats bruts de frais, garde à ouvrir pour
+  le futur dashboard).
+- Relevé au passage, non corrigé (hors de ce lot) : `CLAUDE.md` situe encore les 16 routes
+  `/api/real/*` dans `dashboard/api/routes.py` ; depuis le nettoyage du 23/11/2026 elles sont dans
+  `routes_reel.py` et `routes_reel_saisie.py`.
+- Tests : `Ran 521 tests` / `OK (skipped=10)`, inchangé (documentation seule).

@@ -216,6 +216,37 @@ Tâche planifiée `\AlphaSignal\dashboard` (au démarrage, relancée si elle s'a
 - BDD : `real_investments`, `real_advice_log`
 - 16 routes `/api/real/*` (`dashboard/api/routes.py`)
 
+## Grand livre et mesures (socle du futur dashboard)
+Trois paquets à la racine, intégrés le 24/11/2026. **Aucun cycle, ni le Decision Engine, ni le
+dashboard actuel ne les importe** (`tests/test_socle_hors_production.py`) : ils ne changent aucune
+décision. Détail de l'intégration : `docs/SOCLE_JOURNAL.md`.
+- `ledger/` : grand livre SQLite `data/ledger.db` (hors git), 7 tables (comptes, instruments,
+  trades, coûts, change, valeur quotidienne, contexte d'entrée).
+- `mesures/` : calcul pur, sans accès à la base — trades clos reconstruits en FIFO (long et court),
+  résultat net, taux de réussite, payoff, profit factor, espérance en R, part des coûts ; rendement,
+  drawdown max, Sharpe, Sortino, écart au benchmark.
+- `importeurs/` : relevé CSV Revolut (`revolut_csv.py`, format générique jamais confronté à un vrai
+  relevé), positions paper (`paper.py`), taux EURUSD quotidien (`taux_change.py`).
+
+Règles :
+- **Écriture seule** : ni UPDATE ni DELETE (des déclencheurs SQLite les refusent) ; une correction
+  (`corriger_trade`) ou une annulation (`annuler_trade`) ajoute une ligne.
+- **Devise par montant** : chaque montant porte sa devise ; bascule EUR/USD au taux stocké du jour de
+  clôture (dernier taux connu sur 7 jours, sinon `TauxManquant`). Montants en `Decimal`.
+- **Seuil de 100 trades** : chaque mesure porte `n`, sa période et `decidable` ; sous 100 trades,
+  elle est affichée mais ne prouve rien.
+- Trades paper : devise de cotation de l'instrument, EUR pour les suffixes `.PA .DE .AS .MI .MC .LS`,
+  USD sinon (`importeurs/devises.py`) ; le paper trader, lui, reste à 1 € = 1 $ (TODO §29).
+  Positions « boucle » jamais importées ; marquées après leur import, elles sont annulées.
+- **Frais** : le paper trader n'en compte aucun, donc aucun coût dans le grand livre pour ces
+  trades : les résultats paper sont affichés **bruts de frais**.
+
+Deux scripts manuels (aucune tâche planifiée), à blanc par défaut, `--appliquer` pour écrire :
+- `scripts/ledger_sync_paper.py` : positions paper de `data/database.db` (lue en lecture seule) vers
+  le compte « Paper agent » ; sans doublon ; s'arrête si la colonne `boucle` manque.
+- `scripts/ledger_taux.py` : clôture quotidienne EURUSD (yfinance, « EURUSD=X ») vers la table
+  `change` ; un jour déjà présent n'est pas réécrit.
+
 ## Stack technique
 Python 3.11+ · yfinance · pandas · pandas-ta · CoinGecko · NewsAPI · Alpha Vantage ·
 Flask · SQLite · TailwindCSS · Chart.js · Gemini et Groq (LLM) · Planificateur de tâches Windows
