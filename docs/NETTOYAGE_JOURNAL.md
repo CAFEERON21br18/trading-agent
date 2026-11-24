@@ -521,3 +521,21 @@ de fichier ; vérifié dans deux processus neufs, l'import fonctionne dans les d
 `lire_heartbeat` reste dans `heartbeat.py` : le test qui redirige `heartbeat.CHEMIN_HEARTBEAT` reste
 valable. `timedelta`, déjà inutilisé, est resté.
 Tests : `Ran 459 tests` / `OK (skipped=10)`.
+
+### `agents/orchestrator.py` : 263 → 224 lignes — reste au-dessus de 200
+
+`generer_resume_30s` et `generer_tableau_watchlist` partent dans `agents/orchestrator_resume.py`
+(45 lignes). C'est tout ce qui peut partir par déplacement pur. Il reste deux fonctions,
+`generer_rapport_quotidien` (102 lignes) et `lancer_routine_quotidienne` (78 lignes), et 30 lignes
+d'imports. Aucune des deux ne peut bouger sans autre changement :
+
+- les tests remplacent une vingtaine de noms sur le module `agents.orchestrator` lui-même
+  (`init_paper`, `decider`, `executer_ouvertures`, `enregistrer_signal`,
+  `envoyer_rapport_quotidien`…) : une fonction déplacée lirait ces noms dans son nouveau module, et
+  ces remplacements ne la toucheraient plus (un test irait jusqu'à tenter un vrai envoi d'e-mail) ;
+- deux tests lisent le texte de `orchestrator.py` pour vérifier l'ordre des appels (décision,
+  préparation Jev, exécution paper, observation Jev).
+
+Passer sous 200 lignes demande de découper l'intérieur de `generer_rapport_quotidien` (par exemple
+sortir le gabarit du rapport), ce qui n'est plus un déplacement pur : non fait.
+Tests : `Ran 459 tests` / `OK (skipped=10)`.
