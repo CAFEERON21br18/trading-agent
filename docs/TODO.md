@@ -582,16 +582,27 @@ Points nés des pages :
   d'actions) reste ignoré et compté : à trancher sur un vrai relevé.
 - **Dépôt ou dividende négatif** : l'import entier est refusé, avec le numéro de la ligne. Si un
   vrai relevé contient une telle ligne (annulation), décider comment l'enregistrer.
-- **Bouton « Synchroniser » sans réseau** : si le cours EURUSD est indisponible, rien n'est écrit,
-  positions paper comprises. Les deux scripts permettent de faire l'un sans l'autre.
+- **Bouton « Synchroniser » sans réseau** : si le taux EURUSD est indisponible, rien n'est écrit,
+  positions paper comprises. Les scripts permettent de faire l'un sans l'autre. Les cours de
+  clôture viennent ensuite, à part : leur échec n'annule rien.
+- **Durée de la synchronisation** : les cours sont demandés à Yahoo un instrument après l'autre.
+  Le premier passage télécharge tout depuis le premier trade de chaque instrument ; les suivants,
+  7 jours. À regrouper en une seule requête si le clic devient trop long.
+- **Symboles du relevé chez Yahoo** : le symbole du grand livre est demandé tel quel. Un titre
+  Revolut coté ailleurs qu'aux États-Unis aura besoin d'une correspondance ; d'ici là il est
+  listé « introuvable » et son résultat latent reste « prix indisponible ».
 - **Marquage des boucles avant la synchronisation** : une position ajoutée après le dernier
   `scripts\marquer_boucles.py --appliquer` vaut 0 dans la colonne `boucle`. Le bouton ne relance pas
   le marquage (il écrirait dans la base de l'agent).
 - **Date du correctif du prix d'entrée** : constante `CORRECTIF_PRIX_ENTREE`
   (`dashboard/pro/donnees.py`), lue une fois dans la base de la tour d'après la règle du registre
   (§9.4). Le grand livre ne garde pas le mécanisme d'entrée de chaque position.
-- **Dernier prix** : lu dans `prices`, que la collecte ne remplit que pour la watchlist. Un titre
-  du compte réel hors watchlist reste « prix indisponible ».
+- **Dernier prix** : le cours du grand livre (table `cours`, remplie par « Synchroniser » ou
+  `scripts/ledger_cours.py`), sinon `prices`, que la collecte ne remplit que pour la watchlist. Si
+  le grand livre a un cours trop vieux pour un titre, la base de l'agent n'est pas consultée : il
+  faut resynchroniser. L'âge se compte du lundi au vendredi, sans calendrier des jours fériés.
+- **Cours et devise** : un cours est enregistré dans la devise de l'instrument du grand livre, y
+  compris quand cette devise est incertaine (indices hors États-Unis en USD par défaut).
 - **Accès** : comme le reste du dashboard, ces pages n'ont pas d'authentification ; tout appareil
   du tailnet peut importer un relevé ou lancer la synchronisation.
 - **Navigation** : 15 entrées dans la barre du bas, serrée sur téléphone.

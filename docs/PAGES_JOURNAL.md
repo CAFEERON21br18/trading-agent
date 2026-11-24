@@ -496,3 +496,52 @@ Choix non couverts par la consigne, option prudente retenue :
 
 Tests : `Ran 623 tests` / `OK (skipped=10)` (620 + 3).
 
+## Correctifs — fin de session (24/11/2026)
+
+**Suite de tests.** Dernier lancement sur la pointe de la branche, réseau coupé :
+`Ran 623 tests` / `OK (skipped=10)`. Départ : 599 lancés, 10 ignorés. Les 24 tests ajoutés : 13 au
+lot 1, 8 au lot 2, 3 au lot 3 (la classe de tests de la courbe est réécrite). Avec un graphe
+régénéré dans le worktree (coût LLM nul, puis retiré), les 18 tests de `tests/test_topology.py`
+passent : `importeurs/cours.py` et `scripts/ledger_cours.py` sont classés avec les outils.
+
+**Contrôles avant la poussée.**
+
+- Fichiers `.env`, bases SQLite ou CSV suivis par git : aucun.
+- Règle 9 : le diff `main..HEAD` et les messages de commit comparés aux tables du portefeuille
+  réel et aux comptes réels du grand livre de production, en lecture seule, sans afficher de
+  valeur : aucune correspondance.
+- Lignes d'attribution automatique dans les messages : 0. Aucun fichier de plus de 200 lignes.
+- Aucune modification de `docs/REGISTRE_CRITERES.md`, de `agents/`, `utils/`, `alerts/`,
+  `config.py`, des cycles ni des scripts d'installation des tâches. Seul ajout dans `scripts/` :
+  `ledger_cours.py`, outil manuel. `main` et la copie de production ne sont pas touchés ; le
+  grand livre de production n'a pas été ouvert en écriture.
+- Rien de Jev n'est lu ni affiché (garde de `tests/test_socle_hors_production.py`, inchangée).
+- Appels réels à Yahoo, en lecture, sans grand livre : un essai de `cloture_yfinance` sur trois
+  symboles (SPY, BTC-USD, un symbole inexistant), pour vérifier la forme de la réponse et le cas
+  « introuvable ».
+
+**Écarts à la consigne, et choix faits sans consigne.**
+
+1. `enregistrer_cours` est dans `ledger/ecriture_cours.py`, ré-exporté par `ledger/ecriture.py`
+   (règle des 200 lignes) (lot 1).
+2. Les cours déjà stockés ne sont pas tous redemandés à chaque passage : 7 jours de recouvrement,
+   ou tout depuis le premier trade s'il manque le début (lot 1).
+3. Clôture non ajustée, arrondie à 8 décimales ; devise du cours = devise de l'instrument (lot 1).
+4. Le script à blanc travaille sur une copie en mémoire (`ledger.copie_en_memoire`, ajouté) et ne
+   crée même pas la table dans le fichier (lot 1).
+5. « Seulement s'il manque » pris au mot : un cours trop vieux du grand livre n'est pas remplacé
+   par un prix plus frais de la base de l'agent (lot 2).
+6. Jours de bourse = lundi au vendredi, sans jours fériés (lot 2).
+7. Un cours dans une autre devise que la position n'est pas utilisé (lot 2).
+8. La courbe garde toujours le zéro sur son axe et n'écrit que deux dates (lot 3).
+9. `CLAUDE.md` et `docs/TODO.md` §44 mis à jour, sans lot de documentation dans la consigne.
+10. Tests existants modifiés : `test_ledger.py`, `test_mouvements.py` (lot 1) ; `test_pro_latent.py`,
+    `test_pro_trades.py`, `test_pro_vue.py`, `test_pro_synchro.py`, `test_pro_synchro_page.py`
+    (lot 2, nouveaux libellés et âge en jours de bourse) ; `test_pro_formats.py`, `test_pro_vue.py`
+    (lot 3).
+
+**Après fusion, sur la tour.** Relancer le dashboard (commandes de la section précédente), puis
+cliquer « Synchroniser » : le premier passage télécharge les cours depuis le premier trade de
+chaque instrument et peut durer. `scripts\ledger_cours.py` (à blanc) montre d'abord ce qui serait
+écrit et quels symboles Yahoo ne connaît pas.
+
