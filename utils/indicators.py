@@ -8,13 +8,16 @@ import sys
 import os
 import sqlite3
 import pandas as pd
-import pandas_ta as ta
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.logger   import get_logger
 from utils.database import get_connection
+from utils.indicators_calcul import calculer_tous_indicateurs  # noqa: F401 — réexport
+from utils.indicators_lecture import (  # noqa: F401 — réexport
+    detecter_divergence_rsi, detecter_niveaux_cles, interpreter_rsi, interpreter_adx,
+)
 
 logger = get_logger(__name__)
 
@@ -56,196 +59,6 @@ def charger_ohlcv(ticker: str, timeframe: str, limite: int = 500) -> pd.DataFram
     except Exception as e:
         logger.error(f"Erreur chargement OHLCV {ticker} [{timeframe}] : {e}")
         return pd.DataFrame()
-
-
-def calculer_tous_indicateurs(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Calcule tous les indicateurs techniques sur un DataFrame OHLCV.
-    Retourne le DataFrame enrichi avec les colonnes d'indicateurs.
-    """
-    if df.empty or len(df) < 50:
-        logger.warning("DataFrame trop court pour calculer les indicateurs (min 50 bougies)")
-        return df
-
-    def _safe_assign_cols(target_df, source_df, col_map):
-        """Assigne des colonnes en cherchant par préfixe (robuste aux variations de nommage)."""
-        if source_df is None or source_df.empty:
-            return
-        for col_target, prefix in col_map.items():
-            cols_match = [c for c in source_df.columns if c.startswith(prefix)]
-            if cols_match:
-                target_df[col_target] = source_df[cols_match[0]]
-
-    # ── RSI (14) ──────────────────────────────────────────────────────────────
-    try:
-        df["rsi"] = ta.rsi(df["Close"], length=14)
-    except Exception as e:
-        logger.error(f"RSI : {e}")
-
-    # ── MACD (12, 26, 9) ──────────────────────────────────────────────────────
-    try:
-        macd = ta.macd(df["Close"], fast=12, slow=26, signal=9)
-        _safe_assign_cols(df, macd, {
-            "macd":        "MACD_",
-            "macd_signal": "MACDs_",
-            "macd_hist":   "MACDh_",
-        })
-    except Exception as e:
-        logger.error(f"MACD : {e}")
-
-    # ── Bollinger Bands (20, 2) ───────────────────────────────────────────────
-    try:
-        bb = ta.bbands(df["Close"], length=20, std=2)
-        _safe_assign_cols(df, bb, {
-            "bb_upper":  "BBU_",
-            "bb_middle": "BBM_",
-            "bb_lower":  "BBL_",
-        })
-    except Exception as e:
-        logger.error(f"Bollinger : {e}")
-
-    # ── EMA 20 / 50 / 200 ─────────────────────────────────────────────────────
-    try:
-        df["ema_20"]  = ta.ema(df["Close"], length=20)
-        df["ema_50"]  = ta.ema(df["Close"], length=50)
-        df["ema_200"] = ta.ema(df["Close"], length=200)
-    except Exception as e:
-        logger.error(f"EMA : {e}")
-
-    # ── ATR (14) ──────────────────────────────────────────────────────────────
-    try:
-        df["atr"] = ta.atr(df["High"], df["Low"], df["Close"], length=14)
-    except Exception as e:
-        logger.error(f"ATR : {e}")
-
-    # ── ADX (14) ──────────────────────────────────────────────────────────────
-    try:
-        adx = ta.adx(df["High"], df["Low"], df["Close"], length=14)
-        _safe_assign_cols(df, adx, {"adx": "ADX_"})
-    except Exception as e:
-        logger.error(f"ADX : {e}")
-
-    # ── Stochastic RSI ────────────────────────────────────────────────────────
-    try:
-        stoch_rsi = ta.stochrsi(df["Close"], length=14)
-        if stoch_rsi is not None and not stoch_rsi.empty:
-            cols = stoch_rsi.columns.tolist()
-            df["stoch_rsi_k"] = stoch_rsi[cols[0]]
-            if len(cols) > 1:
-                df["stoch_rsi_d"] = stoch_rsi[cols[1]]
-    except Exception as e:
-        logger.error(f"Stochastic RSI : {e}")
-
-    logger.info(f"Indicateurs calculés sur {len(df)} bougies.")
-    return df
-
-
-def detecter_divergence_rsi(df: pd.DataFrame, fenetre: int = 20) -> str:
-    """
-    Détecte les divergences RSI vs Prix sur les N dernières bougies.
-    Retourne : "haussière", "baissière", ou "aucune"
-    """
-    try:
-        if "rsi" not in df.columns or len(df) < fenetre:
-            return "aucune"
-
-        recents = df.tail(fenetre)
-        prix_min_idx = recents["Close"].idxmin()
-        prix_max_idx = recents["Close"].idxmax()
-
-        # Divergence haussière : nouveau bas prix mais RSI ne fait pas nouveau bas
-        if prix_min_idx == recents.index[-1]:
-            rsi_au_precedent_bas = recents["rsi"].iloc[:-5].min()
-            if recents["rsi"].iloc[-1] > rsi_au_precedent_bas:
-                return "haussière"
-
-        # Divergence baissière : nouveau haut prix mais RSI ne fait pas nouveau haut
-        if prix_max_idx == recents.index[-1]:
-            rsi_au_precedent_haut = recents["rsi"].iloc[:-5].max()
-            if recents["rsi"].iloc[-1] < rsi_au_precedent_haut:
-                return "baissière"
-
-        return "aucune"
-
-    except Exception as e:
-        logger.error(f"Erreur détection divergence RSI : {e}")
-        return "aucune"
-
-
-def detecter_niveaux_cles(df: pd.DataFrame, nb_niveaux: int = 2) -> dict:
-    """
-    Détecte les supports et résistances clés sur les 100 dernières bougies.
-    Méthode : pivots hauts/bas locaux sur fenêtre de 5 bougies.
-    Retourne un dict {"supports": [...], "resistances": [...]}
-    """
-    try:
-        recents = df.tail(100).copy()
-        prix_actuel = float(recents["Close"].iloc[-1])
-
-        supports     = []
-        resistances  = []
-
-        for i in range(2, len(recents) - 2):
-            haut = float(recents["High"].iloc[i])
-            bas  = float(recents["Low"].iloc[i])
-
-            # Pivot bas = support potentiel
-            if (bas < float(recents["Low"].iloc[i-1]) and
-                bas < float(recents["Low"].iloc[i-2]) and
-                bas < float(recents["Low"].iloc[i+1]) and
-                bas < float(recents["Low"].iloc[i+2])):
-                if bas < prix_actuel:
-                    supports.append(bas)
-
-            # Pivot haut = résistance potentielle
-            if (haut > float(recents["High"].iloc[i-1]) and
-                haut > float(recents["High"].iloc[i-2]) and
-                haut > float(recents["High"].iloc[i+1]) and
-                haut > float(recents["High"].iloc[i+2])):
-                if haut > prix_actuel:
-                    resistances.append(haut)
-
-        # Garder les N niveaux les plus proches du prix actuel
-        supports    = sorted(supports,    reverse=True)[:nb_niveaux]
-        resistances = sorted(resistances)[:nb_niveaux]
-
-        return {"supports": supports, "resistances": resistances}
-
-    except Exception as e:
-        logger.error(f"Erreur détection niveaux clés : {e}")
-        return {"supports": [], "resistances": []}
-
-
-def interpreter_rsi(rsi: float) -> str:
-    """Interprétation textuelle du RSI."""
-    if rsi is None or np.isnan(rsi):
-        return "N/A"
-    if rsi >= 80:
-        return f"{rsi:.1f} → Fortement suracheté"
-    if rsi >= 70:
-        return f"{rsi:.1f} → Suracheté"
-    if rsi <= 20:
-        return f"{rsi:.1f} → Fortement survendu"
-    if rsi <= 30:
-        return f"{rsi:.1f} → Survendu"
-    if 45 <= rsi <= 55:
-        return f"{rsi:.1f} → Neutre"
-    if rsi > 55:
-        return f"{rsi:.1f} → Zone haussière"
-    return f"{rsi:.1f} → Zone baissière"
-
-
-def interpreter_adx(adx: float) -> str:
-    """Interprétation textuelle de l'ADX (force de tendance)."""
-    if adx is None or np.isnan(adx):
-        return "N/A"
-    if adx >= 50:
-        return f"{adx:.1f} → Tendance très forte"
-    if adx >= 25:
-        return f"{adx:.1f} → Tendance établie"
-    if adx >= 20:
-        return f"{adx:.1f} → Tendance faible"
-    return f"{adx:.1f} → Pas de tendance (range)"
 
 
 def resume_indicateurs(ticker: str, timeframe: str = "1d") -> str:

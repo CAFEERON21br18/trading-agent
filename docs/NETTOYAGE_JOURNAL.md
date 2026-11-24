@@ -478,3 +478,13 @@ Tests : `Ran 459 tests` / `OK (skipped=10)`.
 le remplacent (`mock.patch.object(real_price, "get_current_price")`) restent valables. Le nouveau
 module journalise sous le nom `utils.real_price`, comme avant : les lignes de journal ne changent pas.
 Tests : `Ran 459 tests` / `OK (skipped=10)`.
+
+### `utils/indicators.py` : 334 → 147 lignes
+
+- `calculer_tous_indicateurs` part dans `utils/indicators_calcul.py` (94 lignes) ;
+- `detecter_divergence_rsi`, `detecter_niveaux_cles`, `interpreter_rsi`, `interpreter_adx` partent
+  dans `utils/indicators_lecture.py` (120 lignes) ;
+- `charger_ohlcv` et `resume_indicateurs` restent. Les deux nouveaux modules journalisent sous le nom
+  `utils.indicators`, comme avant. `import sqlite3`, déjà inutilisé, est resté.
+
+Tests : `Ran 459 tests` / `OK (skipped=10)`.
