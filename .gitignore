@@ -96,3 +96,7 @@ memory/trade_journal.md
 # Relevés de compte (CSV Revolut) : données réelles, jamais dans le dépôt (règle 9).
 # La page « Mes trades » les lit en mémoire ; aucun CSV n'est suivi par git.
 *.csv
+
+# Rejeu sur plusieurs années (rejeu/, registre §10) : barres en cache, bases jetables de l'agent,
+# grand livre du rejeu, résultats. Régénérés par scripts/rejeu_donnees.py et scripts/rejeu.py.
+data/rejeu/

@@ -24,8 +24,8 @@ isoler_journaux()  # avant tout import du code testé : rien dans logs/ (product
 
 from utils import logger as journal
 
-PAQUETS = {"agents", "alerts", "config", "dashboard", "importeurs", "ledger", "mesures", "scripts", "tests",
-           "utils"}
+PAQUETS = {"agents", "alerts", "config", "dashboard", "importeurs", "ledger", "mesures", "rejeu", "scripts",
+           "tests", "utils"}
 LOGS = os.path.normcase(os.path.join(RACINE, "logs")) + os.sep
 
 

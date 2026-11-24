@@ -129,6 +129,8 @@ REGLES = [
     ("ledger/", "outils"),
     ("mesures/", "outils"),
     ("importeurs/", "outils"),
+    # Rejeu sur plusieurs années (registre §10) : appelle l'agent, n'est importé par aucun cycle
+    ("rejeu/", "outils"),
 ]
 
 # Tables SQLite suivies : nœuds « données » de la carte
