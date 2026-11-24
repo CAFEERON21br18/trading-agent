@@ -235,3 +235,41 @@ tickers figurent vraiment dans les positions ; une devise fausse se corrige ensu
 `corriger_trade(devise=...)`, sans rien effacer.
 
 Tests : `Ran 510 tests` / `OK (skipped=10)` (490 + 12 + 5 + 3).
+
+### Lot 4 — taux de change EURUSD
+
+Fichiers : `importeurs/taux_change.py` (93 lignes), `scripts/ledger_taux.py`, deux fichiers de test
+et `tests/socle_taux_fixtures.py`.
+
+- Source : yfinance, ticker « EURUSD=X », barres d'un jour ; le taux est en dollars pour un euro,
+  comme l'attend la table `change`. `cloture_yfinance` est la seule fonction qui va en ligne, et
+  `yfinance` n'y est importé qu'à l'appel : les paquets du socle restent utilisables sans lui.
+- Sans doublon : un jour déjà présent dans la table n'est pas réécrit, même si la source donne
+  une autre valeur (testé).
+- Erreur de la source (réseau, réponse vide) : `SourceIndisponible`, le script sort en code 1,
+  rien n'est écrit. Les journaux de l'agent ne sont pas utilisés : le socle n'importe pas
+  `utils/`.
+- Tests sans réseau : source simulée passée en paramètre ; `cloture_yfinance` elle-même est
+  testée sur un faux module `yfinance` ; toute tentative de connexion lève une erreur.
+- Rien n'est ajouté aux cycles planifiés ni aux tâches du Planificateur : outil manuel.
+
+Choix non couverts par la consigne, option prudente retenue :
+
+- **Le jour en cours (UTC) est écarté.** Sa barre n'est pas encore une clôture, et comme un jour
+  présent n'est jamais réécrit, une valeur de milieu de journée serait restée pour toujours.
+- Une valeur absente, nulle ou négative est écartée et listée dans le rapport, sans bloquer les
+  autres jours.
+- Les taux sont arrondis à 6 décimales : yfinance rend des flottants avec des chiffres de bruit
+  au-delà.
+- Période par défaut : de 7 jours avant le dernier taux stocké jusqu'à hier ; table vide,
+  365 jours en arrière. `--depuis` et `--jusqu-a` la remplacent.
+- Le script est à blanc par défaut, comme `ledger_sync_paper.py` : le cours est demandé à Yahoo,
+  rien n'est écrit sans `--appliquer`.
+- `utils/fx.py` n'est pas réutilisé : il sert un cours du moment au portefeuille réel et dépend
+  de l'agent.
+
+Reste vrai après ce lot : les week-ends et jours fériés n'ont pas de barre ; la bascule de
+`mesures` reprend alors le dernier taux connu sur 7 jours (testé de bout en bout sur un trade
+clos un dimanche).
+
+Tests : `Ran 521 tests` / `OK (skipped=10)` (510 + 8 + 3).
