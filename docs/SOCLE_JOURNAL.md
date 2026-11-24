@@ -171,3 +171,67 @@ positions marquées depuis (lot 3), paquets ajoutés à la garde des journaux et
 - Conséquence à connaître : dans le vault (90-Graphify), les modules de `mesures/` et
   `importeurs/revolut_csv.py` porteront le tag « orphelin » tant qu'aucun script ne les importe.
   C'est exact : rien ne s'en sert encore.
+
+### Lot 3 — adaptateur paper
+
+Fichiers : `importeurs/paper.py` (179 lignes), `importeurs/devises.py`, `scripts/ledger_sync_paper.py`,
+trois fichiers de test et `tests/socle_paper_fixtures.py`.
+
+- **Lecture seule** : la base de l'agent est ouverte par une URI `mode=ro` ; seule la table
+  `positions` est lue. Un test compare l'empreinte du fichier avant et après. Le portefeuille
+  fantôme Jev (`jev_paper_positions`) n'est jamais lu : un test le vérifie avec une table témoin.
+- **Compte** « Paper agent », type `paper`, devise de compte EUR (capital de référence en euros).
+- **Exécutions** : position `OPEN`, une exécution ; position `CLOSED_*`, deux. `ref_source` vaut
+  `position-<id>-entree` et `position-<id>-sortie` : relancer n'ajoute rien, et une position
+  ouverte qui se ferme n'ajoute que sa sortie. Sens : `LONG` achète puis vend, `SHORT` l'inverse.
+- **Contexte de l'entrée** : bras `regles`, stop initial = colonne `stop_loss` (jamais mise à jour
+  après l'ouverture). Un stop nul ou négatif est laissé vide, le grand livre refusant ces valeurs.
+- **Frais** : le paper trader n'en compte aucun ; aucun coût n'est inscrit. Les résultats paper
+  tirés du grand livre sont donc bruts de frais (écrit dans `CLAUDE.md` au lot 5).
+- **Décision 1, devise** : `devise_cotation` rend EUR pour les suffixes `.PA .DE .AS .MI .MC .LS`,
+  USD sinon. Le paper trader n'est pas corrigé. Une seconde fonction, `devise_incertaine`, signale
+  sans rien changer les tickers pour lesquels ce USD par défaut est douteux ; le script les liste
+  à la fin de son rapport.
+- **Décision 2, positions « boucle »** : la colonne est lue à chaque synchronisation. Absente :
+  `ColonneBoucleAbsente`, rien n'est importé, et le script s'arrête avant même d'ouvrir le grand
+  livre (aucun fichier créé). Position importée puis marquée : `annuler_trade` sur chaque
+  exécution encore active, donc une ligne d'annulation par exécution, aucune suppression ; testé
+  (4 lignes d'origine toujours lisibles, 2 annulations, plus rien à la relance).
+- **Tout ou rien** : une position illisible (direction ou statut inconnu, quantité ou prix non
+  positif, position fermée sans prix ou date de sortie) et rien n'est écrit ; le rapport nomme
+  la position.
+
+Choix non couverts par la consigne, option prudente retenue :
+
+- Le script est **à blanc par défaut**, comme `scripts/marquer_boucles.py` ; il faut `--appliquer`
+  pour écrire. À blanc et sans grand livre existant, il travaille en mémoire et ne crée aucun
+  fichier. Raison : une ligne écrite dans le grand livre ne s'efface plus.
+- Une position annulée pour « boucle » puis démarquée ne serait pas réimportée : sa référence
+  reste prise. Le cas ne devrait pas se produire (une série « boucle » ne rétrécit pas).
+- Les dates sans fuseau sont lues comme UTC, ce que fait le grand livre ; le paper trader écrit
+  ses dates en UTC avec décalage.
+- La classe de l'instrument reprend `asset_type` de la position (`action`, `crypto`, `etf`, `cfd`).
+- La base de test est créée par `initialiser_paper_db` (schéma réel, mode WAL) puis reçoit la
+  colonne `boucle` comme le fait `marquer_boucles.py` : un changement de schéma du paper trader
+  fera échouer ces tests au lieu de passer inaperçu.
+- Ajout : `tests/test_socle_hors_production.py` lit le source et vérifie la règle centrale dans
+  les deux sens (aucun module de l'agent, hors `scripts/ledger_*.py`, n'importe le socle ; le
+  socle n'importe rien de l'agent). À ouvrir le jour où le nouveau dashboard lira le grand livre.
+
+**Tickers dont la devise reste incertaine.** Le script n'a pas été lancé sur la base de
+production : la liste qui suit vient des tickers cités dans le code (explorateurs, collecte,
+modèle de watchlist), pas des positions réellement prises. Ils seraient enregistrés en USD par
+défaut alors qu'ils ne sont pas cotés en dollars :
+
+- indices hors États-Unis : `^FCHI ^GDAXI ^AEX ^IBEX ^FTMIB ^STOXX50E` (euros), `^FTSE` (livres),
+  `^SSMI` (francs suisses), `^N225 ^HSI ^AXJO ^KS11 ^TWII ^NSEI ^BSESN ^TA125.TA` ;
+- paires de change dont la devise de cotation n'est pas le dollar : `USDJPY=X USDCHF=X USDCAD=X
+  EURGBP=X EURJPY=X GBPJPY=X AUDJPY=X EURAUD=X USDTRY=X USDZAR=X USDMXN=X USDBRL=X USDSGD=X
+  USDINR=X`.
+
+Aucun ticker du code ne porte un des six suffixes européens : aujourd'hui la règle ne rend EUR
+pour aucun actif connu de l'agent. Le premier lancement à blanc sur la tour dira lesquels de ces
+tickers figurent vraiment dans les positions ; une devise fausse se corrige ensuite par
+`corriger_trade(devise=...)`, sans rien effacer.
+
+Tests : `Ran 510 tests` / `OK (skipped=10)` (490 + 12 + 5 + 3).
