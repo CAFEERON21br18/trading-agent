@@ -71,6 +71,12 @@ class BasePro(BaseLedger):
         executer(self.base, "INSERT INTO prices (ticker, timeframe, timestamp, close) VALUES (?, ?, ?, ?)",
                  (ticker, timeframe, horodatage, cloture))
 
+    def cours_livre(self, symbole, cloture, jour=date(2026, 11, 9), devise="USD"):
+        """Inscrit une clôture dans la table cours du grand livre."""
+        ledger.enregistrer_cours(self.conn, instrument_id=ledger.instrument(self.conn, symbole, devise),
+                                 jour=jour, cloture=cloture, devise=devise, source="test")
+        self.conn.commit()
+
     def compte_reel(self) -> int:
         """Deux trades clos (+98 $ et −20,50 $ nets), deux positions ouvertes, trois mouvements."""
         c = ledger.compte(self.conn, "Revolut", "reel", "EUR")

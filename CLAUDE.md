@@ -265,9 +265,12 @@ Deux pages (`dashboard/pro/`, gabarits `pro_vue.html` et `pro_trades.html`), ren
   correctif du prix d'entrée, `CORRECTIF_PRIX_ENTREE`, registre §9.4) retenues dans l'URL.
 - **Mes trades** (`/pro/trades`) : le compte réel — import du relevé, positions ouvertes, trades
   clos, frais ordre par ordre (« frais non détectés » sinon), mouvements.
-- Une mesure non calculable s'écrit « — », jamais 0 ; sans taux, « taux indisponible » ; une
-  position dont le dernier prix (table `prices`, lue en lecture seule) manque ou date de plus de
-  3 jours est « prix indisponible », hors du total. Gains et pertes portent leur signe.
+- Une mesure non calculable s'écrit « — », jamais 0 ; sans taux, « taux indisponible ». Gains et
+  pertes portent leur signe.
+- Résultat latent : dernier cours du grand livre (table `cours`) ; seulement si le grand livre
+  n'en a aucun pour le titre, dernier prix de la table `prices` de l'agent, lue en lecture seule.
+  Un cours de plus de 3 jours de bourse (lundi au vendredi : celui du vendredi vaut le lundi) ou
+  absent donne « prix indisponible », hors du total. La date du cours est affichée avec le prix.
 - Rien du portefeuille fantôme Jev n'y est lu ni affiché.
 
 **Qui écrit dans le grand livre.** Les pages lisent. Trois routes POST écrivent, toutes par les
@@ -277,8 +280,10 @@ fonctions de `ledger/ecriture.py`, sur une action de Lucia, avec l'en-tête `X-A
   temps, il est gardé en mémoire sous un jeton à usage unique qui expire en 10 minutes. Une
   erreur dans le fichier et la confirmation est impossible.
 - `POST /pro/synchroniser` (bouton « Synchroniser ») : positions paper puis taux EURUSD, validés
-  ensemble. Colonne `boucle` absente, position illisible, cours indisponible ou autre erreur :
-  rien n'est écrit, le message est affiché tel quel.
+  ensemble. Colonne `boucle` absente, position illisible, taux indisponible ou autre erreur :
+  rien n'est écrit, le message est affiché tel quel. Ensuite, dans une transaction à part, les
+  cours de clôture des instruments : leur échec n'annule pas les deux premiers, le rapport dit
+  ce qui a été écrit et ce qui a échoué.
 Aucune tâche planifiée n'écrit dans le grand livre.
 
 Trois scripts manuels (aucune tâche planifiée), à blanc par défaut, `--appliquer` pour écrire :

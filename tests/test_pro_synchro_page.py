@@ -3,8 +3,9 @@ tests/test_pro_synchro_page.py — Bouton « Synchroniser » de la page /pro : s
 
 1. le bouton est dans l'en-tête de la page, avec la zone du rapport ;
 2. le script, exécuté par Node (sauté sans Node) : un seul POST vers /pro/synchroniser ; le
-   rapport des deux synchronisations est affiché, tout texte du serveur échappé ; un refus
-   affiche le message tel quel, comme du texte ; le bouton est rendu à la fin.
+   rapport des trois étapes (positions, taux, cours) est affiché, tout texte du serveur échappé ;
+   un refus affiche le message tel quel, comme du texte ; des cours en échec n'effacent pas le
+   rapport des positions et des taux ; le bouton est rendu à la fin.
 
 Lancement : .venv\\Scripts\\python.exe -m unittest tests.test_pro_synchro_page -v
 Client de test Flask, bases temporaires ; aucun réseau, rien dans data/.
@@ -35,8 +36,14 @@ globalThis.document = {getElementById: (id) => elements[id] || (elements[id] = {
 const REPONSES = [
   {ok: true, paper: {positions: 2, boucles: 1, importes: 3, deja_presents: 0, annules: 0,
                      devises_incertaines: ["<b>X", "^FCHI"], erreurs: []},
-   taux: {ajoutes: 2, deja_presents: 0, ecartes: 0, premier: "2026-11-06", dernier: "2026-11-09"}},
-  {ok: false, message: "colonne « boucle » absente <img src=x onerror=alert(1)>"}];
+   taux: {ajoutes: 2, deja_presents: 0, ecartes: 0, premier: "2026-11-06", dernier: "2026-11-09"},
+   cours: {ok: true, instruments: 3, ajoutes: 12, deja_presents: 4, ecartes: 0, a_jour: [],
+           introuvables: [["<i>ZZZ", "aucune barre"], ["YYY", "aucune barre"]]}},
+  {ok: false, message: "colonne « boucle » absente <img src=x onerror=alert(1)>"},
+  {ok: true, paper: {positions: 2, boucles: 0, importes: 3, deja_presents: 0, annules: 0,
+                     devises_incertaines: [], erreurs: []},
+   taux: {ajoutes: 2, deja_presents: 0, ecartes: 0, premier: null, dernier: null},
+   cours: {ok: false, message: "RuntimeError : <b>disque plein</b>. Aucun cours n'a été écrit."}}];
 globalThis.fetch = async (url, options) => {
   appels.push([url, options.method, options.body === undefined]);
   return {ok: true, json: async () => REPONSES[appels.length - 1]};
@@ -47,7 +54,9 @@ SCRIPT
   await synchroniser();
   const reussi = elements["synchro-rapport"].innerHTML;
   await synchroniser();
-  console.log(JSON.stringify({reussi, refus: elements["synchro-rapport"].innerHTML, appels,
+  const refus = elements["synchro-rapport"].innerHTML;
+  await synchroniser();
+  console.log(JSON.stringify({reussi, refus, cours_en_echec: elements["synchro-rapport"].innerHTML, appels,
                               bouton: elements["synchro-bouton"].disabled, cache: elements["synchro-rapport"].hidden}));
 })();
 """
@@ -75,12 +84,20 @@ class TestBouton(BasePage):
             sortie = subprocess.run(["node", chemin], capture_output=True, text=True, encoding="utf-8", timeout=60)
         self.assertEqual(sortie.returncode, 0, sortie.stderr)
         vu = json.loads(sortie.stdout)
-        self.assertEqual(vu["appels"], [["/pro/synchroniser", "POST", True]] * 2)
+        self.assertEqual(vu["appels"], [["/pro/synchroniser", "POST", True]] * 3)
         self.assertEqual((vu["bouton"], vu["cache"]), (False, False))
         for attendu in ("Synchronisation appliquée", "Exécutions ajoutées", "Taux EURUSD ajoutés",
-                        "2026-11-06 → 2026-11-09", "&lt;b&gt;X, ^FCHI"):
+                        "2026-11-06 → 2026-11-09", "&lt;b&gt;X, ^FCHI", "Cours ajoutés", "Cours déjà présents",
+                        "Introuvables chez Yahoo", "&lt;i&gt;ZZZ, YYY"):
             self.assertIn(attendu, vu["reussi"])
-        self.assertNotIn("<b>X", vu["reussi"])
+        for interdit in ("<b>X", "<i>ZZZ", "Cours : échec"):
+            self.assertNotIn(interdit, vu["reussi"])
+        # cours en échec : le rapport dit ce qui a été écrit et ce qui a échoué
+        for attendu in ("Synchronisation appliquée", "Exécutions ajoutées", "Taux EURUSD ajoutés",
+                        "Cours : échec. Les positions et les taux ci-dessus sont écrits, pas les cours.",
+                        "RuntimeError : &lt;b&gt;disque plein&lt;/b&gt;"):
+            self.assertIn(attendu, vu["cours_en_echec"])
+        self.assertNotIn("<b>disque", vu["cours_en_echec"])
         self.assertTrue(vu["refus"].startswith("[texte]Synchronisation refusée, rien n'a été écrit. colonne « boucle »"))
 
 

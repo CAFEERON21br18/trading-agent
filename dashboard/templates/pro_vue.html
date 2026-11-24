@@ -152,6 +152,15 @@ async function synchroniser() {
             + ligneSynchro("Jours écartés", t.ecartes);
         if (t.premier) h += ligneSynchro("Taux ajoutés du … au …", t.premier + " → " + t.dernier);
         if ((p.devises_incertaines || []).length) h += ligneSynchro("Devise incertaine, enregistrée en USD", p.devises_incertaines.join(", "));
+        const c = j.cours || {};
+        if (c.ok) {
+            h += ligneSynchro("Instruments avec un trade", c.instruments) + ligneSynchro("Cours ajoutés", c.ajoutes)
+                + ligneSynchro("Cours déjà présents", c.deja_presents);
+            if (c.ecartes) h += ligneSynchro("Valeurs invalides écartées", c.ecartes);
+            if ((c.introuvables || []).length) h += ligneSynchro("Introuvables chez Yahoo", c.introuvables.map(i => i[0]).join(", "));
+        } else {
+            h += `<div class="mt-2 text-red-300" role="alert">Cours : échec. Les positions et les taux ci-dessus sont écrits, pas les cours. ${escHtml(c.message || "")}</div>`;
+        }
         zone.innerHTML = h + `<a class="underline text-emerald-300 mt-2 inline-block" href="/pro?devise={{ devise }}&amp;periode={{ periode }}">Recharger la page</a>`;
     } catch (e) {
         zone.textContent = "Synchronisation : pas de réponse du dashboard. Vérifier la page avant de recommencer.";

@@ -3,7 +3,8 @@ tests/test_pro_latent.py — Dernier prix connu et résultat latent (dashboard/p
 
 1. dernier prix : la barre la plus récente parmi 1 jour et « 4h » ; barre hebdomadaire et
    clôture vide ignorées ; base ou table absente : aucun prix ; base lue sans être modifiée ;
-2. un prix de plus de 3 jours n'est plus utilisé ;
+2. un prix de plus de 3 jours de bourse n'est plus utilisé : celui du vendredi vaut le lundi ;
+   le cours du grand livre passe avant celui de la base de l'agent, lu seulement s'il manque ;
 3. résultat latent : position longue et vente à découvert ; position sans prix marquée
    « prix indisponible » et exclue du total, jamais comptée à 0 ; aucun prix : total None ;
 4. taux manquant pour la bascule : « taux indisponible », les lignes restent valorisées ;
@@ -54,10 +55,54 @@ class TestDernierPrix(BasePro):
         sqlite3.connect(vide).close()
         self.assertEqual(prix.derniers_prix(vide, ["AAA"]), {})
 
-    def test_prix_de_plus_de_trois_jours_inutilisable(self):
-        self.assertTrue(prix.utilisable(prix.Prix(D("1"), date(2026, 11, 7)), AUJOURD_HUI))   # 3 jours
-        self.assertFalse(prix.utilisable(prix.Prix(D("1"), date(2026, 11, 6)), AUJOURD_HUI))  # 4 jours
+    def test_age_en_jours_de_bourse(self):
+        vendredi, lundi = date(2026, 11, 6), date(2026, 11, 9)
+        # samedi, dimanche, lundi, mercredi, jeudi qui suivent ce vendredi
+        self.assertEqual([prix.jours_de_bourse(vendredi, date(2026, 11, j)) for j in (7, 8, 9, 11, 12)],
+                         [0, 0, 1, 3, 4])
+        cours_du_vendredi = prix.Prix(D("1"), vendredi)
+        self.assertTrue(prix.utilisable(cours_du_vendredi, lundi))  # le cours du vendredi vaut le lundi
+        self.assertTrue(prix.utilisable(cours_du_vendredi, date(2026, 11, 11)))   # mercredi : 3 jours de bourse
+        self.assertFalse(prix.utilisable(cours_du_vendredi, date(2026, 11, 12)))  # jeudi : 4
+        self.assertTrue(prix.utilisable(prix.Prix(D("1"), date(2026, 11, 8)), AUJOURD_HUI))  # dimanche, lu le mardi
         self.assertFalse(prix.utilisable(None, AUJOURD_HUI))
+
+
+class TestGrandLivreDAbord(BasePro):
+    def latent(self, compte_id, devise="EUR"):
+        source = donnees.charger(self.conn, compte_id)
+        symboles = [p.symbole for p in donnees.positions_ouvertes(source)]
+        return latent.resultat_latent(source, devise, prix.prix_connus(self.conn, self.base, symboles), AUJOURD_HUI)
+
+    def test_cours_du_grand_livre_puis_base_de_l_agent_s_il_manque(self):
+        self.cours("CCC", 210.0)
+        self.cours("DDD.PA", 21.0)
+        self.cours_livre("CCC", "211", jour=date(2026, 11, 6))
+        self.cours_livre("CCC", "212")
+        connus = prix.prix_connus(self.conn, self.base, ["CCC", "DDD.PA", "ZZZ", "CCC"])
+        self.assertEqual(connus, {"CCC": prix.Prix(D("212"), date(2026, 11, 9), "grand livre", "USD"),
+                                  "DDD.PA": prix.Prix(D("21.0"), date(2026, 11, 9), "base de l'agent", None)})
+        self.assertEqual(prix.prix_connus(None, self.base, ["CCC"])["CCC"].valeur, D("210.0"))  # sans grand livre
+
+    def test_resultat_latent_au_cours_du_grand_livre(self):
+        reel = self.compte_reel()  # la base de l'agent donne 210 pour CCC
+        self.taux()
+        self.cours_livre("CCC", "212")
+        self.cours_livre("DDD.PA", "21", jour=date(2026, 11, 6), devise="EUR")
+        r = self.latent(reel)
+        self.assertEqual([(l.position.symbole, l.prix.valeur, l.prix.origine, l.latent) for l in r.lignes],
+                         [("CCC", D("212"), "grand livre", D("24")), ("DDD.PA", D("21"), "grand livre", D("5"))])
+        self.assertEqual((r.total, r.jours_des_cours), (D("24.2"), (date(2026, 11, 6), date(2026, 11, 9))))
+
+    def test_cours_du_grand_livre_trop_vieux_ou_dans_une_autre_devise(self):
+        reel = self.compte_reel()  # base de l'agent : CCC à 210, du 09/11
+        self.taux()
+        self.cours_livre("CCC", "190", jour=date(2026, 11, 2))  # 6 jours de bourse avant le 10/11
+        r = self.latent(reel)
+        self.assertEqual([l.indisponible for l in r.lignes], ["prix indisponible"] * 2)  # pas de repli sur 210
+        self.assertEqual((r.total, r.jours_des_cours), (None, None))
+        self.cours_livre("CCC", "195", devise="EUR")  # cours récent, mais pas dans la devise de la position
+        self.assertEqual(self.latent(reel).lignes[0].indisponible, "prix indisponible")
 
 
 class TestResultatLatent(BasePro):

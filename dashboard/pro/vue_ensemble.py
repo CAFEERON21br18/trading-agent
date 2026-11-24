@@ -48,7 +48,7 @@ def panneau(conn, affiche: comptes.Affiche, devise: str, periode: str, chemin_ba
     if source is None or not (source.executions or source.mouvements):
         return p
     ouvertes = donnees.positions_ouvertes(source, periode)
-    cours = prix.derniers_prix(chemin_base, [o.symbole for o in ouvertes])
+    cours = prix.prix_connus(conn, chemin_base, [o.symbole for o in ouvertes])
     valeur_latente = latent.resultat_latent(source, devise, cours, aujourd_hui, periode)
     serie = donnees.serie_cumulee(source, devise, periode)
     p.update(

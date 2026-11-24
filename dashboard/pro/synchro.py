@@ -2,11 +2,14 @@
 dashboard/pro/synchro.py — Ce que fait le bouton « Synchroniser » du dashboard professionnel.
 
 Dans l'ordre : les positions paper de la base de l'agent (importeurs/paper.py), puis les taux
-EURUSD quotidiens (importeurs/taux_change.py), en mode appliquer. Les deux écritures sont
+EURUSD quotidiens (importeurs/taux_change.py), en mode appliquer. Ces deux écritures sont
 validées ensemble : si la colonne « boucle » manque, si une position est illisible, si le
-cours est indisponible ou si une erreur survient, RIEN n'est écrit et le message est rendu
+taux est indisponible ou si une erreur survient, RIEN n'est écrit et le message est rendu
 tel quel. Tout ce qui peut échouer sans écrire est donc fait d'abord : lecture des positions,
-répétition à blanc dans un grand livre en mémoire, téléchargement des cours.
+répétition à blanc dans un grand livre en mémoire, téléchargement des taux.
+Ensuite seulement, les clôtures des instruments (importeurs/cours.py), dans une transaction à
+part : un échec des cours n'annule pas les positions ni les taux déjà écrits, et le rapport dit
+ce qui a été écrit et ce qui a échoué.
 Sans Flask. Aucune tâche planifiée ne passe par ici : c'est une action de Lucia.
 """
 
@@ -14,6 +17,7 @@ from dataclasses import asdict
 from datetime import date, datetime, timezone
 
 import ledger
+from importeurs import cours as ic
 from importeurs import paper
 from importeurs import taux_change as tc
 
@@ -37,9 +41,23 @@ def _periode_des_taux(chemin_ledger: str, vide, aujourd_hui: date) -> tuple[date
             lecture.close()
 
 
+def _cours(chemin_ledger: str, telecharger_cours, aujourd_hui: date) -> dict:
+    """Troisième étape, après la validation des deux premières : jamais d'exception vers l'appelant."""
+    try:
+        conn = ledger.ouvrir(chemin_ledger)
+        try:
+            rapport = ic.importer(conn, telecharger_cours or ic.cloture_yfinance, aujourd_hui=aujourd_hui)
+        finally:
+            conn.close()
+    except Exception as exc:
+        return {"ok": False, "message": f"{type(exc).__name__} : {exc}. Aucun cours n'a été écrit."}
+    return dict(asdict(rapport), ok=True)
+
+
 def synchroniser(chemin_ledger: str, chemin_base: str, telecharger=None,
-                 aujourd_hui: date | None = None) -> dict:
-    """Synchronise et rend {"ok": True, "paper": …, "taux": …}, ou {"ok": False, "message": …}."""
+                 aujourd_hui: date | None = None, telecharger_cours=None) -> dict:
+    """Synchronise et rend {"ok": True, "paper": …, "taux": …, "cours": …}, ou
+    {"ok": False, "message": …} si rien n'a été écrit. "cours" porte son propre "ok"."""
     aujourd_hui = aujourd_hui or datetime.now(timezone.utc).date()
     telecharger = telecharger or tc.cloture_yfinance
     essai = ledger.ouvrir(":memory:")  # jamais écrit sur le disque
@@ -77,4 +95,5 @@ def synchroniser(chemin_ledger: str, chemin_base: str, telecharger=None,
     taux.update(ecartes=len(r_taux.ecartes),
                 premier=r_taux.premier.isoformat() if r_taux.premier else None,
                 dernier=r_taux.dernier.isoformat() if r_taux.dernier else None)
-    return {"ok": True, "paper": asdict(r_paper), "taux": taux}
+    return {"ok": True, "paper": asdict(r_paper), "taux": taux,
+            "cours": _cours(chemin_ledger, telecharger_cours, aujourd_hui)}

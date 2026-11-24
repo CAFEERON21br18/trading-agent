@@ -72,7 +72,7 @@ class TestPanneaux(BasePage):
         reel = self.section(html, "compte-reel")
         for attendu in (f"Résultat net réalisé +62,00{E}€ 2 trades non décidable · 2 / 100",
                         f"Résultat latent +16,00{E}€ 1 position en « prix indisponible », hors du total "
-                        "1 position sur 2 avec un prix",
+                        "1 position sur 2 avec un prix · cours du 09/11/2026",
                         f"Total des frais 3,60{E}€ part du résultat brut : 3,1{E}% (2 trades clos) "
                         "4 ordres avec frais sur 6 non décidable · 2 / 100",
                         "Espérance en R — 0 trade avec stop connu non décidable · 0 / 100",
@@ -87,7 +87,7 @@ class TestPanneaux(BasePage):
         for attendu in ("Résultats bruts de frais : le paper trader n'en compte aucun.",
                         "Période : tout depuis le correctif du prix d'entrée",
                         f"Résultat net réalisé +8,00{E}€ 2 trades non décidable · 2 / 100",
-                        f"Résultat latent +7,20{E}€ 1 position sur 1 avec un prix",
+                        f"Résultat latent +7,20{E}€ 1 position sur 1 avec un prix · cours du 09/11/2026",
                         "Total des frais — part du résultat brut : — aucun frais enregistré sur 5 ordres Espérance",
                         f"Espérance en R +0,75{E}R 2 trades avec stop connu", f"Taux de réussite 50,0{E}% 2 trades"):
             self.assertIn(attendu, paper)

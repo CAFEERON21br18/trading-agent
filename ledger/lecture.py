@@ -162,6 +162,18 @@ def derniers_cours(conn: sqlite3.Connection) -> dict[str, Cours]:
     return {c.symbole: c for c in cours(conn)}  # triés par jour : le dernier écrase les précédents
 
 
+def dernier_cours(conn: sqlite3.Connection, symbole: str) -> Cours | None:
+    """Le cours le plus récent d'un instrument (dernière saisie de son dernier jour), ou None."""
+    if not _table_presente(conn, "cours"):
+        return None
+    l = conn.execute(
+        "SELECT i.symbole, c.jour, c.cloture, c.devise, c.source FROM cours c"
+        " JOIN instruments i ON i.id = c.instrument_id WHERE i.symbole = ?"
+        " ORDER BY c.jour DESC, c.id DESC LIMIT 1", (symbole.strip().upper(),)).fetchone()
+    return None if l is None else Cours(l["symbole"], date.fromisoformat(l["jour"]),
+                                        Decimal(l["cloture"]), l["devise"], l["source"])
+
+
 def instruments_negocies(conn: sqlite3.Connection) -> list[tuple[int, str, str, date]]:
     """(id, symbole, devise, jour du premier trade) des instruments qui ont un trade actif."""
     premiers: dict[str, date] = {}

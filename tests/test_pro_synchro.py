@@ -29,10 +29,12 @@ from tests.journaux_isoles import isoler_journaux
 isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
 
 import ledger
+from importeurs import cours as ic
 from importeurs import paper
 from importeurs import taux_change as tc
 from tests.pro_fixtures import AUJOURD_HUI, empreinte
 from tests.pro_page_fixtures import EN_TETE, BasePage
+from tests.socle_cours_fixtures import source as source_cours
 from tests.socle_paper_fixtures import creer_base, executer, position
 from tests.socle_taux_fixtures import source
 from utils import database
@@ -45,7 +47,9 @@ class BaseSynchro(BasePage):
     def setUp(self):
         super().setUp()
         self.source = source(COURS)
-        for cible, nom, valeur in ((tc, "cloture_yfinance", self.source),):
+        self.source_cours = source_cours({"AAA": [(date(2026, 11, 2), 100.0), (date(2026, 11, 9), 108.0)]})
+        for cible, nom, valeur in ((tc, "cloture_yfinance", self.source),
+                                   (ic, "cloture_yfinance", self.source_cours)):
             correctif = mock.patch.object(cible, nom, valeur)
             correctif.start()
             self.addCleanup(correctif.stop)
@@ -71,6 +75,7 @@ class BaseSynchro(BasePage):
         r = self.synchroniser()
         self.assertEqual((r.status_code, r.get_json()), (409, {"ok": False, "message": attendu}))
         self.assertEqual((empreinte(self.chemin_ledger), self.compte("trades"), self.compte("change")), (avant, 0, 0))
+        self.assertEqual(self.source_cours.appels, [])  # aucun cours demandé après un refus
 
 
 class TestSynchronisation(BaseSynchro):

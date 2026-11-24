@@ -40,6 +40,10 @@ def chiffre_latent(l: latent.Latent, devise: str) -> dict:
     if not l.lignes:
         return chiffre(libelle, formats.ABSENT, "aucune position ouverte")
     detail = f"{pluriel(l.valorisees, 'position')} sur {len(l.lignes)} avec un prix"
+    if l.jours_des_cours:
+        premier, dernier = l.jours_des_cours
+        detail += (f" · cours du {formats.jour(dernier)}" if premier == dernier
+                   else f" · cours du {formats.jour(premier)} au {formats.jour(dernier)}")
     note = (f"{pluriel(l.sans_prix, 'position')} en « prix indisponible », hors du total"
             if l.sans_prix else "")
     if l.indisponible:

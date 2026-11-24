@@ -414,3 +414,41 @@ Choix non couverts par la consigne, option prudente retenue :
   schéma au lieu d'exclure la seule table `mouvements`).
 
 Tests : `Ran 612 tests` / `OK (skipped=10)` (599 + 6 + 7).
+
+## Correctifs, lot 2 — Synchroniser et résultat latent
+
+Fichiers : `dashboard/pro/synchro.py`, `prix.py`, `latent.py`, `chiffres.py`, `mes_trades.py`,
+`vue_ensemble.py`, le script du bouton dans `pro_vue.html`, `ledger/lecture.py` (`dernier_cours`),
+un fichier de test ajouté et cinq adaptés ; `CLAUDE.md`.
+
+- **Bouton « Synchroniser ».** Troisième étape, après la validation des positions paper et des
+  taux : les cours de clôture (`importeurs/cours.py`), dans une transaction à part. Si elle
+  échoue, positions et taux restent écrits et la réponse le dit : `cours` porte son propre `ok`
+  et son message ; la page affiche « Cours : échec. Les positions et les taux ci-dessus sont
+  écrits, pas les cours. » Un symbole introuvable n'est pas un échec : il est listé.
+- Un refus des deux premières étapes (colonne « boucle », position illisible, taux
+  indisponible) reste « rien n'est écrit » : aucun cours n'est alors demandé.
+- **Résultat latent.** `prix.prix_connus` lit le dernier cours du grand livre, et la base de
+  l'agent seulement pour les titres qui n'ont aucun cours dans le grand livre.
+- **Âge en jours de bourse.** Le maximum reste 3, compté du lundi au vendredi : un cours du
+  vendredi sert le lundi (1 jour), encore le mercredi (3), plus le jeudi (4). La règle vaut
+  pour les deux sources.
+- **Date du cours.** « Mes trades » écrit le prix, « cours du JJ/MM/AAAA » et son origine
+  (« grand livre » ou « base de l'agent »). Sous le résultat latent des deux pages : « cours du
+  … » ou « cours du … au … » quand les positions n'ont pas le même jour.
+
+Choix non couverts par la consigne, option prudente retenue :
+
+- **« Seulement s'il manque » est pris au mot.** Si le grand livre a un cours pour le titre, même
+  trop vieux, la base de l'agent n'est pas consultée : la position est « prix indisponible »
+  jusqu'à la prochaine synchronisation. Un prix plus frais de l'agent n'est pas substitué.
+- **Jours fériés** : non connus, ils comptent comme des jours de bourse. Un cours peut donc être
+  refusé un jour plus tôt qu'il ne faudrait après un jour férié, jamais accepté trop tard.
+- **Devise du cours.** Un cours du grand livre enregistré dans une autre devise que la position
+  (devise d'un trade corrigée après coup) n'est pas utilisé : « prix indisponible ».
+- **Durée du clic.** Les cours sont demandés à Yahoo un instrument après l'autre : au premier
+  passage, une requête par instrument depuis son premier trade ; ensuite, 7 jours seulement.
+- **Yahoo muet après les taux.** Si Yahoo cesse de répondre entre les taux et les cours, chaque
+  instrument est listé « introuvable » : les positions et les taux restent écrits.
+
+Tests : `Ran 620 tests` / `OK (skipped=10)` (612 + 3 + 1 + 4).

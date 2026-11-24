@@ -31,7 +31,8 @@ def ligne_position(ligne: latent.LigneLatente, devise: str, source: donnees.Sour
     if ligne.latent is None:
         dernier, resultat, classe = ligne.indisponible, formats.ABSENT, ""
     else:
-        dernier = f"{formats.montant(ligne.prix.valeur, p.devise)} · {formats.jour(ligne.prix.jour)}"
+        dernier = (f"{formats.montant(ligne.prix.valeur, p.devise)} · cours du {formats.jour(ligne.prix.jour)}"
+                   f" ({ligne.prix.origine})")
         bloc = donnees.essayer([p.devise], devise, lambda: mesures.convertir(
             ligne.latent, p.devise, devise, aujourd_hui, source.taux))
         resultat = bloc.indisponible or formats.montant_signe(bloc.valeur, devise)
@@ -71,14 +72,14 @@ def page(chemin_ledger: str, chemin_base: str, devise: str, aujourd_hui: date) -
         return contexte
     try:
         source = comptes.source(conn, comptes.REEL)
+        ouvertes = donnees.positions_ouvertes(source) if source is not None else []
+        cours = prix.prix_connus(conn, chemin_base, [o.symbole for o in ouvertes])
     finally:
         conn.close()
     contexte["grand_livre"] = True
     if source is None or not (source.executions or source.mouvements):
         return contexte
-    ouvertes = donnees.positions_ouvertes(source)
-    valeur = latent.resultat_latent(source, devise, prix.derniers_prix(chemin_base, [o.symbole for o in ouvertes]),
-                                    aujourd_hui)
+    valeur = latent.resultat_latent(source, devise, cours, aujourd_hui)
     trades = donnees.lignes_trades(source, devise)
     contexte.update(
         vide=False,

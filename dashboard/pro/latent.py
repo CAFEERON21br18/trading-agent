@@ -2,8 +2,9 @@
 dashboard/pro/latent.py — Résultat latent des positions ouvertes d'un compte.
 
 Module pur (ni Flask, ni réseau, ni écriture). Chaque position est valorisée au dernier prix
-connu de la base de l'agent (prix.py). Si le prix manque ou date de plus de 3 jours, la
-position est marquée « prix indisponible » et exclue du total : elle n'est jamais comptée à 0.
+connu (prix.py : le cours du grand livre, sinon celui de la base de l'agent). Si le prix manque,
+date de plus de 3 jours de bourse ou n'est pas dans la devise de la position, celle-ci est
+marquée « prix indisponible » et exclue du total : elle n'est jamais comptée à 0.
 Sans aucune position valorisée, le total est None. Un taux de change manquant pour la bascule
 donne « taux indisponible » au lieu d'un total.
 """
@@ -40,6 +41,12 @@ class Latent:
     def sans_prix(self) -> int:
         return len(self.lignes) - self.valorisees
 
+    @property
+    def jours_des_cours(self) -> tuple[date, date] | None:
+        """(plus ancien, plus récent) jour des cours utilisés, ou None si rien n'est valorisé."""
+        jours = [l.prix.jour for l in self.lignes if l.latent is not None]
+        return (min(jours), max(jours)) if jours else None
+
 
 def resultat_latent(source: donnees.Source, devise: str, prix: dict, aujourd_hui: date,
                     periode: str = "tout") -> Latent:
@@ -53,6 +60,8 @@ def resultat_latent(source: donnees.Source, devise: str, prix: dict, aujourd_hui
     lignes, total, sans_taux, valorisees = [], Decimal("0"), False, []
     for p in donnees.positions_ouvertes(source, periode):
         connu = prix.get(p.symbole)
+        if connu is not None and connu.devise not in (None, p.devise):
+            connu = None  # cours enregistré dans une autre devise que la position : inutilisable
         if not prix_agent.utilisable(connu, aujourd_hui):
             lignes.append(LigneLatente(p, None, None, PRIX_INDISPONIBLE))
             continue

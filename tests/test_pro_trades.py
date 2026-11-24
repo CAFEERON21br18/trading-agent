@@ -56,10 +56,11 @@ class TestPage(BasePage):
         self.taux()
         html = self.page("/pro/trades")
         self.assertEqual(self.lignes(html, "positions"), [
-            f"CCC long 2 200,00{E}$ · 04/11/2026 210,00{E}$ · 09/11/2026 +16,00{E}€ 2,00{E}$ · 0,50{E}% du montant",
+            f"CCC long 2 200,00{E}$ · 04/11/2026 210,00{E}$ · cours du 09/11/2026 (base de l'agent) +16,00{E}€ "
+            f"2,00{E}$ · 0,50{E}% du montant",
             f"DDD.PA long 5 20,00{E}€ · 05/11/2026 prix indisponible — frais non détectés",
-            "Total du résultat latent — 1 position sur 2 avec un prix ; 1 position en « prix indisponible », "
-            f"hors du total +16,00{E}€"])
+            "Total du résultat latent — 1 position sur 2 avec un prix · cours du 09/11/2026 ; "
+            f"1 position en « prix indisponible », hors du total +16,00{E}€"])
         self.assertEqual(self.lignes(html, "trades-clos"), [
             f"BBB long 4 03/11/2026 · 50,00{E}$ 06/11/2026 · 45,00{E}$ −16,00{E}€ 0,40{E}€ −16,40{E}€",
             f"AAA long 10 02/11/2026 · 100,00{E}$ 05/11/2026 · 110,00{E}$ +80,00{E}€ 1,60{E}€ +78,40{E}€"])
@@ -72,6 +73,17 @@ class TestPage(BasePage):
             f"01/11/2026 Dépôt — +1{E}000,00{E}€"])
         for paper in ("EEE", "FFF", "GGG", "Paper (agent)"):
             self.assertNotIn(paper, html)  # le compte paper n'est pas sur cette page
+
+    def test_cours_du_grand_livre_et_sa_date(self):
+        from datetime import date
+        self.compte_reel()
+        self.taux()
+        self.cours_livre("CCC", "212")
+        self.cours_livre("DDD.PA", "21", jour=date(2026, 11, 6), devise="EUR")
+        positions = self.lignes(self.page("/pro/trades"), "positions")
+        self.assertIn(f"212,00{E}$ · cours du 09/11/2026 (grand livre) +19,20{E}€", positions[0])
+        self.assertIn(f"21,00{E}€ · cours du 06/11/2026 (grand livre) +5,00{E}€", positions[1])
+        self.assertIn(f"2 positions sur 2 avec un prix · cours du 06/11/2026 au 09/11/2026 +24,20{E}€", positions[2])
 
     def test_bascule_de_devise_et_lecture_seule(self):
         self.compte_reel()
