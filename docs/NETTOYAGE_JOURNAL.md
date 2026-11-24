@@ -539,3 +539,29 @@ d'imports. Aucune des deux ne peut bouger sans autre changement :
 Passer sous 200 lignes demande de découper l'intérieur de `generer_rapport_quotidien` (par exemple
 sortir le gabarit du rapport), ce qui n'est plus un déplacement pur : non fait.
 Tests : `Ran 459 tests` / `OK (skipped=10)`.
+
+### `dashboard/api/routes.py` : 475 → 190 lignes
+
+Quatre groupes de routes partent, sans changement, vers quatre modules qui décorent le même
+blueprint `api` :
+
+- `routes_reel.py` (113 lignes) : positions, conseils et budget du portefeuille réel ;
+- `routes_reel_saisie.py` (112 lignes) : aperçu de prix, saisie simple ou exacte, correction
+  d'entrée, calibration, rattachement à un plan ;
+- `routes_plans_suivi.py` (64 lignes) : lecture, suppression, progression et alertes des plans ;
+- `routes_chat.py` (41 lignes) : création de plan par le chat, message, historique.
+
+`routes.py` garde les routes du paper, de la mémoire, de la santé, `/api/asset/<ticker>`,
+`/api/run-analysis` et `/api/settings/watchlist/actif`, et importe les quatre modules en fin de
+fichier, ce qui enregistre leurs routes. `import subprocess`, inutilisé depuis longtemps, est retiré.
+
+Contrôles propres à ce fichier :
+
+- table des routes de l'application (règle, méthodes, endpoint, fonction de vue) écrite avant et
+  après le découpage : 71 routes, fichiers identiques octet pour octet ;
+- import dans les deux ordres (`routes` puis chaque nouveau module, et l'inverse), dans des
+  processus neufs : les huit cas fonctionnent.
+
+Les fonctions de vue déplacées ne sont plus des attributs de `dashboard.api.routes` ; aucun code ni
+aucun test ne les importait (`git grep` : seuls `dashboard/app.py` et un test importent `api`).
+Tests : `Ran 459 tests` / `OK (skipped=10)`.
