@@ -56,11 +56,13 @@ def periode_par_defaut(conn, aujourd_hui: date) -> tuple[date, date]:
 
 
 def importer(conn, debut: date, fin: date, telecharger=cloture_yfinance,
-             aujourd_hui: date | None = None, appliquer: bool = True) -> Rapport:
+             aujourd_hui: date | None = None, appliquer: bool = True,
+             valider: bool = True) -> Rapport:
     """Inscrit les clôtures EURUSD des jours absents de la table change.
 
     telecharger(debut, fin) rend des couples (jour, taux) ; les tests passent une source simulée.
     À blanc (appliquer=False), la transaction est annulée : le rapport dit ce qui serait fait.
+    valider=False : la transaction reste ouverte, l'appelant la valide avec d'autres écritures.
     """
     aujourd_hui = aujourd_hui or datetime.now(timezone.utc).date()
     cours = dict(telecharger(debut, fin))  # un jour cité deux fois par la source : le dernier
@@ -83,10 +85,10 @@ def importer(conn, debut: date, fin: date, telecharger=cloture_yfinance,
                 rapport.ajoutes += 1
                 rapport.premier = rapport.premier or jour
                 rapport.dernier = jour
-        if appliquer:
-            conn.commit()
-        else:
+        if not appliquer:
             conn.rollback()
+        elif valider:
+            conn.commit()
     except Exception:
         conn.rollback()
         raise

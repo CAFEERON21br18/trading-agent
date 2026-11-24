@@ -42,7 +42,8 @@ class TestSansDonnees(BasePage):
         html = self.page("/pro")
         self.assertIn("Le grand livre n'existe pas encore", texte_de(html))
         self.assertIn("Aucun trade dans ce compte", self.section(html, "compte-reel"))
-        self.assertIn("synchronisation des positions paper", self.section(html, "compte-paper"))
+        self.assertIn("Il se remplit par le bouton « Synchroniser »", self.section(html, "compte-paper"))
+        self.assertIn('href="/pro/trades?devise=EUR#import"', html)  # l'import est proposé
         self.assertIn("Résultats bruts de frais : le paper trader n'en compte aucun",
                       self.section(html, "compte-paper"))  # toujours visible
         self.assertNotIn("<svg", html)
@@ -142,8 +143,8 @@ class TestPanneaux(BasePage):
         self.assertIn('href="/pro"', self.page("/architecture"))
         with open(os.path.join(RACINE, "dashboard", "templates", "pro_vue.html"), encoding="utf-8") as f:
             gabarit = f.read()
-        for interdit in ("://", "<script", "cdn", "|safe"):
-            self.assertNotIn(interdit, gabarit)
+        for interdit in ("://", "<script src", "cdn", "|safe", "<link"):
+            self.assertNotIn(interdit, gabarit)  # aucune adresse externe ajoutée par la page
 
 
 class TestTauxEtEchappement(BasePage):

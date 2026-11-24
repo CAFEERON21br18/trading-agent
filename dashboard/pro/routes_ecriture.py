@@ -5,7 +5,9 @@ dashboard/pro/routes_ecriture.py — Les seules routes du dashboard professionne
   comparé au grand livre en lecture seule. Rien n'est écrit. S'il est importable, un jeton à
   usage unique (10 minutes) garde son contenu en mémoire du serveur ;
 - POST /pro/import/confirmer : écrit le relevé désigné par le jeton, par les fonctions de
-  ledger/ecriture.py (via importeurs/revolut_csv.py). Tout ou rien.
+  ledger/ecriture.py (via importeurs/revolut_csv.py). Tout ou rien ;
+- POST /pro/synchroniser     : bouton « Synchroniser », positions paper puis taux EURUSD, validés
+  ensemble (synchro.py). Une erreur : rien n'est écrit, le message est rendu tel quel.
 Mêmes protections que les autres routes modifiantes du dashboard : méthode POST et en-tête
 X-AlphaSignal: 1 (dashboard/api/garde_ecriture.py, appliqué à toute l'application). Le fichier
 n'est jamais enregistré sur le disque : il est lu dans le corps brut, sans formulaire multipart
@@ -15,12 +17,12 @@ du JSON, que la page insère avec escHtml. Rien du relevé ne va dans les journa
 
 from flask import jsonify, request
 
-from dashboard.pro import comptes, import_releve, jetons
-from dashboard.pro.routes import pro
+from dashboard.pro import comptes, import_releve, jetons, routes, synchro
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
 
+pro = routes.pro  # même blueprint que les pages : routes.py importe ce module en fin de fichier
 EXPIRE = "aperçu expiré ou déjà utilisé : renvoyer le fichier"
 
 
@@ -58,3 +60,15 @@ def post_import_confirmer():
         logger.error(f"Dashboard pro : import du relevé en échec ({type(e).__name__})")
         return jsonify({"error": "import impossible : rien n'a été écrit"}), 500
     return jsonify(resume), (200 if resume["ecrit"] else 409)
+
+
+@pro.route("/pro/synchroniser", methods=["POST"])
+def post_synchroniser():
+    """Positions paper puis taux EURUSD, en mode appliquer. Aucune tâche planifiée n'appelle cette route."""
+    try:
+        with comptes.VERROU_ECRITURE:
+            resultat = synchro.synchroniser(comptes.LEDGER, comptes.base_agent(), aujourd_hui=routes.aujourd_hui())
+    except Exception as e:
+        logger.error(f"Dashboard pro : synchronisation en échec ({type(e).__name__})")
+        resultat = {"ok": False, "message": f"{type(e).__name__} : {e}. Rien n'a été écrit."}
+    return jsonify(resultat), (200 if resultat["ok"] else 409)

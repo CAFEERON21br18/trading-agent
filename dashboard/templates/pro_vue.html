@@ -8,6 +8,8 @@
     <h2 class="font-bold text-lg">Vue d'ensemble</h2>
     <div class="flex items-center gap-2 text-sm">
         <a href="/pro/trades?devise={{ devise }}" class="px-3 py-1.5 rounded-full bg-slate-700/60 text-slate-300">Mes trades</a>
+        <button type="button" id="synchro-bouton" onclick="synchroniser()"
+                class="px-3 py-1.5 rounded-full bg-emerald-700 text-white font-semibold">Synchroniser</button>
         <div role="group" aria-label="Devise d'affichage" class="flex rounded-full overflow-hidden border border-slate-600">
             {% for d in ("EUR", "USD") %}
             <a href="/pro?devise={{ d }}&amp;periode={{ periode }}" {% if d == devise %}aria-current="true"{% endif %}
@@ -17,14 +19,16 @@
     </div>
 </div>
 
+<div id="synchro-rapport" class="card mb-4 text-sm max-w-xl" aria-live="polite" hidden></div>
 {% if erreur %}
 <p class="card mb-4 text-red-300" role="alert">{{ erreur }}</p>
 {% endif %}
 {% if not grand_livre %}
 <p class="card mb-4 text-slate-300">
     Le grand livre n'existe pas encore sur cette machine : aucun chiffre à afficher.
-    Il se remplit par l'import d'un relevé Revolut (compte réel) et par la synchronisation des
-    positions paper (compte de l'agent).
+    Il se remplit par l'import d'un relevé Revolut depuis
+    <a class="underline text-emerald-300" href="/pro/trades?devise={{ devise }}#import">« Mes trades »</a> (compte réel)
+    et par le bouton « Synchroniser » (positions paper de l'agent et taux de change).
 </p>
 {% endif %}
 
@@ -47,7 +51,7 @@
             Aucun trade dans ce compte.
             {% if p.cle == "reel" %}Il se remplit par l'import du relevé CSV Revolut, depuis
             <a class="underline text-emerald-300" href="/pro/trades?devise={{ devise }}#import">« Mes trades »</a>.
-            {% else %}Il se remplit par la synchronisation des positions paper.{% endif %}
+            {% else %}Il se remplit par le bouton « Synchroniser », en haut de la page.{% endif %}
         </p>
         {% else %}
         <div class="grid grid-cols-2 gap-2">
@@ -118,4 +122,40 @@
     « non décidable ». « — » signifie « non calculable », jamais zéro. Montants en {{ devise }} au taux
     du jour de clôture ; les prix d'entrée et de sortie restent dans la devise de cotation du titre.
 </p>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Bouton « Synchroniser » : positions paper puis taux EURUSD, écrits ensemble ou pas du tout.
+// Le rapport vient du serveur en JSON : tout texte passe par escHtml. En-tête X-AlphaSignal : base.html.
+const ligneSynchro = (libelle, valeur) =>
+    `<div class="flex justify-between gap-4"><span>${escHtml(libelle)}</span><span class="font-semibold">${escHtml(valeur)}</span></div>`;
+
+async function synchroniser() {
+    const bouton = document.getElementById("synchro-bouton"), zone = document.getElementById("synchro-rapport");
+    bouton.disabled = true;
+    zone.hidden = false;
+    zone.textContent = "Synchronisation en cours…";
+    try {
+        const r = await fetch("/pro/synchroniser", {method: "POST"});
+        const j = await r.json();
+        if (!j.ok) { zone.textContent = "Synchronisation refusée, rien n'a été écrit. " + (j.message || j.error || ""); return; }
+        const p = j.paper, t = j.taux;
+        let h = `<div class="font-semibold mb-1">Synchronisation appliquée</div>`
+            + ligneSynchro("Positions paper lues, hors boucle", p.positions)
+            + ligneSynchro("Positions « boucle », non importées", p.boucles)
+            + ligneSynchro("Exécutions ajoutées", p.importes)
+            + ligneSynchro("Exécutions déjà présentes", p.deja_presents)
+            + ligneSynchro("Exécutions annulées (boucle)", p.annules)
+            + ligneSynchro("Taux EURUSD ajoutés", t.ajoutes)
+            + ligneSynchro("Taux déjà présents", t.deja_presents)
+            + ligneSynchro("Jours écartés", t.ecartes);
+        if (t.premier) h += ligneSynchro("Taux ajoutés du … au …", t.premier + " → " + t.dernier);
+        if ((p.devises_incertaines || []).length) h += ligneSynchro("Devise incertaine, enregistrée en USD", p.devises_incertaines.join(", "));
+        zone.innerHTML = h + `<a class="underline text-emerald-300 mt-2 inline-block" href="/pro?devise={{ devise }}&amp;periode={{ periode }}">Recharger la page</a>`;
+    } catch (e) {
+        zone.textContent = "Synchronisation : pas de réponse du dashboard. Vérifier la page avant de recommencer.";
+    } finally { bouton.disabled = false; }
+}
+</script>
 {% endblock %}

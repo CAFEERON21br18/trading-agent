@@ -128,10 +128,11 @@ def _trade_actif(conn, ref_source: str) -> int | None:
     return None
 
 
-def synchroniser(conn, chemin_base: str, appliquer: bool = True) -> Rapport:
+def synchroniser(conn, chemin_base: str, appliquer: bool = True, valider: bool = True) -> Rapport:
     """Inscrit au grand livre les positions paper qui n'y sont pas, annule celles marquées
     « boucle » depuis leur import. Rien n'est écrit s'il y a une erreur, ni à blanc
-    (appliquer=False : la transaction est annulée, le rapport dit ce qui serait fait)."""
+    (appliquer=False : la transaction est annulée, le rapport dit ce qui serait fait).
+    valider=False : la transaction reste ouverte, l'appelant la valide avec d'autres écritures."""
     rapport = Rapport()
     a_ecrire, a_retirer, incertaines = [], [], set()
     for p in lire_positions(chemin_base):
@@ -169,10 +170,10 @@ def synchroniser(conn, chemin_base: str, appliquer: bool = True) -> Rapport:
                 if actif is not None:
                     ecriture.annuler_trade(conn, actif)
                     rapport.annules += 1
-        if appliquer:
-            conn.commit()
-        else:
+        if not appliquer:
             conn.rollback()
+        elif valider:
+            conn.commit()
     except Exception:
         conn.rollback()
         raise

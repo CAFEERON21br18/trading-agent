@@ -221,3 +221,45 @@ Choix non couverts par la consigne, option prudente retenue :
   formulaire : la page n'en a pas.
 
 Tests : `Ran 586 tests` / `OK (skipped=10)` (572 + 5 + 9).
+
+## Lot 5 — bouton « Synchroniser »
+
+Fichiers : `dashboard/pro/synchro.py`, la route `POST /pro/synchroniser` (`routes_ecriture.py`), le
+bouton et son script dans `pro_vue.html`, un paramètre `valider` dans `importeurs/paper.py` et
+`importeurs/taux_change.py`, deux fichiers de test.
+
+- Le bouton est dans l'en-tête de la page `/pro`. Un `POST` lance, dans l'ordre, la
+  synchronisation paper puis celle des taux EURUSD, en mode appliquer, et la page affiche le
+  rapport des deux (positions lues, positions « boucle », exécutions ajoutées, déjà présentes,
+  annulées ; taux ajoutés, déjà présents, jours écartés, devises incertaines).
+- **Rien n'est écrit en cas d'erreur.** Les deux écritures sont validées ensemble, dans une
+  seule transaction du grand livre. Pour cela, `paper.synchroniser` et `taux_change.importer`
+  reçoivent `valider=False` : ils écrivent sans valider, et c'est `synchro.py` qui valide ou
+  annule. Leur comportement par défaut ne change pas (les scripts `scripts/ledger_*.py` valident
+  comme avant). Tout ce qui peut échouer sans écrire est fait d'abord : lecture des positions
+  et répétition à blanc dans un grand livre en mémoire (colonne « boucle » absente, position
+  illisible), puis téléchargement des cours.
+- Testé : colonne « boucle » absente, position illisible, cours indisponible, erreur pendant
+  l'écriture des taux : dans les quatre cas, ni position ni taux n'est inscrit, le grand livre
+  est identique octet pour octet, et le message est rendu tel quel. Sans grand livre, un refus
+  ne crée pas le fichier.
+- La base de l'agent est ouverte en lecture seule (empreinte identique avant et après).
+- Aucune tâche planifiée ne lance la synchronisation : les scripts `.ps1` et les cycles ne
+  citent ni la route ni le grand livre (testé). C'est une action de Lucia.
+
+Choix non couverts par la consigne, option prudente retenue :
+
+- **« Rien n'est écrit » vaut pour les deux étapes.** Si Yahoo ne répond pas, les positions paper
+  ne sont pas inscrites non plus : la consigne dit « si une erreur survient, rien n'est écrit ».
+  Conséquence : sans réseau, le bouton ne synchronise rien. Les scripts
+  `scripts/ledger_sync_paper.py` et `scripts/ledger_taux.py` restent là pour faire l'un sans
+  l'autre.
+- **Message d'une erreur imprévue.** Il est rendu à la page avec son type (« RuntimeError : … »).
+  Il peut citer une valeur d'une position paper ; il n'est pas écrit dans les journaux, qui ne
+  reçoivent que le type.
+- **Période des taux** : celle de l'importeur par défaut (7 jours avant le dernier taux stocké,
+  ou 365 jours en arrière, jusqu'à hier).
+- `tests/test_dashboard_ecriture.py` : 6 gabarits contiennent un `fetch` modifiant (`pro_vue.html`
+  s'ajoute).
+
+Tests : `Ran 598 tests` / `OK (skipped=10)` (586 + 10 + 2).
