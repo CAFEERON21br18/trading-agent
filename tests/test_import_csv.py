@@ -3,7 +3,8 @@ tests/test_import_csv.py — Import du relevé CSV vers le grand livre (importeu
 
 Réécriture en unittest de tests/test_import_csv.py de la source (pytest) : 7 tests, 14 cas
 (les deux tests paramétrés de nombre() deviennent 5 et 4 sous-tests), mêmes valeurs attendues.
-1. import puis réimport du même fichier : aucun doublon ; frais déduits du total ;
+1. import puis réimport du même fichier : aucun doublon ; frais déduits du total ; le dépôt et
+   le dividende du relevé deviennent des mouvements (détail : tests/test_mouvements.py) ;
 2. une ligne illisible : rien n'est écrit, l'erreur nomme la ligne ;
 3. colonnes absentes signalées ;
 4. deux lignes identiques restent deux trades ;
@@ -49,7 +50,7 @@ class TestImport(BaseLedger):
         chemin = self.ecrire(CSV)
         r = rc.importer(self.conn, chemin)
         self.assertEqual((r.importes, r.deja_presents, r.erreurs), (2, 0, []))
-        self.assertEqual(r.ignores, {"CASH TOP-UP": 1, "DIVIDEND": 1})
+        self.assertEqual((r.ignores, r.mouvements_importes), ({}, 2))  # dépôt et dividende : mouvements
         r2 = rc.importer(self.conn, chemin)
         self.assertEqual((r2.importes, r2.deja_presents), (0, 2))
         achat, vente = ledger.executions_actives(self.conn)
@@ -84,7 +85,7 @@ class TestLecture(unittest.TestCase):
         colonnes = dict(rc.COLONNES, symbole="Symbole", date="Jour")
         flux = io.StringIO("Jour,Symbole,Type,Quantity,Price per share\n"
                            "02/01/2030 15:00:00,AAA,SELL,3,\"€12,30\"\n")
-        trades, r = rc.lire(flux, colonnes)
+        trades, _, r = rc.lire(flux, colonnes)
         self.assertEqual(r.erreurs, [])
         t = trades[0]
         self.assertEqual((t.sens, t.prix, t.devise, t.frais, t.horodatage.day),

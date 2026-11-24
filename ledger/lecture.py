@@ -73,3 +73,59 @@ def valeurs_quotidiennes(conn: sqlite3.Connection,
         " ORDER BY id", (compte_id,)):
         valeurs[date.fromisoformat(l["jour"])] = Decimal(l["valeur"])
     return sorted(valeurs.items())
+
+
+@dataclass(frozen=True)
+class Compte:
+    id: int
+    nom: str
+    type: str
+    devise: str
+
+
+@dataclass(frozen=True)
+class Mouvement:
+    """Un dépôt, un retrait ou un dividende. Le montant est toujours positif."""
+    id: int
+    compte_id: int
+    horodatage: datetime
+    type: str
+    montant: Decimal
+    devise: str
+    symbole: str | None = None
+
+
+def _table_presente(conn: sqlite3.Connection, table: str) -> bool:
+    return conn.execute("SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = ?",
+                        (table,)).fetchone() is not None
+
+
+def comptes(conn: sqlite3.Connection) -> list[Compte]:
+    """Les comptes du grand livre, dans l'ordre de leur création."""
+    return [Compte(l["id"], l["nom"], l["type"], l["devise"])
+            for l in conn.execute("SELECT id, nom, type, devise FROM comptes ORDER BY id")]
+
+
+def mouvements(conn: sqlite3.Connection, compte_id: int) -> list[Mouvement]:
+    """Mouvements d'argent du compte, du plus ancien au plus récent."""
+    if not _table_presente(conn, "mouvements"):
+        return []  # grand livre ouvert en lecture seule, créé avant la table
+    return [
+        Mouvement(id=l["id"], compte_id=l["compte_id"],
+                  horodatage=datetime.fromisoformat(l["horodatage"]), type=l["type"],
+                  montant=Decimal(l["montant"]), devise=l["devise"], symbole=l["symbole"])
+        for l in conn.execute(
+            "SELECT m.id, m.compte_id, m.horodatage, m.type, m.montant, m.devise, i.symbole"
+            " FROM mouvements m LEFT JOIN instruments i ON i.id = m.instrument_id"
+            " WHERE m.compte_id = ? ORDER BY m.horodatage, m.id", (compte_id,))
+    ]
+
+
+def references_presentes(conn: sqlite3.Connection, table: str, source: str) -> set[str]:
+    """Références déjà inscrites pour une source, dans trades ou dans mouvements."""
+    if table not in ("trades", "mouvements"):
+        raise ValueError(f"table sans référence de source : {table!r}")
+    if not _table_presente(conn, table):
+        return set()
+    return {l["ref_source"] for l in conn.execute(
+        f"SELECT ref_source FROM {table} WHERE source = ?", (source,))}

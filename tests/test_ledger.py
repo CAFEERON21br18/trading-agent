@@ -2,8 +2,9 @@
 tests/test_ledger.py — Grand livre en écriture seule (ledger/).
 
 Réécriture en unittest de tests/test_ledger.py de la source (pytest) : 8 tests, 14 cas
-(le test paramétré sur les 7 tables devient 7 sous-tests), mêmes valeurs attendues.
-1. UPDATE et DELETE refusés sur chacune des 7 tables ;
+(le test paramétré sur les 7 tables devient 7 sous-tests), mêmes valeurs attendues. Depuis la
+table mouvements (tests/test_mouvements.py) : 8 tables, donc 8 sous-tests.
+1. UPDATE et DELETE refusés sur chacune des tables ;
 2. un trade déjà présent (même source, même référence) n'est pas réécrit ;
 3. valeurs invalides refusées avant d'atteindre la base ;
 4. coûts et contexte d'entrée relus ; correction et annulation par une nouvelle ligne ;
@@ -27,7 +28,7 @@ from tests.journaux_isoles import isoler_journaux
 isoler_journaux()  # avant tout import du code testé : rien dans logs/ (production)
 
 import ledger
-from tests.socle_fixtures import BaseLedgerIds, ids_de_test, trade
+from tests.socle_fixtures import BaseLedgerIds, ids_de_test, jour, trade
 
 
 class TestLedger(BaseLedgerIds):
@@ -39,6 +40,8 @@ class TestLedger(BaseLedgerIds):
                 trade(conn, ids, "a", couts=[("commission", "1")], contexte={"bras": "regles"})
                 ledger.enregistrer_taux(conn, date(2030, 1, 1), "1.10", "test")
                 ledger.enregistrer_valeur(conn, ids[0], date(2030, 1, 1), "1000", "USD")
+                ledger.enregistrer_mouvement(conn, compte_id=ids[0], horodatage=jour(1), type_="depot",
+                                             montant="500", devise="USD", source="test", ref_source="m")
                 with self.assertRaisesRegex(sqlite3.IntegrityError, "ecriture seule"):
                     conn.execute(f"UPDATE {table} SET id = id")
                 with self.assertRaisesRegex(sqlite3.IntegrityError, "ecriture seule"):

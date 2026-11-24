@@ -1,9 +1,11 @@
 """Schéma du grand livre : tables en écriture seule (ni UPDATE ni DELETE)."""
+import os
 import sqlite3
+from pathlib import Path
 
 TABLES = (
     "comptes", "instruments", "trades", "couts",
-    "change", "valeur_quotidienne", "contexte_entree",
+    "change", "valeur_quotidienne", "contexte_entree", "mouvements",
 )
 
 SCHEMA = """
@@ -71,6 +73,20 @@ CREATE TABLE IF NOT EXISTS contexte_entree (
     horizon TEXT,
     note TEXT
 );
+CREATE TABLE IF NOT EXISTS mouvements (
+    id INTEGER PRIMARY KEY,
+    compte_id INTEGER NOT NULL REFERENCES comptes(id),
+    horodatage TEXT NOT NULL,
+    type TEXT NOT NULL CHECK (type IN ('depot', 'retrait', 'dividende')),
+    montant TEXT NOT NULL CHECK (CAST(montant AS REAL) > 0),
+    devise TEXT NOT NULL CHECK (length(devise) = 3),
+    instrument_id INTEGER REFERENCES instruments(id),
+    source TEXT NOT NULL,
+    ref_source TEXT NOT NULL,
+    saisi_le TEXT NOT NULL,
+    UNIQUE (source, ref_source)
+);
+CREATE INDEX IF NOT EXISTS idx_mouvements_compte ON mouvements (compte_id, horodatage);
 CREATE INDEX IF NOT EXISTS idx_trades_compte ON trades (compte_id, horodatage);
 CREATE INDEX IF NOT EXISTS idx_trades_remplace ON trades (remplace_id);
 CREATE INDEX IF NOT EXISTS idx_couts_trade ON couts (trade_id);
@@ -96,4 +112,17 @@ def ouvrir(chemin: str = "data/ledger.db") -> sqlite3.Connection:
                 _DECLENCHEUR.format(table=table, action=action, nom=nom)
             )
     conn.commit()
+    return conn
+
+
+def ouvrir_lecture(chemin: str = "data/ledger.db") -> sqlite3.Connection | None:
+    """Ouvre un grand livre existant en lecture seule, sans rien créer. None si le fichier manque.
+
+    Une table ajoutée après la création du fichier (mouvements) peut encore manquer : les
+    lectures de ledger/lecture.py la traitent alors comme vide.
+    """
+    if not os.path.isfile(chemin):
+        return None
+    conn = sqlite3.connect(Path(chemin).resolve().as_uri() + "?mode=ro", uri=True)
+    conn.row_factory = sqlite3.Row
     return conn

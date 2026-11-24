@@ -1,31 +1,10 @@
 """Écritures dans le grand livre. On ajoute des lignes, on n'en modifie jamais."""
 import sqlite3
-from datetime import date, datetime, timezone
-from decimal import Decimal, InvalidOperation
+from datetime import date, datetime
 
+from ._valeurs import EcritureInvalide, _iso, _maintenant, _positif
 
-class EcritureInvalide(ValueError):
-    """Valeur refusée avant d'atteindre le grand livre."""
-
-
-def _maintenant() -> str:
-    return datetime.now(timezone.utc).isoformat(timespec="seconds")
-
-
-def _positif(valeur, nom: str) -> str:
-    try:
-        d = Decimal(str(valeur))
-    except InvalidOperation as exc:
-        raise EcritureInvalide(f"{nom} illisible : {valeur!r}") from exc
-    if not d.is_finite() or d <= 0:
-        raise EcritureInvalide(f"{nom} doit être strictement positif : {valeur!r}")
-    return str(d)
-
-
-def _iso(horodatage: datetime) -> str:
-    if horodatage.tzinfo is None:
-        horodatage = horodatage.replace(tzinfo=timezone.utc)
-    return horodatage.astimezone(timezone.utc).isoformat()
+TYPES_MOUVEMENT = ("depot", "retrait", "dividende")
 
 
 def compte(conn: sqlite3.Connection, nom: str, type_: str, devise: str) -> int:
@@ -175,5 +154,30 @@ def enregistrer_valeur(conn, compte_id: int, jour: date, valeur, devise: str) ->
         " VALUES (?, ?, ?, ?, ?)",
         (compte_id, jour.isoformat(), _positif(valeur, "valeur"), devise.upper(),
          _maintenant()),
+    )
+    return cur.lastrowid
+
+
+def enregistrer_mouvement(conn, *, compte_id: int, horodatage: datetime, type_: str,
+                          montant, devise: str, source: str, ref_source: str,
+                          instrument_id: int | None = None):
+    """Ajoute un dépôt, un retrait ou un dividende. Renvoie son id, ou None s'il est déjà présent.
+
+    montant : toujours positif, c'est le type qui donne le sens.
+    instrument_id : facultatif, le titre qui verse un dividende.
+    """
+    if type_ not in TYPES_MOUVEMENT:
+        raise EcritureInvalide(f"type de mouvement inconnu : {type_!r}")
+    deja = conn.execute(
+        "SELECT 1 FROM mouvements WHERE source = ? AND ref_source = ?",
+        (source, ref_source),
+    ).fetchone()
+    if deja:
+        return None
+    cur = conn.execute(
+        "INSERT INTO mouvements (compte_id, horodatage, type, montant, devise,"
+        " instrument_id, source, ref_source, saisi_le) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        (compte_id, _iso(horodatage), type_, _positif(montant, "montant"),
+         devise.upper(), instrument_id, source, ref_source, _maintenant()),
     )
     return cur.lastrowid
