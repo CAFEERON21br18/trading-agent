@@ -263,3 +263,23 @@ Choix non couverts par la consigne, option prudente retenue :
   s'ajoute).
 
 Tests : `Ran 598 tests` / `OK (skipped=10)` (586 + 10 + 2).
+
+## Lot 6 — documentation
+
+- `CLAUDE.md` : section « Grand livre et mesures » mise à jour (8 tables dont `mouvements`, les
+  deux pages, qui a le droit d'écrire et par quelles routes) ; section du dashboard : 16 pages,
+  15 entrées de navigation. `README.md` : même compte de pages.
+- `docs/TODO.md` §44 : les quatre points du README de la source, mis à jour ; ce qui reste à
+  faire (courbe face à « acheter et garder », rendement pondéré par les apports, devise par
+  instrument, pages Agent, Risque, Coûts, Analyse, Marchés, Système) ; les points nés des pages.
+- `dashboard/api/topology_composants.py` : commentaire mis à jour (le socle est maintenant lu par
+  `dashboard/pro/`). Le classement ne change pas : les trois paquets restent avec les outils,
+  composant masqué. Vérifié avec un graphe régénéré dans le worktree (coût LLM nul, puis retiré) :
+  `test_topology` 18 tests OK, aucun module non classé, mêmes trois incohérences qu'avant, les
+  modules de `dashboard/pro/` dans le composant Dashboard, aucun orphelin.
+
+Ajout non demandé, pour la règle 9 : `*.csv` dans `.gitignore`, avec un test
+(`tests/test_fichiers_hors_git.py`). Aucun CSV n'est suivi par git, et rien n'empêchait qu'un
+relevé posé dans le dossier du dépôt parte dans un commit.
+
+Tests : `Ran 599 tests` / `OK (skipped=10)` (598 + 1).

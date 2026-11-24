@@ -92,3 +92,7 @@ memory/market_patterns.md
 memory/metacognition_log.md
 memory/performance_tracker.md
 memory/trade_journal.md
+
+# Relevés de compte (CSV Revolut) : données réelles, jamais dans le dépôt (règle 9).
+# La page « Mes trades » les lit en mémoire ; aucun CSV n'est suivi par git.
+*.csv

@@ -199,10 +199,12 @@ Après : `mettre_a_jour_performance_md()` synchronise tout (intuition + learner)
 9. Dépôt public : aucune donnée réelle (quantité, prix d'entrée, montant, texte de plan ou de conseil du portefeuille réel) dans un fichier commité, tests compris. Les données de test sont inventées. Avant chaque push, comparer le diff aux valeurs des tables real_*.
 10. Aucune ligne Co-Authored-By ni Claude-Session dans les messages de commit de ce dépôt.
 
-## Dashboard PWA (`dashboard/app.py` sur port 8080) — 14 pages
-Pages : Overview, Portfolio, Fantôme Jev, **Réel** (v5), Plans, **Chat** (v5), Watchlist, Explorers, Journal,
+## Dashboard PWA (`dashboard/app.py` sur port 8080) — 16 pages
+Pages : Overview, **Pro** (Vue d'ensemble, `/pro`) et sa page **Mes trades** (`/pro/trades`), Portfolio,
+Fantôme Jev, **Réel** (v5), Plans, **Chat** (v5), Watchlist, Explorers, Journal,
 Budget, Memory, **Architecture** (carte du code + état en direct, relu toutes les 30 s),
-**Audit** (messages du chat, lecture seule), Settings.
+**Audit** (messages du chat, lecture seule), Settings. La barre de navigation a 15 entrées :
+« Mes trades » s'ouvre depuis la page Pro.
 Écoute sur **127.0.0.1** (`DASHBOARD_HOST`, défaut) — plus d'accès direct depuis le Wi-Fi local.
 iPhone (maison ou 4G) : uniquement via Tailscale Serve `https://<machine>.<tailnet>.ts.net/`
 puis "Ajouter à l'écran d'accueil". Ne pas repasser en 0.0.0.0 : le dashboard n'a pas
@@ -216,17 +218,22 @@ Tâche planifiée `\AlphaSignal\dashboard` (au démarrage, relancée si elle s'a
 - BDD : `real_investments`, `real_advice_log`
 - 16 routes `/api/real/*` (`dashboard/api/routes.py`)
 
-## Grand livre et mesures (socle du futur dashboard)
-Trois paquets à la racine, intégrés le 24/11/2026. **Aucun cycle, ni le Decision Engine, ni le
-dashboard actuel ne les importe** (`tests/test_socle_hors_production.py`) : ils ne changent aucune
-décision. Détail de l'intégration : `docs/SOCLE_JOURNAL.md`.
-- `ledger/` : grand livre SQLite `data/ledger.db` (hors git), 7 tables (comptes, instruments,
-  trades, coûts, change, valeur quotidienne, contexte d'entrée).
+## Grand livre et mesures (socle du dashboard professionnel)
+Trois paquets à la racine, intégrés le 24/11/2026. **Aucun cycle, ni le Decision Engine, ni le paper
+trader ne les importe** : ils ne changent aucune décision. Seul le dashboard professionnel
+(`dashboard/pro/`) lit le grand livre, et `dashboard/pro/` n'est importé que par `dashboard/app.py`
+(`tests/test_socle_hors_production.py`). Détail : `docs/SOCLE_JOURNAL.md`, `docs/PAGES_JOURNAL.md`.
+- `ledger/` : grand livre SQLite `data/ledger.db` (hors git), 8 tables (comptes, instruments,
+  trades, coûts, change, valeur quotidienne, contexte d'entrée, **mouvements**).
+  `ledger.ouvrir` crée ce qui manque sur une base existante ; `ledger.ouvrir_lecture` ouvre en
+  lecture seule, sans rien créer.
 - `mesures/` : calcul pur, sans accès à la base — trades clos reconstruits en FIFO (long et court),
   résultat net, taux de réussite, payoff, profit factor, espérance en R, part des coûts ; rendement,
-  drawdown max, Sharpe, Sortino, écart au benchmark.
-- `importeurs/` : relevé CSV Revolut (`revolut_csv.py`, format générique jamais confronté à un vrai
-  relevé), positions paper (`paper.py`), taux EURUSD quotidien (`taux_change.py`).
+  drawdown max, Sharpe, Sortino, écart au benchmark ; dividendes et apports nets (dépôts moins
+  retraits).
+- `importeurs/` : relevé CSV Revolut (`revolut_csv.py` et `revolut_lecture.py`, format générique
+  jamais confronté à un vrai relevé), positions paper (`paper.py`), taux EURUSD quotidien
+  (`taux_change.py`).
 
 Règles :
 - **Écriture seule** : ni UPDATE ni DELETE (des déclencheurs SQLite les refusent) ; une correction
@@ -234,12 +241,42 @@ Règles :
 - **Devise par montant** : chaque montant porte sa devise ; bascule EUR/USD au taux stocké du jour de
   clôture (dernier taux connu sur 7 jours, sinon `TauxManquant`). Montants en `Decimal`.
 - **Seuil de 100 trades** : chaque mesure porte `n`, sa période et `decidable` ; sous 100 trades,
-  elle est affichée mais ne prouve rien.
+  elle est affichée mais ne prouve rien. Il ne s'applique pas aux dividendes ni aux apports nets,
+  qui sont des sommes de faits.
+- **Mouvements** (table `mouvements`) : dépôt, retrait ou dividende, montant toujours positif,
+  titre facultatif pour un dividende, sans doublon sur `(source, ref_source)`. Dans le relevé
+  Revolut, CASH TOP-UP, CASH WITHDRAWAL (valeur absolue) et DIVIDEND, au type exact ; les autres
+  types restent ignorés et comptés.
 - Trades paper : devise de cotation de l'instrument, EUR pour les suffixes `.PA .DE .AS .MI .MC .LS`,
   USD sinon (`importeurs/devises.py`) ; le paper trader, lui, reste à 1 € = 1 $ (TODO §29).
   Positions « boucle » jamais importées ; marquées après leur import, elles sont annulées.
 - **Frais** : le paper trader n'en compte aucun, donc aucun coût dans le grand livre pour ces
   trades : les résultats paper sont affichés **bruts de frais**.
+
+Deux pages (`dashboard/pro/`, gabarits `pro_vue.html` et `pro_trades.html`), rendues par le serveur :
+- **Vue d'ensemble** (`/pro`) : un panneau par compte, « Réel (Revolut) » et « Paper (agent) »,
+  **jamais additionnés** ; cinq chiffres par panneau (résultat net réalisé, résultat latent, total
+  des frais et leur part du résultat brut, espérance en R, taux de réussite), chacun avec son
+  nombre de trades et le badge « non décidable · n / 100 » ; une courbe SVG par compte ; les
+  derniers trades clos. Bascule EUR / USD et période du compte paper (« tout » ou depuis le
+  correctif du prix d'entrée, `CORRECTIF_PRIX_ENTREE`, registre §9.4) retenues dans l'URL.
+- **Mes trades** (`/pro/trades`) : le compte réel — import du relevé, positions ouvertes, trades
+  clos, frais ordre par ordre (« frais non détectés » sinon), mouvements.
+- Une mesure non calculable s'écrit « — », jamais 0 ; sans taux, « taux indisponible » ; une
+  position dont le dernier prix (table `prices`, lue en lecture seule) manque ou date de plus de
+  3 jours est « prix indisponible », hors du total. Gains et pertes portent leur signe.
+- Rien du portefeuille fantôme Jev n'y est lu ni affiché.
+
+**Qui écrit dans le grand livre.** Les pages lisent. Trois routes POST écrivent, toutes par les
+fonctions de `ledger/ecriture.py`, sur une action de Lucia, avec l'en-tête `X-AlphaSignal: 1` :
+- `POST /pro/import/apercu` puis `POST /pro/import/confirmer` : import du relevé en deux temps.
+  Le fichier (2 Mo au plus) est lu en mémoire, jamais enregistré sur le disque ; entre les deux
+  temps, il est gardé en mémoire sous un jeton à usage unique qui expire en 10 minutes. Une
+  erreur dans le fichier et la confirmation est impossible.
+- `POST /pro/synchroniser` (bouton « Synchroniser ») : positions paper puis taux EURUSD, validés
+  ensemble. Colonne `boucle` absente, position illisible, cours indisponible ou autre erreur :
+  rien n'est écrit, le message est affiché tel quel.
+Aucune tâche planifiée n'écrit dans le grand livre.
 
 Deux scripts manuels (aucune tâche planifiée), à blanc par défaut, `--appliquer` pour écrire :
 - `scripts/ledger_sync_paper.py` : positions paper de `data/database.db` (lue en lecture seule) vers

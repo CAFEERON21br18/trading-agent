@@ -534,46 +534,80 @@ décision, sauf mention.
   (`agents/analysts/fundamental_analyst/macro.py`), `REQUEST_TIMEOUT_SEC` (`utils/gemini.py`),
   `logger` de `agents/knowledge/pretrade_analysis.py`.
 
-## 44. Socle du dashboard (grand livre, mesures, importeurs) : points ouverts
+## 44. Dashboard professionnel (grand livre, mesures, importeurs, pages) : points ouverts
 
-Intégré le 24/11/2026 (`ledger/`, `mesures/`, `importeurs/`, `docs/SOCLE_JOURNAL.md`). Rien en
-production ne lit encore ces paquets. Aucun point ci-dessous ne change une décision de l'agent.
+Socle intégré le 24/11/2026 (`ledger/`, `mesures/`, `importeurs/`, `docs/SOCLE_JOURNAL.md`). Pages
+« Vue d'ensemble » (`/pro`) et « Mes trades » (`/pro/trades`) ajoutées le 24/11/2026
+(`dashboard/pro/`, `docs/PAGES_JOURNAL.md`) : seul ce paquet lit le grand livre. Aucun point
+ci-dessous ne change une décision de l'agent.
 
 Points ouverts du README de la source, toujours vrais :
 
-1. **Colonnes du relevé Revolut** : `COLONNES` (`importeurs/revolut_csv.py`) décrit un format
+1. **Colonnes du relevé Revolut** : `COLONNES` (`importeurs/revolut_lecture.py`) décrit un format
    générique, jamais confronté à un vrai relevé. À ajuster sur les en-têtes du vrai fichier avant
-   le premier import. Le relevé réel et le grand livre restent hors git (règle 9).
+   le premier import ; l'aperçu de la page « Mes trades » montre le résultat sans rien écrire. Le
+   relevé réel et le grand livre restent hors git (règle 9).
 2. **Frais du relevé** : l'importeur les déduit de l'écart entre `Total Amount` et quantité × prix,
-   au-delà de 0,01. À confirmer sur le vrai relevé.
-3. **Taux EURUSD quotidien** : `scripts/ledger_taux.py` remplit la table `change`, mais seulement
-   quand on le lance à la main ; aucune tâche planifiée. Sans taux dans les 7 jours qui précèdent
-   une clôture, la bascule lève `TauxManquant`. À décider : lancement manuel avant chaque lecture,
-   ou tâche planifiée.
-4. **Dépôts et retraits** : `mesures/courbe.py` attend une série de valeurs où ils sont déjà
-   neutralisés, sinon un dépôt passe pour un gain. Rien ne remplit encore `valeur_quotidienne`.
+   au-delà de 0,01. À confirmer sur le vrai relevé ; un ordre sans écart s'affiche « frais non
+   détectés ».
+3. **Taux EURUSD quotidien** : la table `change` n'est remplie que sur une action de Lucia, le
+   bouton « Synchroniser » ou `scripts/ledger_taux.py` ; aucune tâche planifiée. Sans taux dans les
+   7 jours qui précèdent une clôture, la page affiche « taux indisponible ».
+4. **Dépôts et retraits** : ils sont maintenant enregistrés (table `mouvements`) et la page
+   affiche les apports nets. Mais `mesures/courbe.py` attend toujours une série de valeurs où ils
+   sont neutralisés, et rien ne remplit `valeur_quotidienne` : voir « rendement pondéré par les
+   apports » ci-dessous.
 
-Les deux autres points de ce README sont faits : adaptateur paper sans les positions « boucle »
-(`importeurs/paper.py`), `data/ledger.db` sous `.gitignore`.
+Reste à faire pour le dashboard professionnel :
 
-Points nés de l'intégration :
+- **Courbe face à « acheter et garder »** : la courbe montre le résultat net réalisé cumulé, sans
+  point de comparaison. `mesures.ecart_au_benchmark` existe, mais demande une valeur quotidienne
+  du compte et une série de référence.
+- **Rendement pondéré par les apports** : rendement, drawdown, Sharpe et Sortino ne sont pas
+  affichés, faute de valeur quotidienne du compte nette des dépôts et retraits.
+- **Devise par instrument** : la devise d'un titre vient du relevé (compte réel) ou du suffixe du
+  ticker (compte paper). Indices hors États-Unis et paires de change non cotées en dollars
+  restent en USD par défaut (liste dans `docs/SOCLE_JOURNAL.md`, lot 3). Une devise autre que
+  l'euro et le dollar n'est pas convertie : la page écrit « devise non convertie ».
+- **Pages suivantes** : Agent, Risque, Coûts, Analyse, Marchés, Système.
 
-- **Premier lancement sur la tour** : `scripts\ledger_sync_paper.py` à blanc, lire le rapport, puis
-  `--appliquer` ; de même pour `scripts\ledger_taux.py`. Ni l'un ni l'autre n'a été lancé sur la
-  base de production. Si `marquer_boucles.py` n'a pas tourné depuis les dernières positions, le
-  lancer d'abord : une position ajoutée après le dernier marquage vaut 0 dans la colonne `boucle`.
-- **Devise incertaine** : indices hors États-Unis et paires de change non cotées en dollars sont
-  enregistrés en USD par défaut (liste dans `docs/SOCLE_JOURNAL.md`, lot 3) ; le script les nomme à
-  chaque lancement. Une devise fausse se corrige par `corriger_trade(devise=...)`.
+Points nés des pages :
+
+- **CDN de `base.html`** : les pages `/pro` n'ajoutent aucun appel externe (courbes en SVG écrit
+  par le serveur), mais elles héritent de `base.html`, qui charge Tailwind et Chart.js depuis deux
+  CDN, comme les 14 autres pages. Sans Internet, leur mise en page se dégrade. À décider pour
+  tout le dashboard : servir ces deux fichiers depuis `dashboard/static/`.
+- **Types du relevé** : seuls DIVIDEND, CASH TOP-UP et CASH WITHDRAWAL, au type exact, deviennent
+  des mouvements. Un type voisin (retenue ou correction sur dividende, frais de garde, division
+  d'actions) reste ignoré et compté : à trancher sur un vrai relevé.
+- **Dépôt ou dividende négatif** : l'import entier est refusé, avec le numéro de la ligne. Si un
+  vrai relevé contient une telle ligne (annulation), décider comment l'enregistrer.
+- **Bouton « Synchroniser » sans réseau** : si le cours EURUSD est indisponible, rien n'est écrit,
+  positions paper comprises. Les deux scripts permettent de faire l'un sans l'autre.
+- **Marquage des boucles avant la synchronisation** : une position ajoutée après le dernier
+  `scripts\marquer_boucles.py --appliquer` vaut 0 dans la colonne `boucle`. Le bouton ne relance pas
+  le marquage (il écrirait dans la base de l'agent).
+- **Date du correctif du prix d'entrée** : constante `CORRECTIF_PRIX_ENTREE`
+  (`dashboard/pro/donnees.py`), lue une fois dans la base de la tour d'après la règle du registre
+  (§9.4). Le grand livre ne garde pas le mécanisme d'entrée de chaque position.
+- **Dernier prix** : lu dans `prices`, que la collecte ne remplit que pour la watchlist. Un titre
+  du compte réel hors watchlist reste « prix indisponible ».
+- **Accès** : comme le reste du dashboard, ces pages n'ont pas d'authentification ; tout appareil
+  du tailnet peut importer un relevé ou lancer la synchronisation.
+- **Navigation** : 15 entrées dans la barre du bas, serrée sur téléphone.
+
+Points nés de l'intégration du socle :
+
+- **Devise incertaine** : le rapport de la synchronisation nomme les tickers enregistrés en USD
+  par défaut. Une devise fausse se corrige par `corriger_trade(devise=...)`.
 - **1 € = 1 $ dans le paper trader** (§29) : le grand livre enregistre la devise de cotation, mais
   les tailles des positions ont été calculées en prenant des euros pour des dollars. Les montants
   du grand livre et `pnl_euros` de la table `positions` ne se comparent donc pas directement.
-- **Résultats paper bruts de frais** : aucun coût inscrit pour ces trades ; pour le compte paper, la
-  « part des coûts » vaut 0 (ou n'est pas calculable si le résultat brut est négatif).
-- **Garde de la règle centrale** : `tests/test_socle_hors_production.py` refuse tout import du
-  socle par `agents/`, `dashboard/`, `utils/`, `alerts/`, `config.py` et les scripts autres que
-  `scripts/ledger_*.py`. À ouvrir pour le nouveau dashboard le jour où il lira le grand livre ;
-  la topologie classe aujourd'hui les trois paquets avec les outils.
+- **Résultats paper bruts de frais** : aucun coût inscrit pour ces trades ; la page affiche « — »
+  pour le total des frais et pour leur part, et la mention reste visible sur le panneau paper.
+- **Topologie** : `ledger/`, `mesures/` et `importeurs/` restent classés avec les outils
+  (composant masqué de la page Architecture), bien que `dashboard/pro/` les lise désormais ; les
+  modules de `dashboard/pro/` sont dans le composant Dashboard.
 
 ## Entrées sorties le 23/11/2026
 

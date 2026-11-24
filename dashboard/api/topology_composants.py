@@ -123,9 +123,9 @@ REGLES = [
     ("utils/", "infra"),
     ("alerts/", "alerts"),
     ("config.py", "infra"),
-    # Socle du futur dashboard (grand livre, mesures, importeurs) : importé par aucun cycle, ni par
-    # le moteur de décision, ni par le dashboard ; lancé à la main par scripts/ledger_*.py. Classé
-    # avec les outils tant que rien en production ne le lit.
+    # Socle du dashboard professionnel (grand livre, mesures, importeurs) : importé par aucun cycle,
+    # ni par le moteur de décision, ni par le paper trader ; lu par dashboard/pro/ seulement, et
+    # lancé à la main par scripts/ledger_*.py. Laissé avec les outils (composant masqué).
     ("ledger/", "outils"),
     ("mesures/", "outils"),
     ("importeurs/", "outils"),

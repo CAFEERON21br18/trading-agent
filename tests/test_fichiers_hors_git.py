@@ -76,6 +76,12 @@ class TestRegles(unittest.TestCase):
         for nom in ("ledger.db", "ledger.db-wal", "ledger.db-shm"):
             self.assertTrue(_ignore(os.path.join(RACINE, "data", nom)), nom)
 
+    def test_releve_csv_hors_git(self):
+        # un relevé Revolut posé dans le dépôt ne doit pas pouvoir être commité (règle 9)
+        for chemin in ("releve.csv", os.path.join("data", "account-statement_2030-01-01.csv"),
+                       os.path.join("docs", "export.csv")):
+            self.assertTrue(_ignore(os.path.join(RACINE, chemin)), chemin)
+
 
 class TestPremierLancement(unittest.TestCase):
     def test_rapport_recree_le_dossier(self):
