@@ -78,3 +78,94 @@ Choix non couverts par la consigne :
   ETF et les cryptos. Ils reçoivent l'écart le plus élevé (0,50 % par côté).
 
 Tests : `Ran 633 tests` / `OK (skipped=10)` (623 + 6 + 4).
+
+## Lot 3 — moteur
+
+Fichiers : `rejeu/analyse.py`, `rejeu/enveloppe.py`, `rejeu/moteur.py`, `rejeu/sorties.py`,
+`rejeu/frais.py`, `rejeu/reference.py`, `rejeu/resultat.py`, quatre fichiers de test.
+Aucun fichier de `agents/`, `utils/`, `config.py` ni des cycles n'est modifié.
+
+**Ce que le rejeu appelle dans l'agent, sans le réécrire :**
+
+- le score technique : `agents.asset_analyzer._technique` (tendance et score du Market Analyst,
+  indicateurs de `utils.indicators`), sur les 500 dernières barres jusqu'à J, comme en production ;
+- la collecte : `analyser_actif_complet` ; la décision : `agents.decision_engine.decider` ;
+- le risque : `valider_signal` (stop à 1,5 ATR ou sous le support, objectifs, R:R, taille) ;
+- le circuit d'ouverture du paper trader, en entier : `executer_ouvertures` (anti-boucle de 24 h,
+  Budget Manager et ses modes, Risk Manager sur le prix d'exécution, porte d'entrée `peut_ouvrir`,
+  création de la position) ;
+- la réévaluation des positions ouvertes : `reevaluer_position` (signal technique inverse fort) ;
+- la fermeture : `agents.paper_trader.executor.fermer_position`.
+
+L'agent travaille sur une base SQLite jetable par configuration (`data/rejeu/agent_*.db`, recréée
+à chaque lancement) : ses lectures (positions ouvertes, dernières fermetures pour les modes du
+Budget Manager) sont les siennes.
+
+**Entrées neutralisées** (liste reprise dans le rapport) : analyste fondamental, analyste de
+sentiment, contexte global (Fear & Greed), mémoire, intuition, régime de marché, contrôle de
+liquidité de la note de setup, audit métacognitif et pipeline LLM, trailing stop (jamais activé
+sans action manuelle), prix frais d'une minute, e-mails, registre des décisions.
+
+**Déroulé d'un jour J :** (1) à l'ouverture, les fermetures décidées la veille puis les
+ouvertures, au prix d'ouverture de J ; (2) stop et objectif testés sur le haut et le bas de la
+barre de J ; (3) à la clôture, analyse avec les seules barres jusqu'à J, décision, réévaluation ;
+(4) valeur du compte. Test « aucun regard vers le futur » : l'analyse de J est identique, que la
+série s'arrête à J ou continue avec un futur sans rapport ; un témoin montre qu'une seule barre
+de trop change le résultat ; le moteur entier donne les mêmes ordres jusqu'à J.
+
+**Constat sur le code, avant tout lancement.** Le Market Analyst ne rend ACHAT ou VENTE qu'à
+partir d'une confiance de 6 ; le score composite vaut alors 0,35 × 6 = 2,1, au-dessus du seuil de
+2,0. Avec le seul analyste technique, il n'y a donc **jamais de trade d'apprentissage** : toute
+décision est « normale », et la porte du paper trader exige une confiance de 8 (9 après trois
+pertes d'affilée). Seuls les signaux techniques de confiance 8 à 10 ouvrent une position. Et le
+Budget Manager plafonne chaque trade à 10 % du cash investissable : **50 € au plus pour un capital
+de 1 000 €**, 5 € pour 100 € (sous son minimum viable de 15 € : aucun trade possible à 100 €).
+
+Choix non couverts par la consigne, option prudente retenue :
+
+- **Barre de l'entrée.** Stop et objectif sont testés dès la barre du jour d'entrée (la position
+  est ouverte à l'ouverture, le haut et le bas viennent après).
+- **Ouverture au-delà de l'objectif** : sortie au prix de l'objectif, pas mieux. L'écart
+  favorable n'est pas compté.
+- **Objectif** : `target_1` (R:R de 2). Le moniteur de l'agent sort dès que le prix atteint le
+  premier objectif ; `target_2` n'est donc jamais attendu.
+- **Anti-boucle.** L'horloge du rejeu place l'ouverture à 8 h, la séance à 12 h, la clôture à 22 h
+  (UTC). Un titre sorti par son stop ou son objectif le jour J ne peut pas être repris à
+  l'ouverture de J+1 (moins de 24 h) ; il peut l'être après un week-end.
+- **Jour d'exécution.** L'ordre décidé à la clôture de J part à l'ouverture de la barre suivante
+  DU TITRE : une action décidée le vendredi s'exécute le lundi ; une crypto, le samedi.
+- **Décision sans LLM.** `decider` est appelé par son chemin sans LLM (`origine="chat"`) : ni audit
+  métacognitif, ni pipeline. En production, le pipeline peut réduire la taille d'un trade : ici,
+  jamais.
+- **Résultats vus par l'agent : bruts.** Les modes du Budget Manager et la porte défensive lisent
+  le résultat des positions sans frais, comme en production. Les frais sont comptés à côté.
+- **Ventes à découvert.** L'agent décide SELL comme BUY : le rejeu garde les deux, dans tous les
+  profils. Un compte d'actions au comptant ne permet pas la vente à découvert : le profil
+  « Revolut » est un barème de frais, pas un compte. Limite à écrire dans le rapport.
+- **Valeur du compte** : capital, résultat net réalisé, résultat latent au dernier cours de
+  clôture, financement couru (profil « CFD »). Le capital de l'agent, lui, reste constant, comme
+  en production (`config.CAPITAL` ne suit pas le résultat).
+- **Référence annuelle** : la valeur entière du compte, à parts égales entre les titres qui cotent
+  dans les 7 premiers jours de l'année ; achat à l'ouverture de la première barre, vente à la
+  clôture de la dernière ; valeur réinvestie l'année suivante. Un titre coté en cours d'année
+  attend l'année suivante.
+- **Référence de période** : le capital en autant de parts égales que de titres (22) ; chaque part
+  investie à l'ouverture de la première barre du titre depuis le 01/01/2018 (les cinq titres cotés
+  plus tard entrent à leur première barre, leur part attend en espèces), gardée jusqu'à la
+  clôture du 31/12/2025. Choix qui avantage la référence : SOL-USD, par exemple, y entre dès sa
+  cotation.
+- **Condition 2 du critère** (« acheter et garder ») : la consigne définit deux références. La
+  stratégie devra faire mieux que **les deux** ; les deux chiffres seront donnés.
+- **Parts de la référence** : la référence investit tout le capital (pas de réserve de 50 %), ne
+  paie que ce que sa part permet, frais compris ; une part trop petite pour payer les frais reste
+  en espèces.
+- **Année d'un trade** : celle de sa clôture. Une position encore ouverte au 31/12/2025 compte
+  dans la valeur du compte, pas dans les trades de la période.
+- **Analyses calculées une fois** : le signal technique ne dépend ni du capital ni des frais ; il
+  est calculé une fois par titre et par jour, puis relu par les six configurations. Répartition
+  sur plusieurs processus, sans effet sur le résultat (testé).
+
+Tests : `Ran 656 tests` / `OK (skipped=10)` (633 + 5 + 9 + 5 + 4). Les tests du moteur fabriquent
+le signal technique et vérifient à la main, sur le vrai code de l'agent : taille (50 € sur
+1 000 €), stop (entrée − 1,5 ATR), objectif (entrée + 2 distances), frais, valeur du compte jour
+par jour, signal inverse, seuil de confiance, cinq positions au plus, anti-boucle.

@@ -46,3 +46,24 @@ def source(par_ticker: dict):
         return df.iloc[[i for i, j in enumerate(df.index) if debut <= j <= fin]]
     telecharger.appels = appels
     return telecharger
+
+
+def bougies(jours: list[date], lignes: list[tuple]) -> pd.DataFrame:
+    """Barres données une à une : (ouverture, haut, bas, clôture)."""
+    return pd.DataFrame([(o, h, b, c, 1_000_000.0) for o, h, b, c in lignes], columns=donnees.COLONNES,
+                        index=pd.Index(jours[:len(lignes)], name="jour"))
+
+
+def signal(direction: str, confiance: int, prix: float, atr: float = 2.0):
+    """Analyse fabriquée, à la forme de celle de l'agent : un signal technique et un ATR choisis."""
+    from rejeu.analyse import Analyse
+    technique = {"direction": direction, "confiance": confiance, "prix": prix, "tendance": "Neutre",
+                 "motifs": ["signal de test"], "detail": "signal de test"}
+    if direction == "NEUTRE":
+        return Analyse(technique, None, None)
+    return Analyse(technique, atr, {"supports": [], "resistances": []})
+
+
+def analyses_de(df: pd.DataFrame, signaux: dict) -> dict:
+    """jour -> Analyse : neutre partout, sauf aux jours de `signaux` (jour -> (direction, confiance))."""
+    return {jour: signal(*signaux.get(jour, ("NEUTRE", 4)), prix=float(df.loc[jour, "Close"])) for jour in df.index}
