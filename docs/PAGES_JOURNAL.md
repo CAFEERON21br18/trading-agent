@@ -283,3 +283,76 @@ Ajout non demandé, pour la règle 9 : `*.csv` dans `.gitignore`, avec un test
 relevé posé dans le dossier du dépôt parte dans un commit.
 
 Tests : `Ran 599 tests` / `OK (skipped=10)` (598 + 1).
+
+## Fin de session (24/11/2026)
+
+**Suite de tests.** Dernier lancement sur la pointe de la branche, réseau coupé :
+`Ran 599 tests` / `OK (skipped=10)`, aucune tentative d'appel réseau dans la sortie. Départ :
+521 lancés, 10 ignorés. Les 78 tests ajoutés : 14 au lot 1, 21 au lot 2, 16 au lot 3, 14 au lot 4,
+12 au lot 5, 1 au lot 6. Les 10 ignorés sont ceux de `tests/test_topology.py` sans
+`graphify-out/graph.json` ; avec un graphe régénéré dans le worktree, ses 18 tests passent.
+Trois tests exécutent le script des pages avec Node (présent sur la tour) ; sans Node ils
+seraient ignorés.
+
+**Vérification dans un navigateur.** Les deux pages ont été ouvertes sur un dashboard de
+démonstration lancé depuis le worktree, sur le port 8097, avec un grand livre et une base
+fabriqués (données inventées, dossier temporaire) : affichage des deux panneaux et des deux
+courbes, bascule EUR / USD, filtre de période, bouton « Synchroniser » (rapport affiché), import
+d'un relevé inventé en deux temps (aperçu, confirmation, trades visibles après rechargement).
+Le dashboard de production (port 8080) n'a pas été touché ni relancé. Ce test a fait un appel
+réel à Yahoo pour le cours EURUSD (lecture, vers le grand livre de démonstration).
+
+**Contrôles avant la poussée.**
+
+- Fichiers `.env`, bases SQLite, relevés CSV ou grand livre suivis par git : aucun.
+- Règle 9 : le diff `main..HEAD` et les messages de commit ont été comparés aux valeurs de
+  `real_investments`, `real_advice_log`, `real_budget`, `investment_plans` et `plan_alerts`, puis
+  aux comptes réels du grand livre de production (il n'en contient encore aucun). Bases ouvertes
+  en lecture seule, aucune valeur affichée : aucune correspondance. Toutes les données des tests
+  sont inventées (tickers `AAA`, `BBB`…).
+- Lignes d'attribution automatique dans les messages de `main..HEAD` : 0.
+- Aucun fichier Python, gabarit ou script ajouté ou modifié ne dépasse 200 lignes.
+- Aucune modification de `docs/REGISTRE_CRITERES.md`, de `agents/`, `utils/`, `alerts/`,
+  `config.py` ni de `scripts/` : ni les cycles, ni le moteur de décision, ni le paper trader, ni
+  les tâches planifiées ne changent. `main` et la copie de production ne sont pas touchés ; le
+  grand livre de production n'a été ni ouvert en écriture ni modifié (même date de fichier).
+- Portefeuille fantôme Jev : ni lu, ni affiché (garde dans `tests/test_socle_hors_production.py`).
+- Lectures faites dans la base de production, en lecture seule : la date de la première position
+  paper du mécanisme v2 (constante du lot 2), la forme de la table `prices` (périodes et format
+  des dates), et la comparaison de la règle 9.
+
+**Écarts à la consigne, et choix faits sans consigne.**
+
+1. Courbes en SVG écrit par le serveur : Chart.js n'est dans le dashboard que par un CDN. Les
+   pages n'ajoutent aucun appel externe, mais `base.html`, qu'elles étendent, charge toujours
+   Tailwind et Chart.js depuis deux CDN (lot 3, TODO §44).
+2. La date d'effet du correctif n'est pas écrite dans le registre : elle y est définie par une
+   règle. La constante porte la valeur lue dans la base de la tour (lot 2).
+3. Le badge « non décidable » n'est pas mis sous le résultat latent, ni sous les apports nets et
+   les dividendes : ce ne sont pas des mesures sur des trades clos (lots 1 et 3).
+4. Un compte sans aucun frais enregistré affiche « — » pour les frais, pas 0 (lot 3).
+5. Seuls les trois types exacts du relevé deviennent des mouvements ; un dépôt ou un dividende
+   négatif bloque l'import (lot 1).
+6. Devise ni euro ni dollar : « devise non convertie », pas de conversion (lot 2).
+7. Bouton « Synchroniser » : positions et taux sont écrits ensemble ou pas du tout, donc rien
+   n'est synchronisé sans réseau (lot 5).
+8. « Mes trades » n'a pas sa propre entrée de navigation : elle s'ouvre depuis la page Pro (lot 3).
+9. Ajouts hors consigne : `ledger.ouvrir_lecture`, `ledger.comptes`, `ledger.references_presentes`,
+   le champ `couts` de `mesures.PositionOuverte`, le paramètre `valider` des deux importeurs,
+   `*.csv` dans `.gitignore`, la mise à jour du compte de pages dans `README.md`.
+10. Tests existants modifiés : `test_import_csv.py`, `test_ledger.py` (lot 1),
+    `test_socle_hors_production.py` (lot 2, ouverture demandée), `test_dashboard_ecriture.py`
+    (lots 4 et 5, compte des gabarits), `test_fichiers_hors_git.py` (lot 6).
+
+**Pour voir les pages sur la tour, après fusion.** Relancer le dashboard (PowerShell en
+administrateur), puis ouvrir `http://localhost:8080/pro` et `http://localhost:8080/pro/trades` :
+
+```powershell
+Stop-Process -Id (Get-NetTCPConnection -LocalPort 8080 -State Listen).OwningProcess -Force
+while ((Get-ScheduledTask -TaskPath "\AlphaSignal\" -TaskName dashboard).State -eq "Running") { Start-Sleep 1 }
+Start-ScheduledTask -TaskPath "\AlphaSignal\" -TaskName dashboard
+```
+
+Depuis le téléphone : `https://<machine>.<tailnet>.ts.net/pro`. Premier usage : vérifier le
+marquage des boucles (`scripts\marquer_boucles.py`, à blanc), cliquer « Synchroniser », puis
+importer le relevé depuis « Mes trades » (l'aperçu ne modifie rien).
