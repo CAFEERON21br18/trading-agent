@@ -823,3 +823,22 @@ règle de décision, aucun seuil et aucun calcul de score ne changent.
   atteint, on le constate et on cherche la cause ; aucune règle ne change.
 - **Lectures :** toute lecture qui porte sur les cryptos note la date effective comme une
   rupture (fondamental présent ou absent selon la période).
+
+## 10. Rejeu sur plusieurs années du cœur technique (critère fixé le 24/11/2026)
+
+- **Ce qui est testé :** les règles de l'agent telles qu'elles sont au commit de cette section,
+  avec le seul analyste technique ; fondamental, sentiment, mémoire et intuition sont neutres.
+- **Configuration qui décide :** capital de 1 000 €, profil de frais « Revolut ». Les autres
+  configurations sont des mesures de sensibilité et ne peuvent pas fonder le verdict.
+- **Période :** années civiles complètes de 2018 à 2025. L'année 2026, partielle, est rapportée
+  à part.
+- **Verdict « utile »** si les trois conditions sont vraies, sinon « sans avantage » :
+  1. Espérance nette par trade positive, avec un intervalle de confiance à 95 % entièrement
+     au-dessus de zéro (bootstrap, 10 000 tirages, graine fixe), sur l'ensemble de la période.
+  2. Rendement annualisé divisé par le drawdown maximal supérieur à celui d'« acheter et
+     garder » le même univers, mêmes frais, même capital, sur l'ensemble de la période.
+  3. Stabilité : espérance nette positive dans au moins 4 des 8 années, et résultat total
+     encore positif une fois retirée la meilleure année.
+- Moins de 100 trades clos sur la période : verdict « non décidable ».
+- Après le premier lancement, aucun paramètre du rejeu ne change. Un bogue corrigé est décrit
+  dans le journal, et tout est relancé : les résultats d'avant correction sont conservés.
