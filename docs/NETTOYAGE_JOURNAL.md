@@ -497,3 +497,17 @@ Le client et la limite locale partent dans `utils/gemini_client.py` (66 lignes) 
 partent avec lui : il n'existe toujours qu'en un seul exemplaire. `ask_gemini`, `ask_gemini_status`
 et `gemini_disponible` restent dans `gemini.py`. Même nom de journal (`utils.gemini`).
 Tests : `Ran 459 tests` / `OK (skipped=10)`.
+
+### `agents/decision_engine.py` : 258 → 180 lignes
+
+Les paramètres et les règles de base partent dans `agents/decision_regles.py` (91 lignes) : `POIDS`,
+les sept seuils et facteurs de taille, `_direction_a_signe`, `_normaliser`,
+`_convergences_contradictions`, `_verifier_overrides`. `decider` et `reevaluer_position` restent.
+`decision_engine.py` réexporte tout : `utils/registre.py` y lit toujours `POIDS`, `SEUIL_LEARNING` et
+`SEUIL_CONTRADICTION`.
+
+Contrôles propres à ce fichier, refaits après le découpage : empreinte de `parametres_actifs()`
+identique à celle de départ (`e39a0f32…46c4`, `erreur_lecture` absent) ; sorties de l'arbitrage et de
+l'intuition identiques sur les 1 456 cas fixes (`58b6d033…0a66`). `docs/TODO.md` cite
+`_verifier_overrides` à sa nouvelle place.
+Tests : `Ran 459 tests` / `OK (skipped=10)`.

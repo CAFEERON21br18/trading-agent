@@ -60,7 +60,7 @@ tour, donc à 0 : les modes du Budget Manager, la porte paper défensive, le sui
     `mettre_a_jour_performance_md()` (routine quotidienne) →
     `memory/performance_tracker.md` → `memory_reader.lire_winrate_par_actif` →
     override « track record défavorable » (`_verifier_overrides`,
-    `agents/decision_engine.py`), intuition (`agents/intuition.py`), et
+    `agents/decision_regles.py`), intuition (`agents/intuition.py`), et
     `winrate_historique` du Budget Manager (`_decision_to_demande`,
     `agents/paper_trader/cycle.py`, allocation) ;
   - `verifier_alerte_degradation` (email « dégradation perf ») et le contexte
@@ -325,7 +325,7 @@ ils n'ont jamais été branchés. Ne rien supprimer avant décision.
 
 ## 21. Veto Extreme Greed contournable (quotidien) et inactif (tactical)
 
-- Cycle quotidien : `_verifier_overrides` (`agents/decision_engine.py`)
+- Cycle quotidien : `_verifier_overrides` (`agents/decision_regles.py`)
   bloque un achat si F&G ≥ 80. L'intuition (§20) peut lever ce `NO_TRADE` en
   BUY, et **rien ne revérifie le F&G en aval** (le Paper Trader ne re-valide
   que le risque) : on peut acheter exactement dans le cas que le veto devait
