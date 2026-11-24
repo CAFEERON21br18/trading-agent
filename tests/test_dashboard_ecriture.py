@@ -105,7 +105,7 @@ class TestPages(unittest.TestCase):
                 if modifiant.search(texte):
                     trouves += 1
                     self.assertTrue(chemin.endswith(".html") and '{% extends "base.html" %}' in texte)
-        self.assertEqual(trouves, 4)  # chat, plans, real, settings (16/10/2026)
+        self.assertEqual(trouves, 5)  # chat, plans, real, settings (16/10/2026), pro_trades (24/11/2026)
 
 
 HARNAIS = """

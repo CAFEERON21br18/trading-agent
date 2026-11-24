@@ -35,7 +35,7 @@ def _mesure(tableau: donnees.Bloc, nom: str, libelle: str, forme, suite: str = "
                    formats.classe(m.valeur) if forme is not formats.pourcent else "")
 
 
-def _latent(l: latent.Latent, devise: str) -> dict:
+def chiffre_latent(l: latent.Latent, devise: str) -> dict:
     libelle = "Résultat latent"
     if not l.lignes:
         return chiffre(libelle, formats.ABSENT, "aucune position ouverte")
@@ -75,7 +75,7 @@ def cinq_chiffres(source: donnees.Source, devise: str, periode: str, valeur_late
 
     return [
         _mesure(tableau, "résultat net", "Résultat net réalisé", argent),
-        _latent(valeur_latente, devise),
+        chiffre_latent(valeur_latente, devise),
         _frais(donnees.total_frais(source, devise, periode), tableau, devise),
         _mesure(tableau, "espérance en R", "Espérance en R", formats.en_r, " avec stop connu"),
         _mesure(tableau, "taux de réussite", "Taux de réussite", formats.pourcent),

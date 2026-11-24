@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block title %}Mes trades — AlphaSignal{% endblock %}
+
+{% macro tableau(ident, titre, entetes, lignes, vide) %}
+<section class="card mb-4" id="{{ ident }}" aria-labelledby="titre-{{ ident }}">
+    <h3 id="titre-{{ ident }}" class="font-semibold mb-2">{{ titre }}</h3>
+    {% if lignes %}
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm whitespace-nowrap">
+            <thead class="text-xs text-slate-400 text-left">
+                <tr>{% for e in entetes %}<th class="py-1 pr-3">{{ e }}</th>{% endfor %}</tr>
+            </thead>
+            <tbody>{{ caller() }}</tbody>
+        </table>
+    </div>
+    {% else %}<p class="text-sm text-slate-300">{{ vide }}</p>{% endif %}
+</section>
+{% endmacro %}
+
+{% block content %}
+{# Dashboard professionnel, page « Mes trades » : le compte réel, lu dans le grand livre. Les deux
+   seules écritures sont l'aperçu puis la confirmation de l'import, par fetch POST (script en bas). #}
+<div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+    <h2 class="font-bold text-lg">Mes trades — {{ titre_compte }}</h2>
+    <div class="flex items-center gap-2 text-sm">
+        <a href="/pro?devise={{ devise }}" class="px-3 py-1.5 rounded-full bg-slate-700/60 text-slate-300">Vue d'ensemble</a>
+        <div role="group" aria-label="Devise d'affichage" class="flex rounded-full overflow-hidden border border-slate-600">
+            {% for d in ("EUR", "USD") %}
+            <a href="/pro/trades?devise={{ d }}" {% if d == devise %}aria-current="true"{% endif %}
+               class="px-3 py-1.5 {% if d == devise %}bg-emerald-700/40 text-emerald-300 font-semibold{% else %}text-slate-300{% endif %}">{{ d }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% if erreur %}<p class="card mb-4 text-red-300" role="alert">{{ erreur }}</p>{% endif %}
+
+<section class="card mb-4" id="import" aria-labelledby="titre-import">
+    <h3 id="titre-import" class="font-semibold mb-2">Importer le relevé CSV Revolut</h3>
+    <p class="text-xs text-slate-400 mb-2">
+        Deux temps : l'aperçu ne modifie rien, la confirmation écrit dans le grand livre. Le fichier est lu en
+        mémoire, jamais enregistré sur le disque du serveur ; 2 Mo au plus. Réimporter un relevé n'ajoute aucun doublon.
+    </p>
+    <div class="flex flex-wrap items-center gap-2">
+        <label for="import-fichier" class="text-sm">Fichier du relevé</label>
+        <input type="file" id="import-fichier" accept=".csv,text/csv" class="text-sm">
+        <button type="button" onclick="apercuReleve()" class="px-3 py-1.5 rounded-full bg-slate-700 text-slate-100 text-sm">Voir l'aperçu</button>
+        <button type="button" id="import-confirmer" onclick="confirmerImport()" hidden
+                class="px-3 py-1.5 rounded-full bg-emerald-700 text-white text-sm font-semibold">Confirmer l'import</button>
+    </div>
+    <div id="import-apercu" class="mt-3 text-sm max-w-xl" aria-live="polite"></div>
+</section>
+
+{% if vide %}
+<p class="card mb-4 text-slate-300">
+    {% if grand_livre %}Aucun trade dans le compte réel.{% else %}Le grand livre n'existe pas encore sur cette machine.{% endif %}
+    Importez un relevé CSV Revolut ci-dessus : ses achats, ses ventes, ses dépôts, ses retraits et ses dividendes y seront inscrits.
+</p>
+{% else %}
+{% call tableau("positions", "Positions ouvertes", ["Titre", "Sens", "Quantité", "Prix d'entrée", "Dernier prix", "Résultat latent", "Frais à l'achat"], positions, "Aucune position ouverte.") %}
+    {% for p in positions %}
+    <tr class="border-t border-slate-700">
+        <td class="py-1 pr-3 font-semibold">{{ p.titre }}</td><td class="pr-3">{{ p.sens }}</td><td class="pr-3">{{ p.quantite }}</td>
+        <td class="pr-3">{{ p.entree }}</td><td class="pr-3">{{ p.dernier }}</td>
+        <td class="pr-3 {{ p.classe }}">{{ p.latent }}</td><td class="pr-3">{{ p.frais }}</td>
+    </tr>
+    {% endfor %}
+    <tr class="border-t border-slate-600 text-slate-300">
+        <td class="py-1 pr-3" colspan="5">Total du résultat latent — {{ latent.detail }}{% if latent.note %} ; {{ latent.note }}{% endif %}</td>
+        <td class="pr-3 font-semibold {{ latent.classe }}">{{ latent.texte }}</td><td></td>
+    </tr>
+{% endcall %}
+
+{% call tableau("trades-clos", "Trades clos", ["Titre", "Sens", "Quantité", "Entrée", "Sortie", "Résultat brut", "Frais", "Résultat net"], trades, "Aucun trade clos.") %}
+    {% for t in trades %}
+    <tr class="border-t border-slate-700">
+        <td class="py-1 pr-3 font-semibold">{{ t.titre }}</td><td class="pr-3">{{ t.sens }}</td><td class="pr-3">{{ t.quantite }}</td>
+        <td class="pr-3">{{ t.entree }}</td><td class="pr-3">{{ t.sortie }}</td>
+        <td class="pr-3">{{ t.brut }}</td><td class="pr-3">{{ t.frais }}</td><td class="pr-3 {{ t.classe }}">{{ t.net }}</td>
+    </tr>
+    {% endfor %}
+{% endcall %}
+
+{% call tableau("frais", "Frais, ordre par ordre", ["Date", "Titre", "Sens", "Quantité", "Prix", "Montant de l'ordre", "Commission et part du montant"], ordres, "Aucun ordre.") %}
+    {% for o in ordres %}
+    <tr class="border-t border-slate-700">
+        <td class="py-1 pr-3">{{ o.le }}</td><td class="pr-3 font-semibold">{{ o.titre }}</td><td class="pr-3">{{ o.sens }}</td>
+        <td class="pr-3">{{ o.quantite }}</td><td class="pr-3">{{ o.prix }}</td><td class="pr-3">{{ o.montant }}</td><td class="pr-3">{{ o.frais }}</td>
+    </tr>
+    {% endfor %}
+{% endcall %}
+
+{% call tableau("mouvements", "Mouvements : dépôts, retraits, dividendes", ["Date", "Type", "Titre", "Montant"], mouvements, "Aucun mouvement enregistré.") %}
+    {% for m in mouvements %}
+    <tr class="border-t border-slate-700">
+        <td class="py-1 pr-3">{{ m.le }}</td><td class="pr-3">{{ m.type }}</td><td class="pr-3">{{ m.titre }}</td>
+        <td class="pr-3 {{ m.classe }}">{{ m.montant }}</td>
+    </tr>
+    {% endfor %}
+{% endcall %}
+<p class="text-xs text-slate-400">
+    Résultats en {{ devise }} au taux du jour de clôture ; prix, frais d'ordre et mouvements dans leur devise d'origine.
+    « frais non détectés » : le relevé ne montre aucun écart entre le montant de l'ordre et quantité × prix.
+</p>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Import du relevé en deux temps. Tout texte venu du serveur (types de lignes, messages d'erreur,
+// donc du fichier) passe par escHtml avant innerHTML. L'en-tête X-AlphaSignal est ajouté par base.html.
+const TAILLE_MAX = {{ taille_max }};
+let jetonImport = null;
+const zoneImport = () => document.getElementById("import-apercu");
+const ligneImport = (libelle, valeur) =>
+    `<div class="flex justify-between gap-4"><span>${escHtml(libelle)}</span><span class="font-semibold">${escHtml(valeur)}</span></div>`;
+
+function afficherResume(j, titre, fait) {
+    let h = `<div class="font-semibold mb-1">${escHtml(titre)}</div>`
+        + ligneImport(fait ? "Trades ajoutés" : "Trades à ajouter", j.trades_a_ajouter)
+        + ligneImport("Trades déjà présents", j.trades_deja_presents)
+        + ligneImport(fait ? "Mouvements ajoutés" : "Mouvements à ajouter", j.mouvements_a_ajouter)
+        + ligneImport("Mouvements déjà présents", j.mouvements_deja_presents);
+    const ignores = Object.entries(j.ignores || {});
+    if (ignores.length) h += `<div class="mt-2 text-slate-400">Lignes ignorées, par type</div>` + ignores.map(([t, n]) => ligneImport(t, n)).join("");
+    if ((j.erreurs || []).length) {
+        h += `<div class="mt-2 text-red-300" role="alert">Erreurs : la confirmation est impossible, rien ne sera écrit.</div>`
+            + j.erreurs.map(([n, m]) => `<div class="text-red-300">ligne ${escHtml(n)} : ${escHtml(m)}</div>`).join("");
+    }
+    zoneImport().innerHTML = h;
+}
+
+async function apercuReleve() {
+    const fichier = document.getElementById("import-fichier").files[0];
+    const bouton = document.getElementById("import-confirmer");
+    jetonImport = null;
+    bouton.hidden = true;
+    if (!fichier) { zoneImport().textContent = "Choisir d'abord le fichier CSV du relevé."; return; }
+    if (fichier.size > TAILLE_MAX) { zoneImport().textContent = "Fichier trop volumineux : 2 Mo au plus."; return; }
+    zoneImport().textContent = "Lecture du relevé…";
+    try {
+        const r = await fetch("/pro/import/apercu", {method: "POST", headers: {"Content-Type": "text/csv"}, body: fichier});
+        const j = await r.json();
+        if (!r.ok) { zoneImport().textContent = "Aperçu refusé : " + j.error; return; }
+        afficherResume(j, "Aperçu — rien n'est encore écrit", false);
+        jetonImport = j.jeton;
+        bouton.hidden = !j.jeton;
+        if (!j.jeton && !j.erreurs.length) zoneImport().insertAdjacentHTML("beforeend", `<div class="mt-2">Rien à ajouter : tout est déjà dans le grand livre.</div>`);
+    } catch (e) { zoneImport().textContent = "Aperçu impossible : le dashboard ne répond pas."; }
+}
+
+async function confirmerImport() {
+    const jeton = jetonImport;
+    jetonImport = null;
+    document.getElementById("import-confirmer").hidden = true;
+    if (!jeton) return;  // jeton à usage unique : un second clic n'envoie rien
+    try {
+        const r = await fetch("/pro/import/confirmer", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({jeton})});
+        const j = await r.json();
+        if (j.error) { zoneImport().textContent = "Import refusé : " + j.error; return; }
+        afficherResume(j, j.ecrit ? "Import terminé" : "Import refusé : rien n'a été écrit", j.ecrit);
+        if (j.ecrit) zoneImport().insertAdjacentHTML("beforeend", `<a class="underline text-emerald-300 mt-2 inline-block" href="/pro/trades?devise={{ devise }}">Recharger la page pour voir les trades</a>`);
+    } catch (e) { zoneImport().textContent = "Import : pas de réponse du dashboard. Vérifier la page avant de recommencer."; }
+}
+</script>
+{% endblock %}

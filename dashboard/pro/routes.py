@@ -1,8 +1,10 @@
 """
 dashboard/pro/routes.py — Pages du dashboard professionnel (blueprint « pro »).
 
-- GET /pro : « Vue d'ensemble », un panneau par compte, jamais additionnés.
-LECTURE SEULE : ces pages ouvrent le grand livre (data/ledger.db) et la base de l'agent en
+- GET /pro        : « Vue d'ensemble », un panneau par compte, jamais additionnés ;
+- GET /pro/trades : « Mes trades », le compte réel en détail et l'import du relevé.
+Les routes qui écrivent (POST) sont dans routes_ecriture.py, importé en fin de fichier.
+LECTURE SEULE ICI : ces pages ouvrent le grand livre (data/ledger.db) et la base de l'agent en
 mode=ro et n'écrivent rien. La devise d'affichage (EUR ou USD) et la période du compte paper
 sont retenues dans l'URL. Les journaux ne reçoivent aucune valeur lue, seulement le type
 d'une erreur.
@@ -13,7 +15,7 @@ from datetime import date, datetime, timezone
 from flask import Blueprint, render_template, request
 from markupsafe import Markup
 
-from dashboard.pro import comptes, donnees, vue_ensemble
+from dashboard.pro import comptes, donnees, mes_trades, vue_ensemble
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -47,3 +49,19 @@ def page_vue():
         contexte = vue_ensemble.vue_sans_lecture(devise, periode)
         erreur = "Le grand livre n'a pas pu être lu. Aucun chiffre n'est affiché."
     return render_template("pro_vue.html", page="pro", erreur=erreur, **contexte)
+
+
+@pro.route("/pro/trades")
+def page_trades():
+    devise, _ = parametres()
+    erreur = ""
+    try:
+        contexte = mes_trades.page(comptes.LEDGER, comptes.base_agent(), devise, aujourd_hui())
+    except Exception as e:
+        logger.error(f"Dashboard pro : page des trades illisible ({type(e).__name__})")
+        contexte = mes_trades.page_sans_lecture(devise)
+        erreur = "Le grand livre n'a pas pu être lu. Aucun chiffre n'est affiché."
+    return render_template("pro_trades.html", page="pro", erreur=erreur, **contexte)
+
+
+from dashboard.pro import routes_ecriture  # noqa: E402,F401  (enregistre les routes POST du blueprint)

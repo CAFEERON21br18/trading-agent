@@ -6,12 +6,14 @@
    livre, lu en lecture seule. Chaque compte a son panneau et sa courbe : aucun total ne les réunit. #}
 <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
     <h2 class="font-bold text-lg">Vue d'ensemble</h2>
-    <div role="group" aria-label="Devise d'affichage"
-         class="flex rounded-full overflow-hidden border border-slate-600 text-sm">
-        {% for d in ("EUR", "USD") %}
-        <a href="/pro?devise={{ d }}&amp;periode={{ periode }}" {% if d == devise %}aria-current="true"{% endif %}
-           class="px-3 py-1.5 {% if d == devise %}bg-emerald-700/40 text-emerald-300 font-semibold{% else %}text-slate-300{% endif %}">{{ d }}</a>
-        {% endfor %}
+    <div class="flex items-center gap-2 text-sm">
+        <a href="/pro/trades?devise={{ devise }}" class="px-3 py-1.5 rounded-full bg-slate-700/60 text-slate-300">Mes trades</a>
+        <div role="group" aria-label="Devise d'affichage" class="flex rounded-full overflow-hidden border border-slate-600">
+            {% for d in ("EUR", "USD") %}
+            <a href="/pro?devise={{ d }}&amp;periode={{ periode }}" {% if d == devise %}aria-current="true"{% endif %}
+               class="px-3 py-1.5 {% if d == devise %}bg-emerald-700/40 text-emerald-300 font-semibold{% else %}text-slate-300{% endif %}">{{ d }}</a>
+            {% endfor %}
+        </div>
     </div>
 </div>
 
@@ -43,7 +45,8 @@
         {% if p.vide %}
         <p class="text-sm text-slate-300">
             Aucun trade dans ce compte.
-            {% if p.cle == "reel" %}Il se remplit par l'import du relevé CSV Revolut.
+            {% if p.cle == "reel" %}Il se remplit par l'import du relevé CSV Revolut, depuis
+            <a class="underline text-emerald-300" href="/pro/trades?devise={{ devise }}#import">« Mes trades »</a>.
             {% else %}Il se remplit par la synchronisation des positions paper.{% endif %}
         </p>
         {% else %}

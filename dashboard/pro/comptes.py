@@ -8,6 +8,7 @@ Sans Flask. Les chemins sont lus à chaque appel, pour que les tests les remplac
 """
 
 import os
+import threading
 from dataclasses import dataclass
 
 import ledger
@@ -16,6 +17,7 @@ from importeurs import paper, revolut_csv
 
 RACINE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 LEDGER = os.path.join(RACINE, "data", "ledger.db")  # grand livre, hors git
+VERROU_ECRITURE = threading.Lock()  # une seule écriture du grand livre à la fois (import, synchronisation)
 
 
 @dataclass(frozen=True)

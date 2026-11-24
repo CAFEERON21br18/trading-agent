@@ -169,3 +169,55 @@ Choix non couverts par la consigne, option prudente retenue :
   cette page, sans seizième colonne dans une barre déjà serrée sur téléphone.
 
 Tests : `Ran 572 tests` / `OK (skipped=10)` (556 + 6 + 10).
+
+## Lot 4 — page « Mes trades » (`/pro/trades`)
+
+Fichiers : `dashboard/pro/mes_trades.py`, `import_releve.py`, `jetons.py`, `routes_ecriture.py`,
+la route `GET /pro/trades` dans `routes.py`, `dashboard/templates/pro_trades.html`, le lien
+« Mes trades » de la page `/pro`, deux fichiers de test.
+
+- **Import en deux temps.** (a) `POST /pro/import/apercu` : le fichier arrive dans le corps de la
+  requête, il est lu en mémoire et comparé au grand livre ouvert en lecture seule. L'aperçu
+  donne les trades à ajouter, ceux déjà présents, les mouvements à ajouter, les lignes ignorées
+  par type et les erreurs avec leur numéro de ligne. (b) `POST /pro/import/confirmer` écrit, par
+  `importeurs/revolut_csv.py`, donc par les seules fonctions de `ledger/ecriture.py`.
+- **Jeton.** Entre les deux, le contenu n'existe que dans la mémoire du processus, sous un jeton
+  tiré au hasard, à usage unique, qui expire au bout de 10 minutes. S'il y a une erreur, aucun
+  jeton n'est émis : la confirmation est impossible, et le bouton reste caché.
+- **Jamais sur le disque.** Le fichier n'est pas envoyé par un formulaire : Werkzeug écrit un
+  gros fichier de formulaire dans un fichier temporaire. Il est envoyé tel quel dans le corps
+  (`fetch` avec le fichier comme corps) et lu par `request.stream` ; un envoi multipart est
+  refusé (415). Testé : le dossier du test et le grand livre sont identiques avant et après
+  l'aperçu ; le code de la route n'utilise ni `request.files`, ni `request.form`, ni `open`.
+- **Taille.** 2 Mo au plus (2 097 152 octets) : contrôlé sur la longueur annoncée, puis sur ce
+  qui est lu. Un fichier vide ou qui n'est pas du texte UTF-8 est refusé avec un message.
+- **Positions ouvertes du compte réel** : titre, quantité, prix d'entrée, dernier prix et son
+  jour, résultat latent, frais payés à l'achat et leur part du montant ; ligne de total.
+- **Trades clos** : résultat brut, frais, résultat net. **Frais** : pour chaque ordre, la
+  commission et sa part du montant de l'ordre, ou « frais non détectés ». **Mouvements** : dépôts,
+  retraits (signe −), dividendes, dans leur devise.
+- **Sécurité.** Les deux routes sont en POST et passent par la garde de toute l'application
+  (en-tête `X-AlphaSignal: 1`, sinon 403 ; `tests/test_dashboard_ecriture.py` les couvre comme
+  les autres routes modifiantes). Les réponses sont du JSON ; la page insère chaque texte par
+  `escHtml`. Testé en exécutant le script de la page avec Node : un type de ligne ou un message
+  d'erreur contenant du HTML ressort échappé. Les tableaux, eux, sont rendus par le serveur et
+  échappés par le gabarit.
+
+Choix non couverts par la consigne, option prudente retenue :
+
+- **Rien à ajouter.** Si tout le relevé est déjà dans le grand livre, l'aperçu le dit et n'émet
+  pas de jeton : confirmer n'écrirait rien.
+- **Relevés en attente.** Quatre au plus en mémoire (4 × 2 Mo) ; au-delà, le plus ancien est
+  oublié. Un redémarrage du dashboard les oublie tous : il suffit de renvoyer le fichier.
+- **Confirmation.** Le relevé est relu en entier avant d'ouvrir le grand livre en écriture ; une
+  erreur et le grand livre n'est même pas ouvert. Une seule écriture à la fois (verrou).
+- **Devise des lignes.** Résultats (brut, frais, net, latent) dans la devise d'affichage ; prix,
+  frais d'un ordre et mouvements dans leur devise d'origine, sans conversion. Sans taux, la
+  ligne dit « taux indisponible ».
+- **Journaux.** Aucune donnée du relevé n'y va, pas même un compte de lignes : seulement le type
+  d'une erreur.
+- **`tests/test_dashboard_ecriture.py`** : le nombre de gabarits qui contiennent un `fetch`
+  modifiant passe de 4 à 5 (`pro_trades.html`). Cette garde interdit aussi les balises de
+  formulaire : la page n'en a pas.
+
+Tests : `Ran 586 tests` / `OK (skipped=10)` (572 + 5 + 9).

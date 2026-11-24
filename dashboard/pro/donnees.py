@@ -80,7 +80,7 @@ def raison_devise(devises) -> str:
     return f"devise non convertie : {', '.join(autres)}" if autres else ""
 
 
-def _essayer(devises, devise: str, calcul) -> Bloc:
+def essayer(devises, devise: str, calcul) -> Bloc:
     """Bloc du calcul, ou la raison pour laquelle la bascule de devise est impossible."""
     _devise(devise)
     raison = raison_devise(devises)
@@ -105,14 +105,14 @@ def _reconstruits(source: Source, periode: str):
 def trades_clos(source: Source, devise: str, periode: str = "tout") -> Bloc:
     """Trades clos exprimés dans la devise d'affichage, triés par date de clôture."""
     clos, _ = _reconstruits(source, periode)
-    return _essayer((t.devise for t in clos), devise,
+    return essayer((t.devise for t in clos), devise,
                     lambda: mesures.en_devise(clos, devise, source.taux))
 
 
 def lignes_trades(source: Source, devise: str, periode: str = "tout") -> list[tuple]:
     """Pour les tableaux : (trade en devise de cotation, le même converti ou None sans taux)."""
     clos, _ = _reconstruits(source, periode)
-    return [(t, _essayer([t.devise], devise,
+    return [(t, essayer([t.devise], devise,
                          lambda t=t: mesures.en_devise([t], devise, source.taux)[0]).valeur)
             for t in clos]
 
@@ -133,7 +133,7 @@ def tableau_mesures(source: Source, devise: str, periode: str = "tout") -> Bloc:
 def _mesure_mouvements(source: Source, devise: str, calcul, types: tuple) -> Bloc:
     """Seuls les mouvements du calcul sont basculés : un dividende sans taux ne bloque pas les apports."""
     retenus = [m for m in source.mouvements if m.type in types]
-    return _essayer((m.devise for m in retenus), devise, lambda: calcul(
+    return essayer((m.devise for m in retenus), devise, lambda: calcul(
         mesures.mouvements_en_devise(retenus, devise, source.taux)))
 
 
@@ -152,7 +152,7 @@ def total_frais(source: Source, devise: str, periode: str = "tout") -> Bloc:
     depuis = _depuis(periode)
     ordres = [e for e in source.executions if depuis is None or e.horodatage >= depuis]
     payants = [e for e in ordres if e.couts > 0]
-    return _essayer((e.devise for e in payants), devise, lambda: Frais(
+    return essayer((e.devise for e in payants), devise, lambda: Frais(
         sum((mesures.convertir(e.couts, e.devise, devise, e.horodatage.date(), source.taux)
              for e in payants), Decimal("0")), len(ordres), len(payants)))
 
