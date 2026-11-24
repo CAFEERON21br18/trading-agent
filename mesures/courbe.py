@@ -30,6 +30,18 @@ def rendement(serie: Serie, n_trades: int) -> Mesure:
     return mesure("rendement", valeur, n_trades, *_bornes(serie))
 
 
+def rendement_annualise(serie: Serie, n_trades: int) -> Mesure:
+    """Rendement composé par an entre la première et la dernière valeur (année de 365,25 jours).
+    Non calculable sur moins d'un jour ; une valeur finale nulle ou négative vaut −100 %."""
+    valeur = None
+    if len(serie) >= 2 and serie[0][1] > 0:
+        annees = (serie[-1][0] - serie[0][0]).days / 365.25
+        if annees > 0:
+            rapport = float(serie[-1][1] / serie[0][1])
+            valeur = rapport ** (1 / annees) - 1 if rapport > 0 else -1.0
+    return mesure("rendement annualisé", valeur, n_trades, *_bornes(serie))
+
+
 def drawdown_max(serie: Serie, n_trades: int) -> Mesure:
     """Plus forte baisse depuis un sommet, en valeur négative."""
     valeur = None

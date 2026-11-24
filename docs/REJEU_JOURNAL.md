@@ -169,3 +169,40 @@ Tests : `Ran 656 tests` / `OK (skipped=10)` (633 + 5 + 9 + 5 + 4). Les tests du 
 le signal technique et vérifient à la main, sur le vrai code de l'agent : taille (50 € sur
 1 000 €), stop (entrée − 1,5 ATR), objectif (entrée + 2 distances), frais, valeur du compte jour
 par jour, signal inverse, seuil de confiance, cinq positions au plus, anti-boucle.
+
+## Lot 4 — lancement et sorties (écrit AVANT le premier lancement)
+
+Fichiers : `mesures/bootstrap.py` (espérance nette, intervalle par bootstrap), `mesures/courbe.py`
+(rendement annualisé), `rejeu/grand_livre.py`, `rejeu/mesure.py`, `rejeu/verdict.py`,
+`rejeu/etude.py`, `rejeu/rapport.py`, `rejeu/rapport_limites.py`, `rejeu/texte.py`,
+`rejeu/lancement.py`, `scripts/rejeu.py`, deux fichiers de test.
+
+- **Grand livre du rejeu** : `data/rejeu/ledger_rejeu.db`, même schéma, écrit par les seules
+  fonctions de `ledger/ecriture.py`. 18 comptes de type `demo` : pour chacune des six
+  configurations, le rejeu, la référence rachetée chaque année et la référence gardée sur la
+  période. Chaque ordre exécuté est un trade avec ses frais (commission, spread, financement) ;
+  l'ordre d'entrée porte le stop initial. La valeur du compte à chaque clôture est dans
+  `valeur_quotidienne`. `data/ledger.db` n'est jamais ouvert.
+- **Mesures** (paquet `mesures`) : résultat net, espérance nette et son intervalle à 95 %
+  (bootstrap par percentiles, 10 000 tirages, graine 20261124), taux de réussite, profit factor,
+  part des frais, drawdown maximal, rendement et rendement annualisé, écart à la référence ; par
+  configuration, par année et sur 2018–2025. L'année 2026, partielle, est à part.
+- **Verdict** : `rejeu/verdict.py` applique le critère du registre §10. Le rapport et la page
+  relisent tout dans le grand livre du rejeu : ils donnent les mêmes chiffres.
+- **Rien n'est effacé.** Un nouveau lancement déplace le grand livre, le résumé et le rapport
+  précédents dans un dossier `archives/`, horodatés.
+- **Garde du socle** : non ouverte. `scripts/rejeu.py` n'importe que le paquet `rejeu` ; c'est
+  `rejeu` (hors de l'agent) qui lit et écrit son grand livre.
+
+Choix non couverts par la consigne, option prudente retenue :
+
+- **Rendement annualisé** : composé, sur des années de 365,25 jours, à partir du capital la veille
+  du 01/01/2018. **Ratio de la condition 2** : rendement annualisé divisé par la valeur absolue
+  du drawdown maximal de la valeur quotidienne du compte.
+- **Intervalle de l'espérance** : percentiles 2,5 et 97,5 des moyennes de 10 000 rééchantillons.
+- **Égalité** : à la condition 2, un ratio égal à celui d'une référence n'est pas « supérieur ».
+- **Année sans trade** : son espérance n'est pas positive (elle ne compte pas parmi les 4).
+- **Deux commits pour ce lot** : le code est commité avant le premier lancement, pour que le
+  rapport cite le commit exact qui a tourné ; les résultats sont ajoutés à ce journal ensuite.
+
+Tests avant le lancement : `Ran 669 tests` / `OK (skipped=10)` (656 + 8 + 5).
