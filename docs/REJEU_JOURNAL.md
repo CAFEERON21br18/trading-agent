@@ -368,3 +368,70 @@ Choix non couverts par la consigne :
 
 Tests : `Ran 678 tests` / `OK (skipped=10)` (671 + 7).
 
+
+## Fin de session (25/11/2026)
+
+**Verdict : « sans avantage ».** Configuration qui décide (1 000 €, « Revolut », 2018–2025),
+580 trades clos :
+
+1. Condition 1, fausse : espérance nette −1,79 € par trade, intervalle à 95 % de −2,07 € à −1,51 €.
+2. Condition 2, fausse : rendement annualisé / drawdown maximal de −0,961, contre +1,108 pour la
+   référence rachetée chaque année et +0,465 pour la référence gardée sur la période.
+3. Condition 3, fausse : espérance nette positive dans 0 des 8 années ; résultat total sans la
+   meilleure année : −950,62 €.
+
+**Durée d'un lancement** : 776 s (13 minutes) pour le lancement de référence, sur 12 processus ;
+1 492 s pour le deuxième, machine occupée.
+
+**Suite de tests** : `Ran 678 tests` / `OK (skipped=10)`, réseau coupé. Départ : 623. Les 55 tests
+ajoutés : 10 au lot 2, 23 au lot 3, 13 au lot 4, 2 pour les correctifs, 7 au lot 5. Avec un graphe
+régénéré dans le worktree (coût LLM nul, puis retiré), les 18 tests de topologie passent.
+
+**Contrôles avant la poussée.**
+
+- Aucun fichier `.env`, base SQLite, CSV, ni rien de `data/rejeu/` ou de `reports/rejeu/` n'est
+  suivi par git.
+- Règle 9 : le diff `main..HEAD` et les messages de commit comparés aux tables du portefeuille
+  réel et au compte réel du grand livre de production, en lecture seule, sans afficher de
+  valeur : aucune correspondance. Le rejeu ne lit que des cours publics.
+- Aucune ligne d'attribution automatique ; aucun fichier de plus de 200 lignes.
+- `agents/`, `utils/`, `alerts/`, `config.py`, les cycles et les scripts de tâches : aucune
+  modification. `docs/REGISTRE_CRITERES.md` : 19 lignes ajoutées, aucune modifiée.
+- Depuis le commit du premier lancement (`147f1eb`), dans `rejeu/` : seuls `grand_livre.py` et
+  `lancement.py` (archivage) et `mesure.py` (drawdown d'un compte sous zéro) ont changé.
+  `rejeu/parametres.py` n'a pas changé depuis le lot 2 ; le moteur, les frais, les sorties, la
+  référence et l'enveloppe n'ont pas changé depuis avant le premier lancement.
+- Le rejeu a tourné dans le worktree : la copie de production n'a pas de `data/rejeu/`, et ni
+  `data/database.db`, ni `data/registre.db`, ni `data/ledger.db` n'ont été ouverts.
+- Ni Jev ni aucun LLM n'a été appelé ; aucun e-mail envoyé. Seul appel réseau : le téléchargement
+  des barres quotidiennes chez Yahoo, le 24/11/2026.
+
+**Écarts à la consigne, et choix faits sans consigne.**
+
+1. **Trois lancements au lieu d'un.** Le premier s'est arrêté à l'écriture (valeur de compte
+   négative refusée) ; le deuxième a donné tous les résultats, puis le script a échoué en les
+   affichant ; le troisième est propre et identique au deuxième. Aucun paramètre n'a changé.
+2. **Neuf commits pour cinq lots** : le code du lot 4 a été commité avant le premier lancement,
+   et chaque correctif a été commité seul avant sa relance, pour que chaque rapport cite le commit
+   qui a tourné.
+3. **`ledger.enregistrer_valeur` accepte une valeur nulle ou négative** : changement dans le socle,
+   nécessaire pour enregistrer le compte tel qu'il est.
+4. **Le compte n'est pas arrêté quand il passe sous zéro** (l'agent raisonne sur un capital
+   constant) : son rendement annualisé vaut alors −100 %.
+5. **Condition 2 : les deux références** doivent être dépassées.
+6. **Seuil d'arrêt d'urgence en proportion du capital** (70 %) pour 100 € et 10 000 €.
+7. **Réglages du code épinglés** (5 positions simultanées), pas ceux du `.env` de la tour.
+8. **Ventes à découvert gardées**, dans tous les profils ; **1 € = 1 $**.
+9. **Frais « CFD » des contrats à terme** : 0,50 %, comme les cryptos.
+10. **CL=F écarté** (prix négatifs en avril 2020), pour la stratégie comme pour la référence.
+11. **Le rapport n'est pas dans le dépôt** (`reports/` est hors git) : ses chiffres sont dans ce
+    journal.
+12. **La garde `test_socle_hors_production.py` n'a pas été ouverte** : rien ne l'exigeait.
+13. **Décision par le chemin sans LLM du moteur** (`origine="chat"`) ; contrôle de liquidité de la
+    note de setup tenu pour bon.
+
+**Pour relancer sur la tour, après fusion** (PowerShell, depuis la racine du dépôt) :
+`.venv\Scripts\python.exe scripts\rejeu_donnees.py` puis `.venv\Scripts\python.exe scripts\rejeu.py`.
+Les barres seront retéléchargées sur la tour (le cache du worktree n'est pas dans git) : elles
+iront jusqu'à la veille, et Yahoo peut avoir révisé un cours ; le résultat pourra donc différer
+de quelques trades. Puis relancer le dashboard et ouvrir `http://localhost:8080/pro/rejeu`.
