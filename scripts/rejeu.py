@@ -26,6 +26,9 @@ for _cle in ("EMAIL_SENDER", "EMAIL_APP_PASSWORD", "EMAIL_RECIPIENT"):
 
 def lancer(processus: int | None = None) -> int:
     """Lance le rejeu et affiche le verdict. Code de sortie : 0, ou 1 si l'agent a journalisé des erreurs."""
+    for flux in (sys.stdout, sys.stderr):  # console Windows (cp1252) : le signe « − » n'y existe pas
+        if hasattr(flux, "reconfigure"):
+            flux.reconfigure(encoding="utf-8", errors="replace")
     from rejeu import etude, lancement
     from rejeu import parametres as P
     resume = lancement.lancer(processus=processus or max(1, min(12, (os.cpu_count() or 2) - 2)))

@@ -57,7 +57,8 @@ def bilan(trades: list, valeurs: list, debut: date, fin: date, capital) -> Bilan
     clos = trades_de(trades, debut, fin)
     serie = serie_de(valeurs, debut, fin, capital)
     n = len(clos)
-    drawdown = mesures.drawdown_max(serie, n).valeur
+    # un drawdown se mesure depuis un sommet positif : sans lui (compte déjà à zéro ou moins), non calculable
+    drawdown = mesures.drawdown_max(serie, n).valeur if max(v for _, v in serie) > 0 else None
     annualise = mesures.rendement_annualise(serie, n).valeur
     ratio = annualise / abs(drawdown) if annualise is not None and drawdown else None
     return Bilan(

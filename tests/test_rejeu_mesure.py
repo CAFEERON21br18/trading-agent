@@ -93,6 +93,9 @@ class TestBilan(unittest.TestCase):
         self.assertAlmostEqual(b.rendement, -1.05)
         self.assertAlmostEqual(b.drawdown_max, -1.05)
         self.assertAlmostEqual(b.ratio, -1.0 / 1.05)
+        # l'année suivante part d'un compte déjà sous zéro : ni rendement ni drawdown, jamais « 0 % »
+        suite = mesure.bilan([], valeurs + [(date(2019, 6, 1), D("-80"))], date(2019, 1, 1), date(2019, 12, 31), 1000)
+        self.assertEqual((suite.valeur_debut, suite.rendement, suite.drawdown_max, suite.ratio), (-50.0, None, None, None))
 
     def test_sans_trade_ni_valeur_rien_n_est_zero(self):
         b = mesure.bilan([], [], date(2018, 1, 1), date(2018, 12, 31), 1000)

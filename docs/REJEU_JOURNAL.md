@@ -240,3 +240,74 @@ de la série. Je l'écris ici parce que la correction a été faite en le sachan
 
 Tests ajoutés : valeur de compte nulle ou négative acceptée par le grand livre, bilan d'un compte
 passé sous zéro, archivage des bases jetables. Tout est relancé depuis le début.
+
+## Deuxième lancement (25/11/2026, 18 h 03 UTC) : résultats complets
+
+Commit `c375459`, 12 processus. Durée : 1 492 s (analyses 943 s, six simulations 549 s, écriture
+0,4 s). 22 titres, barres jusqu'au 23/11/2026, empreinte `d617f215f49761ce`. Code de l'agent
+identique au commit du critère ; aucune erreur journalisée par l'agent ; mêmes trades d'un profil
+de frais à l'autre. Grand livre, résumé et rapport écrits (`reports/rejeu/RAPPORT.md`, hors git).
+
+### Verdict : « sans avantage »
+
+Configuration qui décide : 1 000 €, « Revolut », 2018–2025, **580 trades clos**.
+
+1. **Condition 1 : fausse.** Espérance nette −1,79 € par trade ; intervalle à 95 % : de −2,07 € à
+   −1,51 €.
+2. **Condition 2 : fausse.** Rendement annualisé / drawdown maximal : stratégie −0,961 ; référence
+   rachetée chaque année +1,108 ; référence gardée sur la période +0,465.
+3. **Condition 3 : fausse.** Espérance nette positive dans 0 des 8 années ; résultat total sans la
+   meilleure année (2018) : −950,62 €.
+
+Sur la période : résultat brut +120,50 €, frais 1 160,00 € (580 trades × 2 ordres × 1 €), résultat
+net −1 039,50 €. Les positions font 50 € au plus : 2 € de frais par aller-retour en prennent 4 %.
+Le compte passe sous zéro en 2025 (rendement annualisé −100 %, drawdown maximal −104,1 %).
+
+| Année | Trades clos | Résultat net | Espérance nette | Intervalle à 95 % | Réussite | Rendement | Référence annuelle |
+|---|---|---|---|---|---|---|---|
+| 2018 | 59 | −88,88 € | −1,51 € | −2,35 € à −0,61 € | 27,1 % | −9,0 % | −10,5 % |
+| 2019 | 57 | −97,14 € | −1,70 € | −2,43 € à −0,95 € | 22,8 % | −10,6 % | +49,7 % |
+| 2020 | 62 | −103,83 € | −1,67 € | −2,49 € à −0,87 € | 35,5 % | −13,0 % | +120,4 % |
+| 2021 | 107 | −122,16 € | −1,14 € | −1,85 € à −0,34 € | 27,1 % | −17,2 % | +655,5 % |
+| 2022 | 77 | −149,89 € | −1,95 € | −2,79 € à −1,02 € | 24,7 % | −24,6 % | −45,9 % |
+| 2023 | 72 | −129,00 € | −1,79 € | −2,41 € à −1,15 € | 25,0 % | −31,4 % | +121,6 % |
+| 2024 | 90 | −199,32 € | −2,21 € | −2,82 € à −1,58 € | 24,4 % | −64,5 % | +68,5 % |
+| 2025 | 56 | −149,29 € | −2,67 € | −3,50 € à −1,75 € | 12,5 % | −137,4 % | +40,5 % |
+| 2026 (partielle, à part) | 52 | −110,61 € | −2,13 € | −2,98 € à −1,22 € | 26,9 % | — | +3,5 % |
+| **2018–2025** | 580 | −1 039,50 € | −1,79 € | −2,07 € à −1,51 € | 25,2 % | −104,0 % | +6 230,4 % |
+
+Sensibilité (2018–2025), à titre indicatif seulement :
+
+| Capital · frais | Trades clos | Résultat net | Frais payés | Espérance nette | Intervalle à 95 % | Réussite | Rendement / drawdown | Réf. annuelle | Réf. période |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 000 € · Revolut (décide) | 580 | −1 039,50 € | 1 160,00 € | −1,79 € | −2,07 € à −1,51 € | 25,2 % | −0,96 | +1,11 | +0,47 |
+| 1 000 € · CFD | 580 | −38,75 € | 159,25 € | −0,07 € | −0,35 € à +0,21 € | 37,4 % | −0,04 | +0,90 | +0,45 |
+| 10 000 € · Revolut | 582 | +120,44 € | 1 164,00 € | +0,21 € | −2,56 € à +3,02 € | 37,5 % | +0,02 | +1,14 | +0,47 |
+| 10 000 € · CFD | 582 | −311,30 € | 1 595,74 € | −0,53 € | −3,31 € à +2,28 € | 37,5 % | −0,03 | +0,90 | +0,45 |
+| 100 € · Revolut et CFD | 0 | — | — | — | — | — | — | −0,23 et +0,90 | +0,42 et +0,45 |
+
+Lecture : avant frais, les règles gagnent à peu près ce qu'elles perdent (37 % de trades gagnants
+pour un objectif à deux fois le stop : l'équilibre est à 33 %). Aucune configuration n'a un
+intervalle entièrement au-dessus de zéro, et aucune n'approche « acheter et garder ». À 100 €, le
+Budget Manager refuse tout trade (budget sous son minimum de 15 €). Sorties de la configuration
+qui décide, 2026 comprise : 397 par le stop, 231 par l'objectif, 4 par signal inverse ; une
+position encore ouverte à la dernière barre.
+
+La référence annuelle doit ses chiffres aux cryptos de la liste (2021 : +655,5 %) : c'est le
+biais de sélection écrit dans les limites, il joue pour la référence comme pour la stratégie.
+
+### Deux défauts vus à ce lancement, corrigés avant la relance
+
+Aucun ne touche une règle du rejeu, un paramètre, un trade ou le verdict.
+
+1. **Affichage final du script.** Tout était écrit quand `scripts/rejeu.py` a levé
+   `UnicodeEncodeError` en affichant les conditions : la console Windows (cp1252) ne connaît pas
+   le signe « − ». Le script passe maintenant sa sortie en UTF-8.
+2. **Drawdown d'un compte déjà sous zéro.** Pour 2026, la configuration qui décide part d'une
+   valeur négative : le rapport écrivait un drawdown de « 0,0 % ». Un drawdown se mesure depuis un
+   sommet positif ; sans lui, il est maintenant « non calculable » (« — »). Seule cette case de
+   l'année partielle change.
+
+Comme le critère le demande, tout est relancé ; les sorties de ce lancement sont archivées dans
+`data/rejeu/archives/` et `reports/rejeu/archives/` (horodatage du lancement suivant).
+

@@ -163,6 +163,11 @@ class TestLancement(unittest.TestCase):
         self.assertEqual((code, lancer.call_args.kwargs), (0, {"processus": 1}))
         self.assertIn("Verdict (1 000 €, Revolut, 2018–2025, 1 trades clos) : « non décidable »", texte)
         self.assertRegex(texte, r"1\. FAUSSE — espérance nette \+1,00 € par trade sur 1 trades")
+        # console Windows : la sortie est passée en UTF-8, le signe « − » ne fait plus planter l'affichage
+        flux = mock.Mock(spec=["reconfigure", "write", "flush"])
+        with mock.patch.object(P, "DOSSIER", self.dossier), mock.patch.object(lancement, "lancer", return_value=self.resume),                 mock.patch.object(sys, "stdout", flux):
+            script.lancer(processus=1)
+        flux.reconfigure.assert_called_once_with(encoding="utf-8", errors="replace")
 
 
 if __name__ == "__main__":
