@@ -6,7 +6,8 @@ data/ledger.db. Écritures par les seules fonctions de ledger/ecriture.py. Un co
 configuration (capital, profil de frais) et par nature (rejeu, référence annuelle, référence de
 période) ; chaque ordre exécuté est un trade avec ses frais ; la valeur du compte à la clôture de
 chaque jour est dans valeur_quotidienne. Montants en euros (1 € = 1 $, comme le paper trader).
-Un nouveau lancement n'efface rien : le grand livre précédent est déplacé dans archives/.
+Un nouveau lancement n'efface rien : le grand livre précédent, son résumé, son rapport et les
+bases jetables de l'agent sont déplacés dans archives/, horodatés.
 """
 
 import os
@@ -34,7 +35,10 @@ def chemin(dossier: str | None = None) -> str:
 def archiver(horodatage: str, dossier: str | None = None, dossier_rapport: str | None = None) -> list[str]:
     """Déplace les sorties du lancement précédent dans archives/ (rien n'est effacé)."""
     deplaces = []
-    for racine, noms in ((dossier or P.DOSSIER, A_ARCHIVER), (dossier_rapport or P.DOSSIER_RAPPORT, ("RAPPORT.md",))):
+    donnees = dossier or P.DOSSIER
+    bases = tuple(sorted(n for n in (os.listdir(donnees) if os.path.isdir(donnees) else [])
+                         if n.startswith("agent_") and ".db" in n))  # positions du lancement précédent
+    for racine, noms in ((donnees, A_ARCHIVER + bases), (dossier_rapport or P.DOSSIER_RAPPORT, ("RAPPORT.md",))):
         for nom in noms:
             source = os.path.join(racine, nom)
             if os.path.isfile(source):

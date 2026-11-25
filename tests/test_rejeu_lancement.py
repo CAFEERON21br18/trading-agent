@@ -141,9 +141,11 @@ class TestLancement(unittest.TestCase):
             for _ in range(2):
                 with mock.patch.object(lancement.grand_livre, "archiver", wraps=grand_livre.archiver) as archiver:
                     lancement.lancer(dossier, rapports, processus=1, barres=self.barres, analyses=self.analyses)
-            self.assertEqual(archiver.call_count, 1)
+            self.assertEqual(archiver.call_count, 1)  # appelé à chaque lancement, avant toute simulation
             archives = sorted(os.listdir(os.path.join(dossier, "archives")))
-            self.assertEqual([a.split("_")[0] for a in archives], ["lancement", "ledger"])  # le premier lancement est gardé
+            # le premier lancement est gardé : grand livre, résumé et bases jetables de l'agent
+            self.assertEqual(sorted({a.split("_")[0] for a in archives}), ["agent", "lancement", "ledger"])
+            self.assertEqual(len([a for a in archives if a.startswith("agent_") and a.endswith(".db")]), 6)
             self.assertEqual(len(os.listdir(os.path.join(rapports, "archives"))), 1)
             conn = ledger.ouvrir_lecture(grand_livre.chemin(dossier))
             try:

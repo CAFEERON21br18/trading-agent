@@ -108,6 +108,16 @@ class TestLedger(BaseLedgerIds):
         ledger.enregistrer_valeur(self.conn, self.ids[0], j, "1010", "USD")
         self.assertEqual(ledger.valeurs_quotidiennes(self.conn, self.ids[0]), [(j, Decimal("1010"))])
 
+    def test_valeur_de_compte_nulle_ou_negative_acceptee(self):
+        # un compte peut valoir zéro ou moins (rejeu du 24/11/2026 : un compte ruiné par ses frais)
+        for n, valeur in enumerate(("0", "-0.85", "12.5"), start=1):
+            ledger.enregistrer_valeur(self.conn, self.ids[0], date(2030, 1, n), valeur, "EUR")
+        self.assertEqual([v for _, v in ledger.valeurs_quotidiennes(self.conn, self.ids[0])],
+                         [Decimal("0"), Decimal("-0.85"), Decimal("12.5")])
+        for invalide in ("abc", float("nan"), float("inf")):
+            with self.subTest(valeur=invalide), self.assertRaises(ledger.EcritureInvalide):
+                ledger.enregistrer_valeur(self.conn, self.ids[0], date(2030, 1, 9), invalide, "EUR")
+
 
 if __name__ == "__main__":
     unittest.main()

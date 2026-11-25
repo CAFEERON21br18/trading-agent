@@ -58,6 +58,8 @@ def lancer(dossier: str | None = None, dossier_rapport: str | None = None, proce
     dossier = dossier or P.DOSSIER
     debut, durees = time.perf_counter(), {}
     lance_le = datetime.now(timezone.utc)
+    # d'abord : les sorties du lancement précédent vont dans archives/ (rien n'est effacé)
+    grand_livre.archiver(lance_le.strftime("%Y%m%d-%H%M%S"), dossier, dossier_rapport)
     tickers = list(donnees.univers())
     controles = {}
     if barres is None:
@@ -82,7 +84,6 @@ def lancer(dossier: str | None = None, dossier_rapport: str | None = None, proce
     durees["simulations"] = round(time.perf_counter() - t, 1)
 
     t = time.perf_counter()
-    grand_livre.archiver(lance_le.strftime("%Y%m%d-%H%M%S"), dossier, dossier_rapport)
     os.makedirs(dossier, exist_ok=True)
     conn = ledger.ouvrir(grand_livre.chemin(dossier))
     try:

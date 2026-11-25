@@ -206,3 +206,37 @@ Choix non couverts par la consigne, option prudente retenue :
   rapport cite le commit exact qui a tourné ; les résultats sont ajoutés à ce journal ensuite.
 
 Tests avant le lancement : `Ran 669 tests` / `OK (skipped=10)` (656 + 8 + 5).
+
+## Premier lancement (24/11/2026, 21 h 10 à 21 h 31) : interrompu par un bogue d'écriture
+
+Commit `147f1eb`. Les analyses et les six simulations se sont terminées ; le lancement s'est arrêté
+à l'étape suivante, l'écriture dans le grand livre du rejeu :
+
+    ledger._valeurs.EcritureInvalide: valeur doit être strictement positif : Decimal('-0.85498031601326915')
+
+**Cause.** `ledger.enregistrer_valeur` refusait une valeur de compte nulle ou négative. Or la valeur
+d'un compte du rejeu est passée sous zéro. Aucune des douze références n'est dans ce cas (vérifié en
+les recalculant seules) : c'est un compte de stratégie.
+
+**Ce que j'ai vu de ce lancement.** Rien n'a été écrit dans le grand livre (la transaction a été
+annulée), aucun rapport n'a été produit, et je n'ai lu aucun trade ni aucune mesure. Je sais
+seulement, par ce message d'erreur, qu'un compte de stratégie a perdu tout son capital à un moment
+de la série. Je l'écris ici parce que la correction a été faite en le sachant.
+
+**Correction.** Elle ne touche ni une règle du rejeu ni un paramètre :
+
+- `ledger.enregistrer_valeur` accepte toute valeur finie, de signe quelconque : la valeur d'un
+  compte peut être nulle ou négative, et elle est enregistrée telle quelle. `rejeu/parametres.py`,
+  le moteur, les frais, les sorties et la référence ne changent pas d'une ligne.
+- Le compte n'est PAS arrêté quand il passe sous zéro : l'agent raisonne sur un capital constant
+  (`config.CAPITAL` ne suit pas le résultat) et continuerait d'ouvrir des positions ; le rejeu fait
+  de même. Arrêter le compte à zéro, ou réduire la taille des positions avec le capital, aurait
+  été une règle nouvelle, choisie après avoir vu un résultat : écarté.
+- Mesures : un compte qui finit à zéro ou moins a un rendement annualisé de −100 % ; son drawdown
+  maximal peut dépasser −100 %.
+- `rejeu/lancement.py` archive maintenant les sorties précédentes AVANT de simuler, bases jetables
+  de l'agent comprises : les positions du premier lancement sont gardées dans
+  `data/rejeu/archives/` (elles auraient été effacées par la relance).
+
+Tests ajoutés : valeur de compte nulle ou négative acceptée par le grand livre, bilan d'un compte
+passé sous zéro, archivage des bases jetables. Tout est relancé depuis le début.

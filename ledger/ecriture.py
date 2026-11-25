@@ -2,7 +2,7 @@
 import sqlite3
 from datetime import date, datetime
 
-from ._valeurs import EcritureInvalide, _iso, _maintenant, _positif
+from ._valeurs import EcritureInvalide, _fini, _iso, _maintenant, _positif
 from .ecriture_cours import enregistrer_cours  # noqa: F401  (même module pour l'appelant)
 
 TYPES_MOUVEMENT = ("depot", "retrait", "dividende")
@@ -149,11 +149,11 @@ def enregistrer_taux(conn, jour: date, taux, source: str) -> int:
 
 
 def enregistrer_valeur(conn, compte_id: int, jour: date, valeur, devise: str) -> int:
-    """Stocke la valeur du compte en fin de journée."""
+    """Stocke la valeur du compte en fin de journée (elle peut être nulle ou négative)."""
     cur = conn.execute(
         "INSERT INTO valeur_quotidienne (compte_id, jour, valeur, devise, saisi_le)"
         " VALUES (?, ?, ?, ?, ?)",
-        (compte_id, jour.isoformat(), _positif(valeur, "valeur"), devise.upper(),
+        (compte_id, jour.isoformat(), _fini(valeur, "valeur"), devise.upper(),
          _maintenant()),
     )
     return cur.lastrowid

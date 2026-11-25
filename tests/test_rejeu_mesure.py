@@ -85,6 +85,15 @@ class TestBilan(unittest.TestCase):
         suivant = mesure.bilan(trades, valeurs, date(2019, 1, 1), date(2019, 12, 31), 1000)
         self.assertEqual((suivant.trades, suivant.valeur_debut, suivant.valeur_fin), (1, 1012.0, 1111.0))
 
+    def test_compte_passe_sous_zero(self):
+        # un compte ruiné par ses frais : la valeur négative est mesurée telle quelle
+        valeurs = [(date(2018, 6, 1), D("400")), (date(2018, 12, 31), D("-50"))]
+        b = mesure.bilan([], valeurs, date(2018, 1, 1), date(2018, 12, 31), 1000)
+        self.assertEqual((b.valeur_fin, b.rendement_annualise), (-50.0, -1.0))  # −100 % par an
+        self.assertAlmostEqual(b.rendement, -1.05)
+        self.assertAlmostEqual(b.drawdown_max, -1.05)
+        self.assertAlmostEqual(b.ratio, -1.0 / 1.05)
+
     def test_sans_trade_ni_valeur_rien_n_est_zero(self):
         b = mesure.bilan([], [], date(2018, 1, 1), date(2018, 12, 31), 1000)
         self.assertEqual((b.trades, b.resultat_net, b.esperance, b.intervalle, b.taux_reussite, b.rendement,
