@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Rejeu — AlphaSignal{% endblock %}
+
+{% block content %}
+{# Dashboard professionnel, page « Rejeu » : lecture seule du grand livre du rejeu (data/rejeu/). La page ne
+   lance rien. Le verdict en tête est toujours celui de la configuration du critère (registre §10). #}
+<div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+    <h2 class="font-bold text-lg">Rejeu sur plusieurs années</h2>
+    <a href="/pro" class="px-3 py-1.5 rounded-full bg-slate-700/60 text-slate-300 text-sm">Vue d'ensemble</a>
+</div>
+{% if erreur %}<p class="card mb-4 text-red-300" role="alert">{{ erreur }}</p>{% endif %}
+
+<section class="card mb-4 text-sm" id="mentions" aria-label="Limites à garder en tête">
+    {% for titre, texte in mentions %}
+    <p class="{% if not loop.last %}mb-2{% endif %}"><span class="font-semibold text-amber-300">{{ titre }} :</span>
+        <span class="text-slate-300">{{ texte }}</span></p>
+    {% endfor %}
+</section>
+
+{% if not lance %}
+<p class="card mb-4 text-slate-300" id="jamais-lance">
+    Le rejeu n'a pas encore été lancé sur cette machine : aucun résultat à afficher. Il se lance à la main, depuis la
+    racine du dépôt : <code>scripts\rejeu_donnees.py</code> (barres en cache), puis <code>scripts\rejeu.py</code>.
+    Cette page ne lance rien et n'écrit rien.
+</p>
+{% else %}
+<section class="card mb-4" id="verdict" aria-labelledby="titre-verdict">
+    <h3 id="titre-verdict" class="font-semibold mb-1">Verdict : « {{ verdict }} »</h3>
+    <p class="text-xs text-slate-400 mb-3">
+        Configuration qui décide : {{ libelle_decide }}, années {{ annees }}, {{ trades_decide }} trades clos. Critère
+        écrit avant le premier lancement (registre §10) : « utile » si les trois conditions sont vraies, sinon « sans
+        avantage » ; moins de {{ seuil }} trades clos : « non décidable ».
+    </p>
+    <ol class="space-y-2 text-sm">
+        {% for c in conditions %}
+        <li class="rounded-lg bg-slate-900/60 border border-slate-700 p-2">
+            <span class="pill {% if c.vraie %}pill-buy{% else %}pill-sell{% endif %}">Condition {{ c.numero }} : {% if c.vraie %}vraie{% else %}fausse{% endif %}</span>
+            <span class="font-semibold">{{ c.titre }}</span>
+            <div class="text-slate-300 mt-1">{{ c.constat }}</div>
+        </li>
+        {% endfor %}
+    </ol>
+</section>
+
+<section class="card mb-4" id="configuration" aria-labelledby="titre-configuration">
+    <h3 id="titre-configuration" class="font-semibold mb-2">Configuration affichée : {{ libelle }}</h3>
+    <div class="flex flex-wrap gap-2 text-xs mb-3" role="group" aria-label="Choix de la configuration">
+        {% for c in configurations %}
+        <a href="/pro/rejeu?capital={{ c.capital }}&amp;profil={{ c.profil }}" {% if c.choisie %}aria-current="true"{% endif %}
+           class="px-2 py-1 rounded-full {% if c.choisie %}bg-emerald-700/40 text-emerald-300 font-semibold{% else %}bg-slate-700/60 text-slate-300{% endif %}">{{ c.libelle }}{% if c.decide %} (décide){% endif %}</a>
+        {% endfor %}
+    </div>
+    {% if not est_decide %}
+    <p class="text-sm text-amber-300 mb-3">
+        Mesure de sensibilité : cette configuration ne fonde pas le verdict. À titre indicatif, le critère y donnerait
+        « {{ verdict_indicatif }} » ({% for c in conditions_indicatives %}condition {{ c.numero }} {% if c.vraie %}vraie{% else %}fausse{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}).
+    </p>
+    {% endif %}
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+        {% for nom, valeur in chiffres %}
+        <div class="rounded-lg bg-slate-900/60 border border-slate-700 p-2">
+            <div class="text-xs text-slate-400">{{ nom }}</div><div class="font-bold">{{ valeur }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    <p class="text-xs text-slate-400 mt-2">Sur {{ annees }}. {{ ouvertes }} position(s) encore ouverte(s) à la dernière barre.
+        Sorties : {% for motif, n in sorties.items() %}{{ motif }} {{ n }}{% if not loop.last %}, {% endif %}{% else %}aucune{% endfor %}.</p>
+</section>
+
+<section class="card mb-4" id="courbe" aria-labelledby="titre-courbe">
+    <h3 id="titre-courbe" class="font-semibold mb-2 text-sm">Valeur du compte : la stratégie et « acheter et garder » — {{ libelle }}</h3>
+    {% if courbe %}{{ courbe }}{% else %}<p class="text-sm text-slate-300">Pas assez de jours pour tracer une courbe.</p>{% endif %}
+</section>
+
+<section class="card mb-4" id="annees" aria-labelledby="titre-annees">
+    <h3 id="titre-annees" class="font-semibold mb-2">Année par année — {{ libelle }}</h3>
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm whitespace-nowrap">
+            <thead class="text-xs text-slate-400 text-left">
+                <tr>{% for e in ("Année", "Trades clos", "Résultat net", "Espérance nette", "Intervalle à 95 %", "Réussite", "Profit factor", "Part des frais", "Drawdown max", "Rendement", "Référence annuelle", "Écart") %}<th class="py-1 pr-3">{{ e }}</th>{% endfor %}</tr>
+            </thead>
+            <tbody>
+                {% for l in lignes %}
+                <tr class="border-t border-slate-700 {% if loop.last %}font-semibold{% endif %}">
+                    <td class="py-1 pr-3">{{ l.annee }}</td><td class="pr-3">{{ l.trades }}</td>
+                    <td class="pr-3 {% if l.positif %}text-emerald-400{% elif l.negatif %}text-red-400{% endif %}">{{ l.net }}</td>
+                    <td class="pr-3">{{ l.esperance }}</td><td class="pr-3">{{ l.intervalle }}</td><td class="pr-3">{{ l.reussite }}</td>
+                    <td class="pr-3">{{ l.profit_factor }}</td><td class="pr-3">{{ l.part_frais }}</td><td class="pr-3">{{ l.drawdown }}</td>
+                    <td class="pr-3">{{ l.rendement }}</td><td class="pr-3">{{ l.reference }}</td><td class="pr-3">{{ l.ecart }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <p class="text-xs text-slate-400 mt-2">Un trade compte dans l'année de sa clôture. « — » : non calculable, jamais zéro.
+        Référence annuelle : le même univers à parts égales, acheté le premier jour de bourse de l'année, vendu le dernier,
+        mêmes frais, même capital.</p>
+</section>
+
+<p class="text-xs text-slate-400" id="lancement">
+    Lancement du {{ lance_le }} · {{ titres }} titres{% if ecartes %} (écartés pour données inutilisables : {{ ecartes|join(", ") }}){% endif %}
+    · barres jusqu'au {{ derniere_barre }}{% if duree %} · durée {{ duree }} s{% endif %}.
+    {% if code_inchange is sameas false %}Le code de l'agent a changé depuis le commit du critère.{% endif %}
+    {% if erreurs %}<span class="text-red-300">L'agent a journalisé {{ erreurs }} erreur(s) pendant ce rejeu.</span>{% endif %}
+    Rapport complet : <code>reports\rejeu\RAPPORT.md</code>.
+</p>
+{% endif %}
+{% endblock %}

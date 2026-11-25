@@ -141,8 +141,8 @@ Copie dans `reports/daily/` (hors git).
 ### Rapport hebdomadaire (dimanche 20h)
 Performance, portefeuille, statistiques d'intuition, Budget Manager. Copie dans `reports/weekly/`.
 
-### Dashboard (16 pages)
-Overview · Pro (vue d'ensemble) · Mes trades · Portfolio · Fantôme Jev · Réel · Plans · Chat ·
+### Dashboard (17 pages)
+Overview · Pro (vue d'ensemble) · Mes trades · Rejeu · Portfolio · Fantôme Jev · Réel · Plans · Chat ·
 Watchlist · Explorers · Journal · Budget · Memory · Architecture · Audit · Settings
 
 ---
@@ -216,7 +216,7 @@ trading-agent/
 │   └── vault/                 ← notes du vault Obsidian
 │
 ├── alerts/                    ← alert_manager, canal e-mail
-├── dashboard/                 ← Flask : app.py, api/, pro/ (pages du grand livre), templates/ (16 pages), static/
+├── dashboard/                 ← Flask : app.py, api/, pro/ (pages du grand livre), templates/ (17 pages), static/
 ├── scripts/                   ← cycle_*.py, cleanup.py, installateurs .ps1, outils manuels
 ├── utils/                     ← bases SQLite, registre, indicateurs, LLM, verrous, heartbeat, logs
 ├── tests/                     ← unittest

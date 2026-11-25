@@ -311,3 +311,60 @@ Aucun ne touche une règle du rejeu, un paramètre, un trade ou le verdict.
 Comme le critère le demande, tout est relancé ; les sorties de ce lancement sont archivées dans
 `data/rejeu/archives/` et `reports/rejeu/archives/` (horodatage du lancement suivant).
 
+## Troisième lancement (25/11/2026, 18 h 30 UTC) : le lancement de référence
+
+Commit `dd95f08`, 12 processus, code de sortie 0. Durée : **776 s, soit 13 minutes** (analyses
+287 s, six simulations 488 s, écriture 1 s). Le deuxième lancement avait mis 1 492 s : la machine
+faisait autre chose pendant ses analyses.
+
+- **Mêmes résultats.** Le contenu du grand livre du rejeu (comptes, trades, frais, valeurs
+  quotidiennes, hors dates de saisie) a la même empreinte qu'au deuxième lancement
+  (`fe88fe71d391a3b2`) : 7 388 ordres, 56 520 valeurs quotidiennes. Le rejeu est déterministe.
+- **Même rapport**, à une case près, celle qui a été corrigée : le drawdown de 2026 (année
+  partielle, compte déjà sous zéro) s'écrit « — » au lieu de « 0,0 % ».
+- **Même verdict : « sans avantage »**, avec les chiffres de la section précédente.
+- Aucune erreur journalisée par l'agent ; code de l'agent identique au commit du critère.
+- Archivés : les sorties du premier lancement (bases jetables, grand livre vide) et celles du
+  deuxième (grand livre, résumé, rapport, bases jetables).
+
+## Lot 5 — page et documentation
+
+Fichiers : `dashboard/pro/rejeu_vue.py`, `dashboard/pro/courbe_rejeu.py`, la route `GET /pro/rejeu`
+(`dashboard/pro/routes.py`), `dashboard/templates/pro_rejeu.html`, le lien « Rejeu » de la page
+`/pro`, un fichier de test ; `CLAUDE.md`, `README.md`, `docs/TODO.md` §45.
+
+- **Lecture seule.** La page ouvre `data/rejeu/ledger_rejeu.db` en lecture seule et ne lance
+  rien ; elle relit ses chiffres par `rejeu/etude.py`, comme le rapport. Testé : fichier inchangé,
+  `POST` refusé, `data/ledger.db` jamais ouvert.
+- **Contenu** : le verdict et ses trois conditions, toujours ceux de la configuration du critère ;
+  le choix de la configuration (six liens, retenu dans l'URL) ; une autre configuration est dite
+  « mesure de sensibilité » ; ses chiffres de période ; la valeur du compte de la stratégie et
+  des deux références sur un même graphique ; le tableau par année.
+- **Mentions toujours visibles**, en tête, même si le rejeu n'a jamais été lancé : « hypothèses de
+  frais CFD », « biais de sélection », et ce que le rejeu teste.
+- **Graphique** : SVG écrit par le serveur, sans texte dans le dessin (comme la courbe corrigée de
+  la page « Vue d'ensemble ») ; les trois courbes se distinguent par leur trait (plein, tirets,
+  pointillé), nommé dans la légende ; un point par semaine.
+- **Garde du socle** : `tests/test_socle_hors_production.py` n'a PAS eu à être ouverte. La page est
+  dans `dashboard/pro/`, déjà autorisé ; `scripts/rejeu*.py` n'importent que le paquet `rejeu`. Une
+  garde nouvelle (`tests/test_rejeu_isolement.py`) vérifie le sens inverse : aucun module de
+  l'agent n'importe `rejeu`.
+- **Calcul gardé en mémoire** tant que le fichier du grand livre ne change pas (le bootstrap de
+  10 000 tirages n'est pas refait à chaque affichage).
+
+Vérifié dans un navigateur, sur un dashboard de démonstration (port 8099) qui lisait une copie du
+grand livre du deuxième lancement : page complète sur grand écran ; à 390 px et 320 px de large,
+aucun débordement horizontal, aucun chevauchement entre la légende et les graduations. Un défaut
+vu et corrigé à cette occasion : à 390 px, deux libellés de la légende sortaient de leur carte
+(ils ne pouvaient pas passer à la ligne). Le dashboard de production n'a pas été touché.
+
+Choix non couverts par la consigne :
+
+- **Pas d'entrée de navigation de plus** : « Rejeu » s'ouvre depuis la page Pro, comme « Mes
+  trades ».
+- **L'axe du graphique est linéaire et part de zéro.** Les références finissent 15 à 65 fois plus
+  haut que le capital : la courbe de la stratégie y paraît plate. C'est l'écart réel ; un axe
+  logarithmique ne saurait pas montrer un compte passé sous zéro.
+
+Tests : `Ran 678 tests` / `OK (skipped=10)` (671 + 7).
+

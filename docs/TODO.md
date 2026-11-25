@@ -620,6 +620,31 @@ Points nés de l'intégration du socle :
   (composant masqué de la page Architecture), bien que `dashboard/pro/` les lise désormais ; les
   modules de `dashboard/pro/` sont dans le composant Dashboard.
 
+## 45. Rejeu sur plusieurs années : points ouverts
+
+Rejeu du cœur technique ajouté le 24/11/2026 (`rejeu/`, `docs/REJEU_JOURNAL.md`, critère au registre
+§10). Aucun point ci-dessous ne change une décision de l'agent.
+
+- **Frais « Revolut »** : 1 € par ordre vient d'un relevé ; à confirmer contre la grille tarifaire.
+- **Frais « CFD »** : écarts et financement sont des hypothèses ; à remplacer par des écarts mesurés
+  sur un compte démo. Les contrats à terme ont reçu l'écart des cryptos, faute de consigne.
+- **Biais de sélection** : l'univers est la liste de 2026. Un rejeu sur un univers figé à une date
+  passée (titres disparus compris) reste à faire.
+- **Analystes neutralisés** : fondamental, sentiment, Fear & Greed, mémoire et intuition n'ont pas
+  d'historique daté ; le rejeu ne dit rien de leur apport.
+- **Barres quotidiennes** : une décision par jour, exécution à l'ouverture suivante. L'agent réel
+  décide aussi toutes les 15 minutes : non rejoué.
+- **Capital constant** : comme en production, l'agent dimensionne ses positions sur un capital qui
+  ne suit pas le résultat (voir le lot comportement, point 1) ; le rejeu ne l'arrête pas quand le
+  compte passe sous zéro.
+- **Ventes à découvert** : gardées dans tous les profils ; un compte d'actions au comptant ne les
+  permet pas.
+- **Réglages de la tour** : le rejeu teste les défauts de `config.py` (5 positions simultanées),
+  pas le `.env` de la tour (20).
+- **Relance** : `scripts/rejeu_donnees.py --rafraichir` change les barres, donc le résultat ; à ne
+  faire qu'en le notant au journal.
+- **Change** : 1 € = 1 $, comme le paper trader (§29).
+
 ## Entrées sorties le 23/11/2026
 
 Le détail de chaque entrée reste dans l'histoire git de ce fichier.

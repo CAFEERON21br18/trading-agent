@@ -199,12 +199,13 @@ Après : `mettre_a_jour_performance_md()` synchronise tout (intuition + learner)
 9. Dépôt public : aucune donnée réelle (quantité, prix d'entrée, montant, texte de plan ou de conseil du portefeuille réel) dans un fichier commité, tests compris. Les données de test sont inventées. Avant chaque push, comparer le diff aux valeurs des tables real_*.
 10. Aucune ligne Co-Authored-By ni Claude-Session dans les messages de commit de ce dépôt.
 
-## Dashboard PWA (`dashboard/app.py` sur port 8080) — 16 pages
-Pages : Overview, **Pro** (Vue d'ensemble, `/pro`) et sa page **Mes trades** (`/pro/trades`), Portfolio,
+## Dashboard PWA (`dashboard/app.py` sur port 8080) — 17 pages
+Pages : Overview, **Pro** (Vue d'ensemble, `/pro`) et ses pages **Mes trades** (`/pro/trades`) et
+**Rejeu** (`/pro/rejeu`), Portfolio,
 Fantôme Jev, **Réel** (v5), Plans, **Chat** (v5), Watchlist, Explorers, Journal,
 Budget, Memory, **Architecture** (carte du code + état en direct, relu toutes les 30 s),
 **Audit** (messages du chat, lecture seule), Settings. La barre de navigation a 15 entrées :
-« Mes trades » s'ouvre depuis la page Pro.
+« Mes trades » et « Rejeu » s'ouvrent depuis la page Pro.
 Écoute sur **127.0.0.1** (`DASHBOARD_HOST`, défaut) — plus d'accès direct depuis le Wi-Fi local.
 iPhone (maison ou 4G) : uniquement via Tailscale Serve `https://<machine>.<tailnet>.ts.net/`
 puis "Ajouter à l'écran d'accueil". Ne pas repasser en 0.0.0.0 : le dashboard n'a pas
@@ -294,6 +295,39 @@ Trois scripts manuels (aucune tâche planifiée), à blanc par défaut, `--appli
 - `scripts/ledger_cours.py` : clôtures quotidiennes (yfinance) de chaque instrument qui a un trade,
   du jour de son premier trade jusqu'à la veille, vers la table `cours` ; un symbole introuvable
   chez Yahoo est listé et n'empêche pas les autres.
+
+## Rejeu sur plusieurs années (registre §10)
+Paquet `rejeu/` à la racine : rejoue le cœur technique de l'agent jour par jour, de 2018 à
+aujourd'hui, avec des frais, face à « acheter et garder », et rend un verdict selon le critère
+commité AVANT tout code (`docs/REGISTRE_CRITERES.md` §10). Détail, choix et résultats :
+`docs/REJEU_JOURNAL.md`.
+- **Sens unique.** Le rejeu APPELLE les vraies fonctions de l'agent (`_technique`, `decider`,
+  `valider_signal`, `executer_ouvertures`, `reevaluer_position`, `fermer_position`) ; aucun module
+  de `agents/`, `utils/`, `alerts/`, `config.py` ni des cycles n'importe `rejeu`
+  (`tests/test_rejeu_isolement.py`). Aucune décision de l'agent ne change.
+- **Enveloppe** (`rejeu/enveloppe.py`) : pendant le rejeu, l'agent travaille sur une base jetable
+  de `data/rejeu/`, à l'horloge du rejeu, sur les barres du passé ; fondamental, sentiment,
+  mémoire, intuition et LLM sont neutres ; réseau, LLM et e-mail lèvent une erreur. Rien n'est
+  écrit dans `data/database.db`, `data/registre.db` ni `data/ledger.db`.
+- **Paramètres** : tous dans `rejeu/parametres.py` (période, capitaux, frais « Revolut » et
+  « CFD », réglages de l'agent épinglés aux défauts de `config.py`, graine du bootstrap). Ils ne
+  changent plus après le premier lancement ; un bogue corrigé est décrit au journal et tout est
+  relancé.
+- **Règles du moteur** : décision à la clôture de J avec les seules barres jusqu'à J, exécution à
+  l'ouverture de J+1 ; stop et objectif testés sur le haut et le bas de chaque barre, le stop
+  d'abord s'ils sont touchés le même jour.
+- **Sorties**, hors git : `data/rejeu/ledger_rejeu.db` (grand livre du rejeu, même schéma, un
+  compte par configuration et par référence), `data/rejeu/lancement.json`,
+  `reports/rejeu/RAPPORT.md` ; les sorties d'un lancement précédent vont dans `archives/`.
+- **Deux scripts manuels** (aucune tâche planifiée) : `scripts/rejeu_donnees.py` (barres yfinance
+  depuis 2017 dans `data/rejeu/barres/`, jamais retéléchargées sans `--rafraichir`) puis
+  `scripts/rejeu.py` (analyses, six configurations, grand livre, rapport).
+- **Page** `/pro/rejeu` : lecture seule du grand livre du rejeu ; verdict et ses trois conditions
+  (toujours ceux de la configuration du critère : 1 000 €, « Revolut »), tableau par année, courbe
+  de la stratégie et des références, choix de la configuration ; mentions « hypothèses de frais
+  CFD » et « biais de sélection » toujours visibles.
+- Le paquet `mesures` y gagne l'espérance nette par trade, son intervalle par bootstrap et le
+  rendement annualisé ; `ledger.enregistrer_valeur` accepte une valeur de compte nulle ou négative.
 
 ## Stack technique
 Python 3.11+ · yfinance · pandas · pandas-ta · CoinGecko · NewsAPI · Alpha Vantage ·
